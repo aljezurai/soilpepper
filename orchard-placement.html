@@ -124,18 +124,67 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:3px;font-size:1.5em;}
 <body>
 <div class="controls">
   <div class="ctrl-group">
-    <label>Layers:</label>
-    <button class="toggle frost on" onclick="toggleLayer('frost',this)">❄️ Frost</button>
-    <button class="toggle fire on" onclick="toggleLayer('fire',this)">🔥 Fire</button>
-    <button class="toggle wind on" onclick="toggleLayer('wind',this)">💨 Wind</button>
-    <button class="toggle sun on" onclick="toggleLayer('sun',this)">☀️ Sun</button>
-    <button class="toggle water on" onclick="toggleLayer('water',this)">💧 Water</button>
-    <button class="toggle resource on" onclick="toggleLayer('resource',this)">🌱 Root depth</button>
+<script>
+/* ===== I18N (2026-08-07) ===== */
+var OQ = new URLSearchParams(window.location.search);
+var REGION = (OQ.get('region') === 'netherlands' || OQ.get('region') === 'tuscany') ? OQ.get('region') : 'tuscany';
+var LANG = REGION === 'netherlands' ? 'nl' : 'en';
+var T = {
+  en: {
+    layers: 'Layers:', frost: '❄️ Frost', fire: '🔥 Fire', wind: '💨 Wind', sun: '☀️ Sun', water: '💧 Water',
+    rootDepth: '🌱 Root depth', toggleAll: '🔄 Toggle All', info: '📋 Info', legend: '📖 Legend',
+    exportJSON: '💾 Export JSON', title: '🌳 Orchard Placement Map', suggestLayout: '✨ Suggest Layout', clearAll: '🗑️ Clear All',
+    upSlopeMin: '🌡️ Upper slope: -5°C min', midSlopeMin: '🌡️ Mid slope: -7°C min', lowSlopeMin: '🌡️ Lower slope: -9°C min', frostPocketMin: '🌡️ Frost pocket: -12°C min',
+    frostPocketNote: '❄️ Frost pocket — hardy crops only', deepZone: '⏺ Deep: Walnut, Persimmon, Grape, Fig',
+    shallowZone: '⏺ Shallow: Peach, Plum, Apple, Pear, Herbs', nfixZone: '⏺ N-fixing: European Plum, Hazelnut (leaf litter)',
+    infoIntro: 'This interactive map shows <strong>where each tree and plant is positioned</strong> on the 1ha Tuscan hillside, with placement driven by frost drainage, fire risk, wind, sun, and water access.',
+    placementLogic: '<strong>Placement logic:</strong>',
+    upSlope: '🌡️ <strong>Upper slope</strong> (warmest, best frost drainage): Peach, Plum, Grape, Fig, Walnut',
+    midSlope: '🌡️ <strong>Mid slope</strong> (moderate frost): Persimmon, Hazelnut, Apple, Pear on swale berms',
+    againstHouse: '🏠 <strong>Against house</strong> (south wall, thermal mass): Lemon ⚠️, Passion fruit ⚠️',
+    seBoundary: '🔥 <strong>SE boundary</strong> (firebreak): Lavender, Rosemary, Thyme, Succulents',
+    nwEdge: '🌳 <strong>NW edge</strong> (windbreak): Hazelnut hedge',
+    shadedSpots: '🌤️ <strong>Shaded spots</strong> (afternoon shade): Red currants ⚠️, Raspberry ⚠️',
+    infoOutro: '<strong>Toggle layers</strong> above to see frost zones, fire risk, wind, sun, water flow, and root-depth resource partitioning. <strong>Click any plant</strong> for full details.'
+  },
+  nl: {
+    layers: 'Lagen:', frost: '❄️ Vorst', fire: '🔥 Vuur', wind: '💨 Wind', sun: '☀️ Zon', water: '💧 Water',
+    rootDepth: '🌱 Worteldiepte', toggleAll: '🔄 Alles wisselen', info: '📋 Info', legend: '📖 Legenda',
+    exportJSON: '💾 Exporteer JSON', title: '🌳 Boomgaard-plaatsingskaart', suggestLayout: '✨ Stel indeling voor', clearAll: '🗑️ Alles wissen',
+    upSlopeMin: '🌡️ Bovenhelling: min -5°C', midSlopeMin: '🌡️ Middenhelling: min -7°C', lowSlopeMin: '🌡️ Benedenhelling: min -9°C', frostPocketMin: '🌡️ Vorstkuil: min -12°C',
+    frostPocketNote: '❄️ Vorstkuil — alleen winterharde gewassen', deepZone: '⏺ Diep: Walnoot, Dadelpruim, Druif, Vijg',
+    shallowZone: '⏺ Ondiep: Perzik, Pruim, Appel, Peer, Kruiden', nfixZone: '⏺ Stikstofbindend: Europese pruim, Hazelnoot (bladafval)',
+    infoIntro: 'Deze interactieve kaart toont <strong>waar elke boom en plant geplaatst is</strong> op de 1ha Toscaanse heuvel, met plaatsing bepaald door vorstdrainage, brandrisico, wind, zon en watertoegang.',
+    placementLogic: '<strong>Plaatsingslogica:</strong>',
+    upSlope: '🌡️ <strong>Bovenhelling</strong> (warmst, beste vorstdrainage): Perzik, Pruim, Druif, Vijg, Walnoot',
+    midSlope: '🌡️ <strong>Middenhelling</strong> (matige vorst): Dadelpruim, Hazelnoot, Appel, Peer op swale-bermen',
+    againstHouse: '🏠 <strong>Tegen het huis</strong> (zuidmuur, thermische massa): Citroen ⚠️, Passievrucht ⚠️',
+    seBoundary: '🔥 <strong>ZO-grens</strong> (brandgang): Lavendel, Rozemarijn, Tijm, Vetplanten',
+    nwEdge: '🌳 <strong>NW-rand</strong> (windscherm): Hazelnoot-haag',
+    shadedSpots: '🌤️ <strong>Schaduwplekken</strong> (middagschaduw): Rode bessen ⚠️, Framboos ⚠️',
+    infoOutro: '<strong>Wissel lagen</strong> hierboven om vorstzones, brandrisico, wind, zon, waterstroming en worteldiepte-resourceverdeling te zien. <strong>Klik op een plant</strong> voor details.'
+  }
+};
+function tt(k) { return (T[LANG] && T[LANG][k] !== undefined) ? T[LANG][k] : (T.en[k] !== undefined ? T.en[k] : k); }
+function applyI18nOP() {
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    var key = el.getAttribute('data-i18n');
+    if (T[LANG][key] !== undefined) el.innerHTML = T[LANG][key];
+  });
+}
+</script>
+    <label data-i18n="layers">Layers:</label>
+    <button class="toggle frost on" onclick="toggleLayer('frost',this)"><span data-i18n="frost">❄️ Frost</span></button>
+    <button class="toggle fire on" onclick="toggleLayer('fire',this)"><span data-i18n="fire">🔥 Fire</span></button>
+    <button class="toggle wind on" onclick="toggleLayer('wind',this)"><span data-i18n="wind">💨 Wind</span></button>
+    <button class="toggle sun on" onclick="toggleLayer('sun',this)"><span data-i18n="sun">☀️ Sun</span></button>
+    <button class="toggle water on" onclick="toggleLayer('water',this)"><span data-i18n="water">💧 Water</span></button>
+    <button class="toggle resource on" onclick="toggleLayer('resource',this)"><span data-i18n="rootDepth">🌱 Root depth</span></button>
   </div>
   <div class="ctrl-group">
-    <button class="toggle" onclick="toggleAll()">🔄 Toggle All</button>
-    <button class="toggle" onclick="showInfo('default')">📋 Info</button>
-    <button class="toggle" onclick="document.getElementById('legend-scroll').scrollIntoView({behavior:'smooth'})">📖 Legend</button>
+    <button class="toggle" onclick="toggleAll()"><span data-i18n="toggleAll">🔄 Toggle All</span></button>
+    <button class="toggle" onclick="showInfo('default')"><span data-i18n="info">📋 Info</span></button>
+    <button class="toggle" onclick="document.getElementById('legend-scroll').scrollIntoView({behavior:'smooth'})"><span data-i18n="legend">📖 Legend</span></button>
   </div>
 </div>
 
@@ -182,10 +231,10 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:3px;font-size:1.5em;}
 
   <!-- Temperature label -->
   <div style="position:absolute;top:1%;right:2%;z-index:10;pointer-events:none;text-align:right;">
-    <div style="font-size:0.45em;color:rgba(255,255,255,0.35);">🌡️ Upper slope: -5°C min</div>
-    <div style="font-size:0.45em;color:rgba(255,255,255,0.3);">🌡️ Mid slope: -7°C min</div>
-    <div style="font-size:0.45em;color:rgba(255,255,255,0.25);">🌡️ Lower slope: -9°C min</div>
-    <div style="font-size:0.45em;color:rgba(255,255,255,0.2);">🌡️ Frost pocket: -12°C min</div>
+    <div style="font-size:0.45em;color:rgba(255,255,255,0.35);"><span data-i18n="upSlopeMin">🌡️ Upper slope: -5°C min</span></div>
+    <div style="font-size:0.45em;color:rgba(255,255,255,0.3);"><span data-i18n="midSlopeMin">🌡️ Mid slope: -7°C min</span></div>
+    <div style="font-size:0.45em;color:rgba(255,255,255,0.25);"><span data-i18n="lowSlopeMin">🌡️ Lower slope: -9°C min</span></div>
+    <div style="font-size:0.45em;color:rgba(255,255,255,0.2);"><span data-i18n="frostPocketMin">🌡️ Frost pocket: -12°C min</span></div>
   </div>
 
   <!-- Aspect -->
@@ -211,7 +260,7 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:3px;font-size:1.5em;}
       <text x="50" y="45" fill="rgba(156,39,176,0.2)" font-size="1.5" text-anchor="middle" font-style="italic">Frost pocket zone (lower slope)</text>
     </svg>
     <div style="position:absolute;top:72%;left:25%;width:50%;height:12%;background:rgba(156,39,176,0.05);border:1px dashed rgba(156,39,176,0.15);border-radius:8px;pointer-events:none;"></div>
-    <div style="position:absolute;top:74%;left:30%;font-size:0.45em;color:rgba(156,39,176,0.4);pointer-events:none;">❄️ Frost pocket — hardy crops only</div>
+    <div style="position:absolute;top:74%;left:30%;font-size:0.45em;color:rgba(156,39,176,0.4);pointer-events:none;"><span data-i18n="frostPocketNote">❄️ Frost pocket — hardy crops only</span></div>
     <div style="position:absolute;top:27%;left:0%;font-size:0.4em;color:rgba(156,39,176,0.25);pointer-events:none;">Upper slope: warmest (-3°C to -5°C)</div>
     <div style="position:absolute;top:45%;left:0%;font-size:0.4em;color:rgba(156,39,176,0.2);pointer-events:none;">Mid slope: moderate (-5°C to -7°C)</div>
   </div>
@@ -299,9 +348,9 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:3px;font-size:1.5em;}
       <text x="35" y="14" fill="rgba(33,150,243,0.2)" font-size="1.8" text-anchor="middle" font-weight="bold">Nitrogen-fixing zone</text>
     </svg>
     <!-- Deep-rooted plants crosshatch on the left side area -->
-    <div style="position:absolute;top:51%;left:30%;font-size:0.38em;color:rgba(76,175,80,0.2);pointer-events:none;">⏺ Deep: Walnut, Persimmon, Grape, Fig</div>
-    <div style="position:absolute;top:53%;left:30%;font-size:0.38em;color:rgba(255,193,7,0.2);pointer-events:none;">⏺ Shallow: Peach, Plum, Apple, Pear, Herbs</div>
-    <div style="position:absolute;top:55%;left:30%;font-size:0.38em;color:rgba(33,150,243,0.2);pointer-events:none;">⏺ N-fixing: European Plum, Hazelnut (leaf litter)</div>
+    <div style="position:absolute;top:51%;left:30%;font-size:0.38em;color:rgba(76,175,80,0.2);pointer-events:none;"><span data-i18n="deepZone">⏺ Deep: Walnut, Persimmon, Grape, Fig</span></div>
+    <div style="position:absolute;top:53%;left:30%;font-size:0.38em;color:rgba(255,193,7,0.2);pointer-events:none;"><span data-i18n="shallowZone">⏺ Shallow: Peach, Plum, Apple, Pear, Herbs</span></div>
+    <div style="position:absolute;top:55%;left:30%;font-size:0.38em;color:rgba(33,150,243,0.2);pointer-events:none;"><span data-i18n="nfixZone">⏺ N-fixing: European Plum, Hazelnut (leaf litter)</span></div>
   </div>
 
   <!-- ===== INFRASTRUCTURE ===== -->
@@ -336,9 +385,9 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:3px;font-size:1.5em;}
   <div class="firebreak-strip" style="top:75%;left:68%;width:28%;height:20%;"></div>
   <div style="position:absolute;top:76%;left:69%;font-size:0.35em;color:rgba(244,67,54,0.4);z-index:3;pointer-events:none;line-height:1.3;">🔥 FIREBREAK<br>Lavender · Rosemary<br>Thyme · Succulents</div>
   <div class="ctrl-group">
-    <button class="toggle" id="suggest-btn" style="background:#33691e;color:#fff;border-color:#4a8a2e;">✨ Suggest Layout</button>
-    <button class="toggle" id="export-btn">💾 Export JSON</button>
-    <button class="toggle" id="clear-btn" style="color:#ef5350;">🗑️ Clear All</button>
+    <button class="toggle" id="suggest-btn" style="background:#33691e;color:#fff;border-color:#4a8a2e;"><span data-i18n="suggestLayout">✨ Suggest Layout</span></button>
+    <button class="toggle" id="export-btn"><span data-i18n="exportJSON">💾 Export JSON</span></button>
+    <button class="toggle" id="clear-btn" style="color:#ef5350;"><span data-i18n="clearAll">🗑️ Clear All</span></button>
   </div>
 </div>
 <div id="plot-stats" style="text-align:center;color:#aed581;font-size:0.8em;margin:4px 0;"></div>
@@ -350,18 +399,18 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:3px;font-size:1.5em;}
 </div>
 <!-- Default info panel -->
 <div class="info-panel active" id="info-default">
-  <h3>🌳 Orchard Placement Map</h3>
-  <p>This interactive map shows <strong>where each tree and plant is positioned</strong> on the 1ha Tuscan hillside, with placement driven by frost drainage, fire risk, wind, sun, and water access.</p>
-  <p><strong>Placement logic:</strong></p>
+  <h3 data-i18n="title">🌳 Orchard Placement Map</h3>
+  <p><span data-i18n="infoIntro">This interactive map shows <strong>where each tree and plant is positioned</strong> on the 1ha Tuscan hillside, with placement driven by frost drainage, fire risk, wind, sun, and water access.</span></p>
+  <p><span data-i18n="placementLogic"><strong>Placement logic:</strong></span></p>
   <ul style="margin:4px 0 4px 18px;font-size:0.9em;color:#b0bec5;">
-    <li>🌡️ <strong>Upper slope</strong> (warmest, best frost drainage): Peach, Plum, Grape, Fig, Walnut</li>
-    <li>🌡️ <strong>Mid slope</strong> (moderate frost): Persimmon, Hazelnut, Apple, Pear on swale berms</li>
-    <li>🏠 <strong>Against house</strong> (south wall, thermal mass): Lemon ⚠️, Passion fruit ⚠️</li>
-    <li>🔥 <strong>SE boundary</strong> (firebreak): Lavender, Rosemary, Thyme, Succulents</li>
-    <li>🌳 <strong>NW edge</strong> (windbreak): Hazelnut hedge</li>
-    <li>🌤️ <strong>Shaded spots</strong> (afternoon shade): Red currants ⚠️, Raspberry ⚠️</li>
+    <li><span data-i18n="upSlope">🌡️ <strong>Upper slope</strong> (warmest, best frost drainage): Peach, Plum, Grape, Fig, Walnut</span></li>
+    <li><span data-i18n="midSlope">🌡️ <strong>Mid slope</strong> (moderate frost): Persimmon, Hazelnut, Apple, Pear on swale berms</span></li>
+    <li><span data-i18n="againstHouse">🏠 <strong>Against house</strong> (south wall, thermal mass): Lemon ⚠️, Passion fruit ⚠️</span></li>
+    <li><span data-i18n="seBoundary">🔥 <strong>SE boundary</strong> (firebreak): Lavender, Rosemary, Thyme, Succulents</span></li>
+    <li><span data-i18n="nwEdge">🌳 <strong>NW edge</strong> (windbreak): Hazelnut hedge</span></li>
+    <li><span data-i18n="shadedSpots">🌤️ <strong>Shaded spots</strong> (afternoon shade): Red currants ⚠️, Raspberry ⚠️</span></li>
   </ul>
-  <p><strong>Toggle layers</strong> above to see frost zones, fire risk, wind, sun, water flow, and root-depth resource partitioning. <strong>Click any plant</strong> for full details.</p>
+  <p><span data-i18n="infoOutro"><strong>Toggle layers</strong> above to see frost zones, fire risk, wind, sun, water flow, and root-depth resource partitioning. <strong>Click any plant</strong> for full details.</span></p>
 </div>
 <div class="info-panel" id="info-panel"></div>
 <script>
@@ -829,6 +878,7 @@ document.addEventListener('keydown', function(e) {
 
 // ============ INIT ============
 document.addEventListener('DOMContentLoaded', function() {
+  applyI18nOP();
   // Load or generate
   if (!loadPlot()) {
     generateSuggested();
