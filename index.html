@@ -91,33 +91,138 @@ a:hover{color:var(--accent-teal)}
 </head>
 <body>
 
+<script>
+/* ===== I18N (2026-08-07) — landing page ===== */
+var IQ = new URLSearchParams(window.location.search);
+var REGION = (IQ.get('region') === 'netherlands' || IQ.get('region') === 'tuscany') ? IQ.get('region') : 'tuscany';
+var LANG = REGION === 'netherlands' ? 'nl' : 'en';
+var T = {
+  en: {
+    brandSmall: 'Permaculture Design Toolkit',
+    navDashboard: 'Dashboard', navOverview: '📊 Overview', navDesignSuite: '🖥️ Design Suite', navFieldTools: '📱 Field Tools',
+    navDesignH: 'Design Suite (Desktop)', navFieldH: 'Field Tools (Mobile)',
+    footOpen: '🌍 open-source toolkit', footPrivacy: '🔒 data stays on-device', footOffline: '📱 works offline',
+    regionLabel: 'Region preset:', regTus: 'Tuscany · Mediterranean', regNl: 'Netherlands · Temperate',
+    privacyNote: '🔒 <strong>Privacy by design:</strong> everything runs in your browser. Your site plans, water calculations and garden layouts are stored in <strong>your browser\'s localStorage</strong> — they never touch a server. Export a field view to take plans to your garden, phone or printer.',
+    secDesign: 'Design Suite', secDesignCount: 'desktop · 5 tools', secField: 'Field Tools', secFieldCount: 'mobile · 5 tools',
+    statusComplete: 'Complete',
+    openLink: '📂 open →',
+    cardMasterT: 'Master Plan Grid', cardMasterB: '10×10m cells · functions',
+    cardMasterD: 'Divide any plot into a cell grid. Assign each cell a function — guild, vegetable garden, water, road, construction — paint zones, and drill into guilds.',
+    cardMasterS: '🗂️ 6 functions · 📤 export / import',
+    cardProposalT: 'Design Proposal', cardProposalB: 'Aranya Step 6 · live data',
+    cardProposalD: 'The master document: site overview, zones, water strategy, sector analysis, guild table and implementation — generated from your brief, water and plan data.',
+    cardProposalS: '📐 6 sections · ⚡ live counts',
+    cardSectorT: 'Sector Analysis', cardSectorB: '9 sectors · radial',
+    cardSectorD: '9-sector radial analysis — wind, sun, water, wildlife, fire, noise, viewsheds, access, frost — pre-filled from your site brief.',
+    cardSectorS: '🧭 9 sectors · 📊 radial plot',
+    cardHeliT: 'Helicopter View', cardHeliB: 'overlay · toggles',
+    cardHeliD: 'Master overlay with layer toggles — zones, sectors, water, access, structures, plantings — rendered from your master plan.',
+    cardHeliS: '🗂️ 7 layers · 🎛️ 12 controls',
+    cardWaterT: 'Water Management', cardWaterB: 'catchment · swales',
+    cardWaterD: 'Rainwater catchment, pond and tank sizing, gravity pressure, swale placement on your grid — with what-if sliders and a balance bar.',
+    cardWaterS: '💧 sources · 🌊 swales',
+    cardMatrixT: 'Guild Interaction Matrix', cardMatrixB: 'mix &amp; match · smart',
+    cardMatrixD: 'Browse companion relationships and mutual-benefit scores across <span data-count="species">256</span> species. Visual heatmap, unmet-needs detection, root-zone compatibility.',
+    cardMatrixS: '🌿 <span data-count="species">256</span> species · 🔬 guild profiles',
+    cardDiagT: 'Guild Diagrams', cardDiagB: '13 guilds · companions',
+    cardDiagD: 'Tree guild diagrams with companion rings — nitrogen fixers, accumulators, groundcovers, pollinators — printable for the field.',
+    cardDiagS: '🌿 13 guilds · 🤝 19 companions',
+    cardSpeciesT: 'Species Filter', cardSpeciesB: '<span data-count="species">256</span> spp · 11 dims',
+    cardSpeciesD: '<span data-count="species">256</span> species searchable across 11 filter dimensions — water, sun, height, family, function, soil and more.',
+    cardSpeciesS: '🔢 <span data-count="species">256</span> species · 🎯 11 filters',
+    cardVegT: 'Vegetable Garden Planner', cardVegB: 'real-world beds · sowing specs',
+    cardVegD: 'Design real 75cm beds in 10m cells — modules, join toggles, sowing patterns (square/diamond/rows/hills), spacing, depth and per-slot capacity. Export a field view for your phone.',
+    cardVegS: '🥕 69 veg · 🌱 sowing specs',
+    cardOrchT: 'Orchard Placement', cardOrchB: '3 modes · scoring',
+    cardOrchD: 'Zone-based tree placement with a scoring engine — frost, wind, sun, water, root-depth overlays, spacing and firebreak logic.',
+    cardOrchS: '🌳 69 trees · 🎯 score engine',
+    footSpecies: 'Species: <strong><span data-count="species">256</span></strong>',
+    footTrees: 'Trees &amp; shrubs: <strong><span data-count="treeshrub">116</span></strong>',
+    footRegions: 'Regions: <strong>2 presets</strong>', footStorage: 'Storage: <strong>your browser</strong>',
+    footCopy: 'SOILPEPPER · open-source permaculture toolkit · built on the Aranya method'
+  },
+  nl: {
+    brandSmall: 'Permacultuur-ontwerpgereedschap',
+    navDashboard: 'Dashboard', navOverview: '📊 Overzicht', navDesignSuite: '🖥️ Ontwerpsuite', navFieldTools: '📱 Veldgereedschap',
+    navDesignH: 'Ontwerpsuite (desktop)', navFieldH: 'Veldgereedschap (mobiel)',
+    footOpen: '🌍 open-source toolkit', footPrivacy: '🔒 data blijft op je apparaat', footOffline: '📱 werkt offline',
+    regionLabel: 'Regiovoorinstelling:', regTus: 'Toscane · Middellands', regNl: 'Nederland · Gematigd',
+    privacyNote: '🔒 <strong>Privacy by design:</strong> alles draait in je browser. Je terreinplannen, waterberekeningen en tuinindelingen worden opgeslagen in <strong>de localStorage van je browser</strong> — ze raken nooit een server. Exporteer een veldweergave om plannen mee te nemen naar je tuin, telefoon of printer.',
+    secDesign: 'Ontwerpsuite', secDesignCount: 'desktop · 5 tools', secField: 'Veldgereedschap', secFieldCount: 'mobiel · 5 tools',
+    statusComplete: 'Compleet',
+    openLink: '📂 openen →',
+    cardMasterT: 'Masterplan-raster', cardMasterB: '10×10m cellen · functies',
+    cardMasterD: 'Verdeel elk perceel in een cellenraster. Ken elke cel een functie toe — gilde, moestuin, water, weg, bouw — schilder zones en zoek in gildes.',
+    cardMasterS: '🗂️ 6 functies · 📤 exporteren / importeren',
+    cardProposalT: 'Ontwerpvoorstel', cardProposalB: 'Aranya stap 6 · live data',
+    cardProposalD: 'Het hoofddocument: locatieoverzicht, zones, waterstrategie, sectoranalyse, gildetabel en implementatie — gegenereerd uit je brief-, water- en plangegevens.',
+    cardProposalS: '📐 6 secties · ⚡ live tellingen',
+    cardSectorT: 'Sectoranalyse', cardSectorB: '9 sectoren · radiaal',
+    cardSectorD: '9-sector radiale analyse — wind, zon, water, wild, vuur, geluid, uitzichten, toegang, vorst — vooraf ingevuld vanuit je locatiebrief.',
+    cardSectorS: '🧭 9 sectoren · 📊 radiale plot',
+    cardHeliT: 'Vogelperspectief', cardHeliB: 'overlay · schakelaars',
+    cardHeliD: 'Hoofdoverlay met laagschakelaars — zones, sectoren, water, toegang, constructies, beplanting — weergegeven vanuit je masterplan.',
+    cardHeliS: '🗂️ 7 lagen · 🎛️ 12 bedieningselementen',
+    cardWaterT: 'Waterbeheer', cardWaterB: 'opvang · swales',
+    cardWaterD: 'Regenwateropvang, vijver- en tankformaten, zwaartekrachtdruk, swale-plaatsing op je raster — met what-if schuifregelaars en een balansbalk.',
+    cardWaterS: '💧 bronnen · 🌊 swales',
+    cardMatrixT: 'Gilde-matrix', cardMatrixB: 'mix &amp; match · slim',
+    cardMatrixD: 'Blader door compagnonsrelaties en wederzijdse-voordeelscores van <span data-count="species">256</span> soorten. Visuele heatmap, onvervulde-behoeften-detectie, wortelzone-compatibiliteit.',
+    cardMatrixS: '🌿 <span data-count="species">256</span> soorten · 🔬 gildeprofielen',
+    cardDiagT: 'Boomgilde-diagrammen', cardDiagB: '13 gildes · compagnons',
+    cardDiagD: 'Boomgilde-diagrammen met compagnonsringen — stikstofbinders, accumulatoren, bodembedekkers, bestuivers — afdrukbaar voor het veld.',
+    cardDiagS: '🌿 13 gildes · 🤝 19 compagnons',
+    cardSpeciesT: 'Soortendatabase', cardSpeciesB: '<span data-count="species">256</span> soorten · 11 dims',
+    cardSpeciesD: '<span data-count="species">256</span> soorten doorzoekbaar op 11 filterdimensies — water, zon, hoogte, familie, functie, grond en meer.',
+    cardSpeciesS: '🔢 <span data-count="species">256</span> soorten · 🎯 11 filters',
+    cardVegT: 'Groententuin-planner', cardVegB: 'realistische bedden · zaaispecificaties',
+    cardVegD: 'Ontwerp echte 75cm-bedden in 10m-cellen — modules, voegschakelaars, zaai-patronen (vierkant/diagonaal/rijen/heuvels), afstand, diepte en capaciteit per perceel. Exporteer een veldweergave voor je telefoon.',
+    cardVegS: '🥕 69 groenten · 🌱 zaaispecificaties',
+    cardOrchT: 'Boomgaard-plaatsing', cardOrchB: '3 modi · scoring',
+    cardOrchD: 'Zone-gebaseerde boomplaatsing met een score-engine — vorst-, wind-, zon-, water-, worteldiepte-overlays, afstand en brandganglogica.',
+    cardOrchS: '🌳 69 bomen · 🎯 score-engine',
+    footSpecies: 'Soorten: <strong><span data-count="species">256</span></strong>',
+    footTrees: 'Bomen &amp; struiken: <strong><span data-count="treeshrub">116</span></strong>',
+    footRegions: 'Regio\'s: <strong>2 voorinstellingen</strong>', footStorage: 'Opslag: <strong>je browser</strong>',
+    footCopy: 'SOILPEPPER · open-source permacultuur-toolkit · gebouwd op de Aranya-methode'
+  }
+};
+function tt(k) { return (T[LANG] && T[LANG][k] !== undefined) ? T[LANG][k] : (T.en[k] !== undefined ? T.en[k] : k); }
+function applyI18nLanding() {
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    var key = el.getAttribute('data-i18n');
+    if (T[LANG][key] !== undefined) el.innerHTML = T[LANG][key];
+  });
+}
+</script>
 <!-- SIDEBAR -->
 <aside class="sidebar">
   <div class="sidebar-brand">
     <h2>SOILPEPPER</h2>
-    <small>Permaculture Design Toolkit</small>
+    <small data-i18n="brandSmall">Permaculture Design Toolkit</small>
   </div>
   <nav class="sidebar-nav">
-    <div class="sidebar-section">Dashboard</div>
-    <a href="#" class="active">📊 Overview</a>
-    <a href="#design-suite">🖥️ Design Suite</a>
-    <a href="#field-tools">📱 Field Tools</a>
-    <div class="sidebar-section">Design Suite (Desktop)</div>
+    <div class="sidebar-section" data-i18n="navDashboard">Dashboard</div>
+    <a href="#" class="active" data-i18n="navOverview">📊 Overview</a>
+    <a href="#design-suite" data-i18n="navDesignSuite">🖥️ Design Suite</a>
+    <a href="#field-tools" data-i18n="navFieldTools">📱 Field Tools</a>
+    <div class="sidebar-section" data-i18n="navDesignH">Design Suite (Desktop)</div>
     <a href="master-plan.html?region=tuscany" target="_blank">🗺️ Master Plan</a>
     <a href="design-proposal.html?region=tuscany" target="_blank">📄 Design Proposal</a>
     <a href="sector-analysis.html?region=tuscany" target="_blank">🧭 Sector Analysis</a>
     <a href="helicopter-view.html?region=tuscany" target="_blank">🗺️ Helicopter View</a>
     <a href="water-management.html?region=tuscany" target="_blank">💧 Water Management</a>
-    <div class="sidebar-section">Field Tools (Mobile)</div>
+    <div class="sidebar-section" data-i18n="navFieldH">Field Tools (Mobile)</div>
     <a href="guild-matrix.html?region=tuscany" target="_blank">🌳 Guild Matrix</a>
     <a href="guild-diagrams.html?region=tuscany" target="_blank">🌿 Guild Diagrams</a>
     <a href="species-filter.html?region=tuscany" target="_blank">🔍 Species Filter</a>
     <a href="veg-planner.html?region=tuscany" target="_blank">🥬 Veg Planner</a>
   </nav>
   <div class="sidebar-footer">
-    <span>🌍 open-source toolkit</span>
-    <span>🔒 data stays on-device</span>
-    <span>📱 works offline</span>
+    <span data-i18n="footOpen">🌍 open-source toolkit</span>
+    <span data-i18n="footPrivacy">🔒 data stays on-device</span>
+    <span data-i18n="footOffline">📱 works offline</span>
   </div>
 </aside>
 
@@ -129,18 +234,18 @@ a:hover{color:var(--accent-teal)}
     <h1>🌶️ SOILPEPPER — Permaculture Design Toolkit</h1>
     <p id="hero-desc">Plan a permaculture site from blank plot to garden beds — <strong>no account, no server, no data leaving your device.</strong> Desktop tools for designing, mobile tools for the field. <strong><span data-count="species">256</span> species</strong> with guild profiles, companion scoring and sowing specs. Built on <strong>Aranya's step-by-step method</strong>.</p>
     <div class="region-bar">
-      <span class="region-label">Region preset:</span>
-      <button class="region-btn active" data-region="tuscany" onclick="selectRegion('tuscany')"><span class="flag">🇮🇹</span> Tuscany · Mediterranean</button>
-      <button class="region-btn" data-region="netherlands" onclick="selectRegion('netherlands')"><span class="flag">🇳🇱</span> Netherlands · Temperate</button>
+      <span class="region-label" data-i18n="regionLabel">Region preset:</span>
+      <button class="region-btn active" data-region="tuscany" onclick="selectRegion('tuscany')"><span class="flag">🇮🇹</span> <span data-i18n="regTus">Tuscany · Mediterranean</span></button>
+      <button class="region-btn" data-region="netherlands" onclick="selectRegion('netherlands')"><span class="flag">🇳🇱</span> <span data-i18n="regNl">Netherlands · Temperate</span></button>
     </div>
-    <div class="privacy-note">🔒 <strong>Privacy by design:</strong> everything runs in your browser. Your site plans, water calculations and garden layouts are stored in <strong>your browser's localStorage</strong> — they never touch a server. Export a field view to take plans to your garden, phone or printer.</div>
+    <div class="privacy-note" data-i18n="privacyNote">🔒 <strong>Privacy by design:</strong> everything runs in your browser. Your site plans, water calculations and garden layouts are stored in <strong>your browser's localStorage</strong> — they never touch a server. Export a field view to take plans to your garden, phone or printer.</div>
   </div>
 
   <!-- DESIGN SUITE -->
   <div class="section-header">
     <span class="device-icon">🖥️</span>
-    <h2>Design Suite</h2>
-    <span class="section-count">desktop · 5 tools</span>
+    <h2 data-i18n="secDesign">Design Suite</h2>
+    <span class="section-count" data-i18n="secDesignCount">desktop · 5 tools</span>
   </div>
   <div class="tools-grid" id="design-suite">
 
@@ -148,70 +253,70 @@ a:hover{color:var(--accent-teal)}
       <div class="tool-card-header">
         <div class="tool-card-icon">🗺️</div>
         <div class="tool-card-title-group">
-          <div class="tool-card-title">Master Plan Grid</div>
-          <div class="tool-card-badges"><span class="tool-card-badge">10×10m cells</span><span class="tool-card-badge">functions</span></div>
+          <div class="tool-card-title" data-i18n="cardMasterT">Master Plan Grid</div>
+          <div class="tool-card-badges"><span class="tool-card-badge" data-i18n="cardMasterB">10×10m cells · functions</span></div>
         </div>
-        <span class="tool-card-status status-complete">Complete</span>
+        <span class="tool-card-status status-complete" data-i18n="statusComplete">Complete</span>
       </div>
-      <p class="tool-card-desc">Divide any plot into a cell grid. Assign each cell a function — guild, vegetable garden, water, road, construction — paint zones, and drill into guilds.</p>
-      <div class="tool-card-stats"><span class="tool-card-stat">🗂️ 6 functions</span><span class="tool-card-stat">📤 export / import</span></div>
-      <a class="tool-card-link" href="master-plan.html?region=tuscany" target="_blank">📂 open →</a>
+      <p class="tool-card-desc" data-i18n="cardMasterD">Divide any plot into a cell grid. Assign each cell a function — guild, vegetable garden, water, road, construction — paint zones, and drill into guilds.</p>
+      <div class="tool-card-stats"><span class="tool-card-stat" data-i18n="cardMasterS">🗂️ 6 functions · 📤 export / import</span></div>
+      <a class="tool-card-link" href="master-plan.html?region=tuscany" target="_blank"><span data-i18n="openLink">📂 open →</span></a>
     </div>
 
     <div class="tool-card">
       <div class="tool-card-header">
         <div class="tool-card-icon">📄</div>
         <div class="tool-card-title-group">
-          <div class="tool-card-title">Design Proposal</div>
-          <div class="tool-card-badges"><span class="tool-card-badge">Aranya Step 6</span><span class="tool-card-badge">live data</span></div>
+          <div class="tool-card-title" data-i18n="cardProposalT">Design Proposal</div>
+          <div class="tool-card-badges"><span class="tool-card-badge" data-i18n="cardProposalB">Aranya Step 6 · live data</span></div>
         </div>
-        <span class="tool-card-status status-complete">Complete</span>
+        <span class="tool-card-status status-complete" data-i18n="statusComplete">Complete</span>
       </div>
-      <p class="tool-card-desc">The master document: site overview, zones, water strategy, sector analysis, guild table and implementation — generated from your brief, water and plan data.</p>
-      <div class="tool-card-stats"><span class="tool-card-stat">📐 6 sections</span><span class="tool-card-stat">⚡ live counts</span></div>
-      <a class="tool-card-link" href="design-proposal.html?region=tuscany" target="_blank">📂 open →</a>
+      <p class="tool-card-desc" data-i18n="cardProposalD">The master document: site overview, zones, water strategy, sector analysis, guild table and implementation — generated from your brief, water and plan data.</p>
+      <div class="tool-card-stats"><span class="tool-card-stat" data-i18n="cardProposalS">📐 6 sections · ⚡ live counts</span></div>
+      <a class="tool-card-link" href="design-proposal.html?region=tuscany" target="_blank"><span data-i18n="openLink">📂 open →</span></a>
     </div>
 
     <div class="tool-card">
       <div class="tool-card-header">
         <div class="tool-card-icon">🧭</div>
         <div class="tool-card-title-group">
-          <div class="tool-card-title">Sector Analysis</div>
-          <div class="tool-card-badges"><span class="tool-card-badge">9 sectors</span><span class="tool-card-badge">radial</span></div>
+          <div class="tool-card-title" data-i18n="cardSectorT">Sector Analysis</div>
+          <div class="tool-card-badges"><span class="tool-card-badge" data-i18n="cardSectorB">9 sectors · radial</span></div>
         </div>
-        <span class="tool-card-status status-complete">Complete</span>
+        <span class="tool-card-status status-complete" data-i18n="statusComplete">Complete</span>
       </div>
-      <p class="tool-card-desc">9-sector radial analysis — wind, sun, water, wildlife, fire, noise, viewsheds, access, frost — pre-filled from your site brief.</p>
-      <div class="tool-card-stats"><span class="tool-card-stat">🧭 9 sectors</span><span class="tool-card-stat">📊 radial plot</span></div>
-      <a class="tool-card-link" href="sector-analysis.html?region=tuscany" target="_blank">📂 open →</a>
+      <p class="tool-card-desc" data-i18n="cardSectorD">9-sector radial analysis — wind, sun, water, wildlife, fire, noise, viewsheds, access, frost — pre-filled from your site brief.</p>
+      <div class="tool-card-stats"><span class="tool-card-stat" data-i18n="cardSectorS">🧭 9 sectors · 📊 radial plot</span></div>
+      <a class="tool-card-link" href="sector-analysis.html?region=tuscany" target="_blank"><span data-i18n="openLink">📂 open →</span></a>
     </div>
 
     <div class="tool-card">
       <div class="tool-card-header">
         <div class="tool-card-icon">🗺️</div>
         <div class="tool-card-title-group">
-          <div class="tool-card-title">Helicopter View</div>
-          <div class="tool-card-badges"><span class="tool-card-badge">overlay</span><span class="tool-card-badge">toggles</span></div>
+          <div class="tool-card-title" data-i18n="cardHeliT">Helicopter View</div>
+          <div class="tool-card-badges"><span class="tool-card-badge" data-i18n="cardHeliB">overlay · toggles</span></div>
         </div>
-        <span class="tool-card-status status-complete">Complete</span>
+        <span class="tool-card-status status-complete" data-i18n="statusComplete">Complete</span>
       </div>
-      <p class="tool-card-desc">Master overlay with layer toggles — zones, sectors, water, access, structures, plantings — rendered from your master plan.</p>
-      <div class="tool-card-stats"><span class="tool-card-stat">🗂️ 7 layers</span><span class="tool-card-stat">🎛️ 12 controls</span></div>
-      <a class="tool-card-link" href="helicopter-view.html?region=tuscany" target="_blank">📂 open →</a>
+      <p class="tool-card-desc" data-i18n="cardHeliD">Master overlay with layer toggles — zones, sectors, water, access, structures, plantings — rendered from your master plan.</p>
+      <div class="tool-card-stats"><span class="tool-card-stat" data-i18n="cardHeliS">🗂️ 7 layers · 🎛️ 12 controls</span></div>
+      <a class="tool-card-link" href="helicopter-view.html?region=tuscany" target="_blank"><span data-i18n="openLink">📂 open →</span></a>
     </div>
 
     <div class="tool-card">
       <div class="tool-card-header">
         <div class="tool-card-icon">💧</div>
         <div class="tool-card-title-group">
-          <div class="tool-card-title">Water Management</div>
-          <div class="tool-card-badges"><span class="tool-card-badge">catchment</span><span class="tool-card-badge">swales</span></div>
+          <div class="tool-card-title" data-i18n="cardWaterT">Water Management</div>
+          <div class="tool-card-badges"><span class="tool-card-badge" data-i18n="cardWaterB">catchment · swales</span></div>
         </div>
-        <span class="tool-card-status status-complete">Complete</span>
+        <span class="tool-card-status status-complete" data-i18n="statusComplete">Complete</span>
       </div>
-      <p class="tool-card-desc">Rainwater catchment, pond and tank sizing, gravity pressure, swale placement on your grid — with what-if sliders and a balance bar.</p>
-      <div class="tool-card-stats"><span class="tool-card-stat">💧 sources</span><span class="tool-card-stat">🌊 swales</span></div>
-      <a class="tool-card-link" href="water-management.html?region=tuscany" target="_blank">📂 open →</a>
+      <p class="tool-card-desc" data-i18n="cardWaterD">Rainwater catchment, pond and tank sizing, gravity pressure, swale placement on your grid — with what-if sliders and a balance bar.</p>
+      <div class="tool-card-stats"><span class="tool-card-stat" data-i18n="cardWaterS">💧 sources · 🌊 swales</span></div>
+      <a class="tool-card-link" href="water-management.html?region=tuscany" target="_blank"><span data-i18n="openLink">📂 open →</span></a>
     </div>
 
   </div>
@@ -219,8 +324,8 @@ a:hover{color:var(--accent-teal)}
   <!-- FIELD TOOLS -->
   <div class="section-header">
     <span class="device-icon">📱</span>
-    <h2>Field Tools</h2>
-    <span class="section-count">mobile · 5 tools</span>
+    <h2 data-i18n="secField">Field Tools</h2>
+    <span class="section-count" data-i18n="secFieldCount">mobile · 5 tools</span>
   </div>
   <div class="tools-grid">
 
@@ -228,70 +333,70 @@ a:hover{color:var(--accent-teal)}
       <div class="tool-card-header">
         <div class="tool-card-icon">🔗</div>
         <div class="tool-card-title-group">
-          <div class="tool-card-title">Guild Interaction Matrix</div>
-          <div class="tool-card-badges"><span class="tool-card-badge">mix &amp; match</span><span class="tool-card-badge">smart</span></div>
+          <div class="tool-card-title" data-i18n="cardMatrixT">Guild Interaction Matrix</div>
+          <div class="tool-card-badges"><span class="tool-card-badge" data-i18n="cardMatrixB">mix &amp; match · smart</span></div>
         </div>
-        <span class="tool-card-status status-complete">Complete</span>
+        <span class="tool-card-status status-complete" data-i18n="statusComplete">Complete</span>
       </div>
-      <p class="tool-card-desc">Browse companion relationships and mutual-benefit scores across <span data-count="species">256</span> species. Visual heatmap, unmet-needs detection, root-zone compatibility.</p>
-      <div class="tool-card-stats"><span class="tool-card-stat">🌿 <span data-count="species">256</span> species</span><span class="tool-card-stat">🔬 guild profiles</span></div>
-      <a class="tool-card-link" href="guild-matrix.html?region=tuscany" target="_blank">📂 open →</a>
+      <p class="tool-card-desc" data-i18n="cardMatrixD">Browse companion relationships and mutual-benefit scores across <span data-count="species">256</span> species. Visual heatmap, unmet-needs detection, root-zone compatibility.</p>
+      <div class="tool-card-stats"><span class="tool-card-stat" data-i18n="cardMatrixS">🌿 <span data-count="species">256</span> species · 🔬 guild profiles</span></div>
+      <a class="tool-card-link" href="guild-matrix.html?region=tuscany" target="_blank"><span data-i18n="openLink">📂 open →</span></a>
     </div>
 
     <div class="tool-card">
       <div class="tool-card-header">
         <div class="tool-card-icon">🌿</div>
         <div class="tool-card-title-group">
-          <div class="tool-card-title">Guild Diagrams</div>
-          <div class="tool-card-badges"><span class="tool-card-badge">13 guilds</span><span class="tool-card-badge">companions</span></div>
+          <div class="tool-card-title" data-i18n="cardDiagT">Guild Diagrams</div>
+          <div class="tool-card-badges"><span class="tool-card-badge" data-i18n="cardDiagB">13 guilds · companions</span></div>
         </div>
-        <span class="tool-card-status status-complete">Complete</span>
+        <span class="tool-card-status status-complete" data-i18n="statusComplete">Complete</span>
       </div>
-      <p class="tool-card-desc">Tree guild diagrams with companion rings — nitrogen fixers, accumulators, groundcovers, pollinators — printable for the field.</p>
-      <div class="tool-card-stats"><span class="tool-card-stat">🌿 13 guilds</span><span class="tool-card-stat">🤝 19 companions</span></div>
-      <a class="tool-card-link" href="guild-diagrams.html?region=tuscany" target="_blank">📂 open →</a>
+      <p class="tool-card-desc" data-i18n="cardDiagD">Tree guild diagrams with companion rings — nitrogen fixers, accumulators, groundcovers, pollinators — printable for the field.</p>
+      <div class="tool-card-stats"><span class="tool-card-stat" data-i18n="cardDiagS">🌿 13 guilds · 🤝 19 companions</span></div>
+      <a class="tool-card-link" href="guild-diagrams.html?region=tuscany" target="_blank"><span data-i18n="openLink">📂 open →</span></a>
     </div>
 
     <div class="tool-card">
       <div class="tool-card-header">
         <div class="tool-card-icon">🔍</div>
         <div class="tool-card-title-group">
-          <div class="tool-card-title">Species Filter</div>
-          <div class="tool-card-badges"><span class="tool-card-badge"><span data-count="species">256</span> spp</span><span class="tool-card-badge">11 dims</span></div>
+          <div class="tool-card-title" data-i18n="cardSpeciesT">Species Filter</div>
+          <div class="tool-card-badges"><span class="tool-card-badge" data-i18n="cardSpeciesB"><span data-count="species">256</span> spp · 11 dims</span></div>
         </div>
-        <span class="tool-card-status status-complete">Complete</span>
+        <span class="tool-card-status status-complete" data-i18n="statusComplete">Complete</span>
       </div>
-      <p class="tool-card-desc"><span data-count="species">256</span> species searchable across 11 filter dimensions — water, sun, height, family, function, soil and more.</p>
-      <div class="tool-card-stats"><span class="tool-card-stat">🔢 <span data-count="species">256</span> species</span><span class="tool-card-stat">🎯 11 filters</span></div>
-      <a class="tool-card-link" href="species-filter.html?region=tuscany" target="_blank">📂 open →</a>
+      <p class="tool-card-desc" data-i18n="cardSpeciesD"><span data-count="species">256</span> species searchable across 11 filter dimensions — water, sun, height, family, function, soil and more.</p>
+      <div class="tool-card-stats"><span class="tool-card-stat" data-i18n="cardSpeciesS">🔢 <span data-count="species">256</span> species · 🎯 11 filters</span></div>
+      <a class="tool-card-link" href="species-filter.html?region=tuscany" target="_blank"><span data-i18n="openLink">📂 open →</span></a>
     </div>
 
     <div class="tool-card">
       <div class="tool-card-header">
         <div class="tool-card-icon">🥕</div>
         <div class="tool-card-title-group">
-          <div class="tool-card-title">Vegetable Garden Planner</div>
-          <div class="tool-card-badges"><span class="tool-card-badge">real-world beds</span><span class="tool-card-badge">sowing specs</span></div>
+          <div class="tool-card-title" data-i18n="cardVegT">Vegetable Garden Planner</div>
+          <div class="tool-card-badges"><span class="tool-card-badge" data-i18n="cardVegB">real-world beds · sowing specs</span></div>
         </div>
-        <span class="tool-card-status status-complete">Complete</span>
+        <span class="tool-card-status status-complete" data-i18n="statusComplete">Complete</span>
       </div>
-      <p class="tool-card-desc">Design real 75cm beds in 10m cells — modules, join toggles, sowing patterns (square/diamond/rows/hills), spacing, depth and per-slot capacity. Export a field view for your phone.</p>
-      <div class="tool-card-stats"><span class="tool-card-stat">🥕 69 veg</span><span class="tool-card-stat">🌱 sowing specs</span></div>
-      <a class="tool-card-link" href="veg-planner.html?region=tuscany" target="_blank">📂 open →</a>
+      <p class="tool-card-desc" data-i18n="cardVegD">Design real 75cm beds in 10m cells — modules, join toggles, sowing patterns (square/diamond/rows/hills), spacing, depth and per-slot capacity. Export a field view for your phone.</p>
+      <div class="tool-card-stats"><span class="tool-card-stat" data-i18n="cardVegS">🥕 69 veg · 🌱 sowing specs</span></div>
+      <a class="tool-card-link" href="veg-planner.html?region=tuscany" target="_blank"><span data-i18n="openLink">📂 open →</span></a>
     </div>
 
     <div class="tool-card">
       <div class="tool-card-header">
         <div class="tool-card-icon">🌳</div>
         <div class="tool-card-title-group">
-          <div class="tool-card-title">Orchard Placement</div>
-          <div class="tool-card-badges"><span class="tool-card-badge">3 modes</span><span class="tool-card-badge">scoring</span></div>
+          <div class="tool-card-title" data-i18n="cardOrchT">Orchard Placement</div>
+          <div class="tool-card-badges"><span class="tool-card-badge" data-i18n="cardOrchB">3 modes · scoring</span></div>
         </div>
-        <span class="tool-card-status status-complete">Complete</span>
+        <span class="tool-card-status status-complete" data-i18n="statusComplete">Complete</span>
       </div>
-      <p class="tool-card-desc">Zone-based tree placement with a scoring engine — frost, wind, sun, water, root-depth overlays, spacing and firebreak logic.</p>
-      <div class="tool-card-stats"><span class="tool-card-stat">🌳 69 trees</span><span class="tool-card-stat">🎯 score engine</span></div>
-      <a class="tool-card-link" href="orchard-placement.html?region=tuscany" target="_blank">📂 open →</a>
+      <p class="tool-card-desc" data-i18n="cardOrchD">Zone-based tree placement with a scoring engine — frost, wind, sun, water, root-depth overlays, spacing and firebreak logic.</p>
+      <div class="tool-card-stats"><span class="tool-card-stat" data-i18n="cardOrchS">🌳 69 trees · 🎯 score engine</span></div>
+      <a class="tool-card-link" href="orchard-placement.html?region=tuscany" target="_blank"><span data-i18n="openLink">📂 open →</span></a>
     </div>
 
   </div>
@@ -316,22 +421,41 @@ const REGIONS = {
   tuscany: {
     flag: '🇮🇹', name: 'Tuscany',
     desc: 'Plan a permaculture site from blank plot to garden beds — <strong>no account, no server, no data leaving your device.</strong> Mediterranean preset: hot dry summers, silty-sand, Zone 8b–9a. <strong><span data-count="species">256</span> species</strong> with guild profiles, companion scoring and sowing specs.',
-    meta: [["Climate", "Mediterranean"], ["Hardiness", "Zone 8b–9a"], ["Rain", "~800 mm/yr"], ["Storage", "your browser"]]
+    descNL: 'Plan een permacultuurlocatie van blanco perceel tot tuinbedden — <strong>geen account, geen server, geen data die je apparaat verlaat.</strong> Mediterrane voorinstelling: hete droge zomers, silt-zand, Zone 8b–9a. <strong><span data-count="species">256</span> soorten</strong> met gildeprofielen, compagnonscores en zaaispecificaties.',
+    meta: [["Climate", "Mediterranean"], ["Hardiness", "Zone 8b–9a"], ["Rain", "~800 mm/yr"], ["Storage", "your browser"]],
+    metaNL: [["Klimaat", "Middellands"], ["Winterhardheid", "Zone 8b–9a"], ["Regen", "~800 mm/jaar"], ["Opslag", "je browser"]]
   },
   netherlands: {
     flag: '🇳🇱', name: 'Netherlands',
     desc: 'Species and guild tools adapted for <strong>Dutch temperate climate</strong> (Zone 7b–8a) — maritime, rain-rich, varied soils. The field tools below carry the full species set; the design suite shares the same engine.',
-    meta: [["Climate", "Temperate/Maritime"], ["Hardiness", "Zone 7b–8a"], ["Rain", "800–900 mm/yr"], ["Storage", "your browser"]]
+    descNL: 'Soorten- en gildegereedschap aangepast voor het <strong>Nederlandse gematigde klimaat</strong> (Zone 7b–8a) — maritiem, regenrijk, gevarieerde bodems. De veldtools hieronder bevatten de volledige soortenlijst; de ontwerpsuite deelt dezelfde engine.',
+    meta: [["Climate", "Temperate/Maritime"], ["Hardiness", "Zone 7b–8a"], ["Rain", "800–900 mm/yr"], ["Storage", "your browser"]],
+    metaNL: [["Klimaat", "Gematigd/maritiem"], ["Winterhardheid", "Zone 7b–8a"], ["Regen", "800–900 mm/jaar"], ["Opslag", "je browser"]]
   }
 };
+document.addEventListener('DOMContentLoaded', function() {
+  applyI18nLanding();
+  // hero desc for current region (NL variant if dutch)
+  var r0 = REGIONS[REGION];
+  if (r0) {
+    document.getElementById("hero-desc").innerHTML = (LANG === 'nl' && r0.descNL) ? r0.descNL : r0.desc;
+    document.getElementById("footer-meta").innerHTML =
+      (LANG === 'nl' && r0.metaNL ? r0.metaNL : r0.meta).map(function(p) { return "<span>" + p[0] + ": <strong>" + p[1] + "</strong></span>"; }).join("");
+  }
+  document.querySelectorAll(".region-btn").forEach(function(b) {
+    b.classList.toggle("active", b.dataset.region === REGION);
+  });
+});
 function selectRegion(region) {
   document.querySelectorAll(".region-btn").forEach(function(b) {
     b.classList.toggle("active", b.dataset.region === region);
   });
+  LANG = (region === 'netherlands') ? 'nl' : 'en';
   var r = REGIONS[region];
-  document.getElementById("hero-desc").innerHTML = r.desc;
+  document.getElementById("hero-desc").innerHTML = (LANG === 'nl' && r.descNL) ? r.descNL : r.desc;
   document.getElementById("footer-meta").innerHTML =
-    r.meta.map(function(p) { return "<span>" + p[0] + ": <strong>" + p[1] + "</strong></span>"; }).join("");
+    (LANG === 'nl' && r.metaNL ? r.metaNL : r.meta).map(function(p) { return "<span>" + p[0] + ": <strong>" + p[1] + "</strong></span>"; }).join("");
+  applyI18nLanding();
   document.querySelectorAll('.sidebar-nav a[href], .tool-card-link[href]').forEach(function(a) {
     var href = a.getAttribute('href');
     if (!href || href.charAt(0) === '#') return;
