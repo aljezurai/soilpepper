@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOILPEPPER — Helicopter View | Juniper Ridge</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#0a1a0a;color:#c8d8c0;padding:15px;}
+h1,h2,h3{font-family:Palatino,'Palatino Linotype','Book Antiqua',Georgia,serif;}
+h1{text-align:center;color:#e8dcc0;margin-bottom:3px;font-size:1.6em;letter-spacing:0.5px;}
+.subtitle{text-align:center;color:#5a8a4a;margin-bottom:10px;font-size:0.85em;font-style:italic;}
+
+/* Controls */
+.controls{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:8px 0;padding:10px;background:#142114;border-radius:8px;border:1px solid #2a3a2a;}
+.ctrl-group{display:flex;flex-wrap:wrap;gap:4px;align-items:center;}
+.ctrl-group label{color:#5a8a4a;font-size:0.75em;font-weight:bold;margin-right:4px;}
+.toggle{padding:4px 10px;border-radius:5px;border:1px solid #2a3a2a;cursor:pointer;font-size:0.7em;transition:all 0.2s;background:#1a2a1a;color:#aed581;font-family:inherit;text-decoration:none;display:inline-block;}
+.toggle:hover{filter:brightness(1.2);}
+.toggle.on{background:#33691e;color:#e8dcc0;border-color:#5a8a4a;}
+.toggle.off{background:#1a2a1a;color:#555;border-color:#2a2a2a;}
+.toggle.sun{background:rgba(255,193,7,0.12);border-color:rgba(255,193,7,0.25);}
+.toggle.sun.on{background:rgba(255,193,7,0.3);border-color:#ffc107;color:#ffc107;}
+.toggle.wind{background:rgba(33,150,243,0.12);border-color:rgba(33,150,243,0.25);}
+.toggle.wind.on{background:rgba(33,150,243,0.3);border-color:#2196f3;color:#2196f3;}
+.toggle.fire{background:rgba(244,67,54,0.12);border-color:rgba(244,67,54,0.25);}
+.toggle.fire.on{background:rgba(244,67,54,0.3);border-color:#f44336;color:#f44336;}
+.toggle.frost{background:rgba(156,39,176,0.12);border-color:rgba(156,39,176,0.25);}
+.toggle.frost.on{background:rgba(156,39,176,0.3);border-color:#9c27b0;color:#9c27b0;}
+.toggle.water{background:rgba(0,188,212,0.12);border-color:rgba(0,188,212,0.25);}
+.toggle.water.on{background:rgba(0,188,212,0.3);border-color:#00bcd4;color:#00bcd4;}
+.toggle.wildlife{background:rgba(139,195,74,0.12);border-color:rgba(139,195,74,0.25);}
+.toggle.wildlife.on{background:rgba(139,195,74,0.3);border-color:#8bc34a;color:#8bc34a;}
+.toggle.link{background:var(--none,#1a2a1a);border-color:#c4a040;color:#c4a040;}
+.toggle.link:hover{background:#c4a040;color:#0a1a0a;}
+
+/* Plot */
+.plot-container{max-width:950px;margin:8px auto;}
+.plot{position:relative;width:100%;aspect-ratio:1;background:linear-gradient(170deg,#2a4a2a 0%,#3a5a3a 30%,#4a6a3a 60%,#3a5a3a 100%);border-radius:12px;border:3px solid #5a8a4a;overflow:hidden;}
+
+/* ===== FIX: This is the critical bug fix ===== */
+.sector-layer.hidden { display: none; }
+
+/* Layer overlay */
+.layer{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;transition:opacity 0.3s;}
+
+/* ===== GRID (rendered from Master Plan data — read-only) ===== */
+.grid{position:absolute;top:0;left:0;width:100%;height:100%;display:grid;gap:2px;padding:2px;z-index:4;pointer-events:none;}
+.cell{position:relative;border-radius:3px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;pointer-events:auto;border:1px solid rgba(0,0,0,0.25);overflow:hidden;transition:all .12s;}
+.cell:hover{box-shadow:0 0 0 2px #c4a040 inset;z-index:8;}
+.cell .cell-icon{font-size:clamp(8px,1.8vw,18px);line-height:1;text-shadow:0 1px 2px rgba(0,0,0,0.8);}
+.cell .cell-label{font-size:clamp(4px,0.7vw,8px);color:rgba(255,255,255,0.8);text-align:center;line-height:1.1;margin-top:1px;padding:0 1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;text-shadow:0 1px 2px rgba(0,0,0,0.8);}
+.cell .cell-zone{position:absolute;top:1px;right:2px;font-size:clamp(4px,0.7vw,8px);font-weight:700;color:#fff;background:rgba(0,0,0,0.5);padding:0 2px;border-radius:2px;line-height:1.3;font-family:'Courier New',monospace;}
+.cell .cell-coord{position:absolute;bottom:1px;left:2px;font-size:clamp(3px,0.5vw,6px);color:rgba(255,255,255,0.3);font-family:'Courier New',monospace;}
+.cell.empty{background:rgba(10,26,10,0.35);}
+.cell.empty .cell-icon{opacity:0.15;}
+/* zone palette (matches Master Plan) */
+.cell.z-0{background:#8d5a4a;}
+.cell.z-1{background:#7a8a3a;}
+.cell.z-2{background:#5a7a3a;}
+.cell.z-3{background:#8a7a3a;}
+.cell.z-4{background:#4a6a5a;}
+.cell.z-5{background:#3a5a4a;}
+.cell.f-guild{background:linear-gradient(135deg,#1f4a1f,#2a5a2a);}
+.cell.f-water{background:linear-gradient(135deg,#12406e,#1a5a9a);}
+.cell.f-road{background:linear-gradient(135deg,#5a4030,#6a4a38);}
+.cell.f-construction{background:linear-gradient(135deg,#5a2525,#7a3030);}
+.cell.f-open{background:linear-gradient(135deg,#122412,#1a301a);}
+
+/* No-plan banner */
+.noplan-banner{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:9;background:rgba(10,20,10,0.92);border:1px solid #c4a040;border-radius:10px;padding:18px 22px;text-align:center;font-size:0.85em;max-width:80%;line-height:1.6;}
+.noplan-banner a{color:#c4a040;font-weight:bold;}
+
+/* Sector overlay layers */
+.sector-layer{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:2;}
+
+/* Water features (from plan) */
+.water{position:absolute;background:rgba(30,100,180,0.55);border:2px solid #3a8ad4;z-index:6;display:flex;align-items:center;justify-content:center;}
+.swale{background:transparent;border-bottom:2px dashed rgba(60,160,220,0.4);position:absolute;z-index:4;pointer-events:none;}
+
+/* Legend */
+.legend{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin:8px 0;font-size:0.75em;}
+.legend-item{display:flex;align-items:center;gap:4px;padding:2px 8px;background:#142114;border-radius:4px;border:1px solid #2a2a2a;color:#c8d8c0;}
+.legend-swatch{width:10px;height:10px;border-radius:2px;}
+
+/* Info panel */
+.info-panel{display:none;background:#142114;border:1px solid #2a3a2a;border-radius:8px;padding:12px 16px;margin:10px auto;max-width:950px;line-height:1.5;font-size:0.85em;}
+.info-panel.active{display:block;}
+.info-panel h3{color:#e8dcc0;margin-bottom:5px;font-size:1em;}
+.info-panel .stat{display:inline-block;background:#0a1a0a;padding:2px 7px;border-radius:4px;font-size:0.8em;margin-right:5px;margin-bottom:3px;color:#c4a040;border:1px solid #2a3a2a;}
+.info-panel strong{color:#e8dcc0;}
+.info-panel table{width:100%;border-collapse:collapse;margin:8px 0;font-size:0.85em;}
+.info-panel th{background:#0a1a0a;color:#c4a040;padding:5px 8px;text-align:left;border-bottom:2px solid #5a8a4a;}
+.info-panel td{padding:4px 8px;border-bottom:1px solid #2a3a2a;color:#b8c8b0;}
+.info-panel .gp-rings{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px;}
+.info-panel .gp-ring{font-size:0.7em;color:#aed581;background:#0a1a0a;padding:2px 8px;border-radius:4px;border:1px solid #2a3a2a;}
+
+.scale-bar-h{position:absolute;bottom:1%;left:15%;width:70%;height:8px;pointer-events:none;z-index:7;}
+.scale-bar-h .line{width:100%;height:1px;background:rgba(255,255,255,0.2);position:relative;}
+.scale-bar-h .tick{position:absolute;top:-3px;width:1px;height:7px;background:rgba(255,255,255,0.2);}
+.scale-bar-h .label{position:absolute;top:8px;font-size:0.4em;color:rgba(255,255,255,0.3);white-space:nowrap;}
+.scale-bar-v{position:absolute;left:1%;top:15%;height:70%;width:8px;pointer-events:none;z-index:7;}
+.scale-bar-v .line{height:100%;width:1px;background:rgba(255,255,255,0.2);position:relative;}
+.scale-bar-v .tick{position:absolute;left:-3px;width:7px;height:1px;background:rgba(255,255,255,0.2);}
+.scale-bar-v .label{position:absolute;left:8px;font-size:0.4em;color:rgba(255,255,255,0.3);white-space:nowrap;}
+
+.plot-label{position:absolute;font-size:0.5em;color:rgba(200,216,192,0.35);pointer-events:none;z-index:1;}
+.direction-arrow{position:absolute;font-size:1.2em;opacity:0.7;pointer-events:none;z-index:3;text-shadow:0 0 4px rgba(0,0,0,0.8);}
+
+@media(max-width:700px){.cell .cell-label{display:none;}}
+</style>
+</head>
+<body>
+<!-- DESIGN BRIEF STRIP (shared reader — injected by design-brief system) -->
+<script>
+(function () {
+  // Shared design brief from Master Plan (tuscan-brief-v1). Static tools only
+  // READ it — they never write. Falls back to sensible Tuscan defaults.
+  var KEY = 'tuscan-brief-v1';
+  var DEF = {
+    region: 'tuscany', title: 'Tuscan hillside',
+    plotW: 100, plotH: 100, cellSize: 10,
+    defaultSoil: 'silty', altitude: 300, climateZone: '8b-9a',
+    aspect: 'South (180°)', slope: '~10% moderate'
+  };
+  var b = DEF;
+  try {
+    var raw = localStorage.getItem(KEY);
+    if (raw) { var p = JSON.parse(raw); for (var k in DEF) if (p[k] !== undefined) b[k] = p[k]; }
+  } catch (e) {}
+
+  var soilLbl = { sandy: 'Sandy', silty: 'Silty', loam: 'Loam', clay: 'Clay', chalky: 'Chalky', peaty: 'Peaty' }[b.defaultSoil] || b.defaultSoil;
+  var regionLbl = b.region === 'netherlands' ? 'Netherlands' : 'Tuscany';
+
+  // Build the strip
+  var strip = document.createElement('div');
+  strip.style.cssText = 'display:flex;flex-wrap:wrap;gap:4px 14px;justify-content:center;align-items:center;' +
+    'background:#142114;border:1px solid #1a301a;border-radius:6px;padding:6px 12px;margin:0 auto 12px;' +
+    'max-width:900px;font-size:0.72rem;color:#a8b8a0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;';
+  var parts = [
+    '<span style="color:#c4a040;font-weight:600">' + (b.title || 'Design') + '</span>',
+    '<span>' + regionLbl + '</span>',
+    '<span>' + b.plotW + '×' + b.plotH + 'm · ' + b.cellSize + 'm cells</span>',
+    '<span>' + soilLbl + ' soil</span>',
+    '<span>~' + b.altitude + 'm</span>',
+    '<span>Zone ' + b.climateZone + '</span>',
+    '<span>' + b.aspect + '</span>',
+    '<span>' + b.slope + '</span>',
+    '<a href="master-plan.html?region=' + b.region + '" style="color:#5a8a4a;text-decoration:none;font-weight:600">⚙️ Edit in Master Plan</a>'
+  ];
+  strip.innerHTML = parts.join('<span style="opacity:0.4">·</span>');
+  var body = document.body;
+  body.insertBefore(strip, body.firstChild);
+
+  // Sector Analysis: prefill params from the brief once the page is ready
+  // (one-way: brief is the source of truth; user can still override locally)
+  function prefillSectorParams() {
+    // Aspect: match degrees (e.g. "South (180°)" → 180) to the select options
+    var aspEl = document.getElementById('aspect');
+    if (aspEl && b.aspect) {
+      var mDeg = String(b.aspect).match(/(\d+)/);
+      var deg = mDeg ? parseInt(mDeg[1], 10) : NaN;
+      if (!isNaN(deg)) {
+        for (var i = 0; i < aspEl.options.length; i++) {
+          if (parseInt(aspEl.options[i].value, 10) === deg) { aspEl.value = aspEl.options[i].value; break; }
+        }
+      }
+    }
+    // Altitude: brief value → number input
+    var altEl = document.getElementById('altitude');
+    if (altEl && b.altitude) {
+      altEl.value = b.altitude;
+      if (typeof updateSectors === 'function') updateSectors();
+    }
+    // Slope: match brief slope % to the select options
+    var slEl = document.getElementById('slope');
+    if (slEl && b.slope) {
+      var mSl = String(b.slope).match(/(\d+)/);
+      var sl = mSl ? parseInt(mSl[1], 10) : NaN;
+      if (!isNaN(sl)) {
+        for (var i = 0; i < slEl.options.length; i++) {
+          if (parseInt(slEl.options[i].value, 10) === sl) { slEl.value = slEl.options[i].value; break; }
+        }
+      }
+    }
+    // Live "Modular Parameters" reference table (if present)
+    var pAsp = document.getElementById('param-aspect');
+    if (pAsp && b.aspect) pAsp.textContent = b.aspect;
+    var pAlt = document.getElementById('param-altitude');
+    if (pAlt && b.altitude) pAlt.textContent = b.altitude + 'm';
+    var pSl = document.getElementById('param-slope');
+    if (pSl && b.slope) {
+      var mP = String(b.slope).match(/(\d+)/);
+      pSl.textContent = (mP ? mP[1] : b.slope) + '%';
+    }
+    // Live summary sentence + sun stats (if present)
+    var facing = function (deg) {
+      var d = parseInt(deg, 10);
+      if (d >= 315 || d < 45) return 'north-facing';
+      if (d >= 45 && d < 135) return 'east-facing';
+      if (d >= 135 && d < 225) return 'south-facing';
+      return 'west-facing';
+    };
+    var sumAlt = document.getElementById('sum-altitude');
+    if (sumAlt && b.altitude) sumAlt.textContent = '~' + b.altitude + 'm';
+    var sumReg = document.getElementById('sum-region');
+    if (sumReg) sumReg.textContent = b.region === 'netherlands' ? 'the Netherlands' : 'Tuscany';
+    var sumAsp = document.getElementById('sum-aspect');
+    if (sumAsp && b.aspect) {
+      var dA = String(b.aspect).match(/(\d+)/);
+      if (dA) sumAsp.textContent = facing(dA[1]);
+    }
+    var latEl2 = document.getElementById('lat');
+    var latVal = latEl2 ? (parseFloat(latEl2.value) || 43) : 43;
+    var stLat = document.getElementById('st-lat');
+    if (stLat) stLat.textContent = Math.round(latVal) + '°N';
+    var stSum = document.getElementById('st-summer');
+    if (stSum) stSum.textContent = Math.round((90 - latVal + 23.44) * 10) / 10 + '°';
+    var stWin = document.getElementById('st-winter');
+    if (stWin) stWin.textContent = Math.round((90 - latVal - 23.44) * 10) / 10 + '°';
+    var stAsp = document.getElementById('st-aspect');
+    if (stAsp && b.aspect) {
+      var dA2 = String(b.aspect).match(/(\d+)/);
+      if (dA2) stAsp.textContent = facing(dA2[1]);
+    }
+    // Water Management: plot size + altitude in subtitle (if present)
+    var wmPlot = document.getElementById('wm-plot');
+    if (wmPlot && b.plotW && b.plotH) {
+      var ha = (b.plotW * b.plotH) / 10000;
+      wmPlot.textContent = (ha >= 1 ? (Math.round(ha * 10) / 10) + ' ha' : Math.round(b.plotW * b.plotH) + ' m²');
+    }
+    var wmAlt = document.getElementById('wm-alt');
+    if (wmAlt && b.altitude) wmAlt.textContent = '~' + b.altitude + 'm altitude';
+    // Design Proposal: Site Overview body from the brief (if present)
+    var dpAlt = document.getElementById('dp-alt');
+    if (dpAlt && b.altitude) dpAlt.textContent = b.altitude;
+    var dpZone = document.getElementById('dp-zone');
+    if (dpZone && b.climateZone) dpZone.textContent = b.climateZone;
+    var dpArea = document.getElementById('dp-area');
+    if (dpArea && b.plotW && b.plotH) {
+      var dpHa = (b.plotW * b.plotH) / 10000;
+      dpArea.textContent = (dpHa >= 1 ? dpHa + ' hectares' : Math.round(b.plotW * b.plotH) + ' m²') + ' (' + b.plotW + '×' + b.plotH + 'm)';
+    }
+    var dpRain = document.getElementById('dp-rain');
+    var waterForRain = null;
+    try { waterForRain = JSON.parse(localStorage.getItem('tuscan-water-v1') || 'null'); } catch (e) {}
+    if (dpRain && waterForRain && waterForRain.rainfall) dpRain.textContent = waterForRain.rainfall;
+    // Summary cards: site area + swales
+    var cardArea = document.getElementById('card-area');
+    if (cardArea && b.plotW && b.plotH) {
+      var cHa = (b.plotW * b.plotH) / 10000;
+      cardArea.textContent = (cHa >= 1 ? cHa + ' ha' : Math.round(b.plotW * b.plotH) + ' m²');
+    }
+    var cardSwales = document.getElementById('card-swales');
+    if (cardSwales && waterForRain && waterForRain.swales) cardSwales.textContent = waterForRain.swales;
+    // Subtitle (top of page): area, altitude, zone, location
+    var subArea = document.getElementById('sub-area');
+    if (subArea && b.plotW && b.plotH) {
+      var sHa = (b.plotW * b.plotH) / 10000;
+      subArea.textContent = (sHa >= 1 ? sHa + 'ha Hillside' : Math.round(b.plotW * b.plotH) + 'm² Site');
+    }
+    var subAlt = document.getElementById('sub-alt');
+    if (subAlt && b.altitude) subAlt.textContent = b.altitude;
+    var subZone = document.getElementById('sub-zone');
+    if (subZone && b.climateZone) subZone.textContent = b.climateZone;
+    var subLoc = document.getElementById('sub-loc');
+    if (subLoc) subLoc.textContent = b.region === 'netherlands' ? 'Netherlands' : 'Tuscany, Italy';
+    if (typeof updateSectors === 'function') updateSectors();
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', prefillSectorParams);
+  } else {
+    prefillSectorParams();
+  }
+})();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h1>🌍 SOILPEPPER — Helicopter View</h1>
+<p class="subtitle">Your Master Plan from above — zones, functions, and sector energies on one map</p>
+
+<!-- TOGGLE CONTROLS -->
+<div class="controls">
+  <div class="ctrl-group">
+    <label>Layers:</label>
+    <button class="toggle sun on" onclick="toggleLayer('sun',this)" id="btn-sun">☀️ Sun</button>
+    <button class="toggle wind on" onclick="toggleLayer('wind',this)" id="btn-wind">💨 Wind</button>
+    <button class="toggle fire on" onclick="toggleLayer('fire',this)" id="btn-fire">🔥 Fire</button>
+    <button class="toggle frost on" onclick="toggleLayer('frost',this)" id="btn-frost">❄️ Frost</button>
+    <button class="toggle water on" onclick="toggleLayer('water',this)" id="btn-water">💧 Water</button>
+    <button class="toggle wildlife on" onclick="toggleLayer('wildlife',this)" id="btn-wildlife">🦌 Wildlife</button>
+  </div>
+  <div class="ctrl-group">
+    <button class="toggle" onclick="toggleAll()">🔄 Toggle All</button>
+    <button class="toggle" onclick="resetView()">🏠 Reset View</button>
+    <a class="toggle link" id="open-masterplan" href="master-plan.html">✏️ Open in Master Plan</a>
+  </div>
+</div>
+
+<!-- PLOT -->
+<div class="plot-container">
+<div class="plot" id="plot">
+
+  <!-- ===== SECTOR OVERLAYS (z-index 2) ===== -->
+
+  <!-- ☀️ SUN: Summer arc (yellow) + Winter arc (orange) -->
+  <div class="sector-layer" id="layer-sun">
+    <svg style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible;opacity:0.22;" viewBox="0 0 100 100">
+      <path d="M 50 65 L 15 15 A 60 60 0 0 1 85 15 Z" fill="rgba(255,193,7,0.4)" stroke="rgba(255,193,7,0.6)" stroke-width="0.5"/>
+      <text x="50" y="12" text-anchor="middle" fill="rgba(255,193,7,0.65)" font-size="3" font-weight="bold">☀️ Summer sun 70°</text>
+    </svg>
+    <svg style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible;opacity:0.18;" viewBox="0 0 100 100">
+      <path d="M 50 65 L 32 30 A 50 50 0 0 1 68 30 Z" fill="rgba(255,152,0,0.4)" stroke="rgba(255,152,0,0.6)" stroke-width="0.5"/>
+      <text x="50" y="24" text-anchor="middle" fill="rgba(255,152,0,0.55)" font-size="2.5" font-weight="bold">❄️ Winter sun 24°</text>
+    </svg>
+    <div style="position:absolute;top:1%;left:50%;transform:translateX(-50%);font-size:0.5em;color:rgba(255,193,7,0.45);pointer-events:none;text-shadow:0 0 3px rgba(0,0,0,0.8);">← Summer sun arc SE→SW →</div>
+    <div style="position:absolute;top:14%;left:50%;transform:translateX(-50%);font-size:0.45em;color:rgba(255,152,0,0.45);pointer-events:none;text-shadow:0 0 3px rgba(0,0,0,0.8);">Winter sun arc (lower)</div>
+    <div style="position:absolute;bottom:2%;right:3%;font-size:0.45em;color:rgba(255,193,7,0.35);pointer-events:none;">+30% solar gain on south slope</div>
+    <div style="position:absolute;bottom:2%;left:3%;font-size:0.45em;color:rgba(255,193,7,0.35);pointer-events:none;">Deciduous trees for summer shade</div>
+  </div>
+
+  <!-- 💨 WIND: Prevailing SW (blue) + Cold NW (cyan) + Hot SE (red) -->
+  <div class="sector-layer" id="layer-wind">
+    <svg style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible;" viewBox="0 0 100 100">
+      <defs>
+        <marker id="arrowSW" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(33,150,243,0.5)"/>
+        </marker>
+        <marker id="arrowNW" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(0,188,212,0.4)"/>
+        </marker>
+        <marker id="arrowSE" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(244,67,54,0.4)"/>
+        </marker>
+      </defs>
+      <!-- Prevailing wind SW → NE (warm, moist) -->
+      <line x1="5" y1="90" x2="45" y2="45" stroke="rgba(33,150,243,0.3)" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arrowSW)"/>
+      <line x1="15" y1="85" x2="50" y2="40" stroke="rgba(33,150,243,0.25)" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowSW)"/>
+      <line x1="0" y1="95" x2="40" y2="50" stroke="rgba(33,150,243,0.2)" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowSW)"/>
+      <text x="8" y="82" fill="rgba(33,150,243,0.5)" font-size="2.5" font-weight="bold">💨 SW</text>
+      <text x="20" y="30" fill="rgba(33,150,243,0.35)" font-size="2" font-weight="bold">Prevailing wind SW</text>
+
+      <!-- Cold wind NW → SE (Tramontana) — deflected by slope -->
+      <line x1="20" y1="5" x2="50" y2="35" stroke="rgba(0,188,212,0.2)" stroke-width="1.5" stroke-dasharray="3,4" marker-end="url(#arrowNW)"/>
+      <line x1="10" y1="2" x2="40" y2="30" stroke="rgba(0,188,212,0.15)" stroke-width="1" stroke-dasharray="3,4" marker-end="url(#arrowNW)"/>
+      <text x="15" y="3" fill="rgba(0,188,212,0.4)" font-size="2" font-weight="bold">❄️ Tramontana NW</text>
+      <text x="35" y="25" fill="rgba(0,188,212,0.25)" font-size="1.5" font-style="italic">(deflected by slope)</text>
+
+      <!-- Hot wind SE → NW (Sirocco) -->
+      <line x1="85" y1="85" x2="60" y2="50" stroke="rgba(244,67,54,0.2)" stroke-width="1.5" stroke-dasharray="3,4" marker-end="url(#arrowSE)"/>
+      <text x="80" y="82" fill="rgba(244,67,54,0.4)" font-size="2" font-weight="bold">🔥 Sirocco SE</text>
+    </svg>
+    <div style="position:absolute;top:62%;left:2%;font-size:0.45em;color:rgba(33,150,243,0.5);pointer-events:none;">🌳 SW windbreak hedge (deciduous + evergreen)</div>
+  </div>
+
+  <!-- 🔥 FIRE: SE sector (red) + firebreak -->
+  <div class="sector-layer" id="layer-fire">
+    <svg style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible;" viewBox="0 0 100 100">
+      <path d="M 50 50 L 100 100 L 100 50 Z" fill="rgba(244,67,54,0.08)" stroke="rgba(244,67,54,0.2)" stroke-width="0.5"/>
+      <path d="M 50 50 L 100 85 L 100 65 Z" fill="rgba(244,67,54,0.06)" stroke="rgba(244,67,54,0.15)" stroke-width="0.5"/>
+      <text x="76" y="72" fill="rgba(244,67,54,0.4)" font-size="2.5" font-weight="bold">🔥 Fire risk</text>
+      <text x="72" y="76" fill="rgba(244,67,54,0.3)" font-size="1.8">Jul-Sep · Sirocco</text>
+    </svg>
+    <div style="position:absolute;top:73%;left:65%;font-size:0.5em;color:rgba(244,67,54,0.6);pointer-events:none;text-shadow:0 0 3px rgba(0,0,0,0.8);">⛔ Firebreak + irrigated green buffer</div>
+    <div style="position:absolute;top:68%;left:73%;font-size:0.45em;color:rgba(100,200,100,0.5);pointer-events:none;">🌿 SE boundary firebreak</div>
+  </div>
+
+  <!-- ❄️ FROST: Cold air drainage downhill -->
+  <div class="sector-layer" id="layer-frost">
+    <svg style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible;" viewBox="0 0 100 100">
+      <defs>
+        <marker id="arrowFrost" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(156,39,176,0.3)"/>
+        </marker>
+      </defs>
+      <line x1="50" y1="5" x2="50" y2="40" stroke="rgba(156,39,176,0.15)" stroke-width="1.5" marker-end="url(#arrowFrost)"/>
+      <line x1="30" y1="5" x2="30" y2="35" stroke="rgba(156,39,176,0.1)" stroke-width="1" marker-end="url(#arrowFrost)"/>
+      <line x1="70" y1="5" x2="70" y2="35" stroke="rgba(156,39,176,0.1)" stroke-width="1" marker-end="url(#arrowFrost)"/>
+      <line x1="20" y1="15" x2="20" y2="40" stroke="rgba(156,39,176,0.08)" stroke-width="1" marker-end="url(#arrowFrost)"/>
+      <line x1="80" y1="15" x2="80" y2="40" stroke="rgba(156,39,176,0.08)" stroke-width="1" marker-end="url(#arrowFrost)"/>
+      <text x="50" y="3" fill="rgba(156,39,176,0.35)" font-size="2" text-anchor="middle" font-weight="bold">❄️ Cold air drainage downhill</text>
+      <text x="50" y="45" fill="rgba(156,39,176,0.2)" font-size="1.5" text-anchor="middle" font-style="italic">Frost pocket zone (lower slope)</text>
+    </svg>
+    <div style="position:absolute;top:72%;left:25%;width:50%;height:12%;background:rgba(156,39,176,0.05);border:1px dashed rgba(156,39,176,0.15);border-radius:8px;pointer-events:none;"></div>
+    <div style="position:absolute;top:74%;left:30%;font-size:0.45em;color:rgba(156,39,176,0.4);pointer-events:none;">❄️ Frost pocket — hardy crops only · Swales + porous barriers allow cold air flow</div>
+  </div>
+
+  <!-- 💧 WATER: Rain, runoff, swales, pond -->
+  <div class="sector-layer" id="layer-water">
+    <svg style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible;" viewBox="0 0 100 100">
+      <defs>
+        <marker id="arrowRain" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(0,188,212,0.3)"/>
+        </marker>
+      </defs>
+      <text x="5" y="50" fill="rgba(0,188,212,0.3)" font-size="2.5">🌧️ 800mm/yr</text>
+      <text x="5" y="55" fill="rgba(0,188,212,0.2)" font-size="1.8">8,000 m³ on 1ha</text>
+      <line x1="50" y1="5" x2="50" y2="45" stroke="rgba(0,188,212,0.12)" stroke-width="1" marker-end="url(#arrowRain)"/>
+      <line x1="35" y1="5" x2="35" y2="40" stroke="rgba(0,188,212,0.08)" stroke-width="0.8" marker-end="url(#arrowRain)"/>
+      <line x1="65" y1="5" x2="65" y2="40" stroke="rgba(0,188,212,0.08)" stroke-width="0.8" marker-end="url(#arrowRain)"/>
+      <text x="50" y="48" fill="rgba(0,188,212,0.25)" font-size="1.8" text-anchor="middle">4 swales catch runoff → recharge groundwater</text>
+    </svg>
+  </div>
+
+  <!-- 🦌 WILDLIFE: Corridors -->
+  <div class="sector-layer" id="layer-wildlife">
+    <svg style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible;" viewBox="0 0 100 100">
+      <rect x="0" y="0" width="100" height="8" fill="rgba(139,195,74,0.08)" stroke="rgba(139,195,74,0.2)" stroke-width="0.5" stroke-dasharray="2,2" rx="2"/>
+      <text x="50" y="5" fill="rgba(139,195,74,0.35)" font-size="2" text-anchor="middle" font-weight="bold">🦌 Wildlife corridor (forest edge → downhill)</text>
+      <line x1="50" y1="8" x2="50" y2="30" stroke="rgba(139,195,74,0.1)" stroke-width="1" stroke-dasharray="2,3"/>
+      <line x1="30" y1="8" x2="30" y2="25" stroke="rgba(139,195,74,0.08)" stroke-width="0.8" stroke-dasharray="2,3"/>
+      <line x1="70" y1="8" x2="70" y2="25" stroke="rgba(139,195,74,0.08)" stroke-width="0.8" stroke-dasharray="2,3"/>
+      <text x="50" y="32" fill="rgba(139,195,74,0.2)" font-size="1.5" text-anchor="middle">Wild boar, deer, birds</text>
+    </svg>
+    <div style="position:absolute;top:6%;left:2%;font-size:0.45em;color:rgba(139,195,74,0.5);pointer-events:none;">⛔ Fence on woodland boundary + tree guards</div>
+  </div>
+
+  <!-- ===== GRID (rendered from your Master Plan) ===== -->
+  <div class="grid" id="grid"></div>
+
+  <!-- ===== PLOT ELEMENTS ===== -->
+
+  <!-- Compass N -->
+  <div style="position:absolute;top:1%;left:2%;z-index:7;pointer-events:none;">
+    <div style="font-size:0.5em;color:rgba(196,160,64,0.5);font-family:Palatino,serif;">N ↑</div>
+  </div>
+
+  <!-- Horizontal scale bar (100m) -->
+  <div class="scale-bar-h">
+    <div class="line">
+      <span class="tick" style="left:0%;"></span>
+      <span class="tick" style="left:25%;"></span>
+      <span class="tick" style="left:50%;"></span>
+      <span class="tick" style="left:75%;"></span>
+      <span class="tick" style="left:100%;"></span>
+      <span class="label" style="left:0%;">0</span>
+      <span class="label" style="left:25%;">25m</span>
+      <span class="label" style="left:50%;">50m</span>
+      <span class="label" style="left:75%;">75m</span>
+      <span class="label" style="left:100%;">100m</span>
+    </div>
+  </div>
+
+  <!-- Vertical scale bar (100m) -->
+  <div class="scale-bar-v">
+    <div class="line">
+      <span class="tick" style="top:0%;"></span>
+      <span class="tick" style="top:25%;"></span>
+      <span class="tick" style="top:50%;"></span>
+      <span class="tick" style="top:75%;"></span>
+      <span class="tick" style="top:100%;"></span>
+      <span class="label" style="top:0%;">0</span>
+      <span class="label" style="top:25%;">25m</span>
+      <span class="label" style="top:50%;">50m</span>
+      <span class="label" style="top:75%;">75m</span>
+      <span class="label" style="top:100%;">100m</span>
+    </div>
+  </div>
+
+  <!-- Aspect label -->
+  <div class="plot-label" style="bottom:1%;left:1%;">↓ South-facing slope (180°)</div>
+  <div class="plot-label" id="plot-sitedata" style="bottom:1%;right:2%;">1ha · ~300m · 🌡️ 8b-9a</div>
+
+  <!-- No-plan banner (shown when no plan exists yet) -->
+  <div class="noplan-banner" id="noplan" style="display:none;">
+    <div style="font-size:1.4em;margin-bottom:6px;">🗺️ No plan found yet</div>
+    Create your layout in the <a href="master-plan.html">Master Plan</a> first — this view renders your zones, functions and placements automatically.
+  </div>
+
+</div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend" id="legend">
+  <div class="legend-item"><span class="legend-swatch" style="background:#8d5a4a;"></span>Z0 House</div>
+  <div class="legend-item"><span class="legend-swatch" style="background:#7a8a3a;"></span>Z1 Kitchen</div>
+  <div class="legend-item"><span class="legend-swatch" style="background:#5a7a3a;"></span>Z2 Orchard</div>
+  <div class="legend-item"><span class="legend-swatch" style="background:#8a7a3a;"></span>Z3 Field</div>
+  <div class="legend-item"><span class="legend-swatch" style="background:#4a6a5a;"></span>Z4 Semi-wild</div>
+  <div class="legend-item"><span class="legend-swatch" style="background:#3a5a4a;"></span>Z5 Wild</div>
+  <div class="legend-item"><span class="legend-swatch" style="background:#2a5a2a;"></span>🌳 Guild</div>
+  <div class="legend-item"><span class="legend-swatch" style="background:#1a5a9a;"></span>💧 Water</div>
+  <div class="legend-item"><span class="legend-swatch" style="background:#6a4a38;"></span>🛣️ Access</div>
+  <div class="legend-item"><span class="legend-swatch" style="background:#7a3030;"></span>🏠 Building</div>
+  <div class="legend-item"><span style="width:10px;height:2px;border-bottom:2px dashed rgba(60,160,220,0.4);"></span>Swale</div>
+</div>
+
+<!-- INFO PANELS -->
+<div class="info-panel active" id="info-default">
+  <h3>🌍 Helicopter View — Your Plan with Sector Energies</h3>
+  <p>This is your <strong>Master Plan from above</strong> — every cell rendered read-only (zones, functions, placements), with the sector layers (sun, wind, fire, frost, water, wildlife) overlaid and toggleable. <strong>Tap any cell</strong> for its details. Changes are made in the Master Plan; this view always reflects them.</p>
+  <p><strong>Key sector responses baked into the layout:</strong></p>
+  <table>
+    <tr><th>Sector</th><th>Mitigation</th><th>Location</th></tr>
+    <tr><td>☀️ Sun</td><td>South-facing orientation, deciduous trees for summer shade</td><td>Whole plot</td></tr>
+    <tr><td>💨 SW wind</td><td>Windbreak hedge (deciduous + evergreen mix)</td><td>SW boundary</td></tr>
+    <tr><td>🔥 SE fire (Sirocco)</td><td>Firebreak + irrigated green buffer</td><td>SE boundary</td></tr>
+    <tr><td>❄️ NW cold wind (Tramontana)</td><td>Naturally deflected by south-facing slope</td><td>—</td></tr>
+    <tr><td>❄️ Frost drainage</td><td>Swales + porous barriers allow cold air flow</td><td>Upper slope</td></tr>
+    <tr><td>💧 Rain/runoff</td><td>Swales (4) + pond + tanks harvest water</td><td>On contour</td></tr>
+    <tr><td>🦌 Wildlife</td><td>Fence on woodland boundary + tree guards</td><td>North edge</td></tr>
+  </table>
+</div>
+
+<div class="info-panel" id="info-cell">
+  <h3 id="cell-title">Cell</h3>
+  <p id="cell-stats"></p>
+  <div id="cell-guild"></div>
+</div>
+
+<script>
+/* ============ DATA ============ */
+var STORAGE_KEY = 'masterplan-v1';
+var BRIEF_KEY = 'tuscan-brief-v1';
+var FUNC_META = {
+  guild:       { icon: '🌳', label: 'Guild' },
+  vegetable:   { icon: '🥕', label: 'Vegetable Garden' },
+  water:       { icon: '💧', label: 'Water' },
+  road:        { icon: '🛣️', label: 'Road / Access' },
+  construction:{ icon: '🏠', label: 'Construction' },
+  open:        { icon: '🌿', label: 'Open' }
+};
+var ZONE_META = {
+  0: { label: 'Z0 · House',      color: '#8d5a4a' },
+  1: { label: 'Z1 · Kitchen',    color: '#7a8a3a' },
+  2: { label: 'Z2 · Orchard',    color: '#5a7a3a' },
+  3: { label: 'Z3 · Field',      color: '#8a7a3a' },
+  4: { label: 'Z4 · Semi-wild',  color: '#4a6a5a' },
+  5: { label: 'Z5 · Wild',       color: '#3a5a4a' }
+};
+var SOIL_META = {
+  sandy:  { label: 'Sandy',  emoji: '🏜️' },
+  silty:  { label: 'Silty',  emoji: '🌾' },
+  loam:   { label: 'Loam',   emoji: '🌱' },
+  clay:   { label: 'Clay',   emoji: '🟤' },
+  chalky: { label: 'Chalky', emoji: '🪨' },
+  peaty:  { label: 'Peaty',  emoji: '🟫' }
+};
+var plan = null;
+var SPECIES = {};
+var brief = {};
+
+function loadPlan() {
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) plan = JSON.parse(raw);
+  } catch (e) { plan = null; }
+}
+function loadBrief() {
+  try {
+    var raw = localStorage.getItem(BRIEF_KEY);
+    if (raw) brief = JSON.parse(raw);
+  } catch (e) {}
+}
+function cellKey(r, c) { return r + '_' + c; }
+function getCell(r, c) { return (plan && plan.cells) ? (plan.cells[cellKey(r, c)] || null) : null; }
+
+/* ============ RENDER ============ */
+function renderGrid() {
+  var g = document.getElementById('grid');
+  g.innerHTML = '';
+  var banner = document.getElementById('noplan');
+  var mpLink = document.getElementById('open-masterplan');
+  var region = (brief && brief.region) ? brief.region : 'tuscany';
+  if (mpLink) mpLink.href = 'master-plan.html?region=' + region;
+  if (!plan || !plan.cells || !plan.cols) {
+    if (banner) banner.style.display = 'block';
+    return;
+  }
+  if (banner) banner.style.display = 'none';
+  g.style.gridTemplateColumns = 'repeat(' + plan.cols + ',1fr)';
+  g.style.gridTemplateRows = 'repeat(' + plan.rows + ',1fr)';
+  var anyAssigned = false;
+  for (var r = 0; r < plan.rows; r++) {
+    for (var c = 0; c < plan.cols; c++) {
+      var cell = getCell(r, c);
+      var div = document.createElement('div');
+      div.className = 'cell';
+      // zone-based fill (primary), else function-based
+      var hasZone = cell && cell.zone !== undefined && cell.zone !== null && ZONE_META[cell.zone];
+      if (hasZone) {
+        div.classList.add('z-' + cell.zone);
+      } else if (cell && FUNC_META[cell.function]) {
+        div.classList.add('f-' + cell.function);
+      } else {
+        div.classList.add('empty');
+      }
+      if (cell) anyAssigned = true;
+      // function icon
+      var icon = document.createElement('div');
+      icon.className = 'cell-icon';
+      icon.textContent = (cell && FUNC_META[cell.function]) ? FUNC_META[cell.function].icon : '+';
+      div.appendChild(icon);
+      // label (tree name for guilds, label for others)
+      var labelText = '';
+      if (cell && cell.function === 'guild' && cell.treeKey && SPECIES[cell.treeKey]) {
+        labelText = SPECIES[cell.treeKey].name;
+      } else if (cell && cell.label) {
+        labelText = cell.label;
+      }
+      if (labelText) {
+        var lb = document.createElement('div');
+        lb.className = 'cell-label';
+        lb.textContent = labelText;
+        div.appendChild(lb);
+      }
+      // zone badge
+      if (hasZone) {
+        var zb = document.createElement('div');
+        zb.className = 'cell-zone';
+        zb.textContent = 'Z' + cell.zone;
+        div.appendChild(zb);
+      }
+      // coord
+      var cd = document.createElement('div');
+      cd.className = 'cell-coord';
+      cd.textContent = r + ',' + c;
+      div.appendChild(cd);
+      (function(rk, ck) {
+        div.onclick = function() { showCell(rk, ck); };
+      })(r, c);
+      g.appendChild(div);
+    }
+  }
+  // site data label from brief
+  var siteLbl = document.getElementById('plot-sitedata');
+  if (siteLbl && brief) {
+    var bits = [];
+    if (brief.plotW && brief.plotH) bits.push(brief.plotW + '×' + brief.plotH + 'm');
+    if (brief.altitude) bits.push('~' + brief.altitude + 'm');
+    if (brief.climateZone) bits.push('🌡️ ' + brief.climateZone);
+    if (bits.length) siteLbl.textContent = bits.join(' · ');
+  }
+}
+
+/* ============ CELL INFO ============ */
+function showCell(r, c) {
+  var cell = getCell(r, c);
+  var num = r * plan.cols + c + 1;
+  var title = '#' + num + ' — Cell (' + r + ',' + c + ')';
+  var stats = [];
+  if (cell && FUNC_META[cell.function]) stats.push(FUNC_META[cell.function].icon + ' ' + FUNC_META[cell.function].label);
+  else stats.push('🌿 Unassigned');
+  if (cell && cell.zone !== undefined && cell.zone !== null && ZONE_META[cell.zone]) stats.push('🧭 ' + ZONE_META[cell.zone].label);
+  if (cell && cell.soil && SOIL_META[cell.soil]) stats.push(SOIL_META[cell.soil].emoji + ' ' + SOIL_META[cell.soil].label);
+  if (cell && cell.label) stats.push('🏷️ ' + cell.label);
+  document.getElementById('cell-title').textContent = title;
+  document.getElementById('cell-stats').innerHTML = stats.map(function(s) { return '<span class="stat">' + s + '</span>'; }).join('');
+  // guild details
+  var gd = document.getElementById('cell-guild');
+  if (cell && cell.function === 'guild' && cell.treeKey && SPECIES[cell.treeKey]) {
+    var s = SPECIES[cell.treeKey];
+    var rings = [];
+    var gives = (s.guild && s.guild.gives) || [];
+    if (gives.some(function(g) { return ['light-shade','biomass','mulcher','groundcover'].indexOf(g) >= 0; })) rings.push('Inner — Trunk Zone');
+    if (gives.some(function(g) { return ['nitrogen','accumulator','dynamic-accumulator','n-fixer'].indexOf(g) >= 0; })) rings.push('Mid — Drip Line');
+    if (gives.some(function(g) { return ['pollinator','pest-repellent','habitat','windbreak'].indexOf(g) >= 0; })) rings.push('Outer — Canopy Edge');
+    gd.innerHTML = '<p><strong>' + (s.icon || '🌳') + ' ' + s.name + '</strong>' + (s.latin ? ' · ' + s.latin : '') + '</p>' +
+      (rings.length ? '<div class="gp-rings">' + rings.map(function(x) { return '<span class="gp-ring">' + x + '</span>'; }).join('') + '</div>' : '') +
+      '<p style="margin-top:6px;color:#a8b8a0;">Guild data from the species database — see <a href="guild-diagrams.html?region=' + (brief.region || 'tuscany') + '&tree=' + encodeURIComponent(cell.treeKey) + '" style="color:#c4a040;">full guild diagram</a>.</p>';
+  } else {
+    gd.innerHTML = '';
+  }
+  showInfo('cell');
+}
+
+/* ============ TOGGLES (unchanged) ============ */
+function toggleLayer(id, btn) {
+  var layer = document.getElementById('layer-' + id);
+  if (layer) {
+    if (layer.classList.contains('hidden')) {
+      layer.classList.remove('hidden');
+    } else {
+      layer.classList.add('hidden');
+    }
+  }
+  btn.classList.toggle('on');
+  btn.classList.toggle('off');
+}
+
+function toggleAll() {
+  var layers = document.querySelectorAll('.sector-layer');
+  var btns = document.querySelectorAll('.toggle.sun, .toggle.wind, .toggle.fire, .toggle.frost, .toggle.water, .toggle.wildlife');
+  var anyOff = Array.from(btns).some(function(b) { return b.classList.contains('off'); });
+  layers.forEach(function(l) {
+    if (anyOff) {
+      l.classList.remove('hidden');
+    } else {
+      l.classList.add('hidden');
+    }
+  });
+  btns.forEach(function(b) {
+    b.classList.toggle('on', anyOff);
+    b.classList.toggle('off', !anyOff);
+  });
+}
+
+function resetView() {
+  document.querySelectorAll('.sector-layer').forEach(function(l) { l.classList.remove('hidden'); });
+  document.querySelectorAll('.toggle.sun, .toggle.wind, .toggle.fire, .toggle.frost, .toggle.water, .toggle.wildlife').forEach(function(b) {
+    b.classList.add('on');
+    b.classList.remove('off');
+  });
+  showInfo('default');
+}
+
+function showInfo(id) {
+  document.querySelectorAll('.info-panel').forEach(function(p) { p.classList.remove('active'); });
+  if (id === 'default') {
+    document.getElementById('info-default').classList.add('active');
+  } else {
+    var el = document.getElementById('info-' + id);
+    if (el) el.classList.add('active');
+  }
+}
+
+/* ============ INIT ============ */
+loadBrief();
+loadPlan();
+// species fetch (best-effort — needed only for guild names)
+try {
+  fetch('plants.json').then(function(r) { return r.json(); }).then(function(db) {
+    SPECIES = db;
+    renderGrid();
+  }).catch(function() { renderGrid(); });
+} catch (e) { renderGrid(); }
+</script>
+</body>
+</html>

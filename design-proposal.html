@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOILPEPPER — Design Proposal (Aranya Step 6)</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#0d1b2a;color:#e0e0d0;padding:20px;max-width:1100px;margin:0 auto;}
+h1{text-align:center;color:#c5e1a5;margin-bottom:3px;font-size:1.7em;}
+.subtitle{text-align:center;color:#81c784;margin-bottom:6px;font-size:0.9em;}
+.meta{text-align:center;color:rgba(255,255,255,0.4);font-size:0.75em;margin-bottom:15px;}
+
+/* Progress bar */
+.progress-wrap{background:#16213e;border:1px solid #2a3a2a;border-radius:10px;padding:12px 16px;margin-bottom:16px;}
+.progress-hdr{display:flex;justify-content:space-between;font-size:0.8em;margin-bottom:6px;color:#aed581;}
+.progress-bar{height:10px;background:#1a2a1a;border-radius:5px;overflow:hidden;}
+.progress-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,#33691e,#81c784);transition:width 0.5s;width:100%;}
+.progress-labels{display:flex;justify-content:space-between;font-size:0.6em;color:rgba(255,255,255,0.3);margin-top:3px;}
+
+/* Summary cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-bottom:16px;}
+.card{background:#16213e;border:1px solid #2a3a2a;border-radius:8px;padding:10px;text-align:center;transition:border-color 0.2s;}
+.card:hover{border-color:#4a8a2e;}
+.card .num{font-size:1.5em;font-weight:bold;color:#c5e1a5;}
+.card .lbl{font-size:0.65em;color:rgba(255,255,255,0.5);margin-top:2px;}
+.card .icon{font-size:1.2em;}
+
+/* Accordion */
+.section{margin-bottom:8px;border-radius:10px;background:#16213e;border:1px solid #2a3a2a;overflow:hidden;}
+.section-header{display:flex;align-items:center;padding:12px 16px;cursor:pointer;transition:background 0.2s;user-select:none;gap:10px;}
+.section-header:hover{background:#1a2a2a;}
+.section-header .arrow{transition:transform 0.3s;font-size:0.8em;color:#81c784;}
+.section-header.open .arrow{transform:rotate(90deg);}
+.section-header .title{flex:1;font-size:0.95em;font-weight:600;color:#e0e0d0;}
+.section-header .badge{font-size:0.6em;padding:2px 8px;border-radius:10px;font-weight:600;white-space:nowrap;}
+.badge-complete{background:rgba(129,199,132,0.2);color:#81c784;border:1px solid rgba(129,199,132,0.3);}
+.badge-progress{background:rgba(255,183,77,0.2);color:#ffb74d;border:1px solid rgba(255,183,77,0.3);}
+.badge-planned{background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.4);border:1px solid rgba(255,255,255,0.1);}
+.section-body{display:none;padding:0 16px 16px;border-top:1px solid #2a3a2a;line-height:1.6;font-size:0.85em;}
+.section-body.open{display:block;}
+
+.section-body h3{color:#c5e1a5;margin:14px 0 6px;font-size:1.1em;}
+.section-body h4{color:#aed581;margin:10px 0 4px;font-size:0.95em;}
+
+/* ===== Master Plan live summary (Zone Plan section) ===== */
+.mp-live{background:#16222e;border:1px solid #2a3a4a;border-radius:8px;padding:12px 16px;margin:14px 0;}
+.mp-live h4{color:#c5e1a5;font-family:'Palatino','Palatino Linotype','Georgia',serif;font-size:0.95em;margin:0 0 8px;}
+.mp-live-body{display:flex;flex-wrap:wrap;gap:8px 14px;font-size:0.85em;color:#a8b8a8;align-items:center;}
+.mp-chip{display:inline-flex;align-items:center;gap:6px;background:#1a2a3a;border:1px solid #3a4a5a;border-radius:14px;padding:3px 12px;font-size:0.8em;}
+.mp-chip b{color:#e0e8e0;}
+.mp-note{font-size:0.75em;color:#7a8a9a;margin-top:6px;}
+.section-body p{margin:6px 0;color:#b0bec5;}
+.section-body ul{margin:6px 0;padding-left:20px;}
+.section-body li{margin:3px 0;color:#b0bec5;}
+.section-body strong{color:#e0e0d0;}
+.section-body .stat{display:inline-block;background:#1a2a1a;padding:2px 8px;border-radius:4px;font-size:0.8em;margin:2px 4px 2px 0;color:#aed581;}
+
+/* Tool links */
+.tool-links{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0;}
+.tool-link{display:inline-flex;align-items:center;gap:4px;padding:5px 12px;background:#1a2a1a;border:1px solid #33691e;border-radius:6px;color:#aed581;text-decoration:none;font-size:0.78em;transition:all 0.2s;}
+.tool-link:hover{background:#2a4a2a;border-color:#4a8a2e;color:#c5e1a5;}
+
+/* Tables */
+.section-body table{width:100%;border-collapse:collapse;margin:8px 0;font-size:0.85em;}
+.section-body th{background:#1a2a1a;color:#aed581;padding:6px 8px;text-align:left;border-bottom:2px solid #33691e;font-weight:600;}
+.section-body td{padding:5px 8px;border-bottom:1px solid #2a3a2a;color:#b0bec5;}
+.section-body tr:hover td{background:rgba(255,255,255,0.02);}
+
+/* Zone cards */
+.zone-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px;margin:10px 0;}
+.zone-card{background:#1a2a1a;border:1px solid #2a3a2a;border-radius:8px;padding:10px 12px;border-left:4px solid;}
+.zone-card.z0{border-left-color:#8d6e63;}
+.zone-card.z1{border-left-color:#fbc02d;}
+.zone-card.z2{border-left-color:#66bb6a;}
+.zone-card.z3{border-left-color:#43a047;}
+.zone-card.z4{border-left-color:#2e7d32;}
+.zone-card.z5{border-left-color:#1b5e20;}
+.zone-card .zname{font-weight:600;color:#e0e0d0;font-size:0.9em;}
+.zone-card .zdetail{font-size:0.78em;color:rgba(255,255,255,0.6);margin-top:3px;}
+
+/* Phase timeline */
+.timeline{margin:12px 0;position:relative;}
+.timeline::before{content:'';position:absolute;top:0;left:24px;width:2px;height:100%;background:linear-gradient(180deg,#33691e,#81c784);}
+.phase{position:relative;padding:0 0 16px 50px;}
+.phase:last-child{padding-bottom:0;}
+.phase .dot{position:absolute;left:17px;width:16px;height:16px;border-radius:50%;border:3px solid;top:2px;}
+.phase.y1 .dot{background:#33691e;border-color:#4a8a2e;}
+.phase.y2 .dot{background:#558b2f;border-color:#689f38;}
+.phase.y3 .dot{background:#81c784;border-color:#a5d6a7;}
+.phase .phead{font-weight:600;color:#c5e1a5;font-size:0.95em;}
+.phase .pbody{font-size:0.8em;color:rgba(255,255,255,0.6);margin-top:2px;line-height:1.5;}
+.phase .pbody ul{margin:2px 0 0 16px;padding:0;}
+.phase .pbody li{margin:1px 0;}
+
+/* Fire safety grid */
+.fs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin:10px 0;}
+.fs-card{background:#1a2a1a;border:1px solid #2a3a2a;border-radius:8px;padding:10px;text-align:center;}
+.fs-card .fs-icon{font-size:1.5em;margin-bottom:4px;}
+.fs-card .fs-title{font-weight:600;color:#e0e0d0;font-size:0.8em;}
+.fs-card .fs-desc{font-size:0.7em;color:rgba(255,255,255,0.5);margin-top:3px;}
+
+/* Species function grid */
+.species-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px;margin:8px 0;}
+.species-card{background:#1a2a1a;border:1px solid #2a3a2a;border-radius:6px;padding:8px 10px;}
+.species-card .scat{font-size:0.7em;color:#81c784;font-weight:600;}
+.species-card .slist{font-size:0.75em;color:rgba(255,255,255,0.6);margin-top:2px;}
+
+/* Water strategy mini-grid */
+.water-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin:10px 0;}
+.water-card{background:#1a2a1a;border:1px solid #2a3a2a;border-radius:8px;padding:10px;border-left:3px solid #2196f3;}
+.water-card .wtitle{font-weight:600;color:#81d4fa;font-size:0.85em;}
+.water-card .wdetail{font-size:0.72em;color:rgba(255,255,255,0.5);margin-top:2px;}
+
+/* Rationale cards */
+.rationale-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:8px;margin:10px 0;}
+.rationale-card{background:#1a2a1a;border:1px solid #2a3a2a;border-radius:8px;padding:10px 12px;}
+.rationale-card .rq{font-weight:600;color:#c5e1a5;font-size:0.8em;}
+.rationale-card .ra{font-size:0.78em;color:rgba(255,255,255,0.6);margin-top:2px;}
+
+/* Guild section */
+.guild-ring{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0;}
+.guild-ring-card{flex:1;min-width:150px;background:#1a2a1a;border:1px solid #2a3a2a;border-radius:8px;padding:10px;text-align:center;}
+.guild-ring-card .ring-icon{font-size:1.3em;}
+.guild-ring-card .ring-title{font-weight:600;color:#e0e0d0;font-size:0.8em;margin-top:3px;}
+.guild-ring-card .ring-examples{font-size:0.7em;color:rgba(255,255,255,0.5);margin-top:2px;}
+
+@media(max-width:600px){.cards{grid-template-columns:repeat(2,1fr);}.zone-grid{grid-template-columns:1fr;}.water-grid{grid-template-columns:1fr;}.rationale-grid{grid-template-columns:1fr;}.guild-ring{flex-direction:column;}}
+</style>
+</head>
+<body>
+<!-- DESIGN BRIEF STRIP (shared reader — injected by design-brief system) -->
+<script>
+(function () {
+  // Shared design brief from Master Plan (tuscan-brief-v1). Static tools only
+  // READ it — they never write. Falls back to sensible Tuscan defaults.
+  var KEY = 'tuscan-brief-v1';
+  var DEF = {
+    region: 'tuscany', title: 'Tuscan hillside',
+    plotW: 100, plotH: 100, cellSize: 10,
+    defaultSoil: 'silty', altitude: 300, climateZone: '8b-9a',
+    aspect: 'South (180°)', slope: '~10% moderate'
+  };
+  var b = DEF;
+  try {
+    var raw = localStorage.getItem(KEY);
+    if (raw) { var p = JSON.parse(raw); for (var k in DEF) if (p[k] !== undefined) b[k] = p[k]; }
+  } catch (e) {}
+
+  var soilLbl = { sandy: 'Sandy', silty: 'Silty', loam: 'Loam', clay: 'Clay', chalky: 'Chalky', peaty: 'Peaty' }[b.defaultSoil] || b.defaultSoil;
+  var regionLbl = b.region === 'netherlands' ? 'Netherlands' : 'Tuscany';
+
+  // Build the strip
+  var strip = document.createElement('div');
+  strip.style.cssText = 'display:flex;flex-wrap:wrap;gap:4px 14px;justify-content:center;align-items:center;' +
+    'background:#142114;border:1px solid #1a301a;border-radius:6px;padding:6px 12px;margin:0 auto 12px;' +
+    'max-width:900px;font-size:0.72rem;color:#a8b8a0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;';
+  var parts = [
+    '<span style="color:#c4a040;font-weight:600">' + (b.title || 'Design') + '</span>',
+    '<span>' + regionLbl + '</span>',
+    '<span>' + b.plotW + '×' + b.plotH + 'm · ' + b.cellSize + 'm cells</span>',
+    '<span>' + soilLbl + ' soil</span>',
+    '<span>~' + b.altitude + 'm</span>',
+    '<span>Zone ' + b.climateZone + '</span>',
+    '<span>' + b.aspect + '</span>',
+    '<span>' + b.slope + '</span>',
+    '<a href="master-plan.html?region=' + b.region + '" style="color:#5a8a4a;text-decoration:none;font-weight:600">⚙️ Edit in Master Plan</a>'
+  ];
+  strip.innerHTML = parts.join('<span style="opacity:0.4">·</span>');
+  var body = document.body;
+  body.insertBefore(strip, body.firstChild);
+
+  // Sector Analysis: prefill params from the brief once the page is ready
+  // (one-way: brief is the source of truth; user can still override locally)
+  function prefillSectorParams() {
+    // Aspect: match degrees (e.g. "South (180°)" → 180) to the select options
+    var aspEl = document.getElementById('aspect');
+    if (aspEl && b.aspect) {
+      var mDeg = String(b.aspect).match(/(\d+)/);
+      var deg = mDeg ? parseInt(mDeg[1], 10) : NaN;
+      if (!isNaN(deg)) {
+        for (var i = 0; i < aspEl.options.length; i++) {
+          if (parseInt(aspEl.options[i].value, 10) === deg) { aspEl.value = aspEl.options[i].value; break; }
+        }
+      }
+    }
+    // Altitude: brief value → number input
+    var altEl = document.getElementById('altitude');
+    if (altEl && b.altitude) {
+      altEl.value = b.altitude;
+      if (typeof updateSectors === 'function') updateSectors();
+    }
+    // Slope: match brief slope % to the select options
+    var slEl = document.getElementById('slope');
+    if (slEl && b.slope) {
+      var mSl = String(b.slope).match(/(\d+)/);
+      var sl = mSl ? parseInt(mSl[1], 10) : NaN;
+      if (!isNaN(sl)) {
+        for (var i = 0; i < slEl.options.length; i++) {
+          if (parseInt(slEl.options[i].value, 10) === sl) { slEl.value = slEl.options[i].value; break; }
+        }
+      }
+    }
+    // Live "Modular Parameters" reference table (if present)
+    var pAsp = document.getElementById('param-aspect');
+    if (pAsp && b.aspect) pAsp.textContent = b.aspect;
+    var pAlt = document.getElementById('param-altitude');
+    if (pAlt && b.altitude) pAlt.textContent = b.altitude + 'm';
+    var pSl = document.getElementById('param-slope');
+    if (pSl && b.slope) {
+      var mP = String(b.slope).match(/(\d+)/);
+      pSl.textContent = (mP ? mP[1] : b.slope) + '%';
+    }
+    // Live summary sentence + sun stats (if present)
+    var facing = function (deg) {
+      var d = parseInt(deg, 10);
+      if (d >= 315 || d < 45) return 'north-facing';
+      if (d >= 45 && d < 135) return 'east-facing';
+      if (d >= 135 && d < 225) return 'south-facing';
+      return 'west-facing';
+    };
+    var sumAlt = document.getElementById('sum-altitude');
+    if (sumAlt && b.altitude) sumAlt.textContent = '~' + b.altitude + 'm';
+    var sumReg = document.getElementById('sum-region');
+    if (sumReg) sumReg.textContent = b.region === 'netherlands' ? 'the Netherlands' : 'Tuscany';
+    var sumAsp = document.getElementById('sum-aspect');
+    if (sumAsp && b.aspect) {
+      var dA = String(b.aspect).match(/(\d+)/);
+      if (dA) sumAsp.textContent = facing(dA[1]);
+    }
+    var latEl2 = document.getElementById('lat');
+    var latVal = latEl2 ? (parseFloat(latEl2.value) || 43) : 43;
+    var stLat = document.getElementById('st-lat');
+    if (stLat) stLat.textContent = Math.round(latVal) + '°N';
+    var stSum = document.getElementById('st-summer');
+    if (stSum) stSum.textContent = Math.round((90 - latVal + 23.44) * 10) / 10 + '°';
+    var stWin = document.getElementById('st-winter');
+    if (stWin) stWin.textContent = Math.round((90 - latVal - 23.44) * 10) / 10 + '°';
+    var stAsp = document.getElementById('st-aspect');
+    if (stAsp && b.aspect) {
+      var dA2 = String(b.aspect).match(/(\d+)/);
+      if (dA2) stAsp.textContent = facing(dA2[1]);
+    }
+    // Water Management: plot size + altitude in subtitle (if present)
+    var wmPlot = document.getElementById('wm-plot');
+    if (wmPlot && b.plotW && b.plotH) {
+      var ha = (b.plotW * b.plotH) / 10000;
+      wmPlot.textContent = (ha >= 1 ? (Math.round(ha * 10) / 10) + ' ha' : Math.round(b.plotW * b.plotH) + ' m²');
+    }
+    var wmAlt = document.getElementById('wm-alt');
+    if (wmAlt && b.altitude) wmAlt.textContent = '~' + b.altitude + 'm altitude';
+    // Design Proposal: Site Overview body from the brief (if present)
+    var dpAlt = document.getElementById('dp-alt');
+    if (dpAlt && b.altitude) dpAlt.textContent = b.altitude;
+    var dpZone = document.getElementById('dp-zone');
+    if (dpZone && b.climateZone) dpZone.textContent = b.climateZone;
+    var dpArea = document.getElementById('dp-area');
+    if (dpArea && b.plotW && b.plotH) {
+      var dpHa = (b.plotW * b.plotH) / 10000;
+      dpArea.textContent = (dpHa >= 1 ? dpHa + ' hectares' : Math.round(b.plotW * b.plotH) + ' m²') + ' (' + b.plotW + '×' + b.plotH + 'm)';
+    }
+    var dpRain = document.getElementById('dp-rain');
+    var waterForRain = null;
+    try { waterForRain = JSON.parse(localStorage.getItem('tuscan-water-v1') || 'null'); } catch (e) {}
+    if (dpRain && waterForRain && waterForRain.rainfall) dpRain.textContent = waterForRain.rainfall;
+    // Summary cards: site area + swales
+    var cardArea = document.getElementById('card-area');
+    if (cardArea && b.plotW && b.plotH) {
+      var cHa = (b.plotW * b.plotH) / 10000;
+      cardArea.textContent = (cHa >= 1 ? cHa + ' ha' : Math.round(b.plotW * b.plotH) + ' m²');
+    }
+    var cardSwales = document.getElementById('card-swales');
+    if (cardSwales && waterForRain && waterForRain.swales) cardSwales.textContent = waterForRain.swales;
+    // Subtitle (top of page): area, altitude, zone, location
+    var subArea = document.getElementById('sub-area');
+    if (subArea && b.plotW && b.plotH) {
+      var sHa = (b.plotW * b.plotH) / 10000;
+      subArea.textContent = (sHa >= 1 ? sHa + 'ha Hillside' : Math.round(b.plotW * b.plotH) + 'm² Site');
+    }
+    var subAlt = document.getElementById('sub-alt');
+    if (subAlt && b.altitude) subAlt.textContent = b.altitude;
+    var subZone = document.getElementById('sub-zone');
+    if (subZone && b.climateZone) subZone.textContent = b.climateZone;
+    var subLoc = document.getElementById('sub-loc');
+    if (subLoc) subLoc.textContent = b.region === 'netherlands' ? 'Netherlands' : 'Tuscany, Italy';
+    if (typeof updateSectors === 'function') updateSectors();
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', prefillSectorParams);
+  } else {
+    prefillSectorParams();
+  }
+})();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h1>🌿 SOILPEPPER — Design Proposal</h1>
+<p class="subtitle">Aranya Step 6 · <span id="sub-area">1ha Hillside</span> · ~<span id="sub-alt">300</span>m · USDA Zone <span id="sub-zone">8b–9a</span> · <span id="sub-loc">Tuscany, Italy</span></p>
+<p class="meta">📅 July 2026 · 14 Interactive Tools · <span data-count="species">256</span> Species · 13 Tree Guilds · 4 Water Sources</p>
+
+<!-- PROGRESS BAR -->
+<div class="progress-wrap">
+  <div class="progress-hdr">
+    <span>🏗️ Design Completion</span>
+    <span>10/10 Sections — Complete</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill"></div></div>
+  <div class="progress-labels">
+    <span>Design Brief</span>
+    <span>Sector Analysis</span>
+    <span>Zone Plan</span>
+    <span>Water Strategy</span>
+    <span>Access</span>
+    <span>Species</span>
+    <span>Guilds</span>
+    <span>Fire Safety</span>
+    <span>Phasing</span>
+    <span>Rationale</span>
+  </div>
+</div>
+
+<!-- SUMMARY CARDS -->
+<div class="cards">
+  <div class="card"><div class="icon">📐</div><div class="num" id="card-area">1 ha</div><div class="lbl">Site Area</div></div>
+  <div class="card"><div class="icon">🌍</div><div class="num">9</div><div class="lbl">Sectors</div></div>
+  <div class="card"><div class="icon">🌿</div><div class="num" data-count="species">256</div><div class="lbl">Species</div></div>
+  <div class="card"><div class="icon">🌳</div><div class="num">13</div><div class="lbl">Tree Guilds</div></div>
+  <div class="card"><div class="icon">💧</div><div class="num">4</div><div class="lbl">Water Sources</div></div>
+  <div class="card"><div class="icon">🌊</div><div class="num" id="card-swales">4</div><div class="lbl">Swales</div></div>
+  <div class="card"><div class="icon">🥬</div><div class="num">12</div><div class="lbl">Veg Beds</div></div>
+  <div class="card"><div class="icon">🍎</div><div class="num" data-count="treeshrub">116</div><div class="lbl">Tree / Shrub Species</div></div>
+</div>
+
+<!-- ========== SECTION 1: DESIGN BRIEF ========== -->
+<div class="section">
+  <div class="section-header open" onclick="toggleSection(this)">
+    <span class="arrow">▶</span>
+    <span class="title">📋 Design Brief</span>
+    <span class="badge badge-complete">✅ Complete</span>
+  </div>
+  <div class="section-body open">
+    <h3>Site Overview</h3>
+    <p><strong>Location:</strong> <span id="dp-loc">Tuscany, Italy</span> — ~<span id="dp-alt">300</span>m altitude, hilly terrain, south-facing slope</p>
+    <p><strong>Area:</strong> <span id="dp-area">1 hectare (10,000m²)</span></p>
+    <p><strong>Climate:</strong> Csa (Hot-summer Mediterranean) — USDA Zone <span id="dp-zone">8b–9a</span></p>
+    <p><strong>Soil:</strong> <span id="dp-soil">Silty-sandy, fertile, good drainage, some clay lenses</span></p>
+    <p><strong>Rainfall:</strong> ~<span id="dp-rain">800</span>mm/year, concentrated Oct–Dec and Mar–May; summer drought (Jul ~25mm)</p>
+    <p><strong>Building:</strong> 250m² south-facing stone house — roof catchment for rainwater</p>
+    <p><strong>Frost-free period:</strong> ~180–210 days (last frost ~Apr, first frost ~Nov)</p>
+
+    <h3>Design Goals</h3>
+    <ul>
+      <li><strong>Self-sufficiency:</strong> Vegetable garden for 2 people, fruit trees, berry bushes, herbs</li>
+      <li><strong>Water autonomy:</strong> Well + rainwater harvesting (15m³ tanks) + irrigation pond (200m³) + natural pool (112m³)</li>
+      <li><strong>Fire safety:</strong> SE firebreak, fire-resistant species, water access for firefighting</li>
+      <li><strong>Biodiversity:</strong> Native species, wildlife corridor, pollinator habitat, 7-layer forest garden</li>
+      <li><strong>Integration:</strong> Chickens (6 hens), bees (2–4 hives), greywater system, compost cycling</li>
+      <li><strong>Low maintenance:</strong> No-dig beds, direct sow, perennial vegetables, self-regulating guilds</li>
+    </ul>
+
+    <h3>Core Principles</h3>
+    <ul>
+      <li>Every plant must have mutual soil benefit</li>
+      <li>Vegetables: 30cm organic topsoil, Trees: 50cm</li>
+      <li>Minimal digging, direct sow preferred</li>
+      <li>Practical paths, no crop rotation</li>
+      <li>Key factors: sun, wind, height, width at maturity</li>
+    </ul>
+
+    <div class="tool-links">
+      <a class="tool-link" href="./SOILPEPPER Site Layout.html" target="_blank">🔗 Site Layout</a>
+      <a class="tool-link" href="./Tuscan Helicopter View.html" target="_blank">🔗 Helicopter View</a>
+      <a class="tool-link" href="./design-report.md" target="_blank">🔗 Design Report</a>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SECTION 2: SECTOR ANALYSIS ========== -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="arrow">▶</span>
+    <span class="title">🌍 Sector Analysis Summary</span>
+    <span class="badge badge-complete">✅ Complete</span>
+  </div>
+  <div class="section-body">
+    <p>The site's <strong>south-facing slope</strong> at ~300m altitude in Tuscany creates a unique set of sector influences. 9 sectors — 6 directional and 3 topographical — define the design constraints and opportunities. The south-facing aspect is the dominant advantage: maximum solar gain, natural shelter from cold north winds, and excellent frost drainage.</p>
+
+    <table>
+      <tr><th>Sector</th><th>Type</th><th>Direction</th><th>Design Response</th></tr>
+      <tr><td><strong>☀️ Sun</strong></td><td>Directional</td><td>SE→SW arc (summer 120°, winter 60°)</td><td>Passive solar orientation, deciduous trees for summer shade, tall crops north</td></tr>
+      <tr><td><strong>💨 SW Wind</strong></td><td>Directional</td><td>SW (225°)</td><td>Windbreak hedge on SW boundary, fruit trees use wind for pollination</td></tr>
+      <tr><td><strong>❄️ Tramontana</strong></td><td>Directional</td><td>NW (330°)</td><td>South-facing slope provides natural shelter, building as windbreak</td></tr>
+      <tr><td><strong>🔥 Sirocco</strong></td><td>Directional</td><td>SE (135°)</td><td>Pond on SE side creates humidity buffer, firebreak on SE boundary</td></tr>
+      <tr><td><strong>💧 Rain</strong></td><td>Directional + Topo</td><td>SW system, 800mm/yr</td><td>Swales capture runoff, pond for gravity irrigation, roof harvest <span data-water="roofHarvestL">170,000</span>L/yr</td></tr>
+      <tr><td><strong>❄️ Frost</strong></td><td>Topographical</td><td>Cold air drains downhill</td><td>Tender plants upper slope, porous barriers, frost-sensitive trees mid-slope</td></tr>
+      <tr><td><strong>🔥 Fire</strong></td><td>Combination</td><td>SE (Sirocco) + dry summer</td><td>Firebreak, fire-resistant species, water pond as firefighting source</td></tr>
+      <tr><td><strong>🦌 Wildlife</strong></td><td>Topographical</td><td>Forest edge (north) → downhill</td><td>Fencing, tree guards, native hedgerows, wildlife corridor on edges</td></tr>
+      <tr><td><strong>👁️ View</strong></td><td>Combination</td><td>South-facing panorama</td><td>Main windows + terrace south, partial screening for privacy</td></tr>
+    </table>
+
+    <p><strong>Key takeaway:</strong> The south-facing slope is the single most important asset — it maximizes solar gain, provides natural frost drainage, and shelters the site from cold NW winds. The SE (Sirocco) wind is the primary risk vector, driving both fire danger and desiccation.</p>
+
+    <div class="tool-links">
+      <a class="tool-link" href="./Tuscan Sector Analysis.html" target="_blank">🔗 Open Tool: Sector Analysis</a>
+      <a class="tool-link" href="./Tuscan Helicopter View.html" target="_blank">🔗 Open Tool: Helicopter View</a>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SECTION 3: ZONE PLAN ========== -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="arrow">▶</span>
+    <span class="title">🏡 Zone Plan</span>
+    <span class="badge badge-complete">✅ Complete</span>
+  </div>
+  <div class="section-body">
+    <p>Zones are arranged from the building (Zone 0) outward, following the south-facing slope. The warmest, most accessible areas closest to the house host the most intensive production. Outer zones transition to managed woodland, firebreak, and wild corridors.</p>
+
+    <div class="mp-live" id="mp-live">
+      <h4>🗺️ Your Master Plan — actual zone assignments</h4>
+      <div id="mp-live-body" class="mp-live-body"><em>Loading…</em></div>
+    </div>
+
+    <div class="zone-grid">
+      <div class="zone-card z0">
+        <div class="zname">🏠 Zone 0 — House (250m²)</div>
+        <div class="zdetail">South-facing stone building. Roof catchment (<span data-water="roofArea">250</span>m²) → <span data-water="tanks">3</span>× <span data-water="tankSize">5,000</span>L tanks. Greywater to Zone 1. Thermal mass. South wall for fig trees + potted citrus.</div>
+      </div>
+      <div class="zone-card z1">
+        <div class="zname">🥬 Zone 1 — Kitchen Garden (~500m²)</div>
+        <div class="zdetail">Immediately south of building. 12 no-dig raised beds (T,L,M,L,T,L,M,L,T,L,M,L layout). 49+ plants. Herb spiral, cold frames. Drip irrigation from rainwater tanks.</div>
+      </div>
+      <div class="zone-card z2">
+        <div class="zname">🍎 Zone 2 — Orchard & Guilds (~2,000m²)</div>
+        <div class="zdetail"><span data-count="treeshrub">116</span> tree/shrub species positioned by frost/fire/wind/sun/water. 13 tree guilds (Fig, Persimmon, Grape, Peach, Plum, Apple, Pear, Hazelnut, Walnut, Lemon, Carob, Almond, Pistachio). 19 Zone 2b companions. 7-layer forest garden, 15 species.</div>
+      </div>
+      <div class="zone-card z3">
+        <div class="zname">🫒 Zone 3 — Olive Grove & Field Crops (~4,000m²)</div>
+        <div class="zdetail">25 olive trees (Frantoio, Leccino, Moraiolo, Pendolino). Cover crops: vetch, clover, fava beans. Chestnuts on cooler north edge. Grain/legume rotation.</div>
+      </div>
+      <div class="zone-card z4">
+        <div class="zname">🌲 Zone 4 — Managed Woodland (~2,500m²)</div>
+        <div class="zdetail">North/NW windbreak: Eleagnus, Italian alder, black locust, broom. Forage trees: oak, carob, mulberry. Firebreak transition. Boar-proof fence.</div>
+      </div>
+      <div class="zone-card z5">
+        <div class="zname">🌿 Zone 5 — Wild Corridor (~1,000m²)</div>
+        <div class="zdetail">Native Mediterranean maquis: myrtle, arbutus, heather, broom. No intervention. Wildlife corridor. Biodiversity reservoir for beneficial insects.</div>
+      </div>
+    </div>
+
+    <p><strong>Chickens:</strong> 6 hens (Livorno/dual-purpose) rotated through orchard post-harvest. Stationary coop with electric netting. ~5–6 eggs/day in season.</p>
+    <p><strong>Bees:</strong> 2–4 hives in south-facing, sheltered spot with morning sun. Near orchard for pollination. 20–60 kg honey/year.</p>
+
+    <div class="tool-links">
+      <a class="tool-link" href="./SOILPEPPER Site Layout.html" target="_blank">🔗 Open Tool: Site Layout</a>
+      <a class="tool-link" href="./Tuscan Helicopter View.html" target="_blank">🔗 Open Tool: Helicopter View</a>
+      <a class="tool-link" href="./Tuscan Zone 2b Design.html" target="_blank">🔗 Open Tool: Zone 2b Detail</a>
+      <a class="tool-link" href="./Tuscan Vegetable Garden Planner.html" target="_blank">🔗 Open Tool: Veg Garden Planner</a>
+      <a class="tool-link" href="./Tuscan Vegetable Garden Design.html" target="_blank">🔗 Open Tool: Veg Garden Design</a>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SECTION 4: WATER STRATEGY ========== -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="arrow">▶</span>
+    <span class="title">💧 Water Strategy</span>
+    <span class="badge badge-complete">✅ Complete</span>
+  </div>
+  <div class="section-body">
+    <p>Four water sources provide <strong>excellent water security</strong> for the 1ha site. The system is designed around gravity-fed irrigation, with the irrigation pond at the highest point of the property. Annual rainfall on the 1ha is <span data-water="rain">8,000</span> m³ — even a fraction captured by swales makes the system robust.</p>
+
+    <div class="water-grid">
+      <div class="water-card">
+        <div class="wtitle">🌧️ Rainwater Harvesting</div>
+        <div class="wdetail"><span data-water="roofArea">250</span>m² roof × <span data-water="rainfall">800</span>mm × <span data-water="eff">0.85</span> = ~<span data-water="roofHarvestL">170,000</span>L/yr. <span data-water="tanks">3</span>× <span data-water="tankSize">5,000</span>L tanks (<span data-water="tankTotalM3">15</span>m³ total). Gravity-fed to Zone 1. First-flush diverter.</div>
+      </div>
+      <div class="water-card">
+        <div class="wtitle">🏞️ Irrigation Pond</div>
+        <div class="wdetail"><span data-water="pond">200</span>m³ at highest point. Gravity head ~<span data-water="head">10</span>m → <span data-water="pressure">0.98</span> bar pressure. Sealed with bentonite/liner. Doubles as firefighting reserve.</div>
+      </div>
+      <div class="water-card">
+        <div class="wtitle">🏊 Natural Pool</div>
+        <div class="wdetail">15×5×1.5m = <span data-water="pool">112</span>m³. Swimming + thermal mass + irrigation reserve. With aquatic plants for natural filtration.</div>
+      </div>
+      <div class="water-card">
+        <div class="wtitle">⛰️ Well</div>
+        <div class="wdetail">Existing, confirmed. Primary household water. Backup irrigation during drought years. Variable output.</div>
+      </div>
+    </div>
+
+    <h4>Swale System</h4>
+    <p><span data-water="swales">4</span> contour swales (~50cm deep, 1m wide) spaced at ~<span data-water="swaleSpacing">2.5</span>m vertical intervals across the slope. Each swale has a berm on the downhill side where trees are planted. Swales intercept surface runoff, spread it across the slope, and recharge groundwater. Total water harvesting: hundreds of thousands of liters per year.</p>
+
+    <h4>Gravity Drip Irrigation</h4>
+    <p>Orchard and vegetable garden use on-line dripper lines with pressure compensation. Each fruit tree: 2–4 drippers at 4–8 L/h. Vegetable beds: 16mm drip tape with 30cm emitter spacing. Automated with timer (battery/solar). Summer irrigation is essential — only ~25mm rain in July.</p>
+
+    <h4>Annual Water Budget</h4>
+    <table>
+      <tr><th>Use</th><th>Annual Need</th><th>Primary Source</th></tr>
+      <tr><td>Vegetable garden (500m²)</td><td>150,000–200,000 L</td><td>Rain + pond</td></tr>
+      <tr><td>Orchard (64 trees)</td><td>80,000–120,000 L</td><td>Pond + rain</td></tr>
+      <tr><td>Household (2 people)</td><td>80,000–100,000 L</td><td>Well</td></tr>
+      <tr><td>Chickens (6 hens)</td><td>~3,000 L</td><td>Well</td></tr>
+      <tr><td><strong>Total</strong></td><td><strong>~313,000–423,000 L</strong></td><td></td></tr>
+      <tr><td>Roof harvest</td><td>~<span data-water="roofHarvestL">170,000</span> L</td><td>40–50% of total</td></tr>
+    </table>
+
+    <div class="tool-links">
+      <a class="tool-link" href="./Tuscan Water Management.html" target="_blank">🔗 Open Tool: Water Management</a>
+      <a class="tool-link" href="./Tuscan Helicopter View.html" target="_blank">🔗 Open Tool: Helicopter View</a>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SECTION 5: ACCESS & INFRASTRUCTURE ========== -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="arrow">▶</span>
+    <span class="title">🛤️ Access & Infrastructure</span>
+    <span class="badge badge-complete">✅ Complete</span>
+  </div>
+  <div class="section-body">
+    <h4>Access</h4>
+    <ul>
+      <li><strong>Vehicle access:</strong> From the north (existing road on woodland edge). Access road wide enough for fire truck (3.5m+).</li>
+      <li><strong>Parking:</strong> North side of the building, screened from main view.</li>
+      <li><strong>Pedestrian paths:</strong> Practical paths connecting house → garden → orchard → pond. No formal paths in wild zones.</li>
+      <li><strong>Slope access:</strong> Gentle gradient paths follow contours where possible, stairs on steeper sections.</li>
+    </ul>
+
+    <h4>Infrastructure</h4>
+    <ul>
+      <li><strong>🧰 Toolshed:</strong> Near the Zone 1–2 boundary, easily accessible from house and garden.</li>
+      <li><strong>🐔 Chicken coop:</strong> Stationary secure coop at Zone 1–2 boundary, with movable electric netting for rotation.</li>
+      <li><strong>🐝 Beehives:</strong> 2–4 hives in south-facing, wind-sheltered spot with morning sun.</li>
+      <li><strong>🔄 Compost system:</strong> 3-bin system (1m³ each) on north side of Zone 1 (shaded, near kitchen). Second compost area at orchard edge for prunings.</li>
+      <li><strong>🧱 Cold frames:</strong> On south wall of building for season extension.</li>
+      <li><strong>🌿 Herb spiral:</strong> Adjacent to kitchen door — rosemary, thyme, sage, oregano, lavender, mint, parsley.</li>
+      <li><strong>🚧 Fencing:</strong> Boar-proof fence on woodland boundary. Deer protection for young trees (tree guards, first 3 years).</li>
+    </ul>
+
+    <div class="tool-links">
+      <a class="tool-link" href="./SOILPEPPER Site Layout.html" target="_blank">🔗 Open Tool: Site Layout</a>
+      <a class="tool-link" href="./Tuscan Helicopter View.html" target="_blank">🔗 Open Tool: Helicopter View</a>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SECTION 6: SPECIES SELECTION ========== -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="arrow">▶</span>
+    <span class="title">🌿 Species Selection</span>
+    <span class="badge badge-complete">✅ Complete</span>
+  </div>
+  <div class="section-body">
+    <p>The species database contains <strong><span data-count="species">256</span> species</strong> with 10 filter dimensions (soil type, category, sun, water, function, season, perennial, N-fixer, fire-resistant, native). 31 species were formally assessed for suitability. Key selections by function:</p>
+
+    <div class="species-grid">
+      <div class="species-card">
+        <div class="scat">🍎 Fruit Trees</div>
+        <div class="slist">Apple (multiple vars), Pear, Plum, Peach, Apricot, Fig, Persimmon, Pomegranate, Cherry, Lemon, Carob, Almond, Pistachio, Mulberry</div>
+      </div>
+      <div class="species-card">
+        <div class="scat">🫒 Olives & Nuts</div>
+        <div class="slist">Frantoio, Leccino, Moraiolo, Pendolino (olives), Hazelnut, Walnut, Chestnut, Almond</div>
+      </div>
+      <div class="species-card">
+        <div class="scat">🫐 Berries & Vines</div>
+        <div class="slist">Grape, Raspberry, Blackberry, Currant, Jostaberry, Aronia, Elderberry, Goji Berry, Sea Buckthorn</div>
+      </div>
+      <div class="species-card">
+        <div class="scat">🥬 Vegetable Garden</div>
+        <div class="slist">Tomato, Pepper, Eggplant, Zucchini, Cavolo Nero, Fava Bean, Garlic, Onion, Carrot, Beetroot, Lettuce, Chard, Kale, Beans, Peas, Radish, Parsnip, Broccoli, Cauliflower, Artichoke, Asparagus</div>
+      </div>
+      <div class="species-card">
+        <div class="scat">🌿 N-Fixers</div>
+        <div class="slist">Italian Alder, Black Locust, Eleagnus, Broom, Sea Buckthorn, White Clover, Vetch, Fava Bean, Lupin</div>
+      </div>
+      <div class="species-card">
+        <div class="scat">🌸 Pollinators</div>
+        <div class="slist">Lavender, Rosemary, Sage, Thyme, Oregano, Borage, Marjoram, Fennel, Coriander, Buckwheat, Native wildflowers</div>
+      </div>
+      <div class="species-card">
+        <div class="scat">🔥 Fire-Resistant</div>
+        <div class="slist">Olive, Fig, Mulberry, Citrus, Aloe, Lavender, Rosemary, Sage, Iceplant, Pomegranate, Strawberry Tree</div>
+      </div>
+      <div class="species-card">
+        <div class="scat">🌲 Windbreak & Forage</div>
+        <div class="slist">Eleagnus × ebbingei, Italian Alder, Black Locust, Spanish Broom, Oak, Carob, Mulberry</div>
+      </div>
+      <div class="species-card">
+        <div class="scat">🌿 Native Maquis</div>
+        <div class="slist">Myrtle, Arbutus (Corbezzolo), Heather, Broom, Mediterranean shrubs</div>
+      </div>
+      <div class="species-card">
+        <div class="scat">💧 Water-Loving</div>
+        <div class="slist">Alder, Willow, Poplar, Elderberry, Mint, Watercress, Iris</div>
+      </div>
+    </div>
+
+    <div class="tool-links">
+      <a class="tool-link" href="./Tuscan Species Filter.html" target="_blank">🔗 Open Tool: Species Filter</a>
+      <a class="tool-link" href="./Tuscan Orchard Placement.html" target="_blank">🔗 Open Tool: Orchard Placement</a>
+      <a class="tool-link" href="./Tuscan Local Species Catalogue.md" target="_blank">🔗 Species Catalogue</a>
+      <a class="tool-link" href="./suitability-assessment.md" target="_blank">🔗 Suitability Assessment</a>
+      <a class="tool-link" href="./design-report.md" target="_blank">🔗 Design Report</a>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SECTION 7: GUILD INTEGRATION ========== -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="arrow">▶</span>
+    <span class="title">🌳 Guild Integration</span>
+    <span class="badge badge-complete">✅ Complete</span>
+  </div>
+  <div class="section-body">
+    <p><strong>13 tree guilds</strong> form the backbone of the orchard, each with a 3-ring structure: inner (support/companion), mid (guild-specific), and outer (canopy/edge). The guild system creates self-regulating, low-maintenance ecosystems around each tree.</p>
+
+    <h4>3-Ring Guild Structure</h4>
+    <div class="guild-ring">
+      <div class="guild-ring-card">
+        <div class="ring-icon">🟤</div>
+        <div class="ring-title">Inner Ring (0.5–1m)</div>
+        <div class="ring-examples">Comfrey (mineral accumulator), Chives, Garlic (pest repellent), Daffodils (rodent repellent), Mulch</div>
+      </div>
+      <div class="guild-ring-card">
+        <div class="ring-icon">🟢</div>
+        <div class="ring-title">Mid Ring (1–2m)</div>
+        <div class="ring-examples">White Clover (N-fixer), Yarrow (dynamic accumulator), Oregano (ground cover), Strawberries</div>
+      </div>
+      <div class="guild-ring-card">
+        <div class="ring-icon">🔵</div>
+        <div class="ring-title">Outer Ring (2–4m+)</div>
+        <div class="ring-examples">Berry hedgerows, N-fixing shrubs (Eleagnus, Sea Buckthorn), Pollinator strips, Windbreak species</div>
+      </div>
+    </div>
+
+    <h4>Guild Inventory</h4>
+    <table>
+      <tr><th>Tree Guild</th><th>Inner Companions</th><th>Mid Companions</th><th>Notes</th></tr>
+      <tr><td>Fig</td><td>Comfrey, Garlic, Rosemary</td><td>Clover, Oregano, Lavender</td><td>South wall, warmest spot</td></tr>
+      <tr><td>Persimmon</td><td>Comfrey, Chives, Daffodil</td><td>Clover, Yarrow, Strawberry</td><td>High frost tolerance</td></tr>
+      <tr><td>Grape</td><td>Garlic, Chives, Thyme</td><td>Clover, Borage, Marjoram</td><td>Arbour on south side</td></tr>
+      <tr><td>Peach</td><td>Comfrey, Daffodil, Garlic</td><td>Clover, Yarrow, Mint</td><td>Frost-sensitive, upper slope</td></tr>
+      <tr><td>Plum</td><td>Comfrey, Chives, Leek</td><td>Clover, Oregano, Strawberry</td><td>Cooler west aspect</td></tr>
+      <tr><td>Apple</td><td>Comfrey, Daffodil, Chives</td><td>Clover, Tansy, Strawberry</td><td>Late-blooming variety</td></tr>
+      <tr><td>Pear</td><td>Comfrey, Garlic, Daffodil</td><td>Clover, Yarrow, Strawberry</td><td>Cooler west aspect</td></tr>
+      <tr><td>Hazelnut</td><td>Comfrey, Chives, Daffodil</td><td>Clover, Oregano, Strawberry</td><td>Coppice management</td></tr>
+      <tr><td>Walnut</td><td>Comfrey, Daffodil, Garlic</td><td>Clover, Yarrow, Mint</td><td>Juglone-tolerant companions</td></tr>
+      <tr><td>Lemon</td><td>Comfrey, Rosemary, Thyme</td><td>Oregano, Lavender, Clover</td><td>Protected spot, marginal</td></tr>
+      <tr><td>Carob</td><td>Comfrey, Garlic, Sage</td><td>Clover, Lavender, Rosemary</td><td>N-fixing, drought-tolerant</td></tr>
+      <tr><td>Almond</td><td>Comfrey, Daffodil, Garlic</td><td>Clover, Yarrow, Lavender</td><td>Early bloomer, upper slope</td></tr>
+      <tr><td>Pistachio</td><td>Comfrey, Chives, Oregano</td><td>Clover, Thyme, Sage</td><td>Drought-tolerant, warm slope</td></tr>
+    </table>
+
+    <h4>Zone 2b Forest Garden</h4>
+    <p>15 species across 7 layers (canopy, sub-canopy, shrub, herb, ground cover, climber, root) with 4 swales on contour. SE firebreak creates a transition zone. The 7-layer design maximizes vertical space and creates diverse microclimates.</p>
+
+    <div class="tool-links">
+      <a class="tool-link" href="./Tuscan Guild Diagrams.html" target="_blank">🔗 Open Tool: Guild Diagrams</a>
+      <a class="tool-link" href="./Tuscan Zone 2b Design.html" target="_blank">🔗 Open Tool: Zone 2b Design</a>
+      <a class="tool-link" href="./Tuscan Orchard Placement.html" target="_blank">🔗 Open Tool: Orchard Placement</a>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SECTION 8: FIRE SAFETY ========== -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="arrow">▶</span>
+    <span class="title">🔥 Fire Safety</span>
+    <span class="badge badge-complete">✅ Complete</span>
+  </div>
+  <div class="section-body">
+    <p><strong>Wildfire risk is REAL in Tuscany.</strong> The combination of hot, dry summers (Jul–Sep peak), dry Mediterranean vegetation, and the Sirocco wind from the SE creates a significant fire sector. The south-facing slope also means vegetation is drier and more combustible.</p>
+
+    <div class="fs-grid">
+      <div class="fs-card">
+        <div class="fs-icon">🛡️</div>
+        <div class="fs-title">SE Firebreak Zone</div>
+        <div class="fs-desc">0–10m cleared strip on the SE boundary. Deciduous trees (lower flammability) + mown green strip. Irrigated green buffer acts as firebreak.</div>
+      </div>
+      <div class="fs-card">
+        <div class="fs-icon">🌿</div>
+        <div class="fs-title">Fire-Resistant Species</div>
+        <div class="fs-desc">Near structures: Olive, Fig, Mulberry, Citrus, Aloe, Lavender, Rosemary, Sage, Iceplant, Pomegranate, Strawberry Tree. Avoid pines, eucalyptus, junipers, cypress.</div>
+      </div>
+      <div class="fs-card">
+        <div class="fs-icon">💧</div>
+        <div class="fs-title">Water for Firefighting</div>
+        <div class="fs-desc">Irrigation pond (200m³) on SE side serves as water source for firefighting. Natural pool (112m³) as secondary reserve. Access road wide enough for fire truck (3.5m+).</div>
+      </div>
+      <div class="fs-card">
+        <div class="fs-icon">🌊</div>
+        <div class="fs-title">Humidity Buffer</div>
+        <div class="fs-desc">Pond and swales on the SE side create humidity buffer against Sirocco drying. Well-watered Zone 1 (vegetable garden) on SE side of building acts as green firebreak.</div>
+      </div>
+      <div class="fs-card">
+        <div class="fs-icon">🔥</div>
+        <div class="fs-title">Fuel Load Management</div>
+        <div class="fs-desc">Zone 4 managed woodland — keep fuel load low. Compost pile shaded and moist in summer. No flammable debris near structures. Regular pruning and clearance.</div>
+      </div>
+      <div class="fs-card">
+        <div class="fs-icon">🏠</div>
+        <div class="fs-title">Building Protection</div>
+        <div class="fs-desc">Stone construction (non-combustible). Defensible space of 10m around building. Ember-resistant vents. Fire-resistant roof materials.</div>
+      </div>
+    </div>
+
+    <div class="tool-links">
+      <a class="tool-link" href="./Tuscan Sector Analysis.html" target="_blank">🔗 Open Tool: Sector Analysis</a>
+      <a class="tool-link" href="./Tuscan Helicopter View.html" target="_blank">🔗 Open Tool: Helicopter View</a>
+      <a class="tool-link" href="./Tuscan Water Management.html" target="_blank">🔗 Open Tool: Water Management</a>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SECTION 9: IMPLEMENTATION PHASING ========== -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="arrow">▶</span>
+    <span class="title">📅 Implementation Phasing</span>
+    <span class="badge badge-complete">✅ Complete</span>
+  </div>
+  <div class="section-body">
+    <p>Three-year phased implementation prioritising infrastructure first (water, access, fire safety), then production systems (orchard, guilds), then maturation and fine-tuning.</p>
+
+    <div class="timeline">
+      <div class="phase y1">
+        <div class="dot"></div>
+        <div class="phead">Year 1 — Infrastructure & Foundation</div>
+        <div class="pbody">
+          <ul>
+            <li><strong>💧 Water:</strong> Install rainwater tanks (3× 5,000L) with first-flush diverters. Dig irrigation pond (<span data-water="pond">200</span>m³). Install well pump if needed.</li>
+            <li><strong>🌊 Swales:</strong> Dig 4 contour swales with berms (~50cm deep, 1m wide).</li>
+            <li><strong>🥬 Vegetable garden:</strong> Establish 12 no-dig raised beds (30cm organic topsoil). Install drip irrigation. Plant cool-season crops.</li>
+            <li><strong>🔥 Firebreak:</strong> Clear SE firebreak zone. Plant fire-resistant hedge.</li>
+            <li><strong>🛤️ Access:</strong> Grade access road. Build pedestrian paths. Install parking area.</li>
+            <li><strong>🏠 Infrastructure:</strong> Toolshed, chicken coop, 3-bin compost system. Greywater system from house to Zone 1.</li>
+            <li><strong>🌱 Soil prep:</strong> Green manure cover crops on orchard areas. Sheet mulching on future beds.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="phase y2">
+        <div class="dot"></div>
+        <div class="phead">Year 2 — Orchard, Guilds & Forest Garden</div>
+        <div class="pbody">
+          <ul>
+            <li><strong>🍎 Orchard:</strong> Plant 116 tree/shrub species in their assigned positions (frost/fire/wind/sun optimised). Install tree guards.</li>
+            <li><strong>🌳 Guilds:</strong> Establish 13 tree guilds with inner companions (comfrey, chives, garlic, daffodils).</li>
+            <li><strong>🌿 Zone 2b:</strong> Plant 15-species forest garden (7 layers) with 4 swales. SE firebreak planting.</li>
+            <li><strong>🫐 Berry hedgerows:</strong> Plant perimeter hedgerows (raspberry, currant, blackberry, aronia, elderberry).</li>
+            <li><strong>🐝 Bees:</strong> Install 2–4 hives in south-facing, sheltered spot.</li>
+            <li><strong>🫒 Olive grove:</strong> Plant 25 olive trees (Frantoio, Leccino, Moraiolo, Pendolino). Cover crop between rows.</li>
+            <li><strong>🏊 Natural pool:</strong> Excavate and line 15×5×1.5m natural pool with aquatic plants.</li>
+            <li><strong>🌲 Zone 4:</strong> Plant windbreak (Eleagnus, Italian alder, black locust, broom). Forage trees (oak, carob, mulberry).</li>
+          </ul>
+        </div>
+      </div>
+      <div class="phase y3">
+        <div class="dot"></div>
+        <div class="phead">Year 3+ — Maturation & Fine-Tuning</div>
+        <div class="pbody">
+          <ul>
+            <li><strong>🌿 Maturation:</strong> Guilds mature — mid-ring companions (clover, yarrow, oregano, strawberries). Outer ring fills in.</li>
+            <li><strong>🔄 Soil building:</strong> Sheet mulching, chop-and-drop from comfrey, green manure rotations.</li>
+            <li><strong>🐔 Chicken rotation:</strong> Full integration — orchard post-harvest, winter garden clearing, pest control.</li>
+            <li><strong>🌱 Propagation:</strong> Expand from own seed/divisions. Plant cuttings from guild companions.</li>
+            <li><strong>📊 Monitoring:</strong> Track species success, adjust siting, observe microclimate patterns.</li>
+            <li><strong>🌿 Zone 5:</strong> Establish wild corridor with native maquis species (myrtle, arbutus, heather).</li>
+            <li><strong>🔧 Fine-tuning:</strong> Adjust irrigation timing, prune for shape, replace any losses, expand productive areas.</li>
+            <li><strong>🔄 Cycling:</strong> Compost system reaches steady state. Full nutrient cycling operational.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-links">
+      <a class="tool-link" href="./Tuscan Vegetable Garden Planner.html" target="_blank">🔗 Open Tool: Veg Garden Planner</a>
+      <a class="tool-link" href="./Tuscan Orchard Placement.html" target="_blank">🔗 Open Tool: Orchard Placement</a>
+      <a class="tool-link" href="./Tuscan Zone 2b Design.html" target="_blank">🔗 Open Tool: Zone 2b Design</a>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SECTION 10: DESIGN RATIONALE ========== -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="arrow">▶</span>
+    <span class="title">🧠 Design Rationale</span>
+    <span class="badge badge-complete">✅ Complete</span>
+  </div>
+  <div class="section-body">
+    <p>Key design decisions and the reasoning behind them. Each choice is rooted in the site's specific conditions: climate, topography, soil, and the client's goals for self-sufficiency and resilience.</p>
+
+    <div class="rationale-grid">
+      <div class="rationale-card">
+        <div class="rq">🏠 Why is the building south-facing?</div>
+        <div class="ra">The south-facing slope maximises passive solar gain (~30% more radiation than flat land), provides natural shelter from cold NW winds (Tramontana), and allows frost drainage downhill. The building's south wall is the warmest microclimate — ideal for season extension and tender plants.</div>
+      </div>
+      <div class="rationale-card">
+        <div class="rq">🍎 Why are frost-sensitive trees on the upper slope?</div>
+        <div class="ra">Cold air is heavier than warm air — it flows downhill like water. The upper part of the slope is 2–4°C warmer on frost nights than the valley bottom. Peaches, apricots, and almonds (early bloomers) go highest.</div>
+      </div>
+      <div class="rationale-card">
+        <div class="rq">💧 Why is the pond at the highest point?</div>
+        <div class="ra">Gravity-fed drip irrigation requires elevation head. The pond at the highest point provides ~8–10m head = 0.78 bar pressure — sufficient for drip irrigation without pumps. This is a permanent energy-free solution.</div>
+      </div>
+      <div class="rationale-card">
+        <div class="rq">🌊 Why 4 swales, not more?</div>
+        <div class="ra">4 swales at ~7m vertical intervals on a 10% slope (total ~100m length) provide adequate water harvesting for the 1ha site. More swales would over-engineer the system; fewer would miss the water-spreading benefit. Each swale captures ~50–200L per meter.</div>
+      </div>
+      <div class="rationale-card">
+        <div class="rq">🔥 Why the SE firebreak?</div>
+        <div class="ra">The Sirocco wind from the SE (135°) is the primary fire risk vector — hot, dry, and carries embers. The firebreak + pond on the SE side creates a defensible space. The irrigated vegetable garden on the south side acts as an additional green firebreak.</div>
+      </div>
+      <div class="rationale-card">
+        <div class="rq">🌳 Why 13 tree guilds with 3-ring structure?</div>
+        <div class="ra">The 3-ring structure (inner/mid/outer) creates a self-regulating ecosystem around each tree. Inner ring: mineral accumulation + pest repellent. Mid ring: N-fixation + ground cover. Outer ring: edge habitat + pollination. This reduces maintenance by 60–80% vs. conventional orchard.</div>
+      </div>
+      <div class="rationale-card">
+        <div class="rq">🥬 Why no-dig raised beds?</div>
+        <div class="ra">No-dig preserves soil structure, fungal networks, and earthworm populations. 30cm of organic topsoil is sufficient for deep-rooted vegetables. Raised beds warm faster in spring, improve drainage on silty-sand, and provide clear paths for maintenance.</div>
+      </div>
+      <div class="rationale-card">
+        <div class="rq">🐝 Why chickens AND bees?</div>
+        <div class="ra">Chickens provide pest control, fertilization, and egg production. Bees provide pollination (critical for 90% of fruit trees) and honey. Together they create a closed-loop system: chickens eat pests, bees pollinate crops, manure feeds plants.</div>
+      </div>
+      <div class="rationale-card">
+        <div class="rq">🌿 Why Zone 2b forest garden?</div>
+        <div class="ra">The 7-layer forest garden (15 species) maximises vertical space on the slope, creating diverse microclimates. The SE firebreak transition zone doubles as a productive edge. 4 swales on contour provide water to the entire system without irrigation.</div>
+      </div>
+      <div class="rationale-card">
+        <div class="rq">📐 Why Tuscan heritage varieties?</div>
+        <div class="ra">Tuscan cultivars (Frantoio, Leccino, Moraiolo, Pendolino for olives; Brogiotto Nero for figs; Cavolo Nero for kale) are proven over centuries of local adaptation. They have better disease resistance, drought tolerance, and flavour than imported varieties.</div>
+      </div>
+    </div>
+
+    <div class="tool-links">
+      <a class="tool-link" href="./design-report.md" target="_blank">🔗 Open Tool: Design Report</a>
+      <a class="tool-link" href="./SOILPEPPER Site Layout.html" target="_blank">🔗 Open Tool: Site Layout</a>
+      <a class="tool-link" href="./Tuscan Sector Analysis.html" target="_blank">🔗 Open Tool: Sector Analysis</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div style="text-align:center;margin:30px 0 20px;padding-top:15px;border-top:1px solid #2a3a2a;color:rgba(255,255,255,0.3);font-size:0.7em;">
+  <p>🌿 SOILPEPPER · Aranya Step 6 Design Proposal · 14 Interactive Tools · 256 Species Database</p>
+  <p style="margin-top:4px;">Built with all 10 interactive visuals — <a href="./Tuscan Helicopter View.html" style="color:#81c784;">Helicopter View</a> · <a href="./Tuscan Sector Analysis.html" style="color:#81c784;">Sector Analysis</a> · <a href="./Tuscan Orchard Placement.html" style="color:#81c784;">Orchard</a> · <a href="./Tuscan Guild Diagrams.html" style="color:#81c784;">Guilds</a> · <a href="./Tuscan Vegetable Garden Planner.html" style="color:#81c784;">Veg Garden</a> · <a href="./Tuscan Zone 2b Design.html" style="color:#81c784;">Zone 2b</a> · <a href="./Tuscan Water Management.html" style="color:#81c784;">Water</a> · <a href="./SOILPEPPER Site Layout.html" style="color:#81c784;">Site Layout</a> · <a href="./Tuscan Vegetable Garden Design.html" style="color:#81c784;">Veg Design</a> · <a href="./Tuscan Species Filter.html" style="color:#81c784;">Species</a></p>
+  <p style="margin-top:4px;">Data source: <a href="./Tuscan Local Species Catalogue.md" style="color:#81c784;">Species Catalogue</a> · <a href="./design-report.md" style="color:#81c784;">Design Report</a> · <a href="./suitability-assessment.md" style="color:#81c784;">Suitability Assessment</a></p>
+</div>
+
+<script>
+function toggleSection(header) {
+  header.classList.toggle('open');
+  const body = header.nextElementSibling;
+  body.classList.toggle('open');
+}
+
+// Auto-open first section on load
+document.addEventListener('DOMContentLoaded', function() {
+  // Already open by default
+});
+</script>
+
+<!-- AUTO-COUNT: fills [data-count] spans from plants.json at load -->
+<script>
+(function () {
+  function fill(counts) {
+    var els = document.querySelectorAll('[data-count]');
+    for (var i = 0; i < els.length; i++) {
+      var key = els[i].getAttribute('data-count');
+      if (counts[key] !== undefined) els[i].textContent = counts[key];
+    }
+  }
+  try {
+    fetch('plants.json').then(function (r) { return r.json(); }).then(function (db) {
+      var tree = 0, shrub = 0;
+      Object.keys(db).forEach(function (k) {
+        var c = db[k].category;
+        if (c === 'tree' || c === 'shrub-tree') tree++;
+        else if (c === 'shrub') shrub++;
+      });
+      fill({ species: Object.keys(db).length, treeshrub: tree + shrub, tree: tree, shrub: shrub });
+    }).catch(function () { /* offline — keep static fallback */ });
+  } catch (e) { /* file:// or blocked — keep static fallback */ }
+})();
+</script>
+
+
+
+<!-- WATER DATA READER (shared — reads tuscan-water-v1 set in Master Plan → Water Setup) -->
+<script>
+(function () {
+  var KEY = 'tuscan-water-v1';
+  var DEF = { roofArea: 250, rainfall: 800, roofEff: 0.85, pondSize: 200, poolSize: 112, demand: 958, tankCount: 3, tankSize: 5000, swales: 4, gravityHead: 10 };
+  var w = DEF;
+  try {
+    var raw = localStorage.getItem(KEY);
+    if (raw) { var p = JSON.parse(raw); for (var k in DEF) if (p[k] !== undefined) w[k] = p[k]; }
+  } catch (e) {}
+  var brief = {};
+  try { brief = JSON.parse(localStorage.getItem('tuscan-brief-v1') || '{}'); } catch (e) {}
+  var roofHarvestL = Math.round(w.roofArea * w.rainfall * w.roofEff);       // litres/yr
+  var roofHarvestM3 = Math.round(roofHarvestL / 1000);
+  var plotRainM3 = Math.round(((brief.plotW || 100) * (brief.plotH || 100) * w.rainfall) / 1000);
+  var tankTotalL = w.tankCount * w.tankSize;
+  var pressureBar = (w.gravityHead * 0.098).toFixed(2);
+  var slopePct = (function () {
+    var m = String(brief.slope || '').match(/(\d+)/);
+    return m ? parseInt(m[1], 10) : 10;
+  })();
+  var swaleSpacingM = (function () {
+    var ph = parseInt(brief.plotH, 10) || 100;
+    var drop = ph * (slopePct / 100);
+    var n = Math.max(1, w.swales || 4);
+    return Math.max(1, Math.round((drop / n) * 10) / 10);
+  })();
+  var VALS = {
+    roofHarvestL: roofHarvestL.toLocaleString('en-US'),
+    roofHarvestM3: roofHarvestM3.toLocaleString('en-US'),
+    pond: w.pondSize,
+    pool: w.poolSize,
+    demand: w.demand.toLocaleString('en-US'),
+    rain: plotRainM3.toLocaleString('en-US'),
+    tankTotalL: tankTotalL.toLocaleString('en-US'),
+    tankTotalM3: Math.round(tankTotalL / 1000),
+    tanks: w.tankCount,
+    tankSize: w.tankSize.toLocaleString('en-US'),
+    swales: w.swales,
+    swaleSpacing: swaleSpacingM,
+    head: w.gravityHead,
+    pressure: pressureBar,
+    roofArea: w.roofArea,
+    rainfall: w.rainfall,
+    eff: w.roofEff
+  };
+  document.querySelectorAll('[data-water]').forEach(function (el) {
+    var k = el.getAttribute('data-water');
+    if (VALS[k] !== undefined) el.textContent = VALS[k];
+  });
+})();
+</script>
+
+<!-- MASTER PLAN LIVE SUMMARY (Zone Plan section — reads masterplan-v1) -->
+<script>
+(function () {
+  var KEY = 'masterplan-v1';
+  var ZONE_META = {
+    0: { label: 'Z0 · House', icon: '🏠' }, 1: { label: 'Z1 · Kitchen', icon: '🥬' },
+    2: { label: 'Z2 · Orchard', icon: '🍎' }, 3: { label: 'Z3 · Field', icon: '🫒' },
+    4: { label: 'Z4 · Woodland', icon: '🌲' }, 5: { label: 'Z5 · Wild', icon: '🌿' }
+  };
+  function render() {
+    var body = document.getElementById('mp-live-body');
+    if (!body) return;
+    var plan = null;
+    try { plan = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) {}
+    if (!plan || !plan.cells || !plan.cols || !plan.rows) {
+      body.innerHTML = '<span class="mp-note">No Master Plan saved yet — create one in <a href="master-plan.html" style="color:#81a85a;">Master Plan</a> first.</span>';
+      return;
+    }
+    var zoneCount = {}; var funcCount = {}; var assigned = 0; var total = plan.cols * plan.rows;
+    Object.keys(plan.cells).forEach(function (k) {
+      var c = plan.cells[k];
+      if (!c) return;
+      assigned++;
+      if (c.zone !== undefined && c.zone !== null) zoneCount[c.zone] = (zoneCount[c.zone] || 0) + 1;
+      if (c.function) funcCount[c.function] = (funcCount[c.function] || 0) + 1;
+    });
+    var html = '';
+    [0, 1, 2, 3, 4, 5].forEach(function (z) {
+      var n = zoneCount[z] || 0;
+      var cellM2 = plan.cellSize ? plan.cellSize * plan.cellSize : 100;
+      html += '<span class="mp-chip"><span>' + ZONE_META[z].icon + ' ' + ZONE_META[z].label + '</span><b>' + n + '</b> cell' + (n === 1 ? '' : 's') + ' · ~' + (n * cellM2).toLocaleString('en-US') + ' m²</span>';
+    });
+    html += '<span class="mp-chip">📦 Assigned <b>' + assigned + '/' + total + '</b> cells</span>';
+    html += '<span class="mp-chip">🌿 Unassigned <b>' + (total - assigned) + '</b></span>';
+    body.innerHTML = html;
+    var note = document.createElement('div');
+    note.className = 'mp-note';
+    note.innerHTML = 'Live from your Master Plan (' + plan.cols + '×' + plan.rows + ' grid, ' + (plan.cellSize || 10) + 'm cells) — edit in <a href="master-plan.html" style="color:#81a85a;">Master Plan</a>.';
+    body.appendChild(note);
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', render);
+  } else { render(); }
+})();
+</script>
+</body>
+</html>

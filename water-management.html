@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOILPEPPER — Water Management</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+/* ===== THEME: Juniper Ridge (matches suite) ===== */
+:root{
+  --bg:#0a1a0a;
+  --bg-card:#142114;
+  --bg-card-hover:#1a2a1a;
+  --border:#1a301a;
+  --border-accent:#2a4028;
+  --text:#c8d8c0;
+  --text-dim:#6a8068;
+  --text-bright:#e8f0e0;
+  --accent-emerald:#5a8a4a;
+  --accent-teal:#c4a040;
+  --accent-amber:#e8dcc0;
+  --font-head:'Palatino','Palatino Linotype','Georgia',serif;
+  --font-body:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  --font-mono:'Courier New','Consolas','Liberation Mono',monospace;
+  --radius:6px;
+}
+body { font-family: var(--font-body); background: var(--bg); color: var(--text); padding: 20px; }
+h1 { font-family: var(--font-head); text-align: center; color: var(--accent-teal); margin-bottom: 5px; font-size: 1.6em; }
+.subtitle { text-align: center; color: var(--text-dim); margin-bottom: 20px; font-size: 0.9em; }
+.legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-bottom: 20px; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.85em; }
+.legend-color { width: 18px; height: 18px; border-radius: 3px; border: 1px solid rgba(255,255,255,0.2); }
+.canvas { max-width: 1100px; margin: 0 auto; }
+.plot { position: relative; width: 100%; aspect-ratio: 10/11; background: linear-gradient(170deg, #4a5b3a 0%, #5d6e3e 30%, #6b7e4e 60%, #7a8e5e 100%); border-radius: 12px; border: 3px solid #33691e; overflow: hidden; }
+.element { position: absolute; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-weight: 600; padding: 8px; cursor: pointer; transition: all 0.3s; }
+.element:hover { transform: scale(1.03); z-index: 20; filter: brightness(1.2); }
+.label { font-size: 0.95em; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
+.detail { font-size: 0.68em; opacity: 0.92; margin-top: 4px; text-shadow: 0 1px 2px rgba(0,0,0,0.7); line-height: 1.3; }
+
+/* Water elements */
+.pond { background: linear-gradient(135deg, #1565c0, #1976d2); border: 2px solid #0d47a1; border-radius: 45% 40% 50% 45% !important; }
+.pool { background: linear-gradient(135deg, #0288d1, #039be5); border: 2px solid #0277bd; border-radius: 12px; }
+.tanks { background: linear-gradient(135deg, #42a5f5, #1e88e5); border: 2px solid #1565c0; }
+.well { background: radial-gradient(circle, #64b5f6, #1565c0); border: 2px solid #0d47a1; border-radius: 50% !important; }
+
+/* ===== Master Plan layer (hybrid: your real cells under the schematic) ===== */
+.plan-toggle-wrap { max-width:1100px; margin:12px auto 0; display:flex; justify-content:center; }
+.plan-toggle { background: var(--bg-card); border: 1px solid var(--border-accent); color: var(--text); border-radius: var(--radius); padding: 9px 16px; font-size: 0.82em; cursor: pointer; font-weight: 600; font-family: var(--font-body); }
+.plan-toggle:hover { border-color: var(--accent-emerald); }
+.plan-toggle.on { background: var(--accent-emerald); color: #0a1a0a; border-color: var(--accent-emerald); }
+.plan-grid { position:absolute; top:0; left:0; width:100%; height:100%; display:grid; gap:2px; padding:2px; z-index:1; pointer-events:none; }
+.plan-grid .cell { position:relative; border-radius:2px; display:flex; flex-direction:column; align-items:center; justify-content:center; border:1px solid rgba(0,0,0,0.25); overflow:hidden; }
+.plan-grid .cell .cell-icon { font-size:clamp(6px,1.4vw,14px); line-height:1; text-shadow:0 1px 2px rgba(0,0,0,0.8); }
+.plan-grid .cell .cell-label { font-size:clamp(4px,0.6vw,8px); color:rgba(255,255,255,0.85); text-align:center; line-height:1.1; margin-top:1px; padding:0 1px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%; text-shadow:0 1px 2px rgba(0,0,0,0.8); }
+.plan-grid .cell .cell-zone { position:absolute; top:1px; right:2px; font-size:clamp(4px,0.6vw,7px); font-weight:700; color:#fff; background:rgba(0,0,0,0.5); padding:0 2px; border-radius:2px; line-height:1.3; }
+.plan-grid .cell.empty { background:rgba(10,26,10,0.55); }
+.plan-grid .cell.empty .cell-icon { opacity:0.2; }
+.plan-grid .cell.z-0 { background:rgba(141,90,74,0.75); }
+.plan-grid .cell.z-1 { background:rgba(122,138,58,0.75); }
+.plan-grid .cell.z-2 { background:rgba(90,122,58,0.75); }
+.plan-grid .cell.z-3 { background:rgba(138,122,58,0.75); }
+.plan-grid .cell.z-4 { background:rgba(74,106,90,0.75); }
+.plan-grid .cell.z-5 { background:rgba(58,90,74,0.75); }
+.plan-grid .cell.f-guild { background:rgba(31,74,31,0.7); }
+.plan-grid .cell.f-water { background:rgba(18,64,110,0.7); }
+.plan-grid .cell.f-road { background:rgba(90,64,48,0.7); }
+.plan-grid .cell.f-construction { background:rgba(90,37,37,0.7); }
+.plan-grid .cell.f-open { background:rgba(18,36,18,0.7); }
+@media(max-width:700px){ .plan-grid .cell .cell-label{display:none;} }
+
+/* Land elements */
+.building { background: rgba(120,90,60,0.85); border: 2px solid #8d6e63; }
+.veg-garden { background: rgba(255,193,7,0.5); border: 2px solid #fbc02d; }
+.orchard { background: rgba(76,175,80,0.35); border: 2px dashed #66bb6a; }
+.olive { background: rgba(46,125,50,0.35); border: 2px dashed #43a047; }
+.hedge { background: rgba(102,187,106,0.25); border: 1px dashed #81c784; }
+
+/* Pipes & flow */
+.pipe { position: absolute; pointer-events: none; }
+.flow-label { position: absolute; font-size: 0.6em; color: #81d4fa; text-shadow: 0 0 4px rgba(0,0,0,0.9); pointer-events: none; font-weight: 600; }
+
+/* Swales */
+.swale-line { position: absolute; pointer-events: none; }
+
+/* Compass */
+.compass { position: absolute; top: 15px; right: 15px; width: 60px; height: 60px; }
+.compass-arrow { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-100%); width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-bottom: 25px solid #ff5722; }
+.compass-label { position: absolute; top: 50%; left: 50%; transform: translate(-50%, 10px); font-size: 0.7em; color: #ff5722; font-weight: bold; }
+
+/* Elevation indicator */
+.elev { position: absolute; left: 8px; display: flex; flex-direction: column; align-items: center; gap: 0; }
+.elev-label { font-size: 0.6em; color: rgba(255,255,255,0.4); writing-mode: vertical-rl; text-orientation: mixed; }
+
+/* Info panel */
+.info-panel { max-width: 1100px; margin: 20px auto 0; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 15px 20px; min-height: 80px; }
+.info-panel h3 { color: var(--accent-teal); margin-bottom: 8px; font-family: var(--font-head); }
+.info-panel p { font-size: 0.85em; line-height: 1.6; color: var(--text-dim); }
+.info-panel .stat { display: inline-block; background: var(--bg-card-hover); padding: 3px 10px; border-radius: 4px; margin: 3px 5px 3px 0; font-size: 0.8em; color: var(--accent-teal); border: 1px solid var(--border); }
+.spec { display: none; }
+.spec.active { display: block; }
+
+/* Stats bar */
+.stats { max-width: 1100px; margin: 15px auto; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.stat-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 18px; text-align: center; }
+.stat-card .num { font-size: 1.4em; color: var(--accent-teal); font-weight: bold; font-family: var(--font-head); }
+.stat-card .lbl { font-size: 0.72em; color: var(--text-dim); margin-top: 3px; }
+
+/* ===== Water Parameters panel (what-if, like Sector Analysis) ===== */
+.params { max-width: 1100px; margin: 15px auto; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 18px; }
+.params h3 { color: var(--accent-teal); font-family: var(--font-head); font-size: 1.05em; margin-bottom: 4px; }
+.params .phint { font-size: 0.75em; color: var(--text-dim); margin-bottom: 10px; }
+.p-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px 12px; }
+.p-field label { display: block; font-size: 0.68em; color: var(--text-dim); margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.04em; }
+.p-field input { width: 100%; background: var(--bg-card-hover); color: var(--text); border: 1px solid var(--border-accent); border-radius: 4px; padding: 6px 8px; font-size: 0.85em; }
+.p-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+.p-btn { background: var(--bg-card-hover); color: var(--text); border: 1px solid var(--border-accent); border-radius: 4px; padding: 8px 14px; font-size: 0.8em; cursor: pointer; font-weight: 600; }
+.p-btn:hover { border-color: var(--accent-emerald); }
+.p-btn.primary { background: var(--accent-emerald); color: #0a1a0a; border-color: var(--accent-emerald); }
+.p-result { margin-top: 10px; font-size: 0.78em; color: var(--text-dim); }
+.p-result strong { color: var(--accent-teal); }
+.balance { max-width: 1100px; margin: 12px auto; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 18px; }
+.balance h3 { color: var(--accent-teal); font-family: var(--font-head); font-size: 1em; margin-bottom: 8px; }
+.bar { height: 14px; background: var(--bg-card-hover); border: 1px solid var(--border-accent); border-radius: 7px; overflow: hidden; }
+.bar > div { height: 100%; background: linear-gradient(90deg, #1565c0, #42a5f5); border-radius: 7px; transition: width 0.4s; }
+.balance .btxt { display: flex; justify-content: space-between; font-size: 0.75em; color: var(--text-dim); margin-top: 6px; }
+.balance .btxt b { color: var(--text); }
+
+/* ===== Swale Layout Spec card ===== */
+.spec-card { max-width: 1100px; margin: 15px auto; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 20px; }
+.spec-card h3 { color: var(--accent-teal); font-family: var(--font-head); font-size: 1.05em; margin-bottom: 10px; }
+.spec-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px 16px; }
+.spec-item { background: var(--bg-card-hover); border: 1px solid var(--border); border-radius: 6px; padding: 9px 12px; }
+.spec-item .s-label { font-size: 0.65em; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 3px; }
+.spec-item .s-value { font-size: 1.05em; color: var(--text-bright); font-weight: 600; }
+.spec-item .s-value small { color: var(--text-dim); font-weight: 400; font-size: 0.75em; }
+.spec-note { margin-top: 10px; font-size: 0.78em; color: var(--text-dim); line-height: 1.5; }
+.spec-note strong { color: var(--accent-teal); }
+.swale-spacing-label { position: absolute; left: 12px; font-size: 0.55em; color: rgba(0,191,255,0.55); font-weight: 600; text-shadow: 0 0 3px rgba(0,0,0,0.8); }
+</style>
+</head>
+<body>
+<!-- DESIGN BRIEF STRIP (shared reader — injected by design-brief system) -->
+<script>
+(function () {
+  // Shared design brief from Master Plan (tuscan-brief-v1). Static tools only
+  // READ it — they never write. Falls back to sensible Tuscan defaults.
+  var KEY = 'tuscan-brief-v1';
+  var DEF = {
+    region: 'tuscany', title: 'Tuscan hillside',
+    plotW: 100, plotH: 100, cellSize: 10,
+    defaultSoil: 'silty', altitude: 300, climateZone: '8b-9a',
+    aspect: 'South (180°)', slope: '~10% moderate'
+  };
+  var b = DEF;
+  try {
+    var raw = localStorage.getItem(KEY);
+    if (raw) { var p = JSON.parse(raw); for (var k in DEF) if (p[k] !== undefined) b[k] = p[k]; }
+  } catch (e) {}
+
+  var soilLbl = { sandy: 'Sandy', silty: 'Silty', loam: 'Loam', clay: 'Clay', chalky: 'Chalky', peaty: 'Peaty' }[b.defaultSoil] || b.defaultSoil;
+  var regionLbl = b.region === 'netherlands' ? 'Netherlands' : 'Tuscany';
+
+  // Build the strip
+  var strip = document.createElement('div');
+  strip.style.cssText = 'display:flex;flex-wrap:wrap;gap:4px 14px;justify-content:center;align-items:center;' +
+    'background:#142114;border:1px solid #1a301a;border-radius:6px;padding:6px 12px;margin:0 auto 12px;' +
+    'max-width:900px;font-size:0.72rem;color:#a8b8a0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;';
+  var parts = [
+    '<span style="color:#c4a040;font-weight:600">' + (b.title || 'Design') + '</span>',
+    '<span>' + regionLbl + '</span>',
+    '<span>' + b.plotW + '×' + b.plotH + 'm · ' + b.cellSize + 'm cells</span>',
+    '<span>' + soilLbl + ' soil</span>',
+    '<span>~' + b.altitude + 'm</span>',
+    '<span>Zone ' + b.climateZone + '</span>',
+    '<span>' + b.aspect + '</span>',
+    '<span>' + b.slope + '</span>',
+    '<a href="master-plan.html?region=' + b.region + '" style="color:#5a8a4a;text-decoration:none;font-weight:600">⚙️ Edit in Master Plan</a>'
+  ];
+  strip.innerHTML = parts.join('<span style="opacity:0.4">·</span>');
+  var body = document.body;
+  body.insertBefore(strip, body.firstChild);
+
+  // Sector Analysis: prefill params from the brief once the page is ready
+  // (one-way: brief is the source of truth; user can still override locally)
+  function prefillSectorParams() {
+    // Aspect: match degrees (e.g. "South (180°)" → 180) to the select options
+    var aspEl = document.getElementById('aspect');
+    if (aspEl && b.aspect) {
+      var mDeg = String(b.aspect).match(/(\d+)/);
+      var deg = mDeg ? parseInt(mDeg[1], 10) : NaN;
+      if (!isNaN(deg)) {
+        for (var i = 0; i < aspEl.options.length; i++) {
+          if (parseInt(aspEl.options[i].value, 10) === deg) { aspEl.value = aspEl.options[i].value; break; }
+        }
+      }
+    }
+    // Altitude: brief value → number input
+    var altEl = document.getElementById('altitude');
+    if (altEl && b.altitude) {
+      altEl.value = b.altitude;
+      if (typeof updateSectors === 'function') updateSectors();
+    }
+    // Slope: match brief slope % to the select options
+    var slEl = document.getElementById('slope');
+    if (slEl && b.slope) {
+      var mSl = String(b.slope).match(/(\d+)/);
+      var sl = mSl ? parseInt(mSl[1], 10) : NaN;
+      if (!isNaN(sl)) {
+        for (var i = 0; i < slEl.options.length; i++) {
+          if (parseInt(slEl.options[i].value, 10) === sl) { slEl.value = slEl.options[i].value; break; }
+        }
+      }
+    }
+    // Live "Modular Parameters" reference table (if present)
+    var pAsp = document.getElementById('param-aspect');
+    if (pAsp && b.aspect) pAsp.textContent = b.aspect;
+    var pAlt = document.getElementById('param-altitude');
+    if (pAlt && b.altitude) pAlt.textContent = b.altitude + 'm';
+    var pSl = document.getElementById('param-slope');
+    if (pSl && b.slope) {
+      var mP = String(b.slope).match(/(\d+)/);
+      pSl.textContent = (mP ? mP[1] : b.slope) + '%';
+    }
+    // Live summary sentence + sun stats (if present)
+    var facing = function (deg) {
+      var d = parseInt(deg, 10);
+      if (d >= 315 || d < 45) return 'north-facing';
+      if (d >= 45 && d < 135) return 'east-facing';
+      if (d >= 135 && d < 225) return 'south-facing';
+      return 'west-facing';
+    };
+    var sumAlt = document.getElementById('sum-altitude');
+    if (sumAlt && b.altitude) sumAlt.textContent = '~' + b.altitude + 'm';
+    var sumReg = document.getElementById('sum-region');
+    if (sumReg) sumReg.textContent = b.region === 'netherlands' ? 'the Netherlands' : 'Tuscany';
+    var sumAsp = document.getElementById('sum-aspect');
+    if (sumAsp && b.aspect) {
+      var dA = String(b.aspect).match(/(\d+)/);
+      if (dA) sumAsp.textContent = facing(dA[1]);
+    }
+    var latEl2 = document.getElementById('lat');
+    var latVal = latEl2 ? (parseFloat(latEl2.value) || 43) : 43;
+    var stLat = document.getElementById('st-lat');
+    if (stLat) stLat.textContent = Math.round(latVal) + '°N';
+    var stSum = document.getElementById('st-summer');
+    if (stSum) stSum.textContent = Math.round((90 - latVal + 23.44) * 10) / 10 + '°';
+    var stWin = document.getElementById('st-winter');
+    if (stWin) stWin.textContent = Math.round((90 - latVal - 23.44) * 10) / 10 + '°';
+    var stAsp = document.getElementById('st-aspect');
+    if (stAsp && b.aspect) {
+      var dA2 = String(b.aspect).match(/(\d+)/);
+      if (dA2) stAsp.textContent = facing(dA2[1]);
+    }
+    // Water Management: plot size + altitude in subtitle (if present)
+    var wmPlot = document.getElementById('wm-plot');
+    if (wmPlot && b.plotW && b.plotH) {
+      var ha = (b.plotW * b.plotH) / 10000;
+      wmPlot.textContent = (ha >= 1 ? (Math.round(ha * 10) / 10) + ' ha' : Math.round(b.plotW * b.plotH) + ' m²');
+    }
+    var wmAlt = document.getElementById('wm-alt');
+    if (wmAlt && b.altitude) wmAlt.textContent = '~' + b.altitude + 'm altitude';
+    // Design Proposal: Site Overview body from the brief (if present)
+    var dpAlt = document.getElementById('dp-alt');
+    if (dpAlt && b.altitude) dpAlt.textContent = b.altitude;
+    var dpZone = document.getElementById('dp-zone');
+    if (dpZone && b.climateZone) dpZone.textContent = b.climateZone;
+    var dpArea = document.getElementById('dp-area');
+    if (dpArea && b.plotW && b.plotH) {
+      var dpHa = (b.plotW * b.plotH) / 10000;
+      dpArea.textContent = (dpHa >= 1 ? dpHa + ' hectares' : Math.round(b.plotW * b.plotH) + ' m²') + ' (' + b.plotW + '×' + b.plotH + 'm)';
+    }
+    var dpRain = document.getElementById('dp-rain');
+    var waterForRain = null;
+    try { waterForRain = JSON.parse(localStorage.getItem('tuscan-water-v1') || 'null'); } catch (e) {}
+    if (dpRain && waterForRain && waterForRain.rainfall) dpRain.textContent = waterForRain.rainfall;
+    // Summary cards: site area + swales
+    var cardArea = document.getElementById('card-area');
+    if (cardArea && b.plotW && b.plotH) {
+      var cHa = (b.plotW * b.plotH) / 10000;
+      cardArea.textContent = (cHa >= 1 ? cHa + ' ha' : Math.round(b.plotW * b.plotH) + ' m²');
+    }
+    var cardSwales = document.getElementById('card-swales');
+    if (cardSwales && waterForRain && waterForRain.swales) cardSwales.textContent = waterForRain.swales;
+    // Subtitle (top of page): area, altitude, zone, location
+    var subArea = document.getElementById('sub-area');
+    if (subArea && b.plotW && b.plotH) {
+      var sHa = (b.plotW * b.plotH) / 10000;
+      subArea.textContent = (sHa >= 1 ? sHa + 'ha Hillside' : Math.round(b.plotW * b.plotH) + 'm² Site');
+    }
+    var subAlt = document.getElementById('sub-alt');
+    if (subAlt && b.altitude) subAlt.textContent = b.altitude;
+    var subZone = document.getElementById('sub-zone');
+    if (subZone && b.climateZone) subZone.textContent = b.climateZone;
+    var subLoc = document.getElementById('sub-loc');
+    if (subLoc) subLoc.textContent = b.region === 'netherlands' ? 'Netherlands' : 'Tuscany, Italy';
+    if (typeof updateSectors === 'function') updateSectors();
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', prefillSectorParams);
+  } else {
+    prefillSectorParams();
+  }
+})();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h1>💧 SOILPEPPER — Water Management System</h1>
+<p class="subtitle">4 water sources · Gravity-fed drip · <span id="wm-plot">1 ha</span> · <span id="wm-alt">~300m altitude</span></p>
+
+<!-- WATER PARAMETERS (what-if panel — reads tuscan-water-v1, never writes back automatically) -->
+<div class="params">
+  <h3>⚙️ Water Parameters</h3>
+  <div class="phint">Opens with the values from Master Plan → Water Setup. Adjust for what-if scenarios, then Update the diagram. Use "Save as defaults" to promote them into the shared design.</div>
+  <div class="p-grid">
+    <div class="p-field"><label>Roof area (m²)</label><input type="number" id="wp-roof" min="0" value="250"></div>
+    <div class="p-field"><label>Rainfall (mm/yr)</label><input type="number" id="wp-rain" min="0" value="800"></div>
+    <div class="p-field"><label>Efficiency</label><input type="number" id="wp-eff" min="0" max="1" step="0.05" value="0.85"></div>
+    <div class="p-field"><label>Pond (m³)</label><input type="number" id="wp-pond" min="0" value="200"></div>
+    <div class="p-field"><label>Pool (m³)</label><input type="number" id="wp-pool" min="0" value="112"></div>
+    <div class="p-field"><label>Demand (m³/yr)</label><input type="number" id="wp-demand" min="0" value="958"></div>
+    <div class="p-field"><label>Tanks</label><input type="number" id="wp-tanks" min="0" value="3"></div>
+    <div class="p-field"><label>Tank size (L)</label><input type="number" id="wp-tank-size" min="0" value="5000"></div>
+    <div class="p-field"><label>Swales</label><input type="number" id="wp-swales" min="1" max="8" value="4"></div>
+    <div class="p-field"><label>Gravity head (m)</label><input type="number" id="wp-head" min="0" value="10"></div>
+  </div>
+  <div class="p-actions">
+    <button class="p-btn primary" onclick="applyWaterParams()">🔄 Update diagram</button>
+    <button class="p-btn" onclick="saveWaterDefaults()">💾 Save as defaults</button>
+    <button class="p-btn" onclick="resetWaterParams()">↩️ Reset to defaults</button>
+  </div>
+  <div class="p-result" id="wp-result"></div>
+</div>
+
+<!-- WATER BALANCE (supply vs demand) -->
+<div class="balance">
+  <h3>⚖️ Water Balance</h3>
+  <div class="bar"><div id="bal-bar" style="width:0%"></div></div>
+  <div class="btxt"><span><b id="bal-supply">—</b> harvest + storage</span><span>demand <b id="bal-demand">—</b></span><span id="bal-note"></span></div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><span class="legend-color" style="background:linear-gradient(135deg,#1565c0,#1976d2);"></span>Water storage (pond · pool · well · tanks)</div>
+  <div class="legend-item"><span class="legend-color" style="background:rgba(120,90,60,0.85);"></span>Building</div>
+  <div class="legend-item"><span class="legend-color" style="background:rgba(255,193,7,0.5);"></span>Vegetable garden</div>
+  <div class="legend-item"><span class="legend-color" style="background:rgba(76,175,80,0.35);"></span>Orchard</div>
+  <div class="legend-item"><span class="legend-color" style="background:rgba(46,125,50,0.35);"></span>Olive grove</div>
+  <div class="legend-item"><span class="legend-color" style="background:rgba(129,199,132,0.2);"></span>Field crops</div>
+  <div class="legend-item"><span class="legend-color" style="border-bottom:2px dashed rgba(0,191,255,0.5); background:transparent; height:0;"></span>Swale (contour)</div>
+  <div class="legend-item"><span class="legend-color" style="border-bottom:2px dashed rgba(66,165,245,0.7); background:transparent; height:0;"></span>Pipe / flow</div>
+</div>
+
+<div class="stats">
+  <div class="stat-card"><div class="num" id="ws-roof">170 m³</div><div class="lbl">Roof rain / year</div></div>
+  <div class="stat-card"><div class="num" id="ws-pond">200 m³</div><div class="lbl">Irrigation pond</div></div>
+  <div class="stat-card"><div class="num" id="ws-pool">112 m³</div><div class="lbl">Natural pool (15×5m)</div></div>
+  <div class="stat-card"><div class="num" id="ws-demand">958 m³</div><div class="lbl">Annual demand</div></div>
+  <div class="stat-card"><div class="num" id="ws-rain">8,000 m³</div><div class="lbl">Rain on 1ha / year</div></div>
+  <div class="stat-card"><div class="num" id="ws-head">~10m</div><div class="lbl">Gravity head to garden</div></div>
+</div>
+
+<div class="plan-toggle-wrap">
+  <button class="plan-toggle" id="plan-toggle" onclick="togglePlanLayer()">🗺️ Show my Master Plan</button>
+</div>
+
+<div class="canvas">
+<div class="plot">
+
+  <!-- Master Plan cells (hybrid layer — shown on demand, under the schematic) -->
+  <div class="plan-grid" id="plan-grid" style="display:none;"></div>
+  <div id="plan-hint" style="display:none; position:absolute; top:45%; left:50%; transform:translate(-50%,-50%); background:rgba(10,26,10,0.85); border:1px solid var(--border-accent); color:var(--text-dim); font-size:0.8em; padding:10px 16px; border-radius:6px; z-index:3; text-align:center;">No Master Plan saved yet —<br>create one first (<a href="master-plan.html" style="color:#5a8a4a;">open Master Plan</a>)</div>
+
+  <!-- Elevation markers -->
+  <div style="position:absolute; top:5%; right:75px; font-size:0.6em; color:rgba(255,255,255,0.3);">▲ Higher ground (N)</div>
+  <div style="position:absolute; bottom:5%; right:75px; font-size:0.6em; color:rgba(255,255,255,0.3);">▼ Lower ground (S)</div>
+
+  <!-- Compass -->
+  <div class="compass">
+    <div class="compass-arrow"></div>
+    <div class="compass-label">N</div>
+  </div>
+
+  <!-- Swale lines (contour ditches) — rendered from swale count in water data -->
+  <div id="swale-layer" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;"></div>
+  <div style="position:absolute; top:18%; left:15px; font-size:0.6em; color:rgba(0,191,255,0.5);">↕ Swales on contour</div>
+
+  <!-- IRRIGATION POND (high ground, top-left area) -->
+  <div class="element pond" style="top:12%; left:8%; width:16%; height:12%;" onclick="showInfo('pond')">
+    <div class="label" style="font-size:1.5em;">🫧</div>
+    <div class="label">Irrigation Pond</div>
+    <div class="detail"><span data-water="pond">200</span> m³ · Bentonite lined<br>Berms planted · Swale-fed</div>
+  </div>
+
+  <!-- Swale overflow pipe from pond to lower swales -->
+  <div class="pipe" style="top:22%; left:18%; width:3px; height:18%; background:rgba(0,191,255,0.4);"></div>
+  <div class="flow-label" style="top:30%; left:19%;">overflow ↓</div>
+
+  <!-- WELL (near building, reliable source) -->
+  <div class="element well" style="top:40%; left:62%; width:6%; height:7%;" onclick="showInfo('well')">
+    <div class="label" style="font-size:1.2em;">🌀</div>
+    <div class="label" style="font-size:0.8em;">Well</div>
+  </div>
+
+  <!-- Solar pump pipe: well → pond (uphill, dotted line) -->
+  <svg style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;" viewBox="0 0 100 110" preserveAspectRatio="none">
+    <line x1="65" y1="43" x2="20" y2="18" stroke="rgba(255,235,59,0.5)" stroke-width="0.5" stroke-dasharray="1.5,1.5"/>
+    <polygon points="20,18 24,20 22,16" fill="rgba(255,235,59,0.5)" transform="rotate(-25 20 18)"/>
+  </svg>
+  <div class="flow-label" style="top:28%; left:38%; color:rgba(255,235,59,0.7);">⚡ solar pump → pond (drought top-up)</div>
+
+  <!-- BUILDING (south side, center) -->
+  <div class="element building" style="top:38%; left:40%; width:12%; height:8%;" onclick="showInfo('building')">
+    <div class="label">🏠 Building</div>
+    <div class="detail"><span data-water="roofArea">250</span>m² · South-facing<br>Roof catchment</div>
+  </div>
+
+  <!-- RAINWATER TANKS (next to building) -->
+  <div class="element tanks" style="top:38%; left:30%; width:7%; height:8%; border-radius:6px;" onclick="showInfo('tanks')">
+    <div class="label" style="font-size:0.85em;">💧</div>
+    <div class="label" style="font-size:0.8em;"><span data-water="tanks">3</span>×<span data-water="tankSize">5000</span>L</div>
+    <div class="detail" style="font-size:0.6em;">Rainwater</div>
+  </div>
+
+  <!-- Pipe: roof → tanks -->
+  <div class="pipe" style="top:41%; left:39%; width:1.5%; height:2%; background:rgba(66,165,245,0.6);"></div>
+  <div class="flow-label" style="top:40%; left:35.5%; font-size:0.55em; color:rgba(66,165,245,0.7);">gutter</div>
+
+  <!-- Pipe: tank overflow → swale chain (gravity, downhill) -->
+  <svg style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;" viewBox="0 0 100 110" preserveAspectRatio="none">
+    <line x1="34" y1="46" x2="34" y2="58" stroke="rgba(66,165,245,0.4)" stroke-width="0.5" stroke-dasharray="1,1"/>
+    <polygon points="34,58 32,53 36,53" fill="rgba(66,165,245,0.4)"/>
+  </svg>
+  <div class="flow-label" style="top:48%; left:22%; font-size:0.55em; color:rgba(66,165,245,0.5);">overflow → swales</div>
+
+  <!-- NATURAL POOL (near house, south side) -->
+  <div class="element pool" style="top:46%; left:33%; width:18%; height:8%; border-radius:15px;" onclick="showInfo('pool')">
+    <div class="label" style="font-size:1.2em;">🏊</div>
+    <div class="label" style="font-size:0.9em;">Natural Pool</div>
+    <div class="detail" style="font-size:0.62em;">15m × 5m × 1.5m = <span data-water="pool">112</span> m³<br>Biofiltered · 30% regeneration zone</div>
+  </div>
+
+  <!-- Pool regeneration zone indicator -->
+  <div style="position:absolute; top:48%; left:46%; width:5%; height:9%; background:rgba(76,175,80,0.3); border:1px dashed rgba(76,175,80,0.4); border-radius:0 15px 15px 0; pointer-events:none;"></div>
+  <div class="flow-label" style="top:50%; left:46%; font-size:0.5em; color:rgba(76,175,80,0.5);">plants</div>
+
+  <!-- ZONE 1: Vegetable garden (south of building, below pool) -->
+  <div class="element veg-garden" style="top:58%; left:28%; width:28%; height:12%;" onclick="showInfo('veg')">
+    <div class="label">🥬 Zone 1 — Vegetable Garden</div>
+    <div class="detail">500m² · No-dig raised beds · Drip from pond</div>
+  </div>
+
+  <!-- MAIN IRRIGATION PIPE: pond → garden (gravity) -->
+  <svg style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;" viewBox="0 0 100 110" preserveAspectRatio="none">
+    <!-- Main line from pond down to garden (routed right of the pool) -->
+    <line x1="16" y1="23" x2="54" y2="64" stroke="rgba(0,191,255,0.5)" stroke-width="0.8"/>
+    <polygon points="54,64 52,59 56,59" fill="rgba(0,191,255,0.5)"/>
+    <!-- Branch to orchard east -->
+    <line x1="54" y1="64" x2="72" y2="62" stroke="rgba(0,191,255,0.4)" stroke-width="0.6"/>
+    <!-- Branch to olives south -->
+    <line x1="54" y1="64" x2="40" y2="82" stroke="rgba(0,191,255,0.4)" stroke-width="0.6"/>
+  </svg>
+  <div class="flow-label" style="top:56%; left:30%; font-size:0.65em; color:rgba(0,191,255,0.7);">⬇ gravity drip (0.8 bar)</div>
+
+  <!-- ZONE 2: Orchard (east and west of vegetable garden) -->
+  <div class="element orchard" style="top:56%; left:5%; width:22%; height:24%;" onclick="showInfo('orchard-w')">
+    <div class="label" style="font-size:0.85em;">🍎 Orchard West</div>
+    <div class="detail">Apple, pear, plum, cherry<br>Drippers: 2-4 per tree</div>
+  </div>
+
+  <div class="element orchard" style="top:56%; left:58%; width:37%; height:20%;" onclick="showInfo('orchard-e')">
+    <div class="label" style="font-size:0.85em;">🍑 Orchard East</div>
+    <div class="detail">Peach, apricot, fig, pomegranate, persimmon<br>Drippers: 2-4 per tree · Berries on drip too</div>
+  </div>
+
+  <!-- ZONE 3: Olives (downslope) -->
+  <div class="element olive" style="top:72%; left:5%; width:50%; height:18%;" onclick="showInfo('olives')">
+    <div class="label" style="font-size:0.85em;">🫒 Olive Grove</div>
+    <div class="detail">25 trees · 8m × 8m spacing<br>Cover crops between rows · Minimal irrigation</div>
+  </div>
+
+  <!-- Berry hedgerows -->
+  <div class="element hedge" style="top:76%; left:58%; width:37%; height:4%;" onclick="showInfo('hedge')">
+    <div class="label" style="font-size:0.75em;">🫐 Berry Hedgerows</div>
+  </div>
+
+  <!-- Field crops -->
+  <div class="element olive" style="top:80%; left:58%; width:37%; height:10%; background:rgba(129,199,132,0.2); border-color:#81c784;" onclick="showInfo('field')">
+    <div class="label" style="font-size:0.8em;">🌾 Field Crops</div>
+    <div class="detail">Rotation · Dry-farmed legumes</div>
+  </div>
+
+  <!-- BEES -->
+  <div class="element" style="top:56%; left:42%; width:5%; height:5%; background:rgba(255,235,59,0.4); border:1px solid rgba(255,235,59,0.4); border-radius:4px;" onclick="showInfo('bees')">
+    <div class="label" style="font-size:0.85em;">🐝</div>
+  </div>
+
+  <!-- CHICKENS -->
+  <div class="element" style="top:56%; left:48%; width:5%; height:5%; background:rgba(255,152,0,0.4); border:1px solid rgba(255,152,0,0.4); border-radius:4px;" onclick="showInfo('chickens')">
+    <div class="label" style="font-size:0.85em;">🐔</div>
+  </div>
+
+  <!-- COMPOST -->
+  <div class="element" style="top:38%; left:53%; width:5%; height:8%; background:rgba(101,67,33,0.6); border:1px solid #5d4037; border-radius:4px;" onclick="showInfo('compost')">
+    <div class="label" style="font-size:0.85em;">🔄</div>
+    <div class="detail" style="font-size:0.55em;">Compost</div>
+  </div>
+
+  <!-- Disk filter indicator -->
+  <div style="position:absolute; top:55%; left:20%; width:4%; height:3%; background:rgba(255,255,255,0.15); border:1px solid rgba(0,191,255,0.4); border-radius:3px; display:flex; align-items:center; justify-content:center; font-size:0.55em; color:rgba(0,191,255,0.7); cursor:pointer;" onclick="showInfo('filter')">
+    disk filter
+  </div>
+
+  <!-- Scale -->
+  <div style="position:absolute; bottom:15px; left:15px; color:#ddd; font-size:0.75em;">
+    ~100m
+    <div style="width:80px;height:3px;background:#ddd;margin-top:3px;"></div>
+  </div>
+
+  <!-- Slope direction -->
+  <div style="position:absolute; bottom:25px; right:15px; font-size:0.65em; color:rgba(255,255,255,0.4);">
+    Slope: N (top, <span id="wm-top-alt">~320m</span>) → S (bottom, <span id="wm-bot-alt">~290m</span>) · ~10% grade
+  </div>
+
+  <!-- Swale labels — rendered from swale count -->
+  <div id="swale-labels" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;"></div>
+
+</div>
+</div>
+
+<!-- SWALE LAYOUT SPEC (your site, computed from data) -->
+<div class="spec-card" id="swale-spec">
+  <h3>📐 Swale Layout — your site</h3>
+  <div class="spec-grid">
+    <div class="spec-item"><div class="s-label">Swales</div><div class="s-value"><span data-water="swales">4</span> <small>on contour</small></div></div>
+    <div class="spec-item"><div class="s-label">Grid rows</div><div class="s-value" id="spec-rows">— <small>see diagram</small></div></div>
+    <div class="spec-item"><div class="s-label">Vertical spacing</div><div class="s-value" id="spec-spacing">—</div></div>
+    <div class="spec-item"><div class="s-label">Slope covered</div><div class="s-value"><span id="spec-slope">~10m</span> <small>total drop</small></div></div>
+    <div class="spec-item"><div class="s-label">Length each</div><div class="s-value"><span id="spec-len">50–80</span>m <small>across plot</small></div></div>
+    <div class="spec-item"><div class="s-label">Dig</div><div class="s-value">50cm <small>deep × 1m wide</small></div></div>
+    <div class="spec-item"><div class="s-label">Berm</div><div class="s-value">Downhill <small>side of ditch</small></div></div>
+  </div>
+  <div class="spec-note"><strong>Overflow chain:</strong> <span id="spec-chain">swale 1 → 2 → 3 → 4 → olive grove</span> · <strong>Berm planting:</strong> fruit trees, comfrey, clover, nitrogen fixers (goumi, eleagnus).<br>
+  <em style="color:var(--text-dim);">"Vertical spacing" = the height the land drops between two swales (not the distance along the slope). On a 10% slope, every 10m walked uphill drops 1m. Your swales sit ~3m / 2m / 3m of elevation apart — each one intercepts the runoff from the band above it.</em></div>
+</div>
+
+<div class="info-panel" id="infoPanel">
+  <h3>👆 Click any element for details</h3>
+  <p>Hover to explore. Click for detailed specifications.</p>
+  <div class="spec" id="spec-pond"><h3>🫧 Irrigation Pond — <span data-water="pond">200</span> m³</h3><p><span class="stat"><span data-water="pond">200</span> m³ storage</span><span class="stat">~10m × 12m × 2m depth</span><span class="stat">Bentonite or EPDM liner</span>Located at highest practical point for gravity feed. Swale channel feeds rainwater from slope above. Winter refill (Oct-May, ~<span data-water="rainfall">800</span>mm rain) fills it completely. Solar pump from well tops up during extreme drought. Overflow spillway feeds lower swale chain.</p></div>
+  <div class="spec" id="spec-well"><h3>🌀 Well (existing)</h3><p><span class="stat">Existing borehole</span><span class="stat">Back-up for all systems</span>Primary drinking water source. Solar pump can push water uphill to irrigation pond during drought. Also fills rainwater tanks when empty and tops up natural pool evaporation.</p></div>
+  <div class="spec" id="spec-building"><h3>🏠 Building — <span data-water="roofArea">250</span>m² roof catchment</h3><p><span class="stat"><span data-water="roofArea">250</span>m² roof area</span><span class="stat"><span data-water="roofHarvestL">170,000</span> L/year harvest</span><span class="stat"><span data-water="eff">0.85</span> efficiency</span>South-facing roof feeds gutters → first-flush diverter → <span data-water="tanks">3</span>×<span data-water="tankSize">5,000</span>L rainwater tanks. Overflow from tanks pipes downhill to the swale chain. Greywater system (future) could irrigate Zone 1.</p></div>
+  <div class="spec" id="spec-tanks"><h3>💧 Rainwater Tanks — <span data-water="tanks">3</span>× <span data-water="tankSize">5,000</span>L = <span data-water="tankTotalL">15,000</span>L</h3><p><span class="stat"><span data-water="tankTotalM3">15</span> m³ storage</span><span class="stat">Polyethylene</span><span class="stat">Gravity to house + pool</span>Used for household, drinking water, seedling watering, pool top-up. First-flush diverter prevents pollen/dust contamination. Tanks overflow downhill to the swale chain — excess water spreads through the garden instead of being wasted.</p></div>
+  <div class="spec" id="spec-pool"><h3>🏊 Swimming Pool — 15m × 5m × 1.5m (<span data-water="pool">112</span> m³)</h3><p><span class="stat"><span data-water="pool">112</span> m³</span><span class="stat">No chemicals</span><span class="stat">30% regeneration zone</span>Natural swimming pool biofiltered by aquatic plants. Regeneration zone (22m²) with water lilies, yellow iris (Iris pseudacorus), reed mace, water mint. Evaporation loss ~45 m³/yr topped up by rainwater + well. Separate from irrigation — kept clean for swimming. Attracts dragonflies, frogs, pest-eating birds.</p></div>
+  <div class="spec" id="spec-veg"><h3>🥬 Vegetable Garden — 500m² drip irrigation</h3><p><span class="stat">16mm drip tape</span><span class="stat">30cm emitter spacing</span><span class="stat">2 L/h emitters</span><span class="stat">Night watering</span>No-dig raised beds. Drip lines from pond via main 32mm HDPE pipe. Separate valve zone. Solar timer waters at night to minimize evaporation. Mulch reduces water need by 50%+.</p></div>
+  <div class="spec" id="spec-orchard-w"><h3>🍎 Orchard West — gravity drip</h3><p><span class="stat">2-4 drippers per tree</span><span class="stat">8 L/h each</span><span class="stat">Separate valve zone</span>Apple, pear, plum, cherry on cooler west slope. Drip from main irrigation line. Mulch under trees retains moisture. White clover living mulch fixes nitrogen.</p></div>
+  <div class="spec" id="spec-orchard-e"><h3>🍑 Orchard East — gravity drip</h3><p><span class="stat">2-4 drippers per tree</span><span class="stat">8 L/h each</span>Peach, apricot, fig, pomegranate, persimmon on warm east-south slope. Berry hedgerows (blackberry, aronia, elderberry) also on drip. Early bloomers higher on slope for frost drainage.</p></div>
+  <div class="spec" id="spec-olives"><h3>🫒 Olive Grove — minimal irrigation</h3><p><span class="stat">25 trees</span><span class="stat">8m × 8m spacing</span><span class="stat">Drought-adapted</span>Olives need watering only in first 2-3 years and extreme drought. Cover crops (vetch, clover, fava) between rows build soil and fix nitrogen. Chestnuts on cooler north edge.</p></div>
+  <div class="spec" id="spec-hedge"><h3>🫐 Berry Hedgerows — 200m</h3><p>Blackberry, raspberry, currant, aronia, elderberry, jujube. Some on drip, some dry-farmed once established. Estimated yield: 80-120 kg/year.</p></div>
+  <div class="spec" id="spec-field"><h3>🌾 Field Crops</h3><p>Dry-farmed rotation: grain, chickpeas, lentils, forage for chickens. Green manure cover crops build soil. No irrigation needed once established.</p></div>
+  <div class="spec" id="spec-bees"><h3>🐝 Bees (2-4 hives)</h3><p>South-facing, sheltered from wind. Near orchard for pollination. Yield: 20-60 kg honey/year.</p></div>
+  <div class="spec" id="spec-chickens"><h3>🐔 Chickens (6 hens)</h3><p>Water: ~2 L/day from rainwater tanks or well. Negligible water demand. Rotated through orchard and vegetable garden.</p></div>
+  <div class="spec" id="spec-compost"><h3>🔄 Compost (3-bin system)</h3><p>Comfrey leaves as activator. Between kitchen (Zone 0) and garden (Zone 1). Second compost area at orchard edge.</p></div>
+  <div class="spec" id="spec-filter"><h3>🔍 Disk Filter</h3><p>Essential component at pond outlet. Prevents algae and debris from clogging drip emitters. Clean monthly during irrigation season. Without it, drip lines will clog within weeks.</p></div>
+</div>
+
+<div style="max-width:1100px;margin:20px auto;text-align:center;color:var(--accent-teal);font-size:0.8em;line-height:1.6;">
+<p><strong>Water flow:</strong> Rain → roof gutters → tanks (15m³) → overflow to swale chain; slope runoff → swales + pond (200m³) → gravity drip to all growing zones<br>
+<strong>Back-up:</strong> Well → solar pump → pond top-up during drought<br>
+<strong>Pool:</strong> Separate system — rainwater + well top-up only — kept clean for swimming</p>
+</div>
+
+<script>
+function showInfo(id) {
+  document.querySelectorAll('.spec').forEach(el => el.classList.remove('active'));
+  const el = document.getElementById('spec-' + id);
+  if (el) el.classList.add('active');
+  document.getElementById('infoPanel').scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+</script>
+
+<!-- WATER SYSTEM ENGINE (reads tuscan-water-v1 — set in Master Plan → Water Setup) -->
+<script>
+(function () {
+  var KEY = 'tuscan-water-v1';
+  var DEF = {
+    roofArea: 250, rainfall: 800, roofEff: 0.85,
+    pondSize: 200, poolSize: 112, demand: 958,
+    tankCount: 3, tankSize: 5000, swales: 4, gravityHead: 10
+  };
+  var w = DEF;
+  function loadFromStorage() {
+    try {
+      var raw = localStorage.getItem(KEY);
+      if (raw) { var p = JSON.parse(raw); for (var k in DEF) if (p[k] !== undefined) w[k] = p[k]; }
+    } catch (e) {}
+  }
+  loadFromStorage();
+
+  var fmt = function (n) { return n.toLocaleString('en-US'); };
+  function set(id, text) {
+    var el = document.getElementById(id);
+    if (el) el.textContent = text;
+  }
+  function roofHarvestM3() { return Math.round((w.roofArea * w.rainfall * w.roofEff) / 1000); }
+  function plotRainM3() {
+    try {
+      var brief = JSON.parse(localStorage.getItem('tuscan-brief-v1') || '{}');
+      return Math.round(((brief.plotW || 100) * (brief.plotH || 100) * w.rainfall) / 1000);
+    } catch (e) { return Math.round(w.rainfall * 10); }
+  }
+  function pressureBar() { return (w.gravityHead * 0.098).toFixed(2); }
+
+  // Swale geometry from plot + water data
+  function plotSlopePct() {
+    try {
+      var b = JSON.parse(localStorage.getItem('tuscan-brief-v1') || '{}');
+      var m = String(b.slope || '').match(/(\d+)/);
+      return m ? parseInt(m[1], 10) : 10;
+    } catch (e) { return 10; }
+  }
+  function plotRows() {
+    try {
+      var b = JSON.parse(localStorage.getItem('tuscan-brief-v1') || '{}');
+      var ph = parseInt(b.plotH, 10) || 100;
+      var cell = parseInt(b.cellSize, 10) || 10;
+      return Math.max(2, Math.round(ph / cell));
+    } catch (e) { return 10; }
+  }
+  // Each swale sits on a grid ROW boundary (cell-row accuracy, e.g. 10m).
+  // Swale k catches the elevation band above it → centered in band k:
+  // fraction = (k - 0.5) / N of the slope, snapped to the nearest row.
+  function swaleRows() {
+    var rows = plotRows();
+    var n = Math.max(1, Math.min(rows - 1, w.swales || 4));
+    var out = [];
+    for (var k = 1; k <= n; k++) {
+      var ideal = ((k - 0.5) / n) * rows;
+      var row = Math.max(1, Math.min(rows - 1, Math.round(ideal)));
+      out.push(row);
+    }
+    // dedupe + enforce ascending, keep count if possible
+    var seen = [];
+    for (var i = 0; i < out.length; i++) {
+      if (seen.indexOf(out[i]) === -1) seen.push(out[i]);
+    }
+    return seen;
+  }
+  function swaleRowGapM(prevRow, row) {
+    try {
+      var b = JSON.parse(localStorage.getItem('tuscan-brief-v1') || '{}');
+      var cell = parseInt(b.cellSize, 10) || 10;
+      return Math.round(((row - prevRow) * cell) * (plotSlopePct() / 100) * 10) / 10;  // elevation drop m
+    } catch (e) { return swaleSpacingM(); }
+  }
+  // Elevation gaps between consecutive swales (row-snapped), e.g. "3m · 2m · 3m"
+  function swaleGapList() {
+    var rows = swaleRows();
+    var gaps = [];
+    for (var i = 1; i < rows.length; i++) {
+      gaps.push(swaleRowGapM(rows[i - 1], rows[i]) + 'm');
+    }
+    return gaps.length ? gaps.join(' · ') : '—';
+  }
+  function swaleSpacingM() {
+    try {
+      var b = JSON.parse(localStorage.getItem('tuscan-brief-v1') || '{}');
+      var ph = parseInt(b.plotH, 10) || 100;
+      var drop = ph * (plotSlopePct() / 100);       // total vertical drop
+      var n = Math.max(1, w.swales || 4);
+      return Math.max(1, Math.round((drop / n) * 10) / 10);
+    } catch (e) { return 7; }
+  }
+  function swaleSlopeDropM() {
+    try {
+      var b = JSON.parse(localStorage.getItem('tuscan-brief-v1') || '{}');
+      var ph = parseInt(b.plotH, 10) || 100;
+      return Math.round(ph * (plotSlopePct() / 100));
+    } catch (e) { return 30; }
+  }
+  function swaleLenRange() {
+    try {
+      var b = JSON.parse(localStorage.getItem('tuscan-brief-v1') || '{}');
+      var pw = parseInt(b.plotW, 10) || 100;
+      return Math.round(pw * 0.5) + '-' + Math.round(pw * 0.8);
+    } catch (e) { return '50-80'; }
+  }
+  function swaleChainText() {
+    var n = Math.max(1, w.swales || 4);
+    var parts = [];
+    for (var i = 1; i <= n; i++) parts.push('swale ' + i);
+    return 'Swale 1 → overflows to ' + parts.slice(1).join(' → ') + ' → olive grove';
+  }
+
+  // Fill every [data-water] span
+  var VALS = {
+    roofHarvestL: (roofHarvestM3() * 1000).toLocaleString('en-US'),
+    roofHarvestM3: fmt(roofHarvestM3()),
+    pond: w.pondSize,
+    pool: w.poolSize,
+    demand: fmt(w.demand),
+    rain: fmt(plotRainM3()),
+    tankTotalL: fmt(w.tankCount * w.tankSize),
+    tankTotalM3: Math.round(w.tankCount * w.tankSize / 1000),
+    tanks: w.tankCount,
+    tankSize: fmt(w.tankSize),
+    swales: w.swales,
+    swaleSpacing: swaleSpacingM(),
+    head: w.gravityHead,
+    roofArea: w.roofArea,
+    rainfall: w.rainfall,
+    eff: w.roofEff
+  };
+  document.querySelectorAll('[data-water]').forEach(function (el) {
+    var k = el.getAttribute('data-water');
+    if (VALS[k] !== undefined) el.textContent = VALS[k];
+  });
+  var slopeEl = document.getElementById('swale-slope');
+  if (slopeEl) slopeEl.textContent = '~' + swaleSlopeDropM() + 'm';
+  var lenEl = document.getElementById('swale-len');
+  if (lenEl) lenEl.textContent = swaleLenRange();
+  var chainEl = document.getElementById('swale-chain');
+  if (chainEl) chainEl.textContent = swaleChainText();
+
+  // The swale info cards live BELOW this script in the DOM — re-run the
+  // data fills once the full document has parsed (idempotent; applyWaterParams
+  // already refreshes everything on click).
+  function rerunCardFills() {
+    document.querySelectorAll('[data-water]').forEach(function (el) {
+      var k = el.getAttribute('data-water');
+      if (VALS[k] !== undefined) el.textContent = VALS[k];
+    });
+    var s1 = document.getElementById('swale-slope');
+    if (s1) s1.textContent = '~' + swaleSlopeDropM() + 'm';
+    var s2 = document.getElementById('swale-len');
+    if (s2) s2.textContent = swaleLenRange();
+    var s3 = document.getElementById('swale-chain');
+    if (s3) s3.textContent = swaleChainText();
+    // Layout Spec card
+    var spSlope = document.getElementById('spec-slope');
+    if (spSlope) spSlope.textContent = '~' + swaleSlopeDropM() + 'm';
+    var spLen = document.getElementById('spec-len');
+    if (spLen) spLen.textContent = swaleLenRange();
+    var spChain = document.getElementById('spec-chain');
+    if (spChain) spChain.textContent = swaleChainText();
+    var spRows = document.getElementById('spec-rows');
+    if (spRows) spRows.textContent = 'rows ' + swaleRows().join(', ');
+    var spSpacing = document.getElementById('spec-spacing');
+    if (spSpacing) spSpacing.textContent = swaleGapList() + ' <small>elevation drop between swales</small>';
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', rerunCardFills);
+  } else {
+    rerunCardFills();
+  }
+
+  // Stats bar
+  set('ws-roof', roofHarvestM3() + ' m³');
+  set('ws-pond', w.pondSize + ' m³');
+  set('ws-pool', w.poolSize + ' m³');
+  set('ws-demand', fmt(w.demand) + ' m³');
+  set('ws-rain', fmt(plotRainM3()) + ' m³');
+  set('ws-head', '~' + w.gravityHead + 'm');
+
+  // Subtitle: water sources = swales + well + pool + tanks (as in design)
+  var sub = document.querySelector('.subtitle');
+  if (sub && w.swales) {
+    sub.innerHTML = sub.innerHTML.replace(/^\d+ water sources/, (w.swales + 3) + ' water sources');
+  }
+
+  // Slope altitude labels from brief
+  try {
+    var brief2 = JSON.parse(localStorage.getItem('tuscan-brief-v1') || '{}');
+    var alt = parseInt(brief2.altitude, 10);
+    if (alt) {
+      var topEl = document.getElementById('wm-top-alt');
+      if (topEl) topEl.textContent = '~' + (alt + 25) + 'm';
+      var botEl = document.getElementById('wm-bot-alt');
+      if (botEl) botEl.textContent = '~' + (alt - 10) + 'm';
+    }
+  } catch (e) {}
+
+  // Pressure label on the drip line
+  var dripLabel = Array.prototype.find.call(document.querySelectorAll('.flow-label'), function (el) {
+    return el.textContent.indexOf('gravity drip') !== -1;
+  });
+  if (dripLabel) dripLabel.textContent = '⬇ gravity drip (' + pressureBar() + ' bar)';
+
+  // Draw swale lines + labels from count — snapped to grid ROW boundaries
+  function drawSwales() {
+    var layer = document.getElementById('swale-layer');
+    var labels = document.getElementById('swale-labels');
+    if (!layer) return;
+    layer.innerHTML = ''; labels.innerHTML = '';
+    var rows = plotRows();
+    var rowPos = swaleRows();
+    for (var i = 0; i < rowPos.length; i++) {
+      var row = rowPos[i];
+      var topPct = (row / rows) * 100;
+      var line = document.createElement('div');
+      line.style.cssText = 'position:absolute;top:' + topPct + '%;left:0;width:100%;border-bottom:2px dashed rgba(0,191,255,0.35);';
+      layer.appendChild(line);
+      var lb = document.createElement('div');
+      lb.textContent = 'swale ' + (i + 1) + ' · row ' + row;
+      lb.style.cssText = 'position:absolute;top:' + (topPct - 1.5) + '%;left:60%;font-size:0.55em;color:rgba(0,191,255,0.5);font-weight:600;';
+      labels.appendChild(lb);
+      // elevation gap from previous swale (left edge)
+      if (i > 0) {
+        var sp = document.createElement('div');
+        sp.textContent = swaleRowGapM(rowPos[i - 1], row) + 'm ↓';
+        sp.className = 'swale-spacing-label';
+        sp.style.top = (topPct - 3) + '%';
+        labels.appendChild(sp);
+      }
+    }
+  }
+  drawSwales();
+
+  // Water balance: annual supply (roof harvest + pond) vs demand
+  function renderBalance() {
+    var supply = roofHarvestM3() + w.pondSize + w.poolSize;  // m³/yr storage+harvest
+    var demand = w.demand || 1;
+    var pct = Math.min(100, Math.round((supply / demand) * 100));
+    var bar = document.getElementById('bal-bar');
+    if (bar) bar.style.width = pct + '%';
+    set('bal-supply', fmt(supply) + ' m³');
+    set('bal-demand', fmt(demand) + ' m³');
+    var note = document.getElementById('bal-note');
+    if (note) {
+      note.textContent = pct >= 100 ? '✅ fully covered' : 'supplies ' + pct + '% — balance via swale capture + well';
+      note.style.color = pct >= 100 ? '#66bb6a' : '#ffab40';
+    }
+  }
+  renderBalance();
+
+  // ---- Params panel ----
+  window.applyWaterParams = function () {
+    w.roofArea = parseInt(document.getElementById('wp-roof').value) || 0;
+    w.rainfall = parseInt(document.getElementById('wp-rain').value) || 0;
+    w.roofEff = parseFloat(document.getElementById('wp-eff').value) || 0;
+    w.pondSize = parseInt(document.getElementById('wp-pond').value) || 0;
+    w.poolSize = parseInt(document.getElementById('wp-pool').value) || 0;
+    w.demand = parseInt(document.getElementById('wp-demand').value) || 0;
+    w.tankCount = parseInt(document.getElementById('wp-tanks').value) || 0;
+    w.tankSize = parseInt(document.getElementById('wp-tank-size').value) || 0;
+    w.swales = parseInt(document.getElementById('wp-swales').value) || 4;
+    w.gravityHead = parseInt(document.getElementById('wp-head').value) || 0;
+    applyAll();
+    var r = document.getElementById('wp-result');
+    if (r) r.innerHTML = '✅ Diagram updated — roof harvest <strong>' + roofHarvestM3() + ' m³/yr</strong> · pressure <strong>' + pressureBar() + ' bar</strong> · swales <strong>' + w.swales + '</strong>';
+  };
+  window.saveWaterDefaults = function () {
+    w.updatedAt = new Date().toISOString();
+    try { localStorage.setItem(KEY, JSON.stringify(w)); } catch (e) {}
+    var r = document.getElementById('wp-result');
+    if (r) r.innerHTML = '💾 Saved as shared defaults (tuscan-water-v1) — Master Plan now shows these.';
+  };
+  window.resetWaterParams = function () {
+    w = DEF; loadFromStorage();
+    fillPanel();
+    applyAll();
+    var r = document.getElementById('wp-result');
+    if (r) r.textContent = '↩️ Reset to shared defaults.';
+  };
+  function fillPanel() {
+    document.getElementById('wp-roof').value = w.roofArea;
+    document.getElementById('wp-rain').value = w.rainfall;
+    document.getElementById('wp-eff').value = Math.round(w.roofEff * 100) / 100;
+    document.getElementById('wp-pond').value = w.pondSize;
+    document.getElementById('wp-pool').value = w.poolSize;
+    document.getElementById('wp-demand').value = w.demand;
+    document.getElementById('wp-tanks').value = w.tankCount;
+    document.getElementById('wp-tank-size').value = w.tankSize;
+    document.getElementById('wp-swales').value = w.swales;
+    document.getElementById('wp-head').value = w.gravityHead;
+  }
+  function applyAll() {
+    // re-run all fillers
+    var V2 = {
+      roofHarvestL: (roofHarvestM3() * 1000).toLocaleString('en-US'),
+      roofHarvestM3: fmt(roofHarvestM3()),
+      pond: w.pondSize, pool: w.poolSize, demand: fmt(w.demand),
+      rain: fmt(plotRainM3()),
+      tankTotalL: fmt(w.tankCount * w.tankSize),
+      tankTotalM3: Math.round(w.tankCount * w.tankSize / 1000),
+      tanks: w.tankCount, tankSize: fmt(w.tankSize),
+      swales: w.swales, swaleSpacing: swaleSpacingM(), head: w.gravityHead,
+      roofArea: w.roofArea, rainfall: w.rainfall, eff: w.roofEff
+    };
+    document.querySelectorAll('[data-water]').forEach(function (el) {
+      var k = el.getAttribute('data-water');
+      if (V2[k] !== undefined) el.textContent = V2[k];
+    });
+    var slopeEl2 = document.getElementById('swale-slope');
+    if (slopeEl2) slopeEl2.textContent = '~' + swaleSlopeDropM() + 'm';
+    var lenEl2 = document.getElementById('swale-len');
+    if (lenEl2) lenEl2.textContent = swaleLenRange();
+    var chainEl2 = document.getElementById('swale-chain');
+    if (chainEl2) chainEl2.textContent = swaleChainText();
+    // Layout Spec card (kept in sync with what-if too)
+    var spSlope2 = document.getElementById('spec-slope');
+    if (spSlope2) spSlope2.textContent = '~' + swaleSlopeDropM() + 'm';
+    var spLen2 = document.getElementById('spec-len');
+    if (spLen2) spLen2.textContent = swaleLenRange();
+    var spChain2 = document.getElementById('spec-chain');
+    if (spChain2) spChain2.textContent = swaleChainText();
+    var spRows2 = document.getElementById('spec-rows');
+    if (spRows2) spRows2.textContent = 'rows ' + swaleRows().join(', ');
+    var spSpacing2 = document.getElementById('spec-spacing');
+    if (spSpacing2) spSpacing2.textContent = swaleGapList() + ' <small>elevation drop between swales</small>';
+    set('ws-roof', roofHarvestM3() + ' m³');
+    set('ws-pond', w.pondSize + ' m³');
+    set('ws-pool', w.poolSize + ' m³');
+    set('ws-demand', fmt(w.demand) + ' m³');
+    set('ws-rain', fmt(plotRainM3()) + ' m³');
+    set('ws-head', '~' + w.gravityHead + 'm');
+    var dripLabel2 = Array.prototype.find.call(document.querySelectorAll('.flow-label'), function (el) {
+      return el.textContent.indexOf('gravity drip') !== -1;
+    });
+    if (dripLabel2) dripLabel2.textContent = '⬇ gravity drip (' + pressureBar() + ' bar)';
+    drawSwales();
+    renderBalance();
+  }
+  fillPanel();
+
+  // ---- Master Plan layer (hybrid) ----
+  var MP_KEY = 'masterplan-v1';
+  var MP_META = {
+    func: {
+      guild: { icon: '🌳' }, water: { icon: '💧' }, road: { icon: '🛣️' },
+      construction: { icon: '🏠' }, open: { icon: '🌿' }
+    },
+    zone: { 0: 'z-0', 1: 'z-1', 2: 'z-2', 3: 'z-3', 4: 'z-4', 5: 'z-5' }
+  };
+  var mpPlan = null;
+  function loadMasterPlan() {
+    try {
+      var raw = localStorage.getItem(MP_KEY);
+      if (raw) mpPlan = JSON.parse(raw);
+    } catch (e) { mpPlan = null; }
+  }
+  function renderPlanLayer() {
+    var g = document.getElementById('plan-grid');
+    var hint = document.getElementById('plan-hint');
+    if (!g) return;
+    g.innerHTML = '';
+    loadMasterPlan();
+    if (!mpPlan || !mpPlan.cells || !mpPlan.cols) {
+      if (hint) hint.style.display = 'block';
+      return;
+    }
+    if (hint) hint.style.display = 'none';
+    g.style.gridTemplateColumns = 'repeat(' + mpPlan.cols + ',1fr)';
+    g.style.gridTemplateRows = 'repeat(' + mpPlan.rows + ',1fr)';
+    for (var r = 0; r < mpPlan.rows; r++) {
+      for (var c = 0; c < mpPlan.cols; c++) {
+        var cell = (mpPlan.cells[r + '_' + c]) || null;
+        var div = document.createElement('div');
+        div.className = 'cell';
+        var hasZone = cell && cell.zone !== undefined && cell.zone !== null && MP_META.zone[cell.zone];
+        if (hasZone) div.classList.add(MP_META.zone[cell.zone]);
+        else if (cell && MP_META.func[cell.function]) div.classList.add('f-' + cell.function);
+        else div.classList.add('empty');
+        var icon = document.createElement('div');
+        icon.className = 'cell-icon';
+        icon.textContent = (cell && MP_META.func[cell.function]) ? MP_META.func[cell.function].icon : '+';
+        div.appendChild(icon);
+        var labelText = (cell && cell.function === 'guild' && cell.treeKey) ? cell.treeKey : (cell && cell.label ? cell.label : '');
+        if (labelText) {
+          var lb = document.createElement('div');
+          lb.className = 'cell-label';
+          lb.textContent = labelText;
+          div.appendChild(lb);
+        }
+        if (hasZone) {
+          var zb = document.createElement('div');
+          zb.className = 'cell-zone';
+          zb.textContent = 'Z' + cell.zone;
+          div.appendChild(zb);
+        }
+        g.appendChild(div);
+      }
+    }
+  }
+  window.togglePlanLayer = function () {
+    var g = document.getElementById('plan-grid');
+    var btn = document.getElementById('plan-toggle');
+    if (!g) return;
+    var showing = g.style.display !== 'none';
+    if (showing) {
+      g.style.display = 'none';
+      var hint = document.getElementById('plan-hint');
+      if (hint) hint.style.display = 'none';
+      if (btn) { btn.classList.remove('on'); btn.textContent = '🗺️ Show my Master Plan'; }
+    } else {
+      renderPlanLayer();
+      g.style.display = 'grid';
+      if (btn) { btn.classList.add('on'); btn.textContent = '🗺️ Hide my Master Plan'; }
+    }
+  };
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SWALE CROSS-SECTION DIAGRAM -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+
+<h2 style="text-align:center;color:var(--accent-teal);margin:30px auto 5px;font-size:1.3em;font-family:var(--font-head);">📝 Swale Cross-Section — How It Works</h2>
+<p style="text-align:center;color:var(--text-dim);margin-bottom:15px;font-size:0.85em;">A swale is a ditch dug ON CONTOUR. It stops rainwater running downhill and lets it soak into the soil.</p>
+
+<div style="max-width:1100px;margin:0 auto;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:30px 20px;">
+
+<!-- SVG Cross-section -->
+<svg viewBox="0 0 900 420" style="width:100%;height:auto;background:#2a3a2a;border-radius:8px;" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- Sky / atmosphere -->
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a2a3a"/>
+      <stop offset="100%" stop-color="#2a3a2a"/>
+    </linearGradient>
+    <linearGradient id="soil" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6b5d4b"/>
+      <stop offset="100%" stop-color="#5d4e3b"/>
+    </linearGradient>
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#42a5f5" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#1565c0" stop-opacity="0.9"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="900" height="420" fill="url(#sky)"/>
+
+  <!-- Hillside slope (left = high, right = low) -->
+  <!-- Ground line -->
+  <path d="M 0 120 L 150 150 L 280 180 L 350 210 L 370 250 L 390 210 L 450 230 L 550 260 L 650 290 L 750 320 L 900 360 L 900 420 L 0 420 Z" fill="url(#soil)" stroke="#4a3d2b" stroke-width="1.5"/>
+
+  <!-- === SWALE 1 (upper) === -->
+  <!-- Ditch -->
+  <path d="M 270 180 L 300 210 L 350 210 L 370 180" fill="#2a3a2a" stroke="#3a4a3a" stroke-width="1"/>
+  <!-- Water in ditch -->
+  <path d="M 285 195 L 300 208 L 345 208 L 360 195 L 360 200 L 345 212 L 300 212 L 285 200 Z" fill="url(#water)" opacity="0.7"/>
+  <!-- Berm (built on downhill side) -->
+  <path d="M 350 210 L 370 250 L 420 235 L 450 230 L 370 210 Z" fill="#5d4e3b" stroke="#4a3d2b" stroke-width="1"/>
+  <!-- Tree on berm -->
+  <line x1="400" y1="235" x2="400" y2="210" stroke="#3d2b1a" stroke-width="2.5"/>
+  <circle cx="400" cy="200" r="18" fill="#4a7a3a" stroke="#3a6a2a" stroke-width="1"/>
+  <text x="400" y="204" text-anchor="middle" font-size="9" fill="#e0e8f0" font-weight="600">🍎</text>
+
+  <!-- Labels swale 1 -->
+  <text x="310" y="170" fill="#81d4fa" font-size="11" font-weight="600">ditch (50cm)</text>
+  <line x1="310" y1="173" x2="310" y2="188" stroke="#81d4fa" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="415" y="225" fill="#a5d6a7" font-size="11" font-weight="600">berm</text>
+  <line x1="415" y1="228" x2="415" y2="232" stroke="#a5d6a7" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="370" y="265" fill="#c5e1a5" font-size="10" font-weight="600">tree on berm</text>
+
+  <!-- Overflow arrow -->
+  <path d="M 440 235 Q 480 240 520 250" stroke="#42a5f5" stroke-width="1.5" fill="none" stroke-dasharray="3,2" marker-end="url(#arrowhead)"/>
+
+  <!-- === SWALE 2 (lower) === -->
+  <!-- Ditch -->
+  <path d="M 530 260 L 560 290 L 610 290 L 630 260" fill="#2a3a2a" stroke="#3a4a3a" stroke-width="1"/>
+  <!-- Water in ditch -->
+  <path d="M 545 272 L 560 288 L 605 288 L 620 272 L 620 278 L 605 292 L 560 292 L 545 278 Z" fill="url(#water)" opacity="0.7"/>
+  <!-- Berm -->
+  <path d="M 610 290 L 630 330 L 680 315 L 710 310 L 630 290 Z" fill="#5d4e3b" stroke="#4a3d2b" stroke-width="1"/>
+  <!-- Tree on berm -->
+  <line x1="650" y1="315" x2="650" y2="290" stroke="#3d2b1a" stroke-width="2.5"/>
+  <circle cx="650" cy="280" r="18" fill="#4a7a3a" stroke="#3a6a2a" stroke-width="1"/>
+  <text x="650" y="284" text-anchor="middle" font-size="9" fill="#e0e8f0" font-weight="600">🍑</text>
+
+  <text x="570" y="250" fill="#81d4fa" font-size="11" font-weight="600">ditch</text>
+  <text x="660" y="305" fill="#a5d6a7" font-size="11" font-weight="600">berm</text>
+
+  <!-- Overflow 2 -->
+  <path d="M 700 310 Q 740 320 780 330" stroke="#42a5f5" stroke-width="1.5" fill="none" stroke-dasharray="3,2" marker-end="url(#arrowhead)"/>
+
+  <!-- Rain arrows -->
+  <g stroke="#42a5f5" stroke-width="1.5" opacity="0.6">
+    <line x1="100" y1="30" x2="95" y2="50"/>
+    <line x1="160" y1="25" x2="155" y2="45"/>
+    <line x1="220" y1="35" x2="215" y2="55"/>
+    <line x1="120" y1="50" x2="115" y2="70"/>
+    <line x1="180" y1="45" x2="175" y2="65"/>
+    <line x1="250" y1="30" x2="245" y2="50"/>
+    <line x1="460" y1="30" x2="455" y2="55"/>
+    <line x1="490" y1="40" x2="485" y2="60"/>
+    <line x1="520" y1="25" x2="515" y2="50"/>
+  </g>
+  <text x="130" y="20" fill="#42a5f5" font-size="11" font-weight="600">rain</text>
+
+  <!-- Water flow direction arrow (downhill) -->
+  <path d="M 60 140 Q 150 160 260 178" stroke="#64b5f6" stroke-width="1" fill="none" opacity="0.4" stroke-dasharray="2,3"/>
+  <text x="80" y="135" fill="#64b5f6" font-size="9" opacity="0.6">water flows downhill →→</text>
+
+  <!-- Contour line indicator -->
+  <text x="20" y="115" fill="#81c784" font-size="8" opacity="0.5">contour line →</text>
+  <path d="M 0 115 L 150 148 L 0 118" stroke="#81c784" stroke-width="0.5" fill="none" opacity="0.2" stroke-dasharray="5,5"/>
+
+  <!-- Elevation indicators -->
+  <text x="10" y="105" fill="#a5d6a7" font-size="10" font-weight="600">~320m</text>
+  <text x="700" y="360" fill="#a5d6a7" font-size="10" font-weight="600">~290m</text>
+
+  <!-- Arrowhead marker -->
+  <defs>
+    <marker id="arrowhead" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+      <polygon points="0,0 6,3 0,6" fill="#42a5f5"/>
+    </marker>
+  </defs>
+
+  <!-- Infiltration arrows (water soaking into soil) -->
+  <g stroke="#42a5f5" stroke-width="1" opacity="0.4" stroke-dasharray="2,2">
+    <line x1="320" y1="210" x2="320" y2="240"/>
+    <line x1="335" y1="210" x2="335" y2="245"/>
+    <line x1="580" y1="290" x2="580" y2="320"/>
+    <line x1="595" y1="290" x2="595" y2="325"/>
+  </g>
+  <text x="340" y="255" fill="#42a5f5" font-size="8" opacity="0.6">↓ soaks in</text>
+  <text x="600" y="335" fill="#42a5f5" font-size="8" opacity="0.6">↓ soaks in</text>
+
+  <!-- Dimension markers -->
+  <!-- Swale 1 dimensions -->
+  <line x1="285" y1="175" x2="285" y2="210" stroke="#ffcc02" stroke-width="0.5" opacity="0.5"/>
+  <text x="250" y="195" fill="#ffcc02" font-size="8" opacity="0.6">50cm</text>
+  <line x1="270" y1="160" x2="370" y2="160" stroke="#ffcc02" stroke-width="0.5" opacity="0.5"/>
+  <text x="305" y="155" fill="#ffcc02" font-size="8" opacity="0.6">~1m wide</text>
+
+  <!-- Swale vertical spacing -->
+  <line x1="840" y1="180" x2="840" y2="260" stroke="#ffab40" stroke-width="0.5" opacity="0.4"/>
+  <text x="850" y="225" fill="#ffab40" font-size="8" opacity="0.5">~7m</text>
+  <text x="850" y="235" fill="#ffab40" font-size="7" opacity="0.4">vert.</text>
+  
+</svg>
+
+<!-- Explanation text -->
+<div style="margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:15px;font-size:0.85em;line-height:1.6;color:var(--text-dim);">
+  <div style="background:var(--bg-card-hover);padding:12px 15px;border-radius:var(--radius);">
+    <strong style="color:var(--accent-teal);">📍 Where:</strong> On contour — following a line of equal elevation across the hill. Never going up or down.
+  </div>
+  <div style="background:var(--bg-card-hover);padding:12px 15px;border-radius:var(--radius);">
+    <strong style="color:#a5d6a7;">🏗️ What you dig:</strong> A shallow ditch (~50cm deep, ~1m wide) with the excavated soil piled on the downhill side as a berm.
+  </div>
+  <div style="background:var(--bg-card-hover);padding:12px 15px;border-radius:var(--radius);">
+    <strong style="color:#42a5f5;">💧 What happens:</strong> Rain hits the slope → water runs downhill → hits the ditch → STOPS → soaks into the soil. Excess spills over the berm to the next swale below.
+  </div>
+  <div style="background:var(--bg-card-hover);padding:12px 15px;border-radius:var(--radius);">
+    <strong style="color:#c5e1a5;">🌳 What grows on the berm:</strong> Fruit trees (they get the stored water), comfrey (mulch), clover (ground cover), nitrogen fixers (goumi, eleagnus).
+  </div>
+  <div style="background:var(--bg-card-hover);padding:12px 15px;border-radius:var(--radius);">
+    <strong style="color:#ffcc02;">📏 Your <span data-water="swales">4</span> swales:</strong> Spaced ~<span data-water="swaleSpacing">7</span>m apart vertically across the <span id="swale-slope">~30m</span> slope. Each is <span id="swale-len">50-80</span>m long running horizontally across the property.
+  </div>
+  <div style="background:var(--bg-card-hover);padding:12px 15px;border-radius:var(--radius);">
+    <strong style="color:#ffab40;">🔄 Overflow chain:</strong> <span id="swale-chain">Swale 1 → overflows to swale 2 → swale 3 → swale 4 → olive grove</span>. Each swale captures what it can, passes excess downhill.
+  </div>
+  <div style="background:var(--bg-card-hover);padding:12px 15px;border-radius:var(--radius);">
+    <strong style="color:#ef5350;">❌ Don't:</strong> Plant trees IN the ditch (they'll drown). Dig off-contour (water will erode along the ditch). Build on slopes >20% (berm failure risk).
+  </div>
+  <div style="background:var(--bg-card-hover);padding:12px 15px;border-radius:var(--radius);">
+    <strong style="color:#66bb6a;">✅ Maintenance:</strong> Minimal. Check berms after heavy rain in year 1-2. By year 3, tree roots hold everything together. Leaf litter filling the ditch is fine — it acts as mulch.
+  </div>
+</div>
+
+<div style="margin-top:15px;text-align:center;font-size:0.8em;color:var(--text-dim);">
+  Without swales: rain runs off the hill → erosion, dry soil.<br>
+  With swales: rain stops at each swale → soaks in → soil stays moist for weeks. Trees on berms thrive.
+</div>
+
+</div>
+
+</body>
+</html>

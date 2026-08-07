@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOILPEPPER — Orchard Placement</title>
+<style>
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#0d1b2a;color:#e0e0d0;padding:15px;}
+h1{text-align:center;color:#c5e1a5;margin-bottom:3px;font-size:1.5em;}
+.subtitle{text-align:center;color:#81c784;margin-bottom:10px;font-size:0.85em;}
+
+/* Controls */
+.controls{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:8px 0;padding:8px;background:#16213e;border-radius:8px;border:1px solid #2a3a2a;}
+.ctrl-group{display:flex;flex-wrap:wrap;gap:4px;align-items:center;}
+.ctrl-group label{color:#81c784;font-size:0.75em;font-weight:bold;margin-right:4px;}
+.toggle{padding:4px 10px;border-radius:5px;border:1px solid #2a3a2a;cursor:pointer;font-size:0.72em;transition:all 0.2s;background:#1a2a1a;color:#aed581;}
+.toggle:hover{filter:brightness(1.2);}
+.toggle.on{background:#33691e;color:#fff;border-color:#4a8a2e;}
+.toggle.off{background:#1a2a1a;color:#666;border-color:#2a2a2a;}
+.toggle.sun{background:rgba(255,193,7,0.15);border-color:rgba(255,193,7,0.3);}
+.toggle.sun.on{background:rgba(255,193,7,0.3);border-color:#ffc107;color:#ffc107;}
+.toggle.wind{background:rgba(33,150,243,0.15);border-color:rgba(33,150,243,0.3);}
+.toggle.wind.on{background:rgba(33,150,243,0.3);border-color:#2196f3;color:#2196f3;}
+.toggle.fire{background:rgba(244,67,54,0.15);border-color:rgba(244,67,54,0.3);}
+.toggle.fire.on{background:rgba(244,67,54,0.3);border-color:#f44336;color:#f44336;}
+.toggle.frost{background:rgba(156,39,176,0.15);border-color:rgba(156,39,176,0.3);}
+.toggle.frost.on{background:rgba(156,39,176,0.3);border-color:#9c27b0;color:#9c27b0;}
+.toggle.water{background:rgba(0,188,212,0.15);border-color:rgba(0,188,212,0.3);}
+.toggle.water.on{background:rgba(0,188,212,0.3);border-color:#00bcd4;color:#00bcd4;}
+.toggle.resource{background:rgba(139,195,74,0.15);border-color:rgba(139,195,74,0.3);}
+.toggle.resource.on{background:rgba(139,195,74,0.3);border-color:#8bc34a;color:#8bc34a;}
+
+/* Plot */
+.plot-container{max-width:950px;margin:8px auto;}
+.plot{position:relative;width:100%;aspect-ratio:1;background:linear-gradient(170deg,#3a5a2a 0%,#4a6a3a 30%,#5a7a4a 60%,#4a6a3a 100%);border-radius:12px;border:3px solid #33691e;overflow:hidden;}
+
+/* Layer overlay */
+.layer{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;transition:opacity 0.3s;}
+.layer.hidden{opacity:0 !important;}
+
+/* Sector overlays */
+.sector-layer{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:2;}
+
+/* Zone styling */
+.zone{position:absolute;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-weight:600;padding:6px;cursor:pointer;transition:all 0.3s;z-index:5;}
+.zone:hover{transform:scale(1.03);z-index:10;filter:brightness(1.1);}
+.zone-label{font-size:0.85em;text-shadow:0 1px 3px rgba(0,0,0,0.7);}
+.zone-detail{font-size:0.6em;opacity:0.9;margin-top:2px;text-shadow:0 1px 2px rgba(0,0,0,0.7);}
+
+/* Plant items */
+.plant{position:absolute;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;z-index:8;text-shadow:0 1px 2px rgba(0,0,0,0.8);font-weight:bold;border:2px solid rgba(255,255,255,0.15);overflow:hidden;}
+.plant:hover{transform:scale(1.25);z-index:15;filter:brightness(1.2);}
+.plant.marginal{border:2px dashed #ff9800 !important;}
+.plant .icon{font-size:1em;}
+.plant .pname{font-size:0.45em;text-align:center;line-height:1.1;margin-top:1px;}
+
+/* Color coded categories */
+.tall-tree{background:rgba(27,94,32,0.75);border-color:rgba(46,125,50,0.6);}
+.fruit-tree{background:rgba(56,142,60,0.7);border-color:rgba(76,175,80,0.5);}
+.shrub{background:rgba(104,159,56,0.65);border-color:rgba(139,195,74,0.4);}
+.herb{background:rgba(141,180,65,0.6);border-color:rgba(175,210,80,0.35);}
+.berry{background:rgba(123,31,162,0.55);border-color:rgba(186,104,200,0.35);}
+.succulent{background:rgba(121,134,72,0.55);border-color:rgba(158,175,100,0.3);}
+
+/* Infrastructure */
+.pond{position:absolute;background:rgba(33,150,243,0.7);border:2px solid #1976d2;border-radius:50%;z-index:6;display:flex;align-items:center;justify-content:center;flex-direction:column;}
+.house{position:absolute;background:rgba(120,90,60,0.85);border:2px solid #8d6e63;border-radius:6px;z-index:6;display:flex;align-items:center;justify-content:center;flex-direction:column;}
+.swale{background:transparent;border-bottom:2px dashed rgba(33,150,243,0.4);position:absolute;z-index:4;pointer-events:none;}
+.swale-label{position:absolute;font-size:0.4em;color:rgba(33,150,243,0.35);pointer-events:none;}
+.firebreak-strip{position:absolute;background:rgba(244,67,54,0.1);border:1px dashed rgba(244,67,54,0.2);z-index:3;pointer-events:none;}
+
+/* Labels */
+.plot-label{position:absolute;font-size:0.55em;color:rgba(255,255,255,0.5);pointer-events:none;z-index:1;}
+.direction-arrow{position:absolute;font-size:1.2em;opacity:0.7;pointer-events:none;z-index:3;text-shadow:0 0 4px rgba(0,0,0,0.8);}
+
+/* Scale bars */
+.scale-bar-h{position:absolute;bottom:1%;left:15%;width:70%;height:8px;pointer-events:none;z-index:7;}
+.scale-bar-h .line{width:100%;height:1px;background:rgba(255,255,255,0.25);position:relative;}
+.scale-bar-h .tick{position:absolute;top:-3px;width:1px;height:7px;background:rgba(255,255,255,0.25);}
+.scale-bar-h .label{position:absolute;top:8px;font-size:0.4em;color:rgba(255,255,255,0.3);white-space:nowrap;}
+.scale-bar-v{position:absolute;left:1%;top:15%;height:70%;width:8px;pointer-events:none;z-index:7;}
+.scale-bar-v .line{height:100%;width:1px;background:rgba(255,255,255,0.25);position:relative;}
+.scale-bar-v .tick{position:absolute;left:-3px;width:7px;height:1px;background:rgba(255,255,255,0.25);}
+.scale-bar-v .label{position:absolute;left:8px;font-size:0.4em;color:rgba(255,255,255,0.3);white-space:nowrap;}
+
+/** Legend **/
+.legend{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin:8px 0;font-size:0.75em;}
+.legend-item{display:flex;align-items:center;gap:4px;padding:2px 6px;background:#16213e;border-radius:4px;border:1px solid #2a2a3a;}
+.legend-swatch{width:10px;height:10px;border-radius:2px;}
+.legend-swatch.circle{border-radius:50%;}
+
+/** Info panel **/
+.info-panel{display:none;background:#16213e;border:1px solid #2a3a2a;border-radius:8px;padding:12px;margin:10px auto;max-width:950px;line-height:1.5;font-size:0.85em;}
+.info-panel.active{display:block;}
+.info-panel h3{color:#c5e1a5;margin-bottom:5px;font-size:1em;}
+.info-panel .stat{display:inline-block;background:#0d1b2a;padding:2px 7px;border-radius:4px;font-size:0.8em;margin-right:5px;margin-bottom:3px;color:#aed581;}
+.info-panel strong{color:#c5e1a5;}
+.info-panel table{width:100%;border-collapse:collapse;margin:8px 0;font-size:0.85em;}
+.info-panel th{background:#1a2a1a;color:#aed581;padding:5px 8px;text-align:left;border-bottom:2px solid #33691e;}
+.info-panel td{padding:4px 8px;border-bottom:1px solid #2a3a2a;}
+
+/* Resource overlay */
+.resource-layer{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:2;transition:opacity 0.3s;}
+.resource-layer.hidden{opacity:0 !important;}
+
+/* Summary table tab styling */
+.summary-tabs{display:flex;gap:2px;margin-bottom:6px;}
+.summary-tab{padding:3px 12px;border-radius:4px 4px 0 0;cursor:pointer;font-size:0.8em;background:#1a2a1a;color:#888;border:1px solid #2a3a2a;border-bottom:none;}
+.summary-tab.active{background:#16213e;color:#c5e1a5;border-color:#33691e;}
+.summary-tab-content{display:none;}
+.summary-tab-content.active{display:block;}
+
+@media(max-width:700px){.zone-label{font-size:0.65em;}.zone-detail{font-size:0.5em;}.plant .icon{font-size:0.8em;}.plant .pname{font-size:0.38em;}}
+
+#plot-plants{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:8;}
+#plot-plants .plant{pointer-events:auto;}
+.ctx-menu{background:#16213e;border:1px solid #33691e;border-radius:8px;padding:4px;display:flex;flex-direction:column;gap:2px;box-shadow:0 4px 12px rgba(0,0,0,0.5);}
+.ctx-btn{padding:6px 12px;background:#1a2a1a;color:#c5e1a5;border:1px solid #2a3a2a;border-radius:4px;cursor:pointer;font-size:0.8em;text-align:left;}
+.ctx-btn:hover{background:#2a3a2a;border-color:#33691e;}
+</style>
+</head>
+<body>
+<div class="controls">
+  <div class="ctrl-group">
+    <label>Layers:</label>
+    <button class="toggle frost on" onclick="toggleLayer('frost',this)">❄️ Frost</button>
+    <button class="toggle fire on" onclick="toggleLayer('fire',this)">🔥 Fire</button>
+    <button class="toggle wind on" onclick="toggleLayer('wind',this)">💨 Wind</button>
+    <button class="toggle sun on" onclick="toggleLayer('sun',this)">☀️ Sun</button>
+    <button class="toggle water on" onclick="toggleLayer('water',this)">💧 Water</button>
+    <button class="toggle resource on" onclick="toggleLayer('resource',this)">🌱 Root depth</button>
+  </div>
+  <div class="ctrl-group">
+    <button class="toggle" onclick="toggleAll()">🔄 Toggle All</button>
+    <button class="toggle" onclick="showInfo('default')">📋 Info</button>
+    <button class="toggle" onclick="document.getElementById('legend-scroll').scrollIntoView({behavior:'smooth'})">📖 Legend</button>
+  </div>
+</div>
+
+<!-- PLOT -->
+<div class="plot-container">
+<div class="plot" id="plot">
+
+  <!-- Compass N -->
+  <div style="position:absolute;top:1%;left:2%;z-index:10;pointer-events:none;">
+    <div style="font-size:0.5em;color:rgba(255,255,255,0.4);">N ↑</div>
+  </div>
+
+  <!-- Horizontal scale bar (100m) -->
+  <div class="scale-bar-h">
+    <div class="line">
+      <span class="tick" style="left:0%;"></span>
+      <span class="tick" style="left:25%;"></span>
+      <span class="tick" style="left:50%;"></span>
+      <span class="tick" style="left:75%;"></span>
+      <span class="tick" style="left:100%;"></span>
+      <span class="label" style="left:0%;">0</span>
+      <span class="label" style="left:25%;">25m</span>
+      <span class="label" style="left:50%;">50m</span>
+      <span class="label" style="left:75%;">75m</span>
+      <span class="label" style="left:100%;">100m</span>
+    </div>
+  </div>
+
+  <!-- Vertical scale bar (100m) -->
+  <div class="scale-bar-v">
+    <div class="line">
+      <span class="tick" style="top:0%;"></span>
+      <span class="tick" style="top:25%;"></span>
+      <span class="tick" style="top:50%;"></span>
+      <span class="tick" style="top:75%;"></span>
+      <span class="tick" style="top:100%;"></span>
+      <span class="label" style="top:0%;">0</span>
+      <span class="label" style="top:25%;">25m</span>
+      <span class="label" style="top:50%;">50m</span>
+      <span class="label" style="top:75%;">75m</span>
+      <span class="label" style="top:100%;">100m</span>
+    </div>
+  </div>
+
+  <!-- Temperature label -->
+  <div style="position:absolute;top:1%;right:2%;z-index:10;pointer-events:none;text-align:right;">
+    <div style="font-size:0.45em;color:rgba(255,255,255,0.35);">🌡️ Upper slope: -5°C min</div>
+    <div style="font-size:0.45em;color:rgba(255,255,255,0.3);">🌡️ Mid slope: -7°C min</div>
+    <div style="font-size:0.45em;color:rgba(255,255,255,0.25);">🌡️ Lower slope: -9°C min</div>
+    <div style="font-size:0.45em;color:rgba(255,255,255,0.2);">🌡️ Frost pocket: -12°C min</div>
+  </div>
+
+  <!-- Aspect -->
+  <div style="position:absolute;bottom:1%;left:2%;font-size:0.5em;color:rgba(255,255,255,0.3);pointer-events:none;z-index:10;">↓ South-facing slope (180°)</div>
+  <div style="position:absolute;bottom:1%;right:3%;font-size:0.5em;color:rgba(255,255,255,0.3);pointer-events:none;z-index:10;">1ha · ~300m · Zone 8b-9a</div>
+
+  <!-- ===== SECTOR OVERLAYS ===== -->
+
+  <!-- FROST: Cold air drainage -->
+  <div class="sector-layer" id="layer-frost">
+    <svg style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible;" viewBox="0 0 100 100">
+      <defs>
+        <marker id="arrowFrost" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(156,39,176,0.3)"/>
+        </marker>
+      </defs>
+      <line x1="50" y1="5" x2="50" y2="40" stroke="rgba(156,39,176,0.15)" stroke-width="1.5" marker-end="url(#arrowFrost)"/>
+      <line x1="25" y1="5" x2="25" y2="35" stroke="rgba(156,39,176,0.1)" stroke-width="1" marker-end="url(#arrowFrost)"/>
+      <line x1="75" y1="5" x2="75" y2="35" stroke="rgba(156,39,176,0.1)" stroke-width="1" marker-end="url(#arrowFrost)"/>
+      <line x1="15" y1="15" x2="15" y2="40" stroke="rgba(156,39,176,0.08)" stroke-width="1" marker-end="url(#arrowFrost)"/>
+      <line x1="85" y1="15" x2="85" y2="40" stroke="rgba(156,39,176,0.08)" stroke-width="1" marker-end="url(#arrowFrost)"/>
+      <text x="50" y="3" fill="rgba(156,39,176,0.35)" font-size="2" text-anchor="middle" font-weight="bold">❄️ Cold air drainage downhill</text>
+      <text x="50" y="45" fill="rgba(156,39,176,0.2)" font-size="1.5" text-anchor="middle" font-style="italic">Frost pocket zone (lower slope)</text>
+    </svg>
+    <div style="position:absolute;top:72%;left:25%;width:50%;height:12%;background:rgba(156,39,176,0.05);border:1px dashed rgba(156,39,176,0.15);border-radius:8px;pointer-events:none;"></div>
+    <div style="position:absolute;top:74%;left:30%;font-size:0.45em;color:rgba(156,39,176,0.4);pointer-events:none;">❄️ Frost pocket — hardy crops only</div>
+    <div style="position:absolute;top:27%;left:0%;font-size:0.4em;color:rgba(156,39,176,0.25);pointer-events:none;">Upper slope: warmest (-3°C to -5°C)</div>
+    <div style="position:absolute;top:45%;left:0%;font-size:0.4em;color:rgba(156,39,176,0.2);pointer-events:none;">Mid slope: moderate (-5°C to -7°C)</div>
+  </div>
+
+  <!-- FIRE: SE sector -->
+  <div class="sector-layer" id="layer-fire">
+    <svg style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible;" viewBox="0 0 100 100">
+      <path d="M 50 50 L 100 100 L 100 50 Z" fill="rgba(244,67,54,0.08)" stroke="rgba(244,67,54,0.2)" stroke-width="0.5"/>
+      <path d="M 50 50 L 100 85 L 100 65 Z" fill="rgba(244,67,54,0.06)" stroke="rgba(244,67,54,0.15)" stroke-width="0.5"/>
+      <text x="76" y="72" fill="rgba(244,67,54,0.4)" font-size="2.5" font-weight="bold">🔥 Fire risk</text>
+      <text x="72" y="76" fill="rgba(244,67,54,0.3)" font-size="1.8">Jul-Sep · Sirocco</text>
+    </svg>
+    <div style="position:absolute;top:73%;left:65%;font-size:0.5em;color:rgba(244,67,54,0.6);pointer-events:none;text-shadow:0 0 3px rgba(0,0,0,0.8);">⛔ Firebreak</div>
+  </div>
+
+  <!-- WIND: SW prevailing + NW cold + SE hot -->
+  <div class="sector-layer" id="layer-wind">
+    <svg style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible;" viewBox="0 0 100 100">
+      <defs>
+        <marker id="arrowSW" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(33,150,243,0.5)"/>
+        </marker>
+        <marker id="arrowNW" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(0,188,212,0.4)"/>
+        </marker>
+        <marker id="arrowSE" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(244,67,54,0.4)"/>
+        </marker>
+      </defs>
+      <line x1="5" y1="90" x2="45" y2="45" stroke="rgba(33,150,243,0.3)" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arrowSW)"/>
+      <line x1="15" y1="85" x2="50" y2="40" stroke="rgba(33,150,243,0.25)" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowSW)"/>
+      <line x1="0" y1="95" x2="40" y2="50" stroke="rgba(33,150,243,0.2)" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowSW)"/>
+      <text x="8" y="82" fill="rgba(33,150,243,0.5)" font-size="2.5" font-weight="bold">💨 SW</text>
+      <line x1="20" y1="5" x2="50" y2="35" stroke="rgba(0,188,212,0.2)" stroke-width="1.5" stroke-dasharray="3,4" marker-end="url(#arrowNW)"/>
+      <line x1="10" y1="2" x2="40" y2="30" stroke="rgba(0,188,212,0.15)" stroke-width="1" stroke-dasharray="3,4" marker-end="url(#arrowNW)"/>
+      <text x="15" y="3" fill="rgba(0,188,212,0.4)" font-size="2" font-weight="bold">❄️ Tramontana NW</text>
+      <line x1="85" y1="85" x2="60" y2="50" stroke="rgba(244,67,54,0.2)" stroke-width="1.5" stroke-dasharray="3,4" marker-end="url(#arrowSE)"/>
+      <text x="80" y="82" fill="rgba(244,67,54,0.4)" font-size="2" font-weight="bold">🔥 Sirocco SE</text>
+    </svg>
+    <div style="position:absolute;top:62%;left:3%;font-size:0.45em;color:rgba(33,150,243,0.5);pointer-events:none;">🌳 SW windbreak hedge</div>
+    <div style="position:absolute;top:42%;left:0%;font-size:0.4em;color:rgba(33,150,243,0.2);pointer-events:none;">↕ Hazelnut NW windbreak</div>
+  </div>
+
+  <!-- SUN: Summer + Winter arcs -->
+  <div class="sector-layer" id="layer-sun">
+    <svg style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible;opacity:0.25;" viewBox="0 0 100 100">
+      <path d="M 50 65 L 15 15 A 60 60 0 0 1 85 15 Z" fill="rgba(255,193,7,0.4)" stroke="rgba(255,193,7,0.6)" stroke-width="0.5"/>
+      <text x="50" y="12" text-anchor="middle" fill="rgba(255,193,7,0.7)" font-size="3" font-weight="bold">☀️ Summer sun 70°</text>
+      <path d="M 50 65 L 32 30 A 50 50 0 0 1 68 30 Z" fill="rgba(255,152,0,0.4)" stroke="rgba(255,152,0,0.6)" stroke-width="0.5"/>
+      <text x="50" y="24" text-anchor="middle" fill="rgba(255,152,0,0.6)" font-size="2.5" font-weight="bold">❄️ Winter sun 24°</text>
+    </svg>
+    <div style="position:absolute;top:2%;left:50%;transform:translateX(-50%);font-size:0.5em;color:rgba(255,193,7,0.5);pointer-events:none;text-shadow:0 0 3px rgba(0,0,0,0.8);">← Summer sun arc SE→SW →</div>
+    <div style="position:absolute;bottom:2%;right:3%;font-size:0.45em;color:rgba(255,193,7,0.4);pointer-events:none;">+30% solar gain on south slope</div>
+  </div>
+
+  <!-- WATER: Swales, pond, irrigation -->
+  <div class="sector-layer" id="layer-water">
+    <svg style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible;" viewBox="0 0 100 100">
+      <defs>
+        <marker id="arrowRain" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(0,188,212,0.3)"/>
+        </marker>
+      </defs>
+      <text x="5" y="50" fill="rgba(0,188,212,0.3)" font-size="2.5">🌧️ 800mm/yr</text>
+      <line x1="50" y1="5" x2="50" y2="45" stroke="rgba(0,188,212,0.12)" stroke-width="1" marker-end="url(#arrowRain)"/>
+      <line x1="35" y1="5" x2="35" y2="40" stroke="rgba(0,188,212,0.08)" stroke-width="0.8" marker-end="url(#arrowRain)"/>
+      <line x1="65" y1="5" x2="65" y2="40" stroke="rgba(0,188,212,0.08)" stroke-width="0.8" marker-end="url(#arrowRain)"/>
+      <text x="50" y="48" fill="rgba(0,188,212,0.25)" font-size="1.8" text-anchor="middle">Swales catch runoff → recharge groundwater</text>
+    </svg>
+    <div style="position:absolute;top:28%;left:6%;font-size:0.4em;color:rgba(0,188,212,0.3);pointer-events:none;">Gravity drip irrigation</div>
+    <div style="position:absolute;top:55%;left:10%;font-size:0.4em;color:rgba(0,188,212,0.25);pointer-events:none;">Pond → drip lines on swale berms</div>
+  </div>
+
+  <!-- RESOURCE PARTITIONING: Deep vs Shallow vs N-fixing -->
+  <div class="resource-layer" id="layer-resource">
+    <svg style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible;pointer-events:none;" viewBox="0 0 100 100">
+      <!-- Deep-rooted zone indicator (left side) -->
+      <rect x="0" y="25" width="15" height="50" fill="rgba(76,175,80,0.06)" stroke="rgba(76,175,80,0.15)" stroke-width="0.3" stroke-dasharray="2,2" rx="2"/>
+      <text x="0.5" y="48" fill="rgba(76,175,80,0.25)" font-size="1.8" font-weight="bold" transform="rotate(-90,1,48)">Deep-rooted</text>
+      <!-- Shallow-rooted zone indicator (center-right) -->
+      <rect x="45" y="40" width="25" height="40" fill="rgba(255,193,7,0.04)" stroke="rgba(255,193,7,0.12)" stroke-width="0.3" stroke-dasharray="2,2" rx="2"/>
+      <text x="75" y="58" fill="rgba(255,193,7,0.2)" font-size="1.8" font-weight="bold" transform="rotate(90,75,58)">Shallow-rooted</text>
+      <!-- N-fixing zone indicator (top) -->
+      <rect x="20" y="5" width="30" height="15" fill="rgba(33,150,243,0.04)" stroke="rgba(33,150,243,0.12)" stroke-width="0.3" stroke-dasharray="2,2" rx="2"/>
+      <text x="35" y="14" fill="rgba(33,150,243,0.2)" font-size="1.8" text-anchor="middle" font-weight="bold">Nitrogen-fixing zone</text>
+    </svg>
+    <!-- Deep-rooted plants crosshatch on the left side area -->
+    <div style="position:absolute;top:51%;left:30%;font-size:0.38em;color:rgba(76,175,80,0.2);pointer-events:none;">⏺ Deep: Walnut, Persimmon, Grape, Fig</div>
+    <div style="position:absolute;top:53%;left:30%;font-size:0.38em;color:rgba(255,193,7,0.2);pointer-events:none;">⏺ Shallow: Peach, Plum, Apple, Pear, Herbs</div>
+    <div style="position:absolute;top:55%;left:30%;font-size:0.38em;color:rgba(33,150,243,0.2);pointer-events:none;">⏺ N-fixing: European Plum, Hazelnut (leaf litter)</div>
+  </div>
+
+  <!-- ===== INFRASTRUCTURE ===== -->
+
+  <!-- POND (upper-left) -->
+  <div class="pond" style="top:12%;left:5%;width:12%;height:10%;" onclick="showInfo('pond')">
+    <div style="font-size:1.2em;">💧</div>
+    <div style="font-size:0.5em;margin-top:2px;text-shadow:0 1px 3px rgba(0,0,0,0.8);">Pond</div>
+  </div>
+
+  <!-- HOUSE (mid-slope) -->
+  <div class="house" style="top:44%;left:40%;width:25%;height:10%;border-radius:6px;" onclick="showInfo('house')">
+    <div class="zone-label">🏠 House</div>
+    <div class="zone-detail">25m × 10m · Zone 0</div>
+  </div>
+
+  <!-- SWALES (4 on contour) with ~7m vertical spacing -->
+  <div class="swale" style="top:35%;left:3%;width:94%;">
+    <div class="swale-label" style="top:-10px;right:2%;">Swale 1</div>
+  </div>
+  <div class="swale" style="top:42%;left:3%;width:94%;border-bottom-color:rgba(33,150,243,0.35);">
+    <div class="swale-label" style="top:-10px;right:2%;color:rgba(33,150,243,0.35);">Swale 2</div>
+  </div>
+  <div class="swale" style="top:49%;left:3%;width:94%;border-bottom-color:rgba(33,150,243,0.3);">
+    <div class="swale-label" style="top:-10px;right:2%;color:rgba(33,150,243,0.3);">Swale 3</div>
+  </div>
+  <div class="swale" style="top:56%;left:3%;width:94%;border-bottom-color:rgba(33,150,243,0.25);">
+    <div class="swale-label" style="top:-10px;right:2%;color:rgba(33,150,243,0.25);">Swale 4</div>
+  </div>
+
+  <!-- FIREBREAK STRIP (SE boundary) -->
+  <div class="firebreak-strip" style="top:75%;left:68%;width:28%;height:20%;"></div>
+  <div style="position:absolute;top:76%;left:69%;font-size:0.35em;color:rgba(244,67,54,0.4);z-index:3;pointer-events:none;line-height:1.3;">🔥 FIREBREAK<br>Lavender · Rosemary<br>Thyme · Succulents</div>
+  <div class="ctrl-group">
+    <button class="toggle" id="suggest-btn" style="background:#33691e;color:#fff;border-color:#4a8a2e;">✨ Suggest Layout</button>
+    <button class="toggle" id="export-btn">💾 Export JSON</button>
+    <button class="toggle" id="clear-btn" style="color:#ef5350;">🗑️ Clear All</button>
+  </div>
+</div>
+<div id="plot-stats" style="text-align:center;color:#aed581;font-size:0.8em;margin:4px 0;"></div>
+
+  <!-- Dynamic plants rendered here -->
+  <div id="plot-plants"></div>
+
+</div>
+</div>
+<!-- Default info panel -->
+<div class="info-panel active" id="info-default">
+  <h3>🌳 Orchard Placement Map</h3>
+  <p>This interactive map shows <strong>where each tree and plant is positioned</strong> on the 1ha Tuscan hillside, with placement driven by frost drainage, fire risk, wind, sun, and water access.</p>
+  <p><strong>Placement logic:</strong></p>
+  <ul style="margin:4px 0 4px 18px;font-size:0.9em;color:#b0bec5;">
+    <li>🌡️ <strong>Upper slope</strong> (warmest, best frost drainage): Peach, Plum, Grape, Fig, Walnut</li>
+    <li>🌡️ <strong>Mid slope</strong> (moderate frost): Persimmon, Hazelnut, Apple, Pear on swale berms</li>
+    <li>🏠 <strong>Against house</strong> (south wall, thermal mass): Lemon ⚠️, Passion fruit ⚠️</li>
+    <li>🔥 <strong>SE boundary</strong> (firebreak): Lavender, Rosemary, Thyme, Succulents</li>
+    <li>🌳 <strong>NW edge</strong> (windbreak): Hazelnut hedge</li>
+    <li>🌤️ <strong>Shaded spots</strong> (afternoon shade): Red currants ⚠️, Raspberry ⚠️</li>
+  </ul>
+  <p><strong>Toggle layers</strong> above to see frost zones, fire risk, wind, sun, water flow, and root-depth resource partitioning. <strong>Click any plant</strong> for full details.</p>
+</div>
+<div class="info-panel" id="info-panel"></div>
+<script>
+// ============ SPECIES DATABASE ============
+const SPECIES = {"fig": {"key": "fig", "name": "Fig", "italian": "Fico", "latin": "Ficus carica", "category": "tree", "subcategory": "fruit", "height": 600, "width": 600, "soilDepth": 100, "soilType": ["sandy", "silty", "loam", "chalky"], "sun": "full", "water": "low", "nFixer": false, "perennial": true, "native": true, "fireResistant": true, "notes": "Mediterranean classic. Thrives on silty-sand. Brogiotto Bianco/Nero, Dottato. Multi-purpose", "icon": "🍇", "regions": ["tuscany", "netherlands"], "guild": {"gives": ["light-shade", "biomass", "mulch", "beneficial-habitat", "erosion-control"], "needs": ["nitrogen", "deep-soil-prep", "moisture-retention", "mycorrhizal-inoculation"], "companions": ["lavender", "rosemary", "thyme", "sage", "oregano", "calendula", "nasturtium", "borage", "yarrow", "chives", "basil", "comfrey", "white-clover", "white-lupin", "alfalfa", "vetch", "fava-beans", "elderberry", "hazelnut", "goji", "blackberry", "raspberry", "lettuce", "spinach", "swiss-chard", "strawberry-veg", "olive", "almond", "carob", "pomegranate", "daffodil"], "antagonists": ["walnut", "tomato", "peppers", "eggplant", "potatoes"], "rootForm": "fibrous", "rootZone": "moderate", "accumulates": ["calcium", "potassium", "silica"]}}, "persimmon": {"key": "persimmon", "name": "Persimmon", "italian": "Cachi", "latin": "Diospyros kaki", "category": "tree", "subcategory": "fruit", "height": 800, "width": 600, "soilDepth": 100, "soilType": ["sandy", "silty", "loam"], "sun": "full", "water": "low", "nFixer": false, "perennial": true, "native": false, "fireResistant": true, "notes": "Top recommendation. Deep taproot, abundant leaf litter. Kaki Tipo, Vaniglia", "icon": "🍊", "regions": ["tuscany", "netherlands"], "guild": {"gives": ["light-shade", "biomass", "mulch", "beneficial-habitat", "erosion-control"], "needs": ["nitrogen", "deep-soil-prep", "moisture-retention", "mycorrhizal-inoculation"], "companions": ["white-clover", "alfalfa", "vetch", "white-lupin", "fava-beans", "calendula", "nasturtium", "borage", "yarrow", "chives", "onions", "comfrey", "lavender", "rosemary", "thyme", "sage", "oregano", "basil", "grape", "hazelnut", "elderberry", "strawberry-veg", "daffodil", "asparagus"], "antagonists": ["walnut", "corn", "potatoes", "tomato", "peppers", "eggplant", "fennel"], "rootForm": "fibrous", "rootZone": "moderate", "accumulates": ["calcium", "potassium", "magnesium", "phosphorus"]}}, "grape": {"key": "grape", "name": "Grape (vineyard)", "italian": "Vite", "latin": "Vitis vinifera", "category": "tree", "subcategory": "fruit", "height": 300, "width": 200, "soilDepth": 150, "soilType": ["sandy", "silty", "loam", "chalky"], "sun": "full", "water": "low", "nFixer": false, "perennial": true, "native": true, "fireResistant": true, "notes": "Sangiovese for wine, Italia for table. Deep roots (3m+). Ideal Tuscan vineyard conditions", "icon": "🍇", "regions": ["tuscany", "netherlands"], "guild": {"gives": ["biomass", "mulch", "pollinator-attractor"], "needs": ["nitrogen", "support", "deep-soil-prep", "mycorrhizal-inoculation", "moisture-retention"], "companions": ["italian-alder", "common-alder", "grey-alder", "fig", "olive", "comfrey", "borage", "basil", "white-clover", "vetch", "yarrow", "oregano", "chicory"], "antagonists": ["walnut", "corn", "sunflower", "potatoes", "cavolo-nero", "broccoli", "radish"], "rootForm": "deep-taproot", "rootZone": "deep", "accumulates": []}}, "peach": {"key": "peach", "name": "Peach", "italian": "Pesco", "latin": "Prunus persica", "category": "tree", "subcategory": "fruit", "height": 500, "width": 500, "soilDepth": 80, "soilType": ["sandy", "silty", "loam"], "sun": "full", "water": "moderate", "nFixer": false, "perennial": true, "native": true, "fireResistant": false, "notes": "Tuscan classic. Regina di Londa, Pesca di Prato. Late-blooming varieties for 300m", "icon": "🍑", "regions": ["tuscany", "netherlands"], "guild": {"gives": ["light-shade", "pollinator-attractor", "beneficial-habitat", "mulch"], "needs": ["nitrogen", "moisture-retention", "rich-soil", "pollination", "wind-protection"], "companions": ["comfrey", "borage", "yarrow", "lavender", "calendula", "nasturtium", "white-clover", "basil", "fennel", "elderberry", "rose"], "antagonists": ["walnut", "potatoes", "tomato", "peppers", "raspberry"], "rootForm": "fibrous", "rootZone": "shallow", "accumulates": ["potassium", "calcium"]}}, "plum": {"key": "plum", "name": "Plum", "italian": "Susino", "latin": "Prunus domestica", "category": "tree", "subcategory": "fruit", "height": 500, "width": 500, "soilDepth": 80, "soilType": ["sandy", "silty", "loam", "clay"], "sun": "full", "water": "moderate", "nFixer": false, "perennial": true, "native": true, "fireResistant": false, "notes": "European plums. Regina Claudia, Susina di Dro. Deep-rooted, good slope stabilizer", "icon": "🍓", "regions": ["tuscany", "netherlands"], "guild": {"gives": ["light-shade", "pollinator-attractor", "beneficial-habitat", "mulch", "erosion-control"], "needs": ["nitrogen", "moisture-retention", "pollination", "rich-soil"], "companions": ["comfrey", "borage", "yarrow", "white-clover", "nasturtium", "lavender", "calendula", "elderberry", "apple", "pear", "quince", "cherry", "apricot", "rose"], "antagonists": ["walnut", "raspberry", "blackberry"], "rootForm": "fibrous", "rootZone": "shallow", "accumulates": ["potassium", "calcium", "phosphorus"]}}, "apple": {"key": "apple", "name": "Apple", "italian": "Melo", "latin": "Malus domestica", "category": "tree", "subcategory": "fruit", "height": 500, "width": 500, "soilDepth": 80, "soilType": ["sandy", "silty", "loam"], "sun": "full", "water": "moderate", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Low-chill varieties only: Anna, Dorsett Golden. Mela Casciana, Rotella. 400-600 chill hrs", "icon": "🍏", "regions": ["tuscany", "netherlands"], "guild": {"gives": ["light-shade", "pollinator-attractor", "beneficial-habitat", "mulch", "windbreak", "erosion-control"], "needs": ["nitrogen", "moisture-retention", "pollination", "deep-soil-prep"], "companions": ["comfrey", "daffodil", "yarrow", "borage", "nasturtium", "fennel", "lavender", "calendula", "white-clover", "alfalfa", "parsley", "hazelnut", "elderberry", "quince", "pear"], "antagonists": ["walnut", "potatoes", "carrots"], "rootForm": "fibrous", "rootZone": "moderate", "accumulates": ["potassium", "calcium", "phosphorus"]}}, "pear": {"key": "pear", "name": "Pear", "italian": "Pero", "latin": "Pyrus communis", "category": "tree", "subcategory": "fruit", "height": 600, "width": 500, "soilDepth": 100, "soilType": ["sandy", "silty", "loam", "clay"], "sun": "full", "water": "moderate", "nFixer": false, "perennial": true, "native": true, "fireResistant": false, "notes": "More drought-tolerant than apple. Deep taproot. Coscia, Abate Fetel, Williams", "icon": "🍐", "regions": ["tuscany", "netherlands"], "guild": {"gives": ["light-shade", "pollinator-attractor", "beneficial-habitat", "mulch", "windbreak", "erosion-control"], "needs": ["nitrogen", "moisture-retention", "pollination", "deep-soil-prep", "wind-protection"], "companions": ["comfrey", "borage", "yarrow", "nasturtium", "white-clover", "alfalfa", "apple", "quince", "elderberry", "hazelnut", "lavender", "calendula"], "antagonists": ["walnut", "potatoes"], "rootForm": "deep-taproot", "rootZone": "deep", "accumulates": ["potassium", "calcium", "magnesium"]}}, "hazelnut": {"key": "hazelnut", "name": "Hazelnut", "italian": "Nocciolo", "latin": "Corylus avellana", "category": "tree", "subcategory": "nut", "height": 500, "width": 400, "soilDepth": 80, "soilType": ["sandy", "silty", "loam"], "sun": "partial", "water": "low", "nFixer": false, "perennial": true, "native": true, "fireResistant": false, "notes": "Excellent multi-functional: nuts, slope stabilization, biomass, windbreak. Tonda Gentile", "icon": "🌰", "regions": ["tuscany", "netherlands"], "guild": {"gives": ["biomass", "mulch", "windbreak", "mycorrhizal-host", "beneficial-habitat", "pollinator-attractor"], "needs": ["nitrogen", "pollination", "mycorrhizal-inoculation", "moisture-retention"], "companions": ["italian-alder", "common-alder", "grey-alder", "comfrey", "borage", "yarrow", "white-clover", "vetch", "chicory", "phacelia", "artichoke", "asparagus", "raspberry", "blackberry", "elderberry", "rose"], "antagonists": ["walnut", "fennel", "potatoes"], "rootForm": "fibrous", "rootZone": "moderate", "accumulates": []}}, "walnut": {"key": "walnut", "name": "Walnut", "italian": "Noce", "latin": "Juglans regia", "category": "tree", "subcategory": "nut", "height": 1500, "width": 1000, "soilDepth": 150, "soilType": ["sandy", "silty", "loam"], "sun": "full", "water": "low", "nFixer": false, "perennial": true, "native": true, "fireResistant": true, "notes": "Juglone-tolerant guild only. Keep 15-20m from veg garden. Franquette, Sorrento", "icon": "🥜", "regions": ["tuscany", "netherlands"], "guild": {"gives": ["deep-shade", "biomass", "mulch", "windbreak", "beneficial-habitat"], "needs": ["nitrogen", "deep-soil-prep", "rich-soil", "mycorrhizal-inoculation"], "companions": ["elderberry", "hazelnut", "persimmon", "plum", "cherry", "peach", "quince", "rose", "blackberry", "raspberry", "red-currant", "grape", "onions", "beets", "carrots", "parsnip", "fava-beans", "white-clover", "alfalfa", "white-lupin", "vetch", "chicory", "endive", "leek", "yarrow", "daffodil", "nasturtium", "calendula", "comfrey", "oregano", "sage", "parsley"], "antagonists": ["apple", "pear", "tomato", "peppers", "eggplant", "potatoes", "cavolo-nero", "kale", "broccoli", "cauliflower", "asparagus", "basil", "lavender", "rosemary", "fennel"], "rootForm": "deep-taproot", "rootZone": "deep", "accumulates": ["calcium", "potassium", "magnesium"]}}, "lemon": {"key": "lemon", "name": "Lemon", "italian": "Limone", "latin": "Citrus × limon", "category": "tree", "subcategory": "fruit", "height": 400, "width": 300, "soilDepth": 60, "soilType": ["sandy", "silty", "loam"], "sun": "full", "water": "moderate", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Marginal at 300m. South-facing wall only. Femminillo comune. Winter fleece Nov-Mar", "icon": "🍋", "regions": ["tuscany"], "guild": {"gives": ["evergreen-shelter", "light-shade", "pollinator-attractor", "biomass"], "needs": ["nitrogen", "pollination", "mycorrhizal-inoculation", "rich-soil", "moisture-retention", "wind-protection"], "companions": ["italian-alder", "common-alder", "grey-alder", "goumi", "sea-buckthorn", "comfrey", "lavender", "rosemary", "thyme", "sage", "basil", "borage", "yarrow", "nasturtium", "calendula", "white-clover", "vetch", "white-lupin", "phacelia", "chicory", "strawberry-veg", "rose", "fig", "olive", "pomegranate"], "antagonists": ["walnut", "fennel", "potatoes", "corn", "sunflower"], "rootForm": "fibrous", "rootZone": "shallow", "accumulates": []}}, "carob": {"key": "carob", "name": "Carob", "italian": "Carrubo", "latin": "Ceratonia siliqua", "category": "tree", "subcategory": "fruit", "height": 1000, "width": 800, "soilDepth": 150, "soilType": ["sandy", "silty", "loam", "chalky"], "sun": "full", "water": "low", "nFixer": false, "perennial": true, "native": true, "fireResistant": true, "notes": "Mediterranean drought-tolerant evergreen. Edible pods. Deep root system. Not N-fixer despite Fabaceae", "icon": "🌾", "regions": ["tuscany"], "guild": {"gives": ["n-fixer", "deep-shade", "biomass", "mulch", "windbreak", "erosion-control", "beneficial-habitat"], "needs": ["wind-protection", "deep-soil-prep", "mycorrhizal-inoculation", "moisture-retention"], "companions": ["olive", "almond", "pistachio", "fig", "grape", "lavender", "rosemary", "thyme", "sage", "oregano", "calendula", "borage", "yarrow", "comfrey", "onions", "fava-beans", "white-clover", "white-lupin", "alfalfa", "sea-buckthorn", "goumi", "scotch-broom", "etna-broom", "spanish-broom", "tree-medic", "bladder-senna"], "antagonists": ["walnut"], "rootForm": "deep-taproot", "rootZone": "deep", "accumulates": ["calcium", "potassium", "phosphorus", "magnesium"]}}, "almond": {"key": "almond", "name": "Almond", "italian": "Mandorlo", "latin": "Prunus dulcis", "category": "tree", "subcategory": "nut", "height": 600, "width": 600, "soilDepth": 100, "soilType": ["sandy", "silty", "loam", "chalky"], "sun": "full", "water": "low", "nFixer": false, "perennial": true, "native": true, "fireResistant": false, "notes": "Heat- and drought-tolerant. Late-blooming varieties: Tuono (self-fertile), Cristomorto", "icon": "🌾", "regions": ["tuscany", "netherlands"], "guild": {"gives": ["light-shade", "pollinator-attractor", "biomass", "mulch", "beneficial-habitat"], "needs": ["nitrogen", "rich-soil", "deep-soil-prep", "pollination", "moisture-retention"], "companions": ["lavender", "rosemary", "thyme", "oregano", "sage", "calendula", "nasturtium", "borage", "yarrow", "chives", "basil", "white-clover", "vetch", "alfalfa", "fava-beans", "white-lupin", "comfrey", "daffodil", "olive", "carob", "fig"], "antagonists": ["walnut", "potatoes", "tomato", "peppers", "eggplant", "fennel"], "rootForm": "fibrous", "rootZone": "moderate", "accumulates": ["calcium", "potassium", "magnesium"]}}, "pistachio": {"key": "pistachio", "name": "Pistachio", "italian": "Pistacchio", "latin": "Pistacia vera", "category": "tree", "subcategory": "nut", "height": 700, "width": 700, "soilDepth": 150, "soilType": ["sandy", "silty", "loam", "chalky"], "sun": "full", "water": "low", "nFixer": false, "perennial": true, "native": false, "fireResistant": true, "notes": "Premium nut for warm sites. Grafted on terebinth rootstock. Dioecious. Pistacchio Verde di Bronte", "icon": "🥜", "regions": ["tuscany"], "guild": {"gives": ["light-shade", "windbreak", "biomass", "erosion-control", "beneficial-habitat"], "needs": ["nitrogen", "deep-soil-prep", "pollination", "moisture-retention", "mycorrhizal-inoculation"], "companions": ["lavender", "rosemary", "thyme", "sage", "oregano", "calendula", "borage", "yarrow", "nasturtium", "chives", "white-clover", "alfalfa", "vetch", "white-lupin", "fava-beans", "comfrey", "olive", "carob", "almond", "fig", "grape", "stinking-bean-trefoil"], "antagonists": ["walnut", "fennel", "potatoes", "corn", "sunflower"], "rootForm": "deep-taproot", "rootZone": "deep", "accumulates": ["calcium", "potassium", "magnesium"]}}, "pomegranate": {"key": "pomegranate", "name": "Pomegranate", "italian": "Melograno", "latin": "Punica granatum", "category": "shrub", "subcategory": "berry", "height": 400, "width": 300, "soilDepth": 60, "soilType": ["sandy", "silty", "loam"], "sun": "full", "water": "low", "nFixer": false, "perennial": true, "native": true, "fireResistant": true, "notes": "Self-fertile. Dente di Cavallo, Wonderful. Hardy to -10°C", "icon": "🍓", "regions": ["tuscany", "netherlands"], "guild": {"gives": ["light-shade", "biomass", "pollinator-attractor", "beneficial-habitat", "erosion-control", "mulch"], "needs": ["nitrogen", "deep-soil-prep", "wind-protection", "moisture-retention", "mycorrhizal-inoculation"], "companions": ["olive", "fig", "almond", "lavender", "rosemary", "thyme", "sage", "borage", "yarrow", "nasturtium", "comfrey", "fennel", "chives", "garlic-veg", "strawberry-veg"], "antagonists": ["walnut"], "rootForm": "fibrous", "rootZone": "moderate", "accumulates": ["potassium", "calcium", "iron"]}}, "jujube": {"key": "jujube", "name": "Jujube", "italian": "Giuggiolo", "latin": "Ziziphus jujuba", "category": "shrub", "subcategory": "berry", "height": 500, "width": 400, "soilDepth": 60, "soilType": ["sandy", "silty", "loam"], "sun": "full", "water": "low", "nFixer": false, "perennial": true, "native": false, "fireResistant": true, "notes": "Cultivated since Roman times in Italy. Brodo di giuggiole (Tuscan liqueur). Very drought-tolerant", "icon": "🍒", "regions": ["tuscany", "netherlands"], "guild": {"gives": ["light-shade", "biomass", "windbreak", "beneficial-habitat", "erosion-control", "pollinator-attractor"], "needs": ["nitrogen", "deep-soil-prep", "moisture-retention", "mycorrhizal-inoculation"], "companions": ["olive", "almond", "fig", "pomegranate", "lavender", "rosemary", "thyme", "sage", "garlic-veg", "chives", "yarrow", "comfrey", "borage", "nasturtium", "fava-beans", "white-clover"], "antagonists": [], "rootForm": "deep-taproot", "rootZone": "deep", "accumulates": ["potassium", "calcium", "iron"]}}, "goji": {"key": "goji", "name": "Goji", "italian": "Goji", "latin": "Lycium barbarum", "category": "shrub", "subcategory": "berry", "height": 250, "width": 200, "soilDepth": 40, "soilType": ["sandy", "silty", "loam"], "sun": "full", "water": "low", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Superfood berries. Drought-tolerant once established. Self-fertile", "icon": "🍓", "regions": ["tuscany", "netherlands"], "guild": {"gives": ["pollinator-attractor", "beneficial-habitat", "biomass", "ground-cover", "erosion-control", "light-shade"], "needs": ["nitrogen", "moisture-retention", "wind-protection", "mycorrhizal-inoculation"], "companions": ["elderberry", "lavender", "rosemary", "thyme", "sage", "chives", "garlic-veg", "yarrow", "borage", "nasturtium", "marjoram", "cilantro", "calendula", "fava-beans", "white-clover", "alfalfa"], "antagonists": ["walnut"], "rootForm": "deep-taproot", "rootZone": "moderate", "accumulates": ["nitrogen", "potassium", "calcium", "iron", "magnesium"]}}, "elderberry": {"key": "elderberry", "name": "Elderberry", "italian": "Sambuco", "latin": "Sambucus nigra", "category": "shrub", "subcategory": "berry", "height": 400, "width": 300, "soilDepth": 50, "soilType": ["sandy", "silty", "loam", "clay"], "sun": "partial", "water": "moderate", "nFixer": false, "perennial": true, "native": true, "fireResistant": false, "notes": "Native to Italy. Fiori di sambuco used in frittelle. Berries for jams, cordials", "icon": "🍓", "regions": ["tuscany", "netherlands"], "guild": {"gives": ["light-shade", "biomass", "mulch", "pollinator-attractor", "beneficial-habitat", "windbreak", "erosion-control", "pest-repellent", "ground-cover"], "needs": ["nitrogen", "deep-soil-prep", "moisture-retention", "mycorrhizal-inoculation"], "companions": ["goji", "blackberry", "raspberry", "red-currant", "apple", "pear", "plum", "cherry", "hazelnut", "comfrey", "yarrow", "borage", "nasturtium", "calendula", "fennel", "lavender", "chives", "garlic-veg", "fava-beans", "white-clover", "alfalfa"], "antagonists": ["walnut"], "rootForm": "fibrous", "rootZone": "moderate", "accumulates": ["potassium", "calcium", "phosphorus", "iron"]}}, "blackberry": {"key": "blackberry", "name": "Blackberry", "italian": "Rovo", "latin": "Rubus ulmifolius", "category": "shrub", "subcategory": "berry", "height": 200, "width": 300, "soilDepth": 40, "soilType": ["sandy", "silty", "loam", "clay"], "sun": "full", "water": "low", "nFixer": false, "perennial": true, "native": true, "fireResistant": false, "notes": "Native to Italy. Abundant in Tuscan hedgerows. Thornless varieties available", "icon": "🍓", "regions": ["tuscany", "netherlands"], "guild": {"gives": ["ground-cover", "weed-suppression", "biomass", "beneficial-habitat", "pollinator-attractor", "erosion-control", "windbreak"], "needs": ["nitrogen", "moisture-retention", "mycorrhizal-inoculation", "wind-protection"], "companions": ["elderberry", "raspberry", "red-currant", "apple", "pear", "hazelnut", "garlic-veg", "chives", "yarrow", "borage", "nasturtium", "calendula", "comfrey", "lavender", "fava-beans", "white-clover"], "antagonists": ["walnut", "fennel"], "rootForm": "rhizomatous", "rootZone": "shallow", "accumulates": ["potassium", "calcium", "iron", "magnesium"]}}, "raspberry": {"key": "raspberry", "name": "Raspberry", "italian": "Lampone", "latin": "Rubus idaeus", "category": "shrub", "subcategory": "berry", "height": 150, "width": 200, "soilDepth": 40, "soilType": ["sandy", "silty", "loam"], "sun": "partial", "water": "moderate", "nFixer": false, "perennial": true, "native": true, "fireResistant": false, "notes": "Grows in Tuscan Apennines. Needs good drainage. Prefers slightly acidic soil", "icon": "🍓", "regions": ["tuscany", "netherlands"], "guild": {"gives": ["ground-cover", "weed-suppression", "biomass", "beneficial-habitat", "pollinator-attractor", "erosion-control"], "needs": ["nitrogen", "moisture-retention", "wind-protection", "mycorrhizal-inoculation", "rich-soil"], "companions": ["elderberry", "blackberry", "red-currant", "apple", "pear", "hazelnut", "garlic-veg", "chives", "yarrow", "borage", "nasturtium", "calendula", "comfrey", "fava-beans", "white-clover", "thyme", "trefoil"], "antagonists": ["walnut", "fennel", "potatoes", "tomato", "peppers", "eggplant"], "rootForm": "rhizomatous", "rootZone": "shallow", "accumulates": ["potassium", "calcium", "iron", "magnesium"]}}, "red-currant": {"key": "red-currant", "name": "Red currant", "italian": "Ribes rosso", "latin": "Ribes rubrum", "category": "shrub", "subcategory": "berry", "height": 150, "width": 120, "soilDepth": 40, "soilType": ["sandy", "silty", "loam"], "sun": "partial", "water": "moderate", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "MARGINAL in Mediterranean — needs summer irrigation and partial shade", "icon": "🍓", "regions": ["tuscany", "netherlands"], "guild": {"gives": ["light-shade", "biomass", "pollinator-attractor", "beneficial-habitat", "erosion-control"], "needs": ["nitrogen", "moisture-retention", "mycorrhizal-inoculation", "potassium", "rich-soil"], "companions": ["elderberry", "blackberry", "raspberry", "apple", "pear", "cherry", "hazelnut", "chives", "garlic-veg", "yarrow", "borage", "nasturtium", "calendula", "comfrey", "fava-beans", "white-clover", "trefoil", "lavender", "thyme"], "antagonists": ["walnut"], "rootForm": "fibrous", "rootZone": "shallow", "accumulates": ["potassium", "calcium", "phosphorus", "iron"]}}, "sea-buckthorn": {"key": "sea-buckthorn", "name": "Sea buckthorn", "italian": "Olivello spinoso", "latin": "Hippophae rhamnoides", "category": "shrub", "subcategory": "n-fixer", "height": 300, "width": 300, "soilDepth": 60, "soilType": ["sandy", "silty", "loam"], "sun": "full", "water": "low", "nFixer": true, "perennial": true, "native": true, "fireResistant": false, "notes": "Actinorhizal N-fixer. Native to Tuscan Apennines. Excellent for erosion control on slopes. Dioecious", "icon": "🍂", "regions": ["tuscany", "netherlands"], "guild": {"gives": ["n-fixer", "biomass", "windbreak", "erosion-control", "ground-cover", "weed-suppression", "beneficial-habitat", "mycorrhizal-host"], "needs": ["mycorrhizal-inoculation", "moisture-retention"], "companions": ["olive", "fig", "carob", "almond", "pistachio", "pomegranate", "elderberry", "goumi", "lavender", "rosemary", "thyme", "sage", "yarrow", "comfrey", "borage", "nasturtium", "calendula", "chives", "garlic-veg", "alfalfa", "white-clover", "fava-beans"], "antagonists": [], "rootForm": "fibrous", "rootZone": "moderate", "accumulates": ["nitrogen", "potassium", "calcium", "iron", "silica", "magnesium"]}}, "goumi": {"key": "goumi", "name": "Goumi", "italian": "Goumi", "latin": "Elaeagnus multiflora", "category": "shrub", "subcategory": "n-fixer", "height": 250, "width": 200, "soilDepth": 50, "soilType": ["sandy", "silty", "loam"], "sun": "full", "water": "low", "nFixer": true, "perennial": true, "native": false, "fireResistant": false, "notes": "Actinorhizal N-fixer. Edible berries. Well-suited to Mediterranean permaculture", "icon": "🌿", "regions": ["tuscany", "netherlands"], "guild": {"gives": ["n-fixer", "biomass", "windbreak", "erosion-control", "beneficial-habitat", "pollinator-attractor", "mycorrhizal-host", "ground-cover", "light-shade"], "needs": ["mycorrhizal-inoculation", "moisture-retention"], "companions": ["olive", "fig", "carob", "almond", "pistachio", "pomegranate", "jujube", "elderberry", "sea-buckthorn", "apple", "pear", "plum", "cherry", "hazelnut", "comfrey", "lavender", "rosemary", "thyme", "sage", "yarrow", "borage", "nasturtium", "chives", "garlic-veg", "fava-beans", "white-clover", "alfalfa"], "antagonists": ["walnut"], "rootForm": "fibrous", "rootZone": "moderate", "accumulates": ["nitrogen", "potassium", "calcium", "phosphorus", "iron"]}}, "italian-alder": {"key": "italian-alder", "name": "Italian alder", "italian": "Ontano napoletano", "latin": "Alnus cordata", "category": "tree", "subcategory": "n-fixer", "height": 2500, "width": 1000, "soilDepth": 100, "soilType": ["sandy", "silty", "loam", "clay"], "sun": "full", "water": "moderate", "nFixer": true, "perennial": true, "native": true, "fireResistant": false, "notes": "Fast-growing N-fixer. Gully stabilization, riparian areas, nurse tree. Hardy to -20°C", "icon": "🌲", "regions": ["tuscany", "netherlands"], "guild": {"gives": ["n-fixer", "biomass", "mulch", "windbreak", "erosion-control", "mycorrhizal-host", "root-aeration"], "needs": ["mycorrhizal-inoculation", "moisture-retention"], "companions": ["common-alder", "grey-alder", "blackberry", "elderberry", "comfrey", "raspberry", "white-clover", "vetch", "fig", "persimmon"], "antagonists": ["walnut", "fennel"], "rootForm": "deep-taproot", "rootZone": "deep", "accumulates": ["nitrogen"]}}, "common-alder": {"key": "common-alder", "name": "Common alder", "italian": "Ontano nero", "latin": "Alnus glutinosa", "category": "tree", "subcategory": "n-fixer", "height": 2000, "width": 800, "soilDepth": 100, "soilType": ["sandy", "silty", "loam", "clay", "peaty"], "sun": "full", "water": "high", "nFixer": true, "perennial": true, "native": true, "fireResistant": false, "notes": "Native to Tuscany. Best for wet areas, stream banks. Actinorhizal N-fixer", "icon": "🌲", "regions": ["tuscany", "netherlands"], "guild": {"gives": ["n-fixer", "biomass", "mulch", "windbreak", "erosion-control", "mycorrhizal-host", "root-aeration", "evergreen-shelter"], "needs": ["mycorrhizal-inoculation", "moisture-retention"], "companions": ["italian-alder", "grey-alder", "blackberry", "elderberry", "comfrey", "raspberry", "white-clover", "vetch", "fig", "persimmon", "cherry"], "antagonists": ["walnut", "fennel"], "rootForm": "deep-taproot", "rootZone": "deep", "accumulates": ["nitrogen"]}}, "grey-alder": {"key": "grey-alder", "name": "Grey alder", "italian": "Ontano bianco", "latin": "Alnus incana", "category": "tree", "subcategory": "n-fixer", "height": 2000, "width": 800, "soilDepth": 80, "soilType": ["sandy", "silty", "loam"], "sun": "full", "water": "moderate", "nFixer": true, "perennial": true, "native": false, "fireResistant": false, "notes": "Fast-growing pioneer. Actinorhizal N-fixer. Good for poor soils, slope stabilization", "icon": "🌲", "regions": ["tuscany", "netherlands"], "guild": {"gives": ["n-fixer", "biomass", "mulch", "windbreak", "erosion-control", "mycorrhizal-host", "root-aeration"], "needs": ["mycorrhizal-inoculation", "moisture-retention"], "companions": ["italian-alder", "common-alder", "blackberry", "elderberry", "comfrey", "raspberry", "white-clover", "vetch", "fig", "persimmon"], "antagonists": ["walnut", "fennel"], "rootForm": "deep-taproot", "rootZone": "deep", "accumulates": ["nitrogen"]}}, "scotch-broom": {"key": "scotch-broom", "name": "Scotch broom", "italian": "Ginestra dei carbonai", "latin": "Cytisus scoparius", "category": "shrub", "subcategory": "n-fixer", "height": 250, "width": 200, "soilDepth": 40, "soilType": ["sandy", "silty", "loam"], "sun": "full", "water": "low", "nFixer": true, "perennial": true, "native": false, "fireResistant": false, "notes": "Nitrogen-fixing shrub. Yellow flowers. Fast-growing pioneer on poor soils", "icon": "🌿", "regions": ["tuscany", "netherlands"], "guild": {"gives": ["n-fixer", "biomass", "windbreak", "erosion-control", "beneficial-habitat", "pollinator-attractor", "weed-suppression", "mycorrhizal-host"], "needs": ["mycorrhizal-inoculation"], "companions": ["olive", "carob", "almond", "pistachio", "fig", "pomegranate", "jujube", "sea-buckthorn", "goumi", "etna-broom", "spanish-broom", "tree-medic", "bladder-senna", "lavender", "rosemary", "thyme", "sage", "yarrow", "calendula", "borage", "nasturtium", "white-clover", "alfalfa", "trefoil"], "antagonists": [], "rootForm": "fibrous", "rootZone": "moderate", "accumulates": ["nitrogen", "potassium", "calcium", "phosphorus", "iron", "magnesium"]}}, "etna-broom": {"key": "etna-broom", "name": "Etna broom", "italian": "Ginestra dell'Etna", "latin": "Genista aetnensis", "category": "shrub", "subcategory": "n-fixer", "height": 400, "width": 300, "soilDepth": 60, "soilType": ["sandy", "silty", "loam"], "sun": "full", "water": "low", "nFixer": true, "perennial": true, "native": true, "fireResistant": false, "notes": "Native to Sicily/Italy. Very drought-tolerant N-fixing shrub. Ideal for poor dry slopes", "icon": "🌿", "regions": ["tuscany", "netherlands"], "guild": {"gives": ["n-fixer", "biomass", "windbreak", "erosion-control", "beneficial-habitat", "pollinator-attractor", "mycorrhizal-host", "evergreen-shelter"], "needs": ["mycorrhizal-inoculation"], "companions": ["olive", "carob", "almond", "pistachio", "fig", "pomegranate", "jujube", "sea-buckthorn", "goumi", "scotch-broom", "spanish-broom", "tree-medic", "bladder-senna", "lavender", "rosemary", "thyme", "sage", "yarrow", "trefoil", "white-clover", "alfalfa"], "antagonists": [], "rootForm": "fibrous", "rootZone": "deep", "accumulates": ["nitrogen", "potassium", "calcium", "phosphorus", "iron", "magnesium"]}}, "spanish-broom": {"key": "spanish-broom", "name": "Spanish broom", "italian": "Ginestra di Spagna", "latin": "Spartium junceum", "category": "shrub", "subcategory": "n-fixer", "height": 400, "width": 300, "soilDepth": 50, "soilType": ["sandy", "silty", "loam", "chalky"], "sun": "full", "water": "low", "nFixer": true, "perennial": true, "native": true, "fireResistant": false, "notes": "Native to Tuscany. Abundant in macchia. Soil stabilization, hedgerow, bee forage. Hardy to -10°C", "icon": "🌿", "regions": ["tuscany", "netherlands"], "guild": {"gives": ["n-fixer", "biomass", "windbreak", "erosion-control", "beneficial-habitat", "pollinator-attractor", "mycorrhizal-host", "support"], "needs": ["mycorrhizal-inoculation"], "companions": ["olive", "carob", "almond", "pistachio", "fig", "pomegranate", "jujube", "sea-buckthorn", "goumi", "scotch-broom", "etna-broom", "tree-medic", "bladder-senna", "lavender", "rosemary", "thyme", "sage", "yarrow", "white-clover", "alfalfa", "trefoil", "calendula", "nasturtium"], "antagonists": [], "rootForm": "fibrous", "rootZone": "deep", "accumulates": ["nitrogen", "potassium", "calcium", "phosphorus", "iron", "magnesium", "silica"]}}, "stinking-bean-trefoil": {"key": "stinking-bean-trefoil", "name": "Stinking bean trefoil", "italian": "Anagyro", "latin": "Anagyris foetida", "category": "shrub", "subcategory": "n-fixer", "height": 300, "width": 250, "soilDepth": 50, "soilType": ["sandy", "silty", "loam", "chalky"], "sun": "full", "water": "low", "nFixer": true, "perennial": true, "native": true, "fireResistant": false, "notes": "Native Mediterranean N-fixing shrub. Drought-tolerant. Foul-smelling foliage deters browsers", "icon": "🌿", "regions": ["tuscany", "netherlands"], "guild": {"gives": ["n-fixer", "biomass", "windbreak", "erosion-control", "beneficial-habitat", "pollinator-attractor", "mycorrhizal-host", "light-shade", "evergreen-shelter"], "needs": ["mycorrhizal-inoculation", "wind-protection"], "companions": ["olive", "carob", "almond", "pistachio", "fig", "pomegranate", "jujube", "sea-buckthorn", "goumi", "scotch-broom", "etna-broom", "spanish-broom", "tree-medic", "bladder-senna", "lavender", "rosemary", "thyme", "sage", "yarrow", "white-clover", "alfalfa", "trefoil"], "antagonists": [], "rootForm": "deep-taproot", "rootZone": "deep", "accumulates": ["nitrogen", "potassium", "calcium", "phosphorus", "iron", "magnesium"]}}, "olive": {"key": "olive", "name": "Olive", "italian": "Olivo", "latin": "Olea europaea", "category": "tree", "subcategory": "fruit", "height": 800, "width": 700, "soilDepth": 100, "soilType": ["sandy", "silty", "loam", "chalky"], "sun": "full", "water": "low", "nFixer": false, "perennial": true, "native": true, "fireResistant": true, "notes": "The backbone of Tuscan agriculture. Frantoio, Leccino, Moraiolo. Drought-tolerant once established. Long-lived", "icon": "🍂", "regions": ["tuscany"], "guild": {"gives": ["light-shade", "evergreen-shelter", "windbreak", "biomass", "erosion-control", "pollinator-attractor", "beneficial-habitat"], "needs": ["nitrogen", "deep-soil-prep", "wind-protection", "mycorrhizal-inoculation", "moisture-retention"], "companions": ["lavender", "rosemary", "thyme", "sage", "oregano", "calendula", "nasturtium", "borage", "yarrow", "onions", "basil", "comfrey", "daffodil", "fava-beans", "white-clover", "vetch", "white-lupin", "alfalfa", "sea-buckthorn"], "antagonists": ["walnut", "tomato", "peppers", "eggplant", "cavolo-nero"], "rootForm": "fibrous", "rootZone": "moderate", "accumulates": ["calcium", "potassium", "magnesium"]}}, "cherry": {"key": "cherry", "name": "Cherry", "italian": "Ciliegio", "latin": "Prunus avium", "category": "tree", "subcategory": "fruit", "height": 800, "width": 600, "soilDepth": 80, "soilType": ["sandy", "silty", "loam"], "sun": "full", "water": "moderate", "nFixer": false, "perennial": true, "native": true, "fireResistant": false, "notes": "HIGH frost risk at 300m. Ciliegia di Lari IGP. Late-blooming varieties recommended. Needs cross-pollination", "icon": "🍒", "regions": ["tuscany", "netherlands"], "guild": {"gives": ["light-shade", "pollinator-attractor", "beneficial-habitat", "mulch", "windbreak"], "needs": ["nitrogen", "moisture-retention", "pollination", "rich-soil", "deep-soil-prep"], "companions": ["comfrey", "yarrow", "borage", "nasturtium", "white-clover", "lavender", "calendula", "elderberry", "plum", "apple", "pear", "hazelnut", "rose"], "antagonists": ["walnut", "raspberry"], "rootForm": "fibrous", "rootZone": "moderate", "accumulates": ["potassium", "calcium", "magnesium"]}}, "apricot": {"key": "apricot", "name": "Apricot", "italian": "Albicocco", "latin": "Prunus armeniaca", "category": "tree", "subcategory": "fruit", "height": 500, "width": 500, "soilDepth": 80, "soilType": ["sandy", "silty", "loam"], "sun": "full", "water": "moderate", "nFixer": false, "perennial": true, "native": true, "fireResistant": false, "notes": "HIGHEST frost risk. Blooms Feb-Mar. Pellecchiella, Boccuccia. Choose late-blooming for 300m", "icon": "🍑", "regions": ["tuscany", "netherlands"], "guild": {"gives": ["light-shade", "pollinator-attractor", "beneficial-habitat", "mulch"], "needs": ["nitrogen", "moisture-retention", "pollination", "rich-soil", "wind-protection"], "companions": ["comfrey", "borage", "yarrow", "lavender", "calendula", "nasturtium", "white-clover", "plum", "cherry", "peach", "rose", "elderberry"], "antagonists": ["walnut", "potatoes", "fennel", "raspberry"], "rootForm": "fibrous", "rootZone": "moderate", "accumulates": ["potassium", "calcium", "iron"]}}, "chestnut": {"key": "chestnut", "name": "Chestnut", "italian": "Castagno", "latin": "Castanea sativa", "category": "tree", "subcategory": "nut", "height": 2000, "width": 1200, "soilDepth": 100, "soilType": ["sandy", "silty", "loam"], "sun": "full", "water": "low", "nFixer": false, "perennial": true, "native": true, "fireResistant": false, "notes": "Marrone del Mugello IGP. Low frost risk (June bloom). Needs 2+ varieties for pollination", "icon": "🌰", "regions": ["tuscany", "netherlands"], "guild": {"gives": ["deep-shade", "biomass", "mulch", "windbreak", "erosion-control", "beneficial-habitat"], "needs": ["nitrogen", "rich-soil", "deep-soil-prep", "shade-as-seedling", "mycorrhizal-inoculation", "moisture-retention"], "companions": ["italian-alder", "common-alder", "grey-alder", "hazelnut", "elderberry", "blackberry", "raspberry", "comfrey", "yarrow", "daffodil", "white-clover", "white-lupin", "vetch", "alfalfa", "fava-beans", "phacelia", "onions", "chives", "leek", "thyme", "oregano", "sage", "calendula", "nasturtium", "borage", "strawberry-veg"], "antagonists": ["walnut", "potatoes", "tomato", "peppers"], "rootForm": "deep-taproot", "rootZone": "deep", "accumulates": ["calcium", "potassium", "magnesium", "silica", "phosphorus"]}}, "quince": {"key": "quince", "name": "Quince", "italian": "Cotogno", "latin": "Cydonia oblonga", "category": "tree", "subcategory": "fruit", "height": 400, "width": 400, "soilDepth": 60, "soilType": ["sandy", "silty", "loam", "clay"], "sun": "full", "water": "moderate", "nFixer": false, "perennial": true, "native": true, "fireResistant": false, "notes": "Self-fertile. Cotognata (quince paste). Hardy to -20°C. Good for hedgerow", "icon": "🍐", "regions": ["tuscany", "netherlands"], "guild": {"gives": ["light-shade", "pollinator-attractor", "beneficial-habitat", "mulch", "windbreak", "erosion-control"], "needs": ["moisture-retention", "pollination", "rich-soil"], "companions": ["comfrey", "borage", "yarrow", "nasturtium", "white-clover", "apple", "pear", "lavender", "elderberry", "hazelnut"], "antagonists": ["walnut"], "rootForm": "fibrous", "rootZone": "moderate", "accumulates": ["potassium", "calcium", "phosphorus"]}}, "medlar": {"key": "medlar", "name": "Medlar", "italian": "Nespolo", "latin": "Crataegus germanica", "category": "tree", "subcategory": "fruit", "height": 400, "width": 400, "soilDepth": 60, "soilType": ["sandy", "silty", "loam", "clay"], "sun": "full", "water": "low", "nFixer": false, "perennial": true, "native": true, "fireResistant": false, "notes": "Historically grown in Tuscany. Fruits need bletting. Medlar jelly. Hardy to -20°C", "icon": "🍐", "regions": ["tuscany", "netherlands"], "guild": {"gives": ["biomass", "light-shade", "windbreak", "pollinator-attractor", "mycorrhizal-host", "beneficial-habitat"], "needs": ["nitrogen", "pollination", "mycorrhizal-inoculation", "moisture-retention"], "companions": ["italian-alder", "common-alder", "grey-alder", "comfrey", "borage", "yarrow", "lavender", "rosemary", "thyme", "chicory", "white-clover", "vetch", "nasturtium", "calendula", "onions", "rose", "apple", "pear", "quince", "hazelnut", "elderberry", "fig"], "antagonists": ["walnut", "fennel"], "rootForm": "shallow-taproot", "rootZone": "moderate", "accumulates": []}}, "rose": {"key": "rose", "name": "Dog rose", "italian": "Rosa canina", "latin": "Rosa canina", "category": "shrub", "subcategory": "hedgerow", "height": 250, "width": 200, "soilDepth": 40, "soilType": ["sandy", "silty", "loam", "clay"], "sun": "full", "water": "low", "nFixer": false, "perennial": true, "native": true, "fireResistant": false, "notes": "Native to Tuscany. Rosehips for tea, syrup. Hedgerow species. Wildlife habitat", "icon": "🌹", "regions": ["tuscany", "netherlands"], "guild": {"gives": ["pollinator-attractor", "beneficial-habitat", "biomass", "erosion-control", "ground-cover", "weed-suppression", "mulch", "pest-repellent"], "needs": ["nitrogen", "moisture-retention", "mycorrhizal-inoculation", "potassium", "rich-soil"], "companions": ["lavender", "rosemary", "thyme", "sage", "chives", "garlic-veg", "yarrow", "borage", "nasturtium", "calendula", "fennel", "parsley", "cilantro", "marjoram", "oregano", "comfrey", "elderberry", "goji", "fava-beans", "white-clover", "alfalfa", "daffodil"], "antagonists": ["walnut"], "rootForm": "fibrous", "rootZone": "moderate", "accumulates": ["potassium", "calcium", "iron", "magnesium", "phosphorus"]}}, "tree-medic": {"key": "tree-medic", "name": "Tree medic", "italian": "Medicago arborea", "latin": "Medicago arborea", "category": "shrub", "subcategory": "n-fixer", "height": 300, "width": 200, "soilDepth": 60, "soilType": ["sandy", "silty", "loam", "chalky"], "sun": "full", "water": "low", "nFixer": true, "perennial": true, "native": true, "fireResistant": false, "notes": "Native to Mediterranean Italy. Forage, green manure, hedgerow. Yellow flowers. Hardy to -8°C", "icon": "🌿", "regions": ["tuscany", "netherlands"], "guild": {"gives": ["n-fixer", "biomass", "windbreak", "erosion-control", "beneficial-habitat", "pollinator-attractor", "mycorrhizal-host", "ground-cover"], "needs": ["mycorrhizal-inoculation", "moisture-retention"], "companions": ["olive", "carob", "almond", "pistachio", "fig", "pomegranate", "jujube", "sea-buckthorn", "goumi", "scotch-broom", "etna-broom", "spanish-broom", "stinking-bean-trefoil", "bladder-senna", "lavender", "rosemary", "thyme", "sage", "yarrow", "borage", "nasturtium", "calendula", "white-clover", "alfalfa", "trefoil"], "antagonists": [], "rootForm": "deep-taproot", "rootZone": "deep", "accumulates": ["nitrogen", "potassium", "calcium", "phosphorus", "iron", "magnesium"]}}, "bladder-senna": {"key": "bladder-senna", "name": "Bladder senna", "italian": "Colutea", "latin": "Colutea arborescens", "category": "shrub", "subcategory": "n-fixer", "height": 400, "width": 300, "soilDepth": 60, "soilType": ["sandy", "silty", "loam", "chalky"], "sun": "full", "water": "low", "nFixer": true, "perennial": true, "native": true, "fireResistant": false, "notes": "Native to Tuscany. Inflated seed pods. Hedgerow, soil improvement. Hardy to -15°C", "icon": "🌿", "regions": ["tuscany", "netherlands"], "guild": {"gives": ["n-fixer", "biomass", "windbreak", "erosion-control", "beneficial-habitat", "pollinator-attractor", "mycorrhizal-host", "light-shade"], "needs": ["mycorrhizal-inoculation", "moisture-retention", "wind-protection"], "companions": ["olive", "carob", "almond", "pistachio", "fig", "pomegranate", "jujube", "sea-buckthorn", "goumi", "scotch-broom", "etna-broom", "spanish-broom", "stinking-bean-trefoil", "tree-medic", "lavender", "rosemary", "thyme", "sage", "yarrow", "borage", "nasturtium", "calendula", "white-clover", "alfalfa", "trefoil"], "antagonists": [], "rootForm": "deep-taproot", "rootZone": "deep", "accumulates": ["nitrogen", "potassium", "calcium", "phosphorus", "iron", "magnesium"]}}, "flowering-maple": {"key": "flowering-maple", "name": "Flowering maple", "italian": "", "latin": "Abutilon vitifolium", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Ornamental with edible flowers, partial shade tolerant, attracts bees in Dutch climate. Needs a sheltered warm spot in NL.", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["pollinator-attractor", "light-shade"], "needs": ["shelter"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "saskatoon": {"key": "saskatoon", "name": "Saskatoon", "italian": "", "latin": "Amelanchier alnifolia", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Early-ripening berries (saskatoons), excellent understory tree for partial shade, nitrogen-efficient, attracts pollinators in early spring.", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["pollinator-attractor", "biomass"], "needs": ["sun"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "monkey-puzzle": {"key": "monkey-puzzle", "name": "Monkey Puzzle Tree", "italian": "", "latin": "Araucaria araucana", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Very large, ancient tree yielding edible seeds (pine nuts). A novelty species for large sheltered spots in Dutch food forests. Slow-growing.", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["evergreen-shelter", "biomass"], "needs": ["shelter"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "strawberry-tree": {"key": "strawberry-tree", "name": "Strawberry Tree", "italian": "", "latin": "Arbutus unedo", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Evergreen with edible strawberry-like fruit (mildly sweet), drought-tolerant once established. Flowers in autumn — late nectar source for bees. Needs sheltered spot in NL.", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["evergreen-shelter", "pollinator-attractor"], "needs": ["shelter"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "pawpaw": {"key": "pawpaw", "name": "Pawpaw", "italian": "", "latin": "Asimina triloba", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Largest native fruit of North America — custard-like pawpaw fruit (tastes like banana-custard). Needs sheltered microclimate in NL, shade-tolerant when young.", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["deep-shade", "biomass"], "needs": ["shelter", "moisture-retention"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "common-barberry": {"key": "common-barberry", "name": "Common Barberry", "italian": "", "latin": "Berberis vulgaris", "category": "shrub", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Edible tart berries (rich in vitamin C), thorny barrier hedge, pollinator-friendly flowers. Berberis root was historically used as yellow dye. Host for wheat rust — check local restrictions.", "icon": "🌿", "regions": ["netherlands"], "guild": {"gives": ["pest-repellent", "pollinator-attractor", "hedge-thorn"], "needs": ["sun"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "paper-mulberry": {"key": "paper-mulberry", "name": "Paper Mulberry", "italian": "", "latin": "Broussonetia papyrifera", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Fast-growing tree with edible fruit (similar to mulberry), bark used for papermaking. Coppices well for biomass. Needs a warm, sheltered spot in NL.", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["biomass"], "needs": ["shelter"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "carolina-allspice": {"key": "carolina-allspice", "name": "Carolina Allspice", "italian": "", "latin": "Calycanthus floridus", "category": "shrub", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Aromatic shrub with edible flowers used as spice (cinnamon-like scent). Excellent for moist woodland edges in Dutch food forests.", "icon": "🌿", "regions": ["netherlands"], "guild": {"gives": ["pollinator-attractor", "pest-repellent"], "needs": ["moisture-retention"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "siberian-pea-tree": {"key": "siberian-pea-tree", "name": "Siberian Pea Tree", "italian": "", "latin": "Caragana arborescens", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": true, "perennial": true, "native": false, "fireResistant": false, "notes": "Nitrogen-fixing pioneer tree, edible seeds (like peas), great windbreak for Dutch food forests, excellent bee forage. Extremely hardy. Regular coppicing recommended.", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["n-fixer", "pollinator-attractor", "windbreak"], "needs": ["sun"], "accumulates": ["nitrogen"], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "allegheny-chinkapin": {"key": "allegheny-chinkapin", "name": "Allegheny Chinkapin", "italian": "", "latin": "Castanea pumila", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Dwarf chestnut — smaller nuts than sweet chestnut but a more manageable shrubby size for food forests. Very sweet, small nuts.", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["biomass"], "needs": ["sun", "shelter"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "new-jersey-tea": {"key": "new-jersey-tea", "name": "New Jersey Tea", "italian": "", "latin": "Ceanothus americanus", "category": "shrub", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": true, "perennial": true, "native": false, "fireResistant": false, "notes": "Nitrogen-fixing shrub, leaves used as tea substitute, beautiful white flower clusters for pollinators. Needs a sheltered spot in NL (borderline hardy).", "icon": "🌿", "regions": ["netherlands"], "guild": {"gives": ["n-fixer", "pollinator-attractor"], "needs": ["sun", "shelter"], "accumulates": ["nitrogen"], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "japanese-plum-yew": {"key": "japanese-plum-yew", "name": "Japanese Plum-Yew", "italian": "", "latin": "Cephalotaxus harringtonia", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Shade-tolerant evergreen with edible nut-like seeds (crushed). Slow-growing understory tree for shady spots in Dutch food forests.", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["evergreen-shelter", "deep-shade"], "needs": ["shade"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "judas-tree": {"key": "judas-tree", "name": "Judas Tree", "italian": "", "latin": "Cercis siliquastrum", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": true, "perennial": true, "native": false, "fireResistant": false, "notes": "Beautiful spring blossoms, edible flowers (salads), nitrogen-fixing (Fabaceae). Needs a sheltered, warm spot in NL — best against a south-facing wall.", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["n-fixer", "pollinator-attractor", "light-shade"], "needs": ["sun", "shelter"], "accumulates": ["nitrogen"], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "japanese-quince": {"key": "japanese-quince", "name": "Japanese Quince", "italian": "", "latin": "Chaenomeles japonica", "category": "shrub", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Hardy shrub with aromatic quince-like fruit for jams and jellies. Early spring nectar source for bees, thorny barrier hedge. Very hardy for NL climate.", "icon": "🌿", "regions": ["netherlands"], "guild": {"gives": ["pollinator-attractor", "hedge-thorn"], "needs": ["sun"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "cornelian-cherry": {"key": "cornelian-cherry", "name": "Cornelian Cherry", "italian": "", "latin": "Cornus mas", "category": "shrub", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Very early-ripening cherry-like fruit (higher vitamin C than orange). Excellent for NL climate. Thrives in sun or partial shade. Yellow flowers very early in spring.", "icon": "🌿", "regions": ["netherlands"], "guild": {"gives": ["pollinator-attractor", "light-shade"], "needs": ["sun"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "azerole": {"key": "azerole", "name": "Azerole", "italian": "", "latin": "Crataegus azarolus", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Mediterranean hawthorn with larger, apple-like edible fruit (haws). Wildlife habitat, windbreak, medicinal flowers. Tolerates poor soil.", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["pollinator-attractor", "windbreak", "beneficial-habitat"], "needs": ["sun"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "dead-mans-fingers": {"key": "dead-mans-fingers", "name": "Dead Man's Fingers", "italian": "", "latin": "Decaisnea fargesii", "category": "shrub", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Ornamental shrub with unusual bright blue, edible pods (jelly-like texture, sweet). Shade-tolerant, makes a striking conversation piece.", "icon": "🌿", "regions": ["netherlands"], "guild": {"gives": ["biomass"], "needs": ["shade", "moisture-retention"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "date-plum": {"key": "date-plum", "name": "Date-plum", "italian": "", "latin": "Diospyros lotus", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Hardy persimmon relative — small astringent fruit that sweetens after frost. Very hardy for NL. Excellent rootstock for persimmons. Deep taproot.", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["deep-shade", "biomass"], "needs": ["sun", "shelter"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "american-persimmon": {"key": "american-persimmon", "name": "American Persimmon", "italian": "", "latin": "Diospyros virginiana", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Very hardy North American persimmon — sweet, rich fruit after frost. Tolerant of poor soil, deep taproot for soil aeration. Separate male and female trees needed.", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["deep-shade"], "needs": ["sun", "shelter"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "beech": {"key": "beech", "name": "Beech", "italian": "", "latin": "Fagus sylvatica", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Native beech, edible nuts (beechmast), excellent for biomass/leaf litter. Tall canopy for windbreak edges. Pure beech leaf litter is slow to decompose — mix with N-rich leaves.", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["deep-shade", "biomass", "windbreak"], "needs": ["sun"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "salal": {"key": "salal", "name": "Salal", "italian": "", "latin": "Gaultheria shallon", "category": "shrub", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Evergreen groundcover shrub with edible wintergreen-flavored berries. Partial shade, acid soil preferred. Excellent low-maintenance groundcover.", "icon": "🌿", "regions": ["netherlands"], "guild": {"gives": ["ground-cover", "evergreen-shelter"], "needs": ["shade"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "chilean-hazel": {"key": "chilean-hazel", "name": "Chilean Hazel", "italian": "", "latin": "Gevuina avellana", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Evergreen nut tree from Chile — edible hazelnut-like seeds. Needs a warm, sheltered spot in NL. Attractive foliage and flowers for bees.", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["evergreen-shelter"], "needs": ["shelter", "moisture-retention"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "ginkgo": {"key": "ginkgo", "name": "Ginkgo", "italian": "", "latin": "Ginkgo biloba", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Ancient living fossil tree with edible seeds (ginkgo nuts, after processing). Pest-free, pollution-tolerant. Spectacular golden autumn color. Needs male for non-smelly fruit.", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["deep-shade", "biomass"], "needs": ["sun"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "japanese-raisin-tree": {"key": "japanese-raisin-tree", "name": "Japanese Raisin Tree", "italian": "", "latin": "Hovenia dulcis", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Unique tree — sweet, raisin-like edible stems (not the fruit). Drought-tolerant once established. Good for adding diversity to the canopy layer. Needs warmth for good fruit.", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["pollinator-attractor"], "needs": ["sun", "shelter"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "black-walnut": {"key": "black-walnut", "name": "Black Walnut", "italian": "", "latin": "Juglans nigra", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Highly nutritious nuts — but produces juglone (allelopathic), incompatible with many plants (tomato, potato, eggplant, asparagus, brassicas). Edible leaves for tea. Deep taproot.", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["biomass", "deep-shade"], "needs": ["sun"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "juniper": {"key": "juniper", "name": "Juniper", "italian": "", "latin": "Juniperus communis", "category": "shrub", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Native shrub, berries used as spice (gin), excellent for biodiversity. Drought-tolerant once established. Two years for berry ripening.", "icon": "🌿", "regions": ["netherlands"], "guild": {"gives": ["evergreen-shelter", "beneficial-habitat"], "needs": ["sun"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "bay-laurel": {"key": "bay-laurel", "name": "Bay Laurel", "italian": "", "latin": "Laurus nobilis", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Aromatic leaves for cooking, evergreen screen. Needs winter protection when young in NL (frost-sensitive). Excellent in a warm, sheltered microclimate.", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["evergreen-shelter", "pest-repellent"], "needs": ["shelter"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "honeyberry": {"key": "honeyberry", "name": "Honeyberry", "italian": "", "latin": "Lonicera caerulea", "category": "shrub", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Honeyberry — very early-ripening, blueberry-like fruit (tastes like blueberry-raspberry). Extremely hardy (Siberian origins). Needs two different cultivars for cross-pollination.", "icon": "🌿", "regions": ["netherlands"], "guild": {"gives": ["pollinator-attractor"], "needs": ["sun", "pollination"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "oregon-grape": {"key": "oregon-grape", "name": "Oregon Grape", "italian": "", "latin": "Mahonia aquifolium", "category": "shrub", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Evergreen shrub with edible tart berries. Shade-tolerant, winter-flowering (yellow flowers) — crucial early nectar for bees. Leaves resemble holly.", "icon": "🌿", "regions": ["netherlands"], "guild": {"gives": ["evergreen-shelter", "pollinator-attractor"], "needs": ["shade"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "chilean-guava": {"key": "chilean-guava", "name": "Chilean Guava", "italian": "", "latin": "Ugni molinae", "category": "shrub", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Small aromatic berries (tastes like wild strawberry and cotton candy). Evergreen shrub. Needs a sheltered microclimate in NL. Excellent for jam.", "icon": "🌿", "regions": ["netherlands"], "guild": {"gives": ["evergreen-shelter"], "needs": ["shelter", "moisture-retention"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "briancon-apricot": {"key": "briancon-apricot", "name": "Briançon Apricot", "italian": "", "latin": "Prunus brigantina", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Alpine apricot from the French Alps — one of the hardiest apricots. Small, sweet fruit. Ideal for cold spots where regular apricot would struggle. Self-fertile.", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["pollinator-attractor"], "needs": ["sun"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "sour-cherry": {"key": "sour-cherry", "name": "Sour Cherry", "italian": "", "latin": "Prunus cerasus", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Morello cherry — excellent for NL climate, self-fertile, good for processing (jams, pies, kirsch). Tart flavor. Very hardy.", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["pollinator-attractor", "light-shade"], "needs": ["sun"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "beach-plum": {"key": "beach-plum", "name": "Beach Plum", "italian": "", "latin": "Prunus maritima", "category": "shrub", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Salt-tolerant, sand-loving shrub with small, sweet plums (good for jam). Ideal for coastal Dutch food forests and sandy soils.", "icon": "🌿", "regions": ["netherlands"], "guild": {"gives": ["windbreak", "erosion-control"], "needs": ["sun"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "blackthorn": {"key": "blackthorn", "name": "Blackthorn", "italian": "", "latin": "Prunus spinosa", "category": "shrub", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Sloe — native shrub, fruit for sloe gin, impenetrable thorny hedge barrier. Important wildlife habitat. Early white flowers. Fruit needs frost to sweeten.", "icon": "🌿", "regions": ["netherlands"], "guild": {"gives": ["windbreak", "beneficial-habitat", "hedge-thorn"], "needs": ["sun"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "dwarf-russian-almond": {"key": "dwarf-russian-almond", "name": "Dwarf Russian Almond", "italian": "", "latin": "Prunus tenella", "category": "shrub", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Ornamental shrub with beautiful early spring pink flowers for bees. Seeds are edible (like almonds but smaller). Compact size — good for smaller guilds.", "icon": "🌿", "regions": ["netherlands"], "guild": {"gives": ["pollinator-attractor"], "needs": ["sun"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "nanking-cherry": {"key": "nanking-cherry", "name": "Nanking Cherry", "italian": "", "latin": "Prunus tomentosa", "category": "shrub", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Early-ripening, sweet cherry-like fruit. Very hardy (Siberian origin). Ornamental throughout the year with showy flowers and attractive bark.", "icon": "🌿", "regions": ["netherlands"], "guild": {"gives": ["pollinator-attractor"], "needs": ["sun"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "holm-oak": {"key": "holm-oak", "name": "Holm Oak", "italian": "", "latin": "Quercus ilex", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Evergreen oak. Edible acorns (low tannin, can be roasted). Excellent windbreak, especially for coastal food forests. Tolerates poor soil and drought.", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["evergreen-shelter", "windbreak", "deep-shade"], "needs": ["sun"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "stags-horn-sumach": {"key": "stags-horn-sumach", "name": "Stag's Horn Sumach", "italian": "", "latin": "Rhus typhina", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Red spice from berries (rich in antioxidants, lemony-sour flavor). Striking autumn colour. Rhizomatous spreader — can form thickets. All parts non-toxic (unlike poison ivy, same family).", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["pollinator-attractor", "erosion-control"], "needs": ["sun"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "blackcurrant": {"key": "blackcurrant", "name": "Blackcurrant", "italian": "", "latin": "Ribes nigrum", "category": "shrub", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Very high vitamin C berries. Needs a cool spot (partial shade) — excellent for NL climate. Blackcurrant leaf has a distinctive aroma and can be used in tea. Susceptible to leaf spot in wet conditions.", "icon": "🌿", "regions": ["netherlands"], "guild": {"gives": ["pollinator-attractor"], "needs": ["sun", "moisture-retention"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "gooseberry": {"key": "gooseberry", "name": "Gooseberry", "italian": "", "latin": "Ribes uva-crispa", "category": "shrub", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Very hardy fruit shrub with translucent berries (green, red, yellow). Partial shade tolerant. Excellent for jam, desserts, and pies. Needs protection from American gooseberry mildew.", "icon": "🌿", "regions": ["netherlands"], "guild": {"gives": ["pollinator-attractor"], "needs": ["sun"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "black-locust": {"key": "black-locust", "name": "Black Locust", "italian": "", "latin": "Robinia pseudoacacia", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": true, "perennial": true, "native": false, "fireResistant": false, "notes": "Nitrogen-fixing pioneer tree. Edible flowers (fritters — the classic permaculture treat). Excellent for biomass and pollinators. Rot-resistant timber. Root suckers can be invasive.", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["n-fixer", "pollinator-attractor", "biomass"], "needs": ["sun"], "accumulates": ["nitrogen"], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "rugosa-rose": {"key": "rugosa-rose", "name": "Rugosa Rose", "italian": "", "latin": "Rosa rugosa", "category": "shrub", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Very hardy rose with large, edible hips (richest vitamin C of all rose species). Salt-tolerant — excellent for coastal hedges. Dense, thorny barrier.", "icon": "🌿", "regions": ["netherlands"], "guild": {"gives": ["windbreak", "erosion-control", "pollinator-attractor"], "needs": ["sun"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "wineberry": {"key": "wineberry", "name": "Wineberry", "italian": "", "latin": "Rubus phoenicolasius", "category": "shrub", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Sweet, red raspberry relative with beautiful red hairy stems. Partial shade tolerant. Vigorous grower — needs management to prevent spreading.", "icon": "🌿", "regions": ["netherlands"], "guild": {"gives": ["beneficial-habitat"], "needs": ["sun"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "goat-willow": {"key": "goat-willow", "name": "Goat Willow", "italian": "", "latin": "Salix caprea", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Early spring pollen source for bees (catkins before leaves). Coppices well for biomass. Excellent for soil stabilization and wet areas.", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["pollinator-attractor", "biomass", "erosion-control", "windbreak"], "needs": ["sun", "moisture-retention"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "sassafras": {"key": "sassafras", "name": "Sassafras", "italian": "", "latin": "Sassafras albidum", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Aromatic leaves (leaves used for thickening gumbo, root for tea — use safrole-free varieties). Striking autumn colours. Root suckers readily.", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["biomass"], "needs": ["sun"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "whitebeam": {"key": "whitebeam", "name": "Whitebeam", "italian": "", "latin": "Sorbus aria", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Edible berries (mealy but edible when bletted, good for jam). Excellent wildlife tree. Tolerant of poor soil, wind, and pollution. Beautiful silvery leaves.", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["pollinator-attractor", "beneficial-habitat"], "needs": ["sun"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "rowan": {"key": "rowan", "name": "Rowan", "italian": "", "latin": "Sorbus aucuparia", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Bright red berries for jams/jelly (must be cooked to break down toxic parasorbic acid). Excellent wildlife value. Tolerant of poor, polluted soil.", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["pollinator-attractor", "beneficial-habitat", "light-shade"], "needs": ["sun"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "service-tree": {"key": "service-tree", "name": "Service Tree", "italian": "", "latin": "Sorbus domestica", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Rare native tree — fruit must be bletted (like medlar). Tastes like spiced pear-dates. Good for adding genetic diversity to the canopy.", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["beneficial-habitat", "biomass"], "needs": ["sun"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "wild-service-tree": {"key": "wild-service-tree", "name": "Wild Service Tree", "italian": "", "latin": "Sorbus torminalis", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Very rare native tree — small brown fruit (bletted). Excellent timber. Good for diverse canopy. Tolerates heavy clay soil.", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["beneficial-habitat", "deep-shade"], "needs": ["sun"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "yew": {"key": "yew", "name": "Yew", "italian": "", "latin": "Taxus baccata", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Evergreen — excellent for shade. All parts EXCEPT the fleshy red aril are highly toxic. Valuable wildlife habitat. Extremely long-lived.", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["evergreen-shelter", "deep-shade"], "needs": ["shade"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "small-leaved-lime": {"key": "small-leaved-lime", "name": "Small-leaved Lime", "italian": "", "latin": "Tilia cordata", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Linden tree — edible flowers for tea (supreme bee forage). Deep taproot for soil aeration. Leaf litter is excellent soil conditioner. Nitrogen-efficient.", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["pollinator-attractor", "biomass", "root-aeration"], "needs": ["sun"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "chinese-toon": {"key": "chinese-toon", "name": "Chinese Toon", "italian": "", "latin": "Toona sinensis", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Young leaves taste like onion/garlic — a unique culinary seasoning. Fast-growing timber tree. Needs warmth in NL for the best flavour. Spectacular autumn colour.", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["light-shade", "biomass"], "needs": ["sun", "shelter"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "chaste-tree": {"key": "chaste-tree", "name": "Chaste Tree", "italian": "", "latin": "Vitex agnus-castus", "category": "shrub", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Aromatic shrub — seeds used as pepper substitute, medicinal (hormonal balance). Beautiful lavender flowers. Needs a warm, sheltered spot in NL. Cut back in winter.", "icon": "🌿", "regions": ["netherlands"], "guild": {"gives": ["pollinator-attractor"], "needs": ["sun", "shelter"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "blueberry": {"key": "blueberry", "name": "Blueberry", "italian": "", "latin": "Vaccinium corymbosum", "category": "shrub", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Needs acidic soil (pH 4.5-5.5). In NL clay/limestone, use raised beds with peat or pine bark. Excellent understory shrub. Stunning autumn colour.", "icon": "🌿", "regions": ["netherlands"], "guild": {"gives": ["pollinator-attractor"], "needs": ["sun", "moisture-retention"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "hardy-kiwi": {"key": "hardy-kiwi", "name": "Hardy Kiwi", "italian": "", "latin": "Actinidia arguta", "category": "shrub", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Smooth-skinned mini kiwis (eat whole, no peeling). Very hardy for NL. Needs male + female plant for pollination. Vigorous climber — needs strong support.", "icon": "🌿", "regions": ["netherlands"], "guild": {"gives": ["biomass"], "needs": ["sun", "support", "pollination"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "chocolate-vine": {"key": "chocolate-vine", "name": "Chocolate Vine", "italian": "", "latin": "Akebia quinata", "category": "shrub", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Edible purple fruit pods (jelly-like, sweet flesh). Flowers smell like chocolate. Vigorous climber. Needs male+female or just plant two.", "icon": "🌿", "regions": ["netherlands"], "guild": {"gives": ["pollinator-attractor"], "needs": ["sun", "support", "pollination"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "schisandra": {"key": "schisandra", "name": "Schisandra", "italian": "", "latin": "Schisandra chinensis", "category": "shrub", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Five-flavour berry — adaptogenic berries that taste sour, sweet, salty, bitter, and pungent all at once. Needs support (climber). Partial shade. Famous in Chinese medicine.", "icon": "🌿", "regions": ["netherlands"], "guild": {"gives": ["pollinator-attractor"], "needs": ["partial-shade", "support", "moisture-retention"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "red-alder": {"key": "red-alder", "name": "Red Alder", "italian": "", "latin": "Alnus rubra", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": true, "perennial": true, "native": false, "fireResistant": false, "notes": "Fast-growing N-fixer. Excellent pioneer tree for biomass production and windbreaks. Coppices well. More vigorous than common alder in good soil.", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["n-fixer", "biomass", "windbreak"], "needs": ["sun", "moisture-retention"], "accumulates": ["nitrogen"], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "evergreen-olive": {"key": "evergreen-olive", "name": "Evergreen Olive", "italian": "", "latin": "Elaeagnus × ebbingei", "category": "shrub", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": true, "perennial": true, "native": false, "fireResistant": false, "notes": "Evergreen N-fixing shrub. Edible fruit (tart but sweet when ripe). Excellent winter windbreak/screen. One of the best evergreen N-fixers for NL.", "icon": "🌿", "regions": ["netherlands"], "guild": {"gives": ["n-fixer", "evergreen-shelter", "windbreak"], "needs": ["sun"], "accumulates": ["nitrogen"], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "northern-bayberry": {"key": "northern-bayberry", "name": "Northern Bayberry", "italian": "", "latin": "Myrica pensylvanica", "category": "shrub", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": true, "perennial": true, "native": false, "fireResistant": false, "notes": "N-fixing deciduous shrub. Aromatic berries for candle-making (bayberry wax). Coastal tolerant. Beautiful silvery-grey foliage.", "icon": "🌿", "regions": ["netherlands"], "guild": {"gives": ["n-fixer", "evergreen-shelter"], "needs": ["sun"], "accumulates": ["nitrogen"], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "chinese-wisteria": {"key": "chinese-wisteria", "name": "Chinese Wisteria", "italian": "", "latin": "Wisteria sinensis", "category": "shrub", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": true, "perennial": true, "native": false, "fireResistant": false, "notes": "N-fixing ornamental climber. Edible flowers (fritters — sweet, honey-like). Seeds TOXIC. Very vigorous — needs strong support and regular pruning.", "icon": "🌿", "regions": ["netherlands"], "guild": {"gives": ["n-fixer", "pollinator-attractor"], "needs": ["sun", "support"], "accumulates": ["nitrogen"], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "shagbark-hickory": {"key": "shagbark-hickory", "name": "Shagbark Hickory", "italian": "", "latin": "Carya ovata", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Very sweet nuts (best-tasting hickory). Deep taproot. Spectacular shaggy bark. Excellent autumn colour. Needs deep soil.", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["deep-shade", "biomass"], "needs": ["sun"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "silver-birch": {"key": "silver-birch", "name": "Silver Birch", "italian": "", "latin": "Betula pendula", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Pioneer tree, excellent mineral accumulator (K, Ca, Fe, Mg). Sap for syrup/tea. Birch polypore mushroom (medicinal). Good for windbreaks.", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["biomass", "minerals-accumulator"], "needs": ["sun"], "accumulates": ["potassium", "calcium", "iron"], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "black-poplar": {"key": "black-poplar", "name": "Black Poplar", "italian": "", "latin": "Populus nigra", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Fast-growing biomass and windbreak tree. Coppices well. Native to NL. Leaf buds used for balm. Good for wet areas.", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["windbreak", "biomass"], "needs": ["sun", "moisture-retention"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "american-bird-cherry": {"key": "american-bird-cherry", "name": "American Bird Cherry", "italian": "", "latin": "Prunus serotina", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "Controversial in NL — listed as an invasive species but produces abundant edible cherries (good for jam, wine). Beautiful timber. Vigorous pioneer.", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["beneficial-habitat", "biomass"], "needs": ["sun"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "turkish-hazel": {"key": "turkish-hazel", "name": "Turkish Hazel", "italian": "", "latin": "Corylus colurna", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["windbreak", "canopy", "pollen", "deep-root", "rootstock-compatibility", "timber"], "needs": ["full-sun", "well-drained-soil", "space"], "accumulates": ["organic-matter", "leaf-litter"], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "gagel": {"key": "gagel", "name": "Sweet gale", "italian": "", "latin": "Myrica gale", "category": "shrub", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "", "icon": "🌿", "regions": ["netherlands"], "guild": {"gives": ["biomass", "nitrogen", "wildlife-habitat", "aromatic-leaves"], "needs": ["sun-adaptable", "moist-soil", "acidic-soil"], "accumulates": ["nitrogen"], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "kardinaalsmuts": {"key": "kardinaalsmuts", "name": "Spindle", "italian": "", "latin": "Euonymus europaeus", "category": "shrub", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "", "icon": "🌿", "regions": ["netherlands"], "guild": {"gives": ["dye-plant", "wildlife-habitat", "ornamental"], "needs": ["sun-to-part-shade", "well-drained-soil", "calcareous-soil"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "hulst": {"key": "hulst", "name": "Holly", "italian": "", "latin": "Ilex aquifolium", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["evergreen-cover", "wildlife-berries", "hedge"], "needs": ["sun-to-shade", "well-drained-soil"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "liguster": {"key": "liguster", "name": "Wild privet", "italian": "", "latin": "Ligustrum vulgare", "category": "shrub", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "", "icon": "🌿", "regions": ["netherlands"], "guild": {"gives": ["hedge", "wildlife-habitat", "insectary-flowers"], "needs": ["sun-to-part-shade", "well-drained-soil"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "wilde-appel": {"key": "wilde-appel", "name": "European crab apple", "italian": "", "latin": "Malus sylvestris", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["fruit", "pollinator-flowers", "rootstock", "wildlife-habitat", "pollen-for-bees"], "needs": ["sun", "well-drained-soil"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "vogelkers": {"key": "vogelkers", "name": "Bird cherry", "italian": "", "latin": "Prunus padus", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["berries", "pollinator-flowers", "wildlife-habitat"], "needs": ["sun-to-part-shade", "moist-soil"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "wilg": {"key": "wilg", "name": "Willow", "italian": "", "latin": "Salix alba", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["biomass", "pioneer", "basket-material", "medicinal-bark", "bee-forage", "biomass-chips"], "needs": ["sun", "wet-soil"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "meidoorn": {"key": "meidoorn", "name": "Hawthorn", "italian": "", "latin": "Crataegus monogyna", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["berries", "hedge-thorny", "pollinator-flowers", "medicinal-flowers-berries", "wildlife-habitat"], "needs": ["sun-to-part-shade", "well-drained-soil", "tolerates-most-soils"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "es": {"key": "es", "name": "Common ash", "italian": "", "latin": "Fraxinus excelsior", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["timber", "firewood", "dye-leaves", "leaf-mould"], "needs": ["sun", "moist-well-drained-soil", "calcareous-soil"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "esdoorn": {"key": "esdoorn", "name": "Sycamore maple", "italian": "", "latin": "Acer pseudoplatanus", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["timber", "biomass", "sap", "shade", "leaf-mould"], "needs": ["sun-to-part-shade", "well-drained-soil"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}, "wilde-peer": {"key": "wilde-peer", "name": "Wild pear", "italian": "", "latin": "Pyrus pyraster", "category": "tree", "subcategory": "", "height": "", "width": "", "soilDepth": "", "soilType": "", "sun": "", "water": "", "nFixer": false, "perennial": true, "native": false, "fireResistant": false, "notes": "", "icon": "🌳", "regions": ["netherlands"], "guild": {"gives": ["fruit", "pollinator-flowers", "rootstock", "wildlife-habitat"], "needs": ["sun", "well-drained-soil"], "accumulates": [], "companions": [], "antagonists": [], "rootForm": "", "rootZone": ""}}};
+// Guard: empty species DB means rebuild didn't inject data
+if (Object.keys(SPECIES).length === 0) {
+  console.error('Orchard Placement: SPECIES data not injected. Run rebuild_op.py to generate HTML.');
+}
+
+// ============ STATE ============
+let plot = []; // [{key, x, y, id}] — placed plants
+let nextId = 1;
+let regionFilter = 'all';
+let moveTarget = null; // plant being moved
+let selectedPlant = null; // for context menu
+
+const urlParams = new URLSearchParams(window.location.search);
+if (urlParams.get('region') === 'tuscany') regionFilter = 'tuscany';
+else if (urlParams.get('region') === 'netherlands') regionFilter = 'netherlands';
+
+// Load from localStorage
+const STORAGE_KEY = 'orchard-placement-' + regionFilter;
+function savePlot() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({version:1, plot: plot, nextId: nextId}));
+  } catch(e) {}
+}
+function loadPlot() {
+  try {
+    var data = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if (data && data.plot) {
+      plot = data.plot;
+      nextId = data.nextId || (plot.length + 1);
+      return true;
+    }
+  } catch(e) {}
+  return false;
+}
+
+// ============ SPECIES HELPERS ============
+function getSpecies(key) {
+  return SPECIES[key] || null;
+}
+
+function getTreeShrubKeys() {
+  return Object.keys(SPECIES).filter(function(k) {
+    var s = SPECIES[k];
+    if (s.category !== 'tree' && s.category !== 'shrub') return false;
+    if (regionFilter !== 'all' && (!s.regions || s.regions.indexOf(regionFilter) < 0)) return false;
+    return true;
+  });
+}
+
+function getCategoryClass(s) {
+  if (s.category === 'tree') {
+    if (s.subcategory === 'n-fixer') return 'n-fixer-tree';
+    if (s.subcategory === 'nut') return 'tall-tree';
+    return 'fruit-tree';
+  }
+  if (s.category === 'shrub') {
+    if (s.subcategory === 'n-fixer') return 'n-fixer-shrub';
+    if (s.subcategory === 'berry') return 'berry';
+    return 'shrub';
+  }
+  return 'herb';
+}
+
+function getSpeciesIcon(s) {
+  return s.icon || '🌱';
+}
+
+function getSpeciesSize(s) {
+  // Return relative size as percentage of plot (based on width in cm)
+  var w = s.width || 300;
+  // Convert cm to plot percentage: ~100m plot = 10000cm
+  // A 500cm (5m) tree = 5% of 100m plot
+  var pct = Math.max(3, Math.min(12, (w / 1000) * 2));
+  return pct;
+}
+
+function getSpacing(s) {
+  // Default spacing = width * 1.2 (in same units as width, which is cm)
+  // Convert to plot percentage for placement
+  var w = s.width || 300;
+  return (w * 1.2) / 100; // cm → m (width is in cm, ×1.2 for spacing, ÷100 for meters)
+}
+
+// ============ PLOT CONSTANTS ============
+const PLOT_SIZE = 100; // 100m = 1ha
+const PLOT_PCT = 100; // percentage for positioning
+
+// ============ SUGGEST ALGORITHM ============
+// Zone definitions (top-to-bottom on a south-facing slope)
+// Upper slope 0-30%: warmest, best frost drainage
+// Mid slope 30-55%: moderate, swale berms
+// Lower slope 55-80%: cooler, frost pocket risk
+// Bottom 80-100%: coldest, firebreak, meadow
+
+function suggestedZone(s) {
+  // Returns {yMin, yMax} as percentage range for best placement
+  var traits = [];
+  if (s.guild && s.guild.gives) traits = s.guild.gives;
+  var needs = (s.guild && s.guild.needs) || [];
+
+  // Frost-sensitive species → upper slope
+  if (needs.indexOf('shade-as-seedling') >= 0 || s.key === 'lemon' || s.key === 'passion') {
+    return {yMin: 5, yMax: 25, reason: 'frost-sensitive → upper slope (warmest)'};
+  }
+
+  // Fire-resistant species → SE firebreak (lower-right)
+  if (s.fireResistant || traits.indexOf('firebreak') >= 0) {
+    return {yMin: 70, yMax: 90, reason: 'fire-resistant → firebreak zone (lower SE)'};
+  }
+
+  // N-fixers → windbreak positions (edges)
+  if (s.nFixer || traits.indexOf('n-fixer') >= 0) {
+    return {yMin: 25, yMax: 55, reason: 'N-fixer → mid slope / windbreak edges'};
+  }
+
+  // Deep-rooted → upper-mid (less competition, deep soil access)
+  if ((s.soilDepth || 0) >= 100) {
+    return {yMin: 10, yMax: 30, reason: 'deep-rooted → upper slope'};
+  }
+
+  // Marginal species → mid slope (compromise)
+  if (s.key === 'apple' || s.key === 'pear' || s.key === 'red-currant' || s.key === 'raspberry') {
+    return {yMin: 30, yMax: 50, reason: 'marginal → mid slope (managed位置)'};
+  }
+
+  // Default: mid slope
+  return {yMin: 25, yMax: 55, reason: 'general → mid slope'};
+}
+
+function generateSuggested() {
+  plot = [];
+  nextId = 1;
+  var keys = getTreeShrubKeys();
+  if (keys.length === 0) return;
+
+  // Group by suggested zone
+  var zones = {upper: [], mid: [], lower: [], firebreak: []};
+  keys.forEach(function(k) {
+    var s = SPECIES[k];
+    var z = suggestedZone(s);
+    if (z.yMax <= 30) zones.upper.push(k);
+    else if (z.yMax <= 55) zones.mid.push(k);
+    else if (z.yMax <= 70) zones.lower.push(k);
+    else zones.firebreak.push(k);
+  });
+
+  // Place trees in their zones with spacing
+  var placed = [];
+  function tooClose(x, y, key) {
+    var s = SPECIES[key];
+    var minDist = getSpacing(s);
+    for (var i = 0; i < placed.length; i++) {
+      var p = placed[i];
+      var dx = (p.x - x) * PLOT_SIZE / 100;
+      var dy = (p.y - y) * PLOT_SIZE / 100;
+      if (Math.sqrt(dx*dx + dy*dy) < minDist) return true;
+    }
+    return false;
+  }
+
+  function placeInZone(keysArr, yMin, yMax, xStart, xEnd) {
+    var cols = Math.ceil(Math.sqrt(keysArr.length + 1));
+    var yStep = (yMax - yMin) / Math.max(1, Math.ceil(keysArr.length / cols));
+    var xStep = (xEnd - xStart) / Math.max(1, cols);
+    var i = 0;
+    keysArr.forEach(function(k) {
+      var row = Math.floor(i / cols);
+      var col = i % cols;
+      var y = yMin + yStep * row + yStep * 0.5;
+      var x = xStart + xStep * col + xStep * 0.5;
+      // Add some jitter for natural look
+      x += (Math.random() - 0.5) * xStep * 0.2;
+      y += (Math.random() - 0.5) * yStep * 0.2;
+      // Clamp to plot bounds
+      x = Math.max(2, Math.min(98, x));
+      y = Math.max(2, Math.min(98, y));
+      if (!tooClose(x, y, k)) {
+        plot.push({key: k, x: x, y: y, id: nextId++});
+        placed.push({x: x, y: y, key: k});
+      }
+      i++;
+    });
+  }
+
+  // Upper slope: 5-30% y
+  placeInZone(zones.upper, 8, 28, 5, 90);
+  // Mid slope: 30-55% y
+  placeInZone(zones.mid, 32, 52, 5, 90);
+  // Lower slope: 55-70% y
+  placeInZone(zones.lower, 56, 70, 5, 90);
+  // Firebreak: 70-90% y, right side
+  placeInZone(zones.firebreak, 72, 88, 60, 95);
+
+  savePlot();
+}
+
+// ============ RENDERING ============
+function renderPlot() {
+  var container = document.getElementById('plot-plants');
+  if (!container) return;
+  container.innerHTML = '';
+
+  plot.forEach(function(p) {
+    var s = SPECIES[p.key];
+    if (!s) return;
+    var el = document.createElement('div');
+    el.className = 'plant ' + getCategoryClass(s);
+    el.style.cssText = 'top:' + p.y + '%;left:' + p.x + '%;width:' + getSpeciesSize(s) + '%;height:' + getSpeciesSize(s) + '%;';
+    el.dataset.id = p.id;
+    el.innerHTML = '<span class="icon">' + getSpeciesIcon(s) + '</span><span class="pname">' + s.name + '</span>';
+    (function(pid, pkey) {
+      el.onclick = function(e) {
+        e.stopPropagation();
+        showContext(pid, pkey, e);
+      };
+    })(p.id, p.key);
+    container.appendChild(el);
+  });
+
+  updateStats();
+}
+
+function updateStats() {
+  var trees = 0, shrubs = 0, nfixers = 0;
+  plot.forEach(function(p) {
+    var s = SPECIES[p.key];
+    if (!s) return;
+    if (s.category === 'tree') trees++;
+    else if (s.category === 'shrub') shrubs++;
+    if (s.nFixer) nfixers++;
+  });
+  var stats = document.getElementById('plot-stats');
+  if (stats) stats.textContent = '🌳 ' + trees + ' trees · 🌿 ' + shrubs + ' shrubs · 🔄 ' + nfixers + ' N-fixers · ' + plot.length + ' total';
+}
+
+// ============ CONTEXT MENU ============
+function showContext(pid, pkey, e) {
+  selectedPlant = pid;
+  hideContext();
+  var menu = document.createElement('div');
+  menu.className = 'ctx-menu';
+  menu.id = 'ctx-menu';
+  menu.style.cssText = 'position:fixed;top:' + e.clientY + 'px;left:' + e.clientX + 'px;z-index:1000;';
+
+  var s = SPECIES[pkey];
+
+  function makeBtn(label, fn) {
+    var btn = document.createElement('button');
+    btn.className = 'ctx-btn';
+    btn.textContent = label;
+    btn.onclick = function() { hideContext(); setTimeout(fn, 10); };
+    menu.appendChild(btn);
+  }
+
+  makeBtn('ℹ️ Info', function() { showInfo(pkey); });
+  makeBtn('↔️ Move', function() { startMove(pid); });
+  makeBtn('🔄 Swap', function() { openSwapPicker(pid); });
+  makeBtn('✕ Remove', function() { removePlant(pid); });
+
+  document.body.appendChild(menu);
+
+  // Close on outside click
+  setTimeout(function() {
+    document.addEventListener('click', hideContext);
+  }, 10);
+}
+
+function hideContext() {
+  var menu = document.getElementById('ctx-menu');
+  if (menu) menu.remove();
+  document.removeEventListener('click', hideContext);
+}
+
+// ============ PLANT ACTIONS ============
+function removePlant(pid) {
+  plot = plot.filter(function(p) { return p.id !== pid; });
+  savePlot();
+  renderPlot();
+}
+
+function startMove(pid) {
+  moveTarget = pid;
+  var plotEl = document.getElementById('plot');
+  if (plotEl) plotEl.style.cursor = 'crosshair';
+  var hint = document.createElement('div');
+  hint.id = 'move-hint';
+  hint.style.cssText = 'position:fixed;top:10px;left:50%;transform:translateX(-50%);background:#16213e;color:#c5e1a5;padding:8px 16px;border-radius:8px;border:1px solid #33691e;z-index:1001;font-size:0.85em;';
+  hint.innerHTML = '📍 Tap new location on plot (Esc to cancel)';
+  document.body.appendChild(hint);
+}
+
+function handlePlotClick(e) {
+  // Only respond when in move mode
+  if (!moveTarget) {
+    // Normal mode: tap empty area → open add picker
+    var rect = e.currentTarget.getBoundingClientRect();
+    var x = ((e.clientX - rect.left) / rect.width) * 100;
+    var y = ((e.clientY - rect.top) / rect.height) * 100;
+    openAddPicker(x, y);
+    return;
+  }
+  // Move mode: place at tapped location
+  var rect = e.currentTarget.getBoundingClientRect();
+  var x = ((e.clientX - rect.left) / rect.width) * 100;
+  var y = ((e.clientY - rect.top) / rect.height) * 100;
+  var p = plot.find(function(p) { return p.id === moveTarget; });
+  if (p) {
+    p.x = Math.max(2, Math.min(96, x));
+    p.y = Math.max(2, Math.min(96, y));
+    savePlot();
+    renderPlot();
+  }
+  moveTarget = null;
+  var plotEl = document.getElementById('plot');
+  if (plotEl) plotEl.style.cursor = '';
+  var hint = document.getElementById('move-hint');
+  if (hint) hint.remove();
+}
+
+function openAddPicker(x, y) {
+  var keys = getTreeShrubKeys();
+  if (keys.length === 0) return;
+  showPicker('➕ Add Plant at (' + Math.round(x) + ', ' + Math.round(y) + ')', keys, function(key) {
+    plot.push({key: key, x: x, y: y, id: nextId++});
+    savePlot();
+    renderPlot();
+  });
+}
+
+function openSwapPicker(pid) {
+  var p = plot.find(function(p) { return p.id === pid; });
+  if (!p) return;
+  var current = SPECIES[p.key];
+  var keys = getTreeShrubKeys();
+  showPicker('🔄 Swap ' + (current ? current.name : '?'), keys, function(key) {
+    p.key = key;
+    savePlot();
+    renderPlot();
+  });
+}
+
+// ============ PICKER MODAL ============
+function showPicker(title, keys, callback) {
+  hidePicker();
+  var overlay = document.createElement('div');
+  overlay.className = 'picker-overlay';
+  overlay.id = 'picker-overlay';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:1001;display:flex;align-items:center;justify-content:center;';
+
+  var modal = document.createElement('div');
+  modal.style.cssText = 'background:#16213e;border:1px solid #33691e;border-radius:12px;padding:16px;max-width:400px;width:90%;max-height:70vh;overflow-y:auto;';
+
+  modal.innerHTML = '<h3 style="color:#c5e1a5;margin-bottom:10px;font-size:1em;">' + title + '</h3>';
+
+  var list = document.createElement('div');
+  list.style.cssText = 'display:flex;flex-direction:column;gap:4px;';
+
+  keys.forEach(function(k) {
+    var s = SPECIES[k];
+    var item = document.createElement('div');
+    item.style.cssText = 'display:flex;align-items:center;gap:8px;padding:6px 10px;background:#1a2a1a;border-radius:6px;cursor:pointer;border:1px solid transparent;';
+    item.onmouseover = function() { item.style.borderColor = '#33691e'; };
+    item.onmouseout = function() { item.style.borderColor = 'transparent'; };
+    item.innerHTML = '<span style="font-size:1.2em;">' + getSpeciesIcon(s) + '</span>' +
+      '<span style="color:#e0e0d0;font-size:0.85em;">' + s.name + '</span>' +
+      '<span style="color:#78909c;font-size:0.7em;margin-left:auto;">' + (s.subcategory || s.category) + '</span>';
+    (function(key) {
+      item.onclick = function(e) {
+        e.stopPropagation();
+        hidePicker();
+        callback(key);
+      };
+    })(k);
+    list.appendChild(item);
+  });
+
+  modal.appendChild(list);
+
+  var cancel = document.createElement('button');
+  cancel.textContent = 'Cancel';
+  cancel.style.cssText = 'margin-top:12px;padding:6px 16px;background:#1a2a1a;color:#888;border:1px solid #2a3a2a;border-radius:6px;cursor:pointer;width:100%;';
+  cancel.onclick = hidePicker;
+  modal.appendChild(cancel);
+
+  overlay.appendChild(modal);
+  overlay.onclick = function(e) { if (e.target === overlay) hidePicker(); };
+  document.body.appendChild(overlay);
+}
+
+function hidePicker() {
+  var overlay = document.getElementById('picker-overlay');
+  if (overlay) overlay.remove();
+}
+
+// ============ INFO PANEL ============
+function showInfo(key) {
+  var s = SPECIES[key];
+  if (!s) return;
+  var panel = document.getElementById('info-panel');
+  if (!panel) return;
+
+  var traits = (s.guild && s.guild.gives) ? s.guild.gives.join(', ') : '—';
+  var needs = (s.guild && s.guild.needs) ? s.guild.needs.join(', ') : '—';
+  var companions = (s.guild && s.guild.companions) ? s.guild.companions.map(function(k) { return SPECIES[k] ? SPECIES[k].name : k; }).join(', ') : '—';
+  var antagonists = (s.guild && s.guild.antagonists) ? s.guild.antagonists.map(function(k) { return SPECIES[k] ? SPECIES[k].name : k; }).join(', ') : '—';
+
+  var fireIcon = s.fireResistant ? '🔥 fire-resistant' : '—';
+  var nfixerIcon = s.nFixer ? 'N-fixer' : '—';
+
+  panel.innerHTML =
+    '<h3>' + getSpeciesIcon(s) + ' ' + s.name + ' <span style="font-size:0.6em;color:#78909c;font-style:italic;">' + (s.latin || '') + '</span></h3>' +
+    '<p><span class="stat">' + s.category + '</span>' +
+    '<span class="stat">' + (s.subcategory || '—') + '</span>' +
+    '<span class="stat">' + fireIcon + '</span>' +
+    '<span class="stat">' + nfixerIcon + '</span></p>' +
+    '<table><tr><th>Height</th><td>' + (s.height || '—') + 'cm</td></tr>' +
+    '<tr><th>Width</th><td>' + (s.width || '—') + 'cm</td></tr>' +
+    '<tr><th>Soil Depth</th><td>' + (s.soilDepth || '—') + 'cm</td></tr>' +
+    '<tr><th>Sun</th><td>' + (s.sun || '—') + '</td></tr>' +
+    '<tr><th>Water</th><td>' + (s.water || '—') + '</td></tr>' +
+    '<tr><th>Soil Types</th><td>' + ((s.soilType || []).join(', ') || '—') + '</td></tr>' +
+    '<tr><th>Gives</th><td>' + traits + '</td></tr>' +
+    '<tr><th>Needs</th><td>' + needs + '</td></tr>' +
+    '<tr><th>Companions</th><td>' + companions + '</td></tr>' +
+    '<tr><th>Antagonists</th><td>' + antagonists + '</td></tr>' +
+    '<tr><th>Notes</th><td style="font-size:0.85em;">' + (s.notes || '—') + '</td></tr></table>';
+  panel.classList.add('active');
+  panel.scrollIntoView({behavior: 'smooth', block: 'start'});
+}
+
+// ============ LAYER TOGGLES ============
+function toggleLayer(id, btn) {
+  var layer = document.getElementById('layer-' + id);
+  if (layer) layer.classList.toggle('hidden');
+  if (btn) { btn.classList.toggle('on'); btn.classList.toggle('off'); }
+}
+
+function toggleAll() {
+  var layers = document.querySelectorAll('.sector-layer, .resource-layer');
+  var btns = document.querySelectorAll('.toggle.sun, .toggle.wind, .toggle.fire, .toggle.frost, .toggle.water, .toggle.resource');
+  var anyOff = Array.from(btns).some(function(b) { return b.classList.contains('off'); });
+  layers.forEach(function(l) { l.classList.toggle('hidden', !anyOff); });
+  btns.forEach(function(b) { b.classList.toggle('on', anyOff); b.classList.toggle('off', !anyOff); });
+}
+
+// ============ KEYBOARD ============
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    if (moveTarget) {
+      moveTarget = null;
+      var plotEl = document.getElementById('plot');
+      if (plotEl) plotEl.style.cursor = '';
+      var hint = document.getElementById('move-hint');
+      if (hint) hint.remove();
+    }
+    hideContext();
+    hidePicker();
+  }
+});
+
+// ============ INIT ============
+document.addEventListener('DOMContentLoaded', function() {
+  // Load or generate
+  if (!loadPlot()) {
+    generateSuggested();
+  }
+
+  // Region badge
+  if (regionFilter !== 'all') {
+    var badge = document.createElement('span');
+    badge.style.cssText = 'display:inline-block;padding:1px 8px;border-radius:8px;font-size:0.7em;background:rgba(90,138,74,0.15);border:1px solid #5a8a4a;color:#aed581;margin-left:6px;';
+    badge.textContent = regionFilter === 'tuscany' ? '🇮🇹 Tuscany' : '🇳🇱 Netherlands';
+    var sub = document.querySelector('.subtitle');
+    if (sub) sub.appendChild(badge);
+  }
+
+  // Wire plot click handler
+  var plotEl = document.getElementById('plot');
+  if (plotEl) plotEl.onclick = handlePlotClick;
+
+  // Button handlers
+  var suggestBtn = document.getElementById('suggest-btn');
+  if (suggestBtn) suggestBtn.onclick = function() { generateSuggested(); renderPlot(); };
+
+  var exportBtn = document.getElementById('export-btn');
+  if (exportBtn) exportBtn.onclick = exportLayout;
+
+  var clearBtn = document.getElementById('clear-btn');
+  if (clearBtn) clearBtn.onclick = function() {
+    if (confirm('Clear all plants from the plot?')) {
+      plot = [];
+      nextId = 1;
+      savePlot();
+      renderPlot();
+    }
+  };
+
+  renderPlot();
+});
+
+// ============ EXPORT / IMPORT ============
+function exportLayout() {
+  var data = JSON.stringify({version: 1, plot: plot}, null, 2);
+  var blob = new Blob([data], {type: 'application/json'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'orchard-placement.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,1494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOILPEPPER — Vegetable Garden Planner</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#0d1b2a;color:#e0e0d0;padding:15px;max-width:1500px;margin:0 auto;}
+h1{text-align:center;color:#c5e1a5;margin-bottom:4px;font-size:1.4em;}
+.subtitle{text-align:center;color:rgba(255,255,255,0.5);font-size:0.75em;margin-bottom:10px;}
+.main-layout{display:flex;gap:20px;align-items:flex-start;}
+.palette{width:220px;flex-shrink:0;position:sticky;top:10px;max-height:85vh;overflow-y:auto;background:#16213e;border:1px solid #2a3a2a;border-radius:10px;padding:10px;}
+.palette h3{color:#aed581;font-size:0.85em;margin-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:6px;}
+.palette-group{margin-bottom:8px;}
+.palette-group h4{font-size:0.65em;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
+.palette-item{display:inline-flex;align-items:center;gap:4px;padding:4px 8px;margin:2px;border-radius:6px;cursor:grab;font-size:0.65em;border:1px solid rgba(255,255,255,0.1);transition:all .2s;user-select:none;}
+.palette-item:hover{transform:scale(1.05);border-color:rgba(129,199,132,0.4);}
+.palette-item:active{cursor:grabbing;}
+.palette-item .icon{font-size:1em;}
+
+/* Bed groups */
+.bed-group{margin-bottom:2px;}
+.bed-group-label{font-size:0.55em;color:rgba(255,255,255,0.3);padding:2px 0;letter-spacing:1px;}
+
+.garden{flex:1;display:flex;flex-direction:column;gap:4px;max-width:820px;margin:0 auto;}
+.bed-row{display:flex;align-items:center;gap:8px;}
+.bed-label{width:50px;font-size:0.55em;color:rgba(255,255,255,0.3);text-align:right;flex-shrink:0;}
+.bed{flex:1;min-height:60px;border-radius:6px;padding:4px 6px;display:flex;flex-wrap:wrap;gap:2px;align-items:flex-start;align-content:flex-start;border:2px dashed rgba(255,255,255,0.08);transition:all .2s;position:relative;cursor:pointer;}
+.bed.dragover{border-color:#81c784;background:rgba(129,199,132,0.1);}
+.bed-tall{background:rgba(27,94,32,0.25);border-color:rgba(27,94,32,0.4);}
+.bed-medium{background:rgba(76,175,80,0.2);border-color:rgba(76,175,80,0.35);}
+.bed-low{background:rgba(139,195,74,0.15);border-color:rgba(139,195,74,0.3);}
+.bed-label-inner{position:absolute;top:2px;right:5px;font-size:0.4em;color:rgba(255,255,255,0.15);}
+
+/* Plant in bed */
+.plant-in-bed{display:inline-flex;align-items:center;gap:3px;padding:3px 6px;border-radius:4px;font-size:0.55em;border:1px solid rgba(255,255,255,0.15);cursor:grab;transition:all .2s;position:relative;}
+.plant-in-bed:active{cursor:grabbing;}
+.plant-in-bed:hover{transform:scale(1.08);z-index:2;}
+.plant-in-bed .qty{font-size:0.7em;color:rgba(255,255,255,0.4);margin-left:1px;}
+.plant-in-bed .remove-btn{position:absolute;top:-4px;right:-4px;width:12px;height:12px;border-radius:50%;background:rgba(244,67,54,0.6);border:none;color:#fff;font-size:0.4em;cursor:pointer;display:none;align-items:center;justify-content:center;line-height:1;}
+.plant-in-bed:hover .remove-btn{display:flex;}
+.plant-in-bed .remove-btn:hover{background:rgba(244,67,54,0.9);}
+
+/* Days badge */
+.days-badge{font-size:0.7em;padding:1px 5px;border-radius:8px;cursor:pointer;font-weight:600;display:inline-block;line-height:1.4;}
+
+/* Sow/harvest bar in bed view */
+.sow-harvest-bar{width:100%;height:4px;border-radius:2px;margin-top:2px;display:flex;overflow:hidden;border-left:1px solid rgba(255,255,255,0.05);}
+.sow-harvest-bar .sh-seg{flex:1;border-right:1px solid rgba(255,255,255,0.05);}
+.sow-harvest-header{width:100%;display:flex;margin-bottom:1px;border-left:1px solid rgba(255,255,255,0.05);}
+.sow-harvest-header .sh-month-label{flex:1;text-align:center;font-size:0.35em;color:rgba(255,255,255,0.25);border-right:1px solid rgba(255,255,255,0.05);line-height:1;padding:1px 0;}
+.sow-harvest-header .sh-month-label.current{color:#81c784;font-weight:600;}
+.sow-harvest-legend{width:100%;display:flex;gap:8px;font-size:0.35em;color:rgba(255,255,255,0.3);margin-top:3px;justify-content:center;}
+.sow-harvest-legend .legend-dot{display:inline-block;width:6px;height:6px;border-radius:1px;margin-right:2px;}
+
+/* Spacing indicator */
+.spacing-info{font-size:0.45em;color:rgba(255,255,255,0.2);padding:2px 0;}
+
+/* Info panel */
+.info-panel{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(13,27,42,0.95);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:10px 16px;z-index:100;display:none;backdrop-filter:blur(4px);max-width:520px;width:90%;}
+.info-panel.active{display:block;}
+.info-panel h4{color:#c5e1a5;font-size:0.75em;margin-bottom:4px;}
+.info-panel p{font-size:0.6em;color:rgba(255,255,255,0.6);line-height:1.4;}
+.info-panel .stat{display:inline-block;margin-right:8px;}
+.info-panel .sow-harvest-info{font-size:0.6em;line-height:1.6;margin-top:4px;padding-top:4px;border-top:1px solid rgba(255,255,255,0.08);}
+
+/* Date picker popup */
+.date-picker-popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#16213e;border:1px solid rgba(255,255,255,0.2);border-radius:10px;padding:16px;z-index:200;display:none;box-shadow:0 4px 20px rgba(0,0,0,0.5);}
+.date-picker-popup.active{display:block;}
+.date-picker-popup h4{color:#c5e1a5;font-size:0.75em;margin-bottom:8px;}
+.date-picker-popup input[type=date]{background:#0d1b2a;border:1px solid rgba(255,255,255,0.2);border-radius:4px;color:#e0e0d0;padding:6px 10px;font-size:0.7em;width:100%;margin-bottom:8px;}
+.date-picker-popup .popup-btns{display:flex;gap:6px;justify-content:flex-end;}
+.date-picker-popup .popup-btns button{padding:4px 12px;border:1px solid rgba(255,255,255,0.2);border-radius:4px;cursor:pointer;font-size:0.65em;background:rgba(255,255,255,0.05);color:#ccc;}
+.date-picker-popup .popup-btns button:hover{background:rgba(255,255,255,0.1);}
+.date-picker-popup .popup-btns .btn-set{background:rgba(129,199,132,0.15);border-color:#81c784;color:#c5e1a5;}
+.date-picker-popup .popup-btns .btn-set:hover{background:rgba(129,199,132,0.25);}
+
+/* Buttons */
+.action-bar{display:flex;gap:6px;margin-top:10px;justify-content:center;flex-wrap:wrap;}
+.btn{display:inline-flex;align-items:center;gap:4px;padding:6px 14px;border:1px solid rgba(255,255,255,0.2);border-radius:6px;cursor:pointer;font-size:0.7em;background:rgba(255,255,255,0.05);color:#ccc;transition:all .2s;}
+.btn:hover{background:rgba(255,255,255,0.1);}
+.btn-primary{background:rgba(129,199,132,0.15);border-color:#81c784;color:#c5e1a5;}
+.btn-primary:hover{background:rgba(129,199,132,0.25);}
+.btn-danger{background:rgba(244,67,54,0.15);border-color:rgba(244,67,54,0.4);color:#ef5350;}
+.btn-danger:hover{background:rgba(244,67,54,0.25);}
+.btn.active-toggle{background:rgba(129,199,132,0.2);border-color:#81c784;color:#c5e1a5;}
+
+/* Calendar view */
+.calendar-view{display:none;width:100%;}
+.calendar-view.active{display:block;}
+.calendar-grid{width:100%;border-collapse:collapse;font-size:0.55em;}
+.calendar-grid th{text-align:center;padding:4px 2px;font-weight:400;color:rgba(255,255,255,0.5);border-bottom:1px solid rgba(255,255,255,0.1);font-size:0.9em;}
+.calendar-grid td{text-align:center;padding:2px;border:1px solid rgba(255,255,255,0.06);vertical-align:top;min-width:40px;height:32px;position:relative;}
+.calendar-grid .bed-label-cell{text-align:right;padding-right:6px;color:rgba(255,255,255,0.3);font-size:0.9em;white-space:nowrap;border:none;width:60px;}
+.calendar-grid .month-current{border-color:#81c784;background:rgba(129,199,132,0.08);}
+.calendar-grid .cell-sow{background:rgba(129,199,132,0.2);}
+.calendar-grid .cell-harvest{background:rgba(255,213,79,0.2);}
+.calendar-grid .cell-both{background:linear-gradient(135deg,rgba(129,199,132,0.25) 0%,rgba(129,199,132,0.25) 50%,rgba(255,213,79,0.25) 50%,rgba(255,213,79,0.25) 100%);}
+.calendar-grid .plant-icon{font-size:1em;cursor:pointer;display:inline-block;margin:0 1px;}
+.calendar-grid .plant-icon:hover{transform:scale(1.2);}
+.calendar-grid .bed-row-label{color:rgba(255,255,255,0.4);font-size:0.85em;}
+
+/* Scrollbar */
+.palette::-webkit-scrollbar{width:4px;}
+.palette::-webkit-scrollbar-track{background:transparent;}
+.palette::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:2px;}
+
+/* Responsive */
+
+/* ===== Real-world garden model (2026-08-06) ===== */
+.garden-setup{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:center;margin:6px auto 10px;padding:8px 14px;background:rgba(13,27,42,0.7);border:1px solid rgba(255,255,255,0.08);border-radius:8px;max-width:820px;font-size:0.7em;}
+.garden-setup label{color:rgba(255,255,255,0.5);}
+.garden-setup select,.garden-setup input{background:#0d1b2a;border:1px solid rgba(255,255,255,0.2);border-radius:4px;color:#e0e0d0;padding:3px 6px;font-size:0.95em;}
+.garden-setup .g-hint{color:rgba(255,255,255,0.35);font-size:0.9em;}
+.join-toggle{margin-left:auto;font-size:0.5em;padding:2px 8px;border-radius:6px;border:1px solid rgba(129,199,132,0.4);background:rgba(129,199,132,0.12);color:#81c784;cursor:pointer;flex-shrink:0;}
+.join-toggle:hover{background:rgba(129,199,132,0.25);}
+.join-toggle.joined{border-color:rgba(255,213,79,0.4);background:rgba(255,213,79,0.1);color:#ffd54f;}
+.bed-slot{flex:1;min-height:60px;border-radius:6px;padding:4px 6px;display:flex;flex-wrap:wrap;gap:2px;align-items:flex-start;align-content:flex-start;border:2px dashed rgba(255,255,255,0.08);transition:all .2s;position:relative;cursor:pointer;min-width:0;}
+.bed-slot.dragover{border-color:#81c784;background:rgba(129,199,132,0.1);}
+.bed-slot .slot-tag{position:absolute;bottom:2px;left:5px;font-size:0.38em;color:rgba(255,255,255,0.22);}
+.bed-slot .bed-area{position:absolute;top:2px;left:5px;font-size:0.38em;color:rgba(255,255,255,0.25);}
+.bed-joined{flex:1;min-height:60px;border-radius:6px;padding:4px 6px;display:flex;flex-wrap:wrap;gap:2px;align-items:flex-start;align-content:flex-start;border:2px dashed rgba(255,255,255,0.1);transition:all .2s;position:relative;cursor:pointer;min-width:0;}
+.bed-joined.dragover{border-color:#81c784;background:rgba(129,199,132,0.1);}
+.bed-slot-tall{background:rgba(27,94,32,0.25);border-color:rgba(27,94,32,0.4);}
+.bed-slot-medium{background:rgba(76,175,80,0.2);border-color:rgba(76,175,80,0.35);}
+.bed-slot-low{background:rgba(139,195,74,0.15);border-color:rgba(139,195,74,0.3);}
+.bed-row-module-label{font-size:0.45em;color:rgba(255,255,255,0.25);text-align:center;margin:8px 0 2px;letter-spacing:2px;}
+.spec-card{max-width:820px;margin:14px auto;background:rgba(13,27,42,0.8);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:10px 14px;font-size:0.68em;}
+.spec-card h4{color:#81c784;margin:0 0 6px;font-size:1.05em;}
+.spec-card .spec-grid{display:flex;flex-wrap:wrap;gap:6px 16px;}
+.spec-card .spec-item b{color:#e0e0d0;}
+.spec-card .spec-note{margin-top:6px;color:rgba(255,255,255,0.4);font-size:0.92em;}
+.sow-spec{background:rgba(129,199,132,0.08);border:1px solid rgba(129,199,132,0.25);border-radius:6px;padding:6px 10px;margin:4px 0;font-size:0.85em;}
+.sow-spec div{margin:2px 0;color:#c8e6c9;}
+.zone-minimap{display:grid;gap:1px;margin:8px auto 0;width:min(280px,90%);}
+.zone-minimap .zm-cell{aspect-ratio:1;border-radius:2px;background:rgba(255,255,255,0.04);}
+.zone-minimap .zm-cell.block{background:rgba(129,199,132,0.35);border:1px solid rgba(129,199,132,0.5);}
+
+@media(max-width:700px){.main-layout{flex-direction:column;}.palette{width:100%;position:static;max-height:none;flex-direction:row;flex-wrap:wrap;}.palette h3{width:100%;}.palette-group{display:inline;}.palette-group h4{display:inline;margin-right:4px;}.bed-row{flex-direction:column;}.bed-label{width:auto;text-align:left;}.calendar-grid{font-size:0.45em;}.calendar-grid td{min-width:28px;}}
+</style>
+</head>
+<body>
+<!-- DESIGN BRIEF STRIP (shared reader — injected by design-brief system) -->
+<script>
+(function () {
+  // Shared design brief from Master Plan (tuscan-brief-v1). Static tools only
+  // READ it — they never write. Falls back to sensible Tuscan defaults.
+  var KEY = 'tuscan-brief-v1';
+  var DEF = {
+    region: 'tuscany', title: 'Tuscan hillside',
+    plotW: 100, plotH: 100, cellSize: 10,
+    defaultSoil: 'silty', altitude: 300, climateZone: '8b-9a',
+    aspect: 'South (180°)', slope: '~10% moderate'
+  };
+  var b = DEF;
+  try {
+    var raw = localStorage.getItem(KEY);
+    if (raw) { var p = JSON.parse(raw); for (var k in DEF) if (p[k] !== undefined) b[k] = p[k]; }
+  } catch (e) {}
+
+  var soilLbl = { sandy: 'Sandy', silty: 'Silty', loam: 'Loam', clay: 'Clay', chalky: 'Chalky', peaty: 'Peaty' }[b.defaultSoil] || b.defaultSoil;
+  var regionLbl = b.region === 'netherlands' ? 'Netherlands' : 'Tuscany';
+
+  // Build the strip
+  var strip = document.createElement('div');
+  strip.style.cssText = 'display:flex;flex-wrap:wrap;gap:4px 14px;justify-content:center;align-items:center;' +
+    'background:#142114;border:1px solid #1a301a;border-radius:6px;padding:6px 12px;margin:0 auto 12px;' +
+    'max-width:900px;font-size:0.72rem;color:#a8b8a0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;';
+  var parts = [
+    '<span style="color:#c4a040;font-weight:600">' + (b.title || 'Design') + '</span>',
+    '<span>' + regionLbl + '</span>',
+    '<span>' + b.plotW + '×' + b.plotH + 'm · ' + b.cellSize + 'm cells</span>',
+    '<span>' + soilLbl + ' soil</span>',
+    '<span>~' + b.altitude + 'm</span>',
+    '<span>Zone ' + b.climateZone + '</span>',
+    '<span>' + b.aspect + '</span>',
+    '<span>' + b.slope + '</span>',
+    '<a href="master-plan.html?region=' + b.region + '" style="color:#5a8a4a;text-decoration:none;font-weight:600">⚙️ Edit in Master Plan</a>'
+  ];
+  strip.innerHTML = parts.join('<span style="opacity:0.4">·</span>');
+  var body = document.body;
+  body.insertBefore(strip, body.firstChild);
+
+  // Sector Analysis: prefill params from the brief once the page is ready
+  // (one-way: brief is the source of truth; user can still override locally)
+  function prefillSectorParams() {
+    // Aspect: match degrees (e.g. "South (180°)" → 180) to the select options
+    var aspEl = document.getElementById('aspect');
+    if (aspEl && b.aspect) {
+      var mDeg = String(b.aspect).match(/(\d+)/);
+      var deg = mDeg ? parseInt(mDeg[1], 10) : NaN;
+      if (!isNaN(deg)) {
+        for (var i = 0; i < aspEl.options.length; i++) {
+          if (parseInt(aspEl.options[i].value, 10) === deg) { aspEl.value = aspEl.options[i].value; break; }
+        }
+      }
+    }
+    // Altitude: brief value → number input
+    var altEl = document.getElementById('altitude');
+    if (altEl && b.altitude) {
+      altEl.value = b.altitude;
+      if (typeof updateSectors === 'function') updateSectors();
+    }
+    // Slope: match brief slope % to the select options
+    var slEl = document.getElementById('slope');
+    if (slEl && b.slope) {
+      var mSl = String(b.slope).match(/(\d+)/);
+      var sl = mSl ? parseInt(mSl[1], 10) : NaN;
+      if (!isNaN(sl)) {
+        for (var i = 0; i < slEl.options.length; i++) {
+          if (parseInt(slEl.options[i].value, 10) === sl) { slEl.value = slEl.options[i].value; break; }
+        }
+      }
+    }
+    // Live "Modular Parameters" reference table (if present)
+    var pAsp = document.getElementById('param-aspect');
+    if (pAsp && b.aspect) pAsp.textContent = b.aspect;
+    var pAlt = document.getElementById('param-altitude');
+    if (pAlt && b.altitude) pAlt.textContent = b.altitude + 'm';
+    var pSl = document.getElementById('param-slope');
+    if (pSl && b.slope) {
+      var mP = String(b.slope).match(/(\d+)/);
+      pSl.textContent = (mP ? mP[1] : b.slope) + '%';
+    }
+    // Live summary sentence + sun stats (if present)
+    var facing = function (deg) {
+      var d = parseInt(deg, 10);
+      if (d >= 315 || d < 45) return 'north-facing';
+      if (d >= 45 && d < 135) return 'east-facing';
+      if (d >= 135 && d < 225) return 'south-facing';
+      return 'west-facing';
+    };
+    var sumAlt = document.getElementById('sum-altitude');
+    if (sumAlt && b.altitude) sumAlt.textContent = '~' + b.altitude + 'm';
+    var sumReg = document.getElementById('sum-region');
+    if (sumReg) sumReg.textContent = b.region === 'netherlands' ? 'the Netherlands' : 'Tuscany';
+    var sumAsp = document.getElementById('sum-aspect');
+    if (sumAsp && b.aspect) {
+      var dA = String(b.aspect).match(/(\d+)/);
+      if (dA) sumAsp.textContent = facing(dA[1]);
+    }
+    var latEl2 = document.getElementById('lat');
+    var latVal = latEl2 ? (parseFloat(latEl2.value) || 43) : 43;
+    var stLat = document.getElementById('st-lat');
+    if (stLat) stLat.textContent = Math.round(latVal) + '°N';
+    var stSum = document.getElementById('st-summer');
+    if (stSum) stSum.textContent = Math.round((90 - latVal + 23.44) * 10) / 10 + '°';
+    var stWin = document.getElementById('st-winter');
+    if (stWin) stWin.textContent = Math.round((90 - latVal - 23.44) * 10) / 10 + '°';
+    var stAsp = document.getElementById('st-aspect');
+    if (stAsp && b.aspect) {
+      var dA2 = String(b.aspect).match(/(\d+)/);
+      if (dA2) stAsp.textContent = facing(dA2[1]);
+    }
+    // Water Management: plot size + altitude in subtitle (if present)
+    var wmPlot = document.getElementById('wm-plot');
+    if (wmPlot && b.plotW && b.plotH) {
+      var ha = (b.plotW * b.plotH) / 10000;
+      wmPlot.textContent = (ha >= 1 ? (Math.round(ha * 10) / 10) + ' ha' : Math.round(b.plotW * b.plotH) + ' m²');
+    }
+    var wmAlt = document.getElementById('wm-alt');
+    if (wmAlt && b.altitude) wmAlt.textContent = '~' + b.altitude + 'm altitude';
+    // Design Proposal: Site Overview body from the brief (if present)
+    var dpAlt = document.getElementById('dp-alt');
+    if (dpAlt && b.altitude) dpAlt.textContent = b.altitude;
+    var dpZone = document.getElementById('dp-zone');
+    if (dpZone && b.climateZone) dpZone.textContent = b.climateZone;
+    var dpArea = document.getElementById('dp-area');
+    if (dpArea && b.plotW && b.plotH) {
+      var dpHa = (b.plotW * b.plotH) / 10000;
+      dpArea.textContent = (dpHa >= 1 ? dpHa + ' hectares' : Math.round(b.plotW * b.plotH) + ' m²') + ' (' + b.plotW + '×' + b.plotH + 'm)';
+    }
+    var dpRain = document.getElementById('dp-rain');
+    var waterForRain = null;
+    try { waterForRain = JSON.parse(localStorage.getItem('tuscan-water-v1') || 'null'); } catch (e) {}
+    if (dpRain && waterForRain && waterForRain.rainfall) dpRain.textContent = waterForRain.rainfall;
+    // Summary cards: site area + swales
+    var cardArea = document.getElementById('card-area');
+    if (cardArea && b.plotW && b.plotH) {
+      var cHa = (b.plotW * b.plotH) / 10000;
+      cardArea.textContent = (cHa >= 1 ? cHa + ' ha' : Math.round(b.plotW * b.plotH) + ' m²');
+    }
+    var cardSwales = document.getElementById('card-swales');
+    if (cardSwales && waterForRain && waterForRain.swales) cardSwales.textContent = waterForRain.swales;
+    // Subtitle (top of page): area, altitude, zone, location
+    var subArea = document.getElementById('sub-area');
+    if (subArea && b.plotW && b.plotH) {
+      var sHa = (b.plotW * b.plotH) / 10000;
+      subArea.textContent = (sHa >= 1 ? sHa + 'ha Hillside' : Math.round(b.plotW * b.plotH) + 'm² Site');
+    }
+    var subAlt = document.getElementById('sub-alt');
+    if (subAlt && b.altitude) subAlt.textContent = b.altitude;
+    var subZone = document.getElementById('sub-zone');
+    if (subZone && b.climateZone) subZone.textContent = b.climateZone;
+    var subLoc = document.getElementById('sub-loc');
+    if (subLoc) subLoc.textContent = b.region === 'netherlands' ? 'Netherlands' : 'Tuscany, Italy';
+    if (typeof updateSectors === 'function') updateSectors();
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', prefillSectorParams);
+  } else {
+    prefillSectorParams();
+  }
+})();
+</script>
+
+
+<h1>🥬 Vegetable Garden Planner — <span id="bed-count">12</span> Beds</h1>
+  <div class="subtitle">Drag plants from the palette onto beds · Hover over a plant to remove · Click for details · Click days badge to set date</div>
+
+<div class="garden-setup" id="garden-setup">
+  <label>Modules <select id="cfg-modules">
+    <option value="1">1 (6 rows)</option>
+    <option value="2" selected>2 (12 rows)</option>
+    <option value="3">3 (18 rows)</option>
+  </select></label>
+  <label>Bed width <input type="number" id="cfg-width" value="0.75" min="0.5" max="1.2" step="0.05" style="width:64px"> m</label>
+  <label>Slot length <input type="number" id="cfg-slot" value="10" min="5" max="20" step="1" style="width:58px"> m</label>
+  <span class="g-hint" id="garden-hint"></span>
+</div>
+
+<div class="main-layout">
+  <!-- Plant Palette -->
+  <div class="palette" id="palette">
+    <h3>🌱 Plant Palette</h3>
+    <p style="font-size:0.55em;color:rgba(255,255,255,0.3);margin-bottom:8px;">Drag onto beds</p>
+    <div id="palette-content"></div>
+  </div>
+
+  <!-- Garden -->
+  <div class="garden" id="garden">
+    <div style="font-size:0.5em;color:rgba(255,255,255,0.2);text-align:center;margin-bottom:4px;">↑ North (tallest plants)</div>
+    <div id="beds-container"></div>
+    <div id="calendar-container" class="calendar-view"></div>
+    <div class="spec-card" id="garden-spec">
+      <h4>📐 Garden Layout — your dimensions</h4>
+      <div class="spec-grid" id="garden-spec-grid"></div>
+      <div class="spec-note" id="garden-spec-note"></div>
+      <div class="zone-minimap" id="zone-minimap"></div>
+    </div>
+    <div style="font-size:0.5em;color:rgba(255,255,255,0.2);text-align:center;margin-top:4px;">↓ South (full sun)</div>
+  </div>
+</div>
+
+<!-- Action bar -->
+<div class="action-bar">
+  <button class="btn btn-primary" onclick="exportLayout()">📋 Export JSON</button>
+  <button class="btn" onclick="document.getElementById('import-input').click()">📂 Import JSON</button>
+  <input type="file" id="import-input" accept=".json" style="display:none" onchange="importLayout(event)">
+  <button class="btn" onclick="exportFieldView()" title="Download a standalone HTML viewer of this garden — works offline on your phone">📤 Export Field View</button>
+  <button class="btn btn-danger" onclick="clearAll()">🗑️ Clear All</button>
+  <button class="btn" onclick="resetDefault()">🔄 Reset Default</button>
+  <button class="btn" id="calendar-toggle-btn" onclick="toggleCalendar()">📅 Show Calendar</button>
+  <button class="btn" id="sowharvest-toggle-btn" onclick="toggleSowHarvest()">🌱 Show Sow/Harvest</button>
+</div>
+
+<!-- Info panel -->
+<div class="info-panel" id="info-panel">
+  <div id="info-content"></div>
+</div>
+
+<!-- Date picker popup -->
+<div class="date-picker-popup" id="date-picker-popup">
+  <h4>📅 Set Planted Date</h4>
+  <input type="date" id="date-picker-input">
+  <div class="popup-btns">
+    <button onclick="closeDatePicker()">Cancel</button>
+    <button class="btn-set" onclick="confirmDatePicker()">Set Date</button>
+  </div>
+</div>
+
+<script>
+// ============ PLANT DATABASE ============
+// Embedded snapshot of plants.json (planner categories) as offline fallback.
+// At init the page tries to fetch plants.json live and rebuild SPECIES_DB,
+// so edits to the DB propagate automatically.
+let SPECIES_DB = {"tomato": {"key": "tomato", "name": "Tomato", "latin": "Solanum lycopersicum", "category": "vegetable", "subcategory": "tall", "soilDepth": 50, "sun": "full", "water": "moderate", "height": 150, "width": 60, "sowMonths": [3, 4], "harvestMonths": [7, 8, 9], "daysToMaturity": 75, "season": "warm", "nFixer": false, "perennial": false, "notes": "Tuscan varieties: San Marzano, Cuore di Bue, Costoluto Fiorentino, cherry", "spacing": 60, "sowMethod": "Transplant", "icon": "🍅", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 40, "rowSpacing": 60, "seedDepth": 1, "seedsPerHole": null, "thinTo": 50}, "pole-beans": {"key": "pole-beans", "name": "Pole beans", "latin": "Phaseolus vulgaris", "category": "vegetable", "subcategory": "tall", "soilDepth": 30, "sun": "full", "water": "moderate", "height": 200, "width": 30, "sowMonths": [5], "harvestMonths": [7, 8, 9], "daysToMaturity": 65, "season": "warm", "nFixer": true, "perennial": false, "notes": "Climbing, N-fixer. Trellis or poles. 8 seeds per pole. Sow after last frost", "spacing": 30, "sowMethod": "Direct", "icon": "🫘", "regions": ["tuscany", "netherlands"], "sowPattern": "hill", "seedSpacing": 20, "rowSpacing": 60, "seedDepth": 3, "seedsPerHole": 4, "thinTo": 20}, "corn": {"key": "corn", "name": "Sweet corn", "latin": "Zea mays", "category": "vegetable", "subcategory": "tall", "soilDepth": 40, "sun": "full", "water": "moderate", "height": 200, "width": 30, "sowMonths": [5], "harvestMonths": [8, 9], "daysToMaturity": 85, "season": "warm", "nFixer": false, "perennial": false, "notes": "Block planting for pollination. Three Sisters with beans + squash", "spacing": 30, "sowMethod": "Direct", "icon": "🌽", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 20, "rowSpacing": 30, "seedDepth": 3, "seedsPerHole": null, "thinTo": 25}, "sunflower": {"key": "sunflower", "name": "Sunflower", "latin": "Helianthus annuus", "category": "vegetable", "subcategory": "tall", "soilDepth": 50, "sun": "full", "water": "low", "height": 200, "width": 60, "sowMonths": [4, 5], "harvestMonths": [8, 9, 10], "daysToMaturity": 90, "season": "warm", "nFixer": false, "perennial": false, "notes": "Pollinator attractor. Trellis support for climbing beans. Seeds for birds and humans", "spacing": 60, "sowMethod": "Direct", "icon": "🌻", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 20, "rowSpacing": 60, "seedDepth": 2.5, "seedsPerHole": null, "thinTo": 50}, "climbing-cucumber": {"key": "climbing-cucumber", "name": "Climbing cucumber", "latin": "Cucumis sativus", "category": "vegetable", "subcategory": "tall", "soilDepth": 40, "sun": "full", "water": "moderate", "height": 180, "width": 60, "sowMonths": [4, 5], "harvestMonths": [7, 8, 9], "daysToMaturity": 60, "season": "warm", "nFixer": false, "perennial": false, "notes": "Trellis saves space. Harvest young. Italian varieties: Lungo di Firenze", "spacing": 60, "sowMethod": "Direct", "icon": "🥒", "regions": ["tuscany", "netherlands"], "sowPattern": "hill", "seedSpacing": 30, "rowSpacing": 60, "seedDepth": 2, "seedsPerHole": 2, "thinTo": 40}, "grape-veg": {"key": "grape-veg", "name": "Grape (table)", "latin": "Vitis vinifera", "category": "vegetable", "subcategory": "tall", "soilDepth": 50, "sun": "full", "water": "low", "height": 300, "width": 120, "sowMonths": [3, 4], "harvestMonths": [8, 9, 10], "daysToMaturity": 150, "season": "warm", "nFixer": false, "perennial": true, "notes": "Pergola at north edge. Italia, Moscato varieties. Deep roots 3m+", "spacing": 120, "sowMethod": "Transplant", "icon": "🍇", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 200, "rowSpacing": 120, "seedDepth": 0, "seedsPerHole": null, "thinTo": null}, "peas": {"key": "peas", "name": "Peas", "latin": "Pisum sativum", "category": "vegetable", "subcategory": "tall", "soilDepth": 40, "sun": "full", "water": "moderate", "height": 60, "width": 30, "sowMonths": [2, 3], "harvestMonths": [5, 6], "daysToMaturity": 65, "season": "cool", "nFixer": true, "perennial": false, "notes": "Climbing. Italian varieties: Piselli a grano, Tondo di Provenza. Spring crop", "spacing": 5, "sowMethod": "Direct", "icon": "🫘", "regions": ["tuscany", "netherlands"], "sowPattern": "row", "seedSpacing": 5, "rowSpacing": 30, "seedDepth": 3, "seedsPerHole": null, "thinTo": 5}, "cavolo-nero": {"key": "cavolo-nero", "name": "Cavolo Nero", "latin": "Brassica oleracea var. sabellica", "category": "vegetable", "subcategory": "medium", "soilDepth": 40, "sun": "full", "water": "moderate", "height": 90, "width": 60, "sowMonths": [7, 8], "harvestMonths": [11, 12, 1, 2, 3], "daysToMaturity": 90, "season": "cool", "nFixer": false, "perennial": false, "notes": "Tuscan black kale. Hardy, productive. Harvest outer leaves. Frost improves flavour. Key ingredient in Ribollita", "spacing": 40, "sowMethod": "Transplant", "icon": "🥬", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 40, "seedDepth": 1, "seedsPerHole": null, "thinTo": 35}, "fennel": {"key": "fennel", "name": "Fennel", "latin": "Foeniculum vulgare var. azoricum", "category": "vegetable", "subcategory": "medium", "soilDepth": 40, "sun": "full", "water": "moderate", "height": 60, "width": 30, "sowMonths": [6, 7, 8], "harvestMonths": [9, 10, 11], "daysToMaturity": 90, "season": "cool", "nFixer": false, "perennial": false, "notes": "Florence fennel. Consistent moisture for bulb formation. Finocchio di Firenze variety", "spacing": 30, "sowMethod": "Direct", "icon": "🌿", "regions": ["tuscany", "netherlands"], "sowPattern": "row", "seedSpacing": 15, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": 25}, "peppers": {"key": "peppers", "name": "Peppers", "latin": "Capsicum annuum", "category": "vegetable", "subcategory": "medium", "soilDepth": 40, "sun": "full", "water": "moderate", "height": 70, "width": 40, "sowMonths": [3, 4], "harvestMonths": [7, 8, 9, 10], "daysToMaturity": 80, "season": "warm", "nFixer": false, "perennial": false, "notes": "Italian varieties: Marconi, Corno di Toro, Quadrato d'Asti", "spacing": 40, "sowMethod": "Transplant", "icon": "🫑", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 40, "seedDepth": 1, "seedsPerHole": null, "thinTo": 40}, "eggplant": {"key": "eggplant", "name": "Eggplant", "latin": "Solanum melongena", "category": "vegetable", "subcategory": "medium", "soilDepth": 40, "sun": "full", "water": "moderate", "height": 70, "width": 40, "sowMonths": [3, 4], "harvestMonths": [7, 8, 9], "daysToMaturity": 80, "season": "warm", "nFixer": false, "perennial": false, "notes": "Italian: Violetta Lunga, Rosa Bianca. Tunisian types also popular", "spacing": 40, "sowMethod": "Transplant", "icon": "🍆", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 40, "seedDepth": 1, "seedsPerHole": null, "thinTo": 40}, "kale": {"key": "kale", "name": "Kale", "latin": "Brassica oleracea var. sabellica", "category": "vegetable", "subcategory": "medium", "soilDepth": 40, "sun": "full", "water": "moderate", "height": 60, "width": 50, "sowMonths": [6, 7, 8], "harvestMonths": [11, 12, 1, 2, 3], "daysToMaturity": 70, "season": "cool", "nFixer": false, "perennial": false, "notes": "Hardy brassica. Harvest outer leaves. Frost improves flavour", "spacing": 45, "sowMethod": "Direct", "icon": "🥬", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 45, "seedDepth": 1, "seedsPerHole": null, "thinTo": 40}, "swiss-chard": {"key": "swiss-chard", "name": "Swiss chard", "latin": "Beta vulgaris subsp. vulgaris", "category": "vegetable", "subcategory": "medium", "soilDepth": 40, "sun": "full", "water": "moderate", "height": 50, "width": 40, "sowMonths": [3, 4, 5, 6, 7, 8], "harvestMonths": [5, 6, 7, 8, 9, 10, 11], "daysToMaturity": 60, "season": "cool", "nFixer": false, "perennial": false, "notes": "Rainbow stems. Cut-and-come-again. Bietola in Italian", "spacing": 30, "sowMethod": "Direct", "icon": "🥬", "regions": ["tuscany", "netherlands"], "sowPattern": "row", "seedSpacing": 5, "rowSpacing": 30, "seedDepth": 2, "seedsPerHole": null, "thinTo": 20}, "broccoli": {"key": "broccoli", "name": "Broccoli", "latin": "Brassica oleracea var. italica", "category": "vegetable", "subcategory": "medium", "soilDepth": 40, "sun": "full", "water": "moderate", "height": 60, "width": 50, "sowMonths": [7, 8], "harvestMonths": [11, 12, 1, 2, 3], "daysToMaturity": 85, "season": "cool", "nFixer": false, "perennial": false, "notes": "Italian: Calabrese, Di Cicco. Romanesco for unique heads", "spacing": 45, "sowMethod": "Transplant", "icon": "🥦", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 45, "seedDepth": 1, "seedsPerHole": null, "thinTo": 40}, "artichoke": {"key": "artichoke", "name": "Artichoke", "latin": "Cynara cardunculus", "category": "vegetable", "subcategory": "medium", "soilDepth": 50, "sun": "full", "water": "moderate", "height": 120, "width": 90, "sowMonths": [3, 4, 5], "harvestMonths": [4, 5, 6, 7], "daysToMaturity": 365, "season": "cool", "nFixer": false, "perennial": true, "notes": "Perennial. Tuscan variety: Violetto di Toscana. Produces 3-5 years", "spacing": 90, "sowMethod": "Transplant", "icon": "🌰", "regions": ["tuscany"], "sowPattern": "square", "seedSpacing": 40, "rowSpacing": 90, "seedDepth": 2, "seedsPerHole": null, "thinTo": null}, "peperoncini": {"key": "peperoncini", "name": "Peperoncini", "latin": "Capsicum annum", "category": "vegetable", "subcategory": "medium", "soilDepth": 30, "sun": "full", "water": "moderate", "height": 60, "width": 30, "sowMonths": [3, 4], "harvestMonths": [7, 8, 9, 10], "daysToMaturity": 80, "season": "warm", "nFixer": false, "perennial": false, "notes": "Hot chili peppers. Italian: Calabrese piccante. Dry or fresh", "spacing": 30, "sowMethod": "Transplant", "icon": "🌶️", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": 30}, "cauliflower": {"key": "cauliflower", "name": "Cauliflower", "latin": "Brassica oleracea var. botrytis", "category": "vegetable", "subcategory": "medium", "soilDepth": 40, "sun": "full", "water": "moderate", "height": 50, "width": 50, "sowMonths": [6, 7, 8], "harvestMonths": [10, 11, 12, 1], "daysToMaturity": 85, "season": "cool", "nFixer": false, "perennial": false, "notes": "Italian: Romanesco broccoli (unique lime-green heads). Cool season", "spacing": 50, "sowMethod": "Transplant", "icon": "🥦", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 40, "rowSpacing": 50, "seedDepth": 1, "seedsPerHole": null, "thinTo": 45}, "potatoes": {"key": "potatoes", "name": "Potatoes", "latin": "Solanum tuberosum", "category": "vegetable", "subcategory": "medium", "soilDepth": 50, "sun": "full", "water": "moderate", "height": 60, "width": 50, "sowMonths": [3, 4], "harvestMonths": [7, 8, 9], "daysToMaturity": 120, "season": "warm", "nFixer": false, "perennial": false, "notes": "Hill soil as they grow. Tuscan: Patata di Prato", "spacing": 30, "sowMethod": "Seed tubers", "icon": "🥔", "regions": ["tuscany", "netherlands"], "sowPattern": "row", "seedSpacing": 30, "rowSpacing": 60, "seedDepth": 10, "seedsPerHole": null, "thinTo": 30}, "lettuce": {"key": "lettuce", "name": "Lettuce", "latin": "Lactuca sativa", "category": "vegetable", "subcategory": "low", "soilDepth": 30, "sun": "partial", "water": "moderate", "height": 25, "width": 30, "sowMonths": [2, 3, 4, 8, 9], "harvestMonths": [4, 5, 6, 10, 11], "daysToMaturity": 50, "season": "cool", "nFixer": false, "perennial": false, "notes": "Cut-and-come-again varieties. Spring/autumn crop", "spacing": 25, "sowMethod": "Direct", "icon": "🥗", "regions": ["tuscany", "netherlands"], "sowPattern": "row", "seedSpacing": 3, "rowSpacing": 25, "seedDepth": 0.5, "seedsPerHole": null, "thinTo": 25}, "spinach": {"key": "spinach", "name": "Spinach", "latin": "Spinacia oleracea", "category": "vegetable", "subcategory": "low", "soilDepth": 30, "sun": "partial", "water": "moderate", "height": 20, "width": 30, "sowMonths": [2, 3, 4, 8, 9], "harvestMonths": [4, 5, 6, 10, 11], "daysToMaturity": 45, "season": "cool", "nFixer": false, "perennial": false, "notes": "Spring/autumn crop. Bolts in summer heat", "spacing": 20, "sowMethod": "Direct", "icon": "🌿", "regions": ["tuscany", "netherlands"], "sowPattern": "row", "seedSpacing": 3, "rowSpacing": 20, "seedDepth": 1.5, "seedsPerHole": null, "thinTo": 10}, "basil": {"key": "basil", "name": "Basil", "latin": "Ocimum basilicum", "category": "vegetable", "subcategory": "low", "soilDepth": 30, "sun": "full", "water": "moderate", "height": 40, "width": 30, "sowMonths": [4, 5], "harvestMonths": [6, 7, 8, 9], "daysToMaturity": 60, "season": "warm", "nFixer": false, "perennial": false, "notes": "Genovese variety. Companion to tomatoes. Key for pesto", "spacing": 30, "sowMethod": "Direct", "icon": "🌿", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 20, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": 25}, "cilantro": {"key": "cilantro", "name": "Cilantro", "latin": "Coriandrum sativum", "category": "vegetable", "subcategory": "low", "soilDepth": 30, "sun": "partial", "water": "moderate", "height": 30, "width": 30, "sowMonths": [3, 4, 5, 9], "harvestMonths": [5, 6, 7, 10, 11], "daysToMaturity": 45, "season": "cool", "nFixer": false, "perennial": false, "notes": "Self-seeds. Leaves and seeds (coriander spice)", "spacing": 20, "sowMethod": "Direct", "icon": "🌿", "regions": ["tuscany", "netherlands"], "sowPattern": "row", "seedSpacing": 5, "rowSpacing": 20, "seedDepth": 1, "seedsPerHole": null, "thinTo": 10}, "parsley": {"key": "parsley", "name": "Parsley", "latin": "Petroselinum crispum", "category": "vegetable", "subcategory": "low", "soilDepth": 30, "sun": "partial", "water": "moderate", "height": 30, "width": 30, "sowMonths": [2, 3, 4, 8, 9], "harvestMonths": [4, 5, 6, 10, 11, 12], "daysToMaturity": 75, "season": "cool", "nFixer": false, "perennial": false, "notes": "Flat-leaf Italian parsley. Biennial", "spacing": 20, "sowMethod": "Direct", "icon": "🌿", "regions": ["tuscany", "netherlands"], "sowPattern": "row", "seedSpacing": 5, "rowSpacing": 20, "seedDepth": 0.5, "seedsPerHole": null, "thinTo": 15}, "chives-veg": {"key": "chives-veg", "name": "Chives", "latin": "Allium schoenoprasum", "category": "vegetable", "subcategory": "low", "soilDepth": 30, "sun": "full", "water": "moderate", "height": 30, "width": 30, "sowMonths": [3, 4], "harvestMonths": [4, 5, 6, 7, 8, 9], "daysToMaturity": 60, "season": "cool", "nFixer": false, "perennial": true, "notes": "Perennial. Pest repellent. Garlic chives more drought-tolerant", "spacing": 20, "sowMethod": "Direct", "icon": "🧅", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 15, "rowSpacing": 20, "seedDepth": 1, "seedsPerHole": null, "thinTo": 15}, "strawberry-veg": {"key": "strawberry-veg", "name": "Strawberry", "latin": "Fragaria × ananassa", "category": "vegetable", "subcategory": "low", "soilDepth": 30, "sun": "full", "water": "moderate", "height": 20, "width": 30, "sowMonths": [3, 4], "harvestMonths": [5, 6, 7, 8, 9], "daysToMaturity": 90, "season": "cool", "nFixer": false, "perennial": true, "notes": "Alpine varieties. Good ground cover. Runners spread", "spacing": 30, "sowMethod": "Transplant", "icon": "🍓", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 0, "seedsPerHole": null, "thinTo": 25}, "carrots": {"key": "carrots", "name": "Carrots", "latin": "Daucus carota subsp. sativus", "category": "vegetable", "subcategory": "low", "soilDepth": 40, "sun": "full", "water": "moderate", "height": 20, "width": 15, "sowMonths": [2, 3, 4, 7, 8, 9], "harvestMonths": [5, 6, 7, 10, 11, 12], "daysToMaturity": 70, "season": "cool", "nFixer": false, "perennial": false, "notes": "Deep, loose soil needed. Italian: Nantese, Tonda di Parigi", "spacing": 8, "sowMethod": "Direct", "icon": "🥕", "regions": ["tuscany", "netherlands"], "sowPattern": "diamond", "seedSpacing": 3, "rowSpacing": 20, "seedDepth": 1, "seedsPerHole": null, "thinTo": 8}, "onions": {"key": "onions", "name": "Onions", "latin": "Allium cepa", "category": "vegetable", "subcategory": "low", "soilDepth": 30, "sun": "full", "water": "moderate", "height": 30, "width": 15, "sowMonths": [2, 3], "harvestMonths": [6, 7, 8], "daysToMaturity": 120, "season": "cool", "nFixer": false, "perennial": false, "notes": "Italian: Cipolla Rossa di Tropea, Cipolla di Certaldo", "spacing": 10, "sowMethod": "Direct/sets", "icon": "🧅", "regions": ["tuscany", "netherlands"], "sowPattern": "row", "seedSpacing": 10, "rowSpacing": 25, "seedDepth": 2, "seedsPerHole": null, "thinTo": 10}, "garlic-veg": {"key": "garlic-veg", "name": "Garlic", "latin": "Allium sativum", "category": "vegetable", "subcategory": "low", "soilDepth": 30, "sun": "full", "water": "low", "height": 40, "width": 15, "sowMonths": [10, 11], "harvestMonths": [6, 7], "daysToMaturity": 240, "season": "cool", "nFixer": false, "perennial": false, "notes": "Plant cloves in autumn. Tuscan: Aglio Rosso di Proceno", "spacing": 10, "sowMethod": "Cloves", "icon": "🧄", "regions": ["tuscany", "netherlands"], "sowPattern": "row", "seedSpacing": 10, "rowSpacing": 25, "seedDepth": 5, "seedsPerHole": null, "thinTo": 10}, "radicchio": {"key": "radicchio", "name": "Radicchio", "latin": "Cichorium intybus", "category": "vegetable", "subcategory": "low", "soilDepth": 30, "sun": "full", "water": "moderate", "height": 25, "width": 30, "sowMonths": [6, 7, 8], "harvestMonths": [10, 11, 12], "daysToMaturity": 90, "season": "cool", "nFixer": false, "perennial": false, "notes": "Italian varieties: Treviso, Chioggia, Castelfranco. Winter harvest", "spacing": 30, "sowMethod": "Direct", "icon": "🥬", "regions": ["tuscany", "netherlands"], "sowPattern": "row", "seedSpacing": 10, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": 25}, "beets": {"key": "beets", "name": "Beets", "latin": "Beta vulgaris", "category": "vegetable", "subcategory": "low", "soilDepth": 40, "sun": "full", "water": "moderate", "height": 25, "width": 20, "sowMonths": [3, 4, 5, 8, 9], "harvestMonths": [5, 6, 7, 10, 11, 12], "daysToMaturity": 60, "season": "cool", "nFixer": false, "perennial": false, "notes": "Roots + greens edible. Italian variety: Chioggia", "spacing": 30, "sowMethod": "Direct", "icon": "🫘", "regions": ["tuscany", "netherlands"], "sowPattern": "diamond", "seedSpacing": 5, "rowSpacing": 30, "seedDepth": 2, "seedsPerHole": null, "thinTo": 10}, "radish": {"key": "radish", "name": "Radish", "latin": "Raphanus sativus", "category": "vegetable", "subcategory": "low", "soilDepth": 20, "sun": "partial", "water": "moderate", "height": 15, "width": 15, "sowMonths": [3, 4, 5, 9, 10], "harvestMonths": [4, 5, 6, 10, 11, 12], "daysToMaturity": 30, "season": "cool", "nFixer": false, "perennial": false, "notes": "Fast crop (30 days). Intercrop between slower plants", "spacing": 3, "sowMethod": "Direct", "icon": "🫘", "regions": ["tuscany", "netherlands"], "sowPattern": "row", "seedSpacing": 2, "rowSpacing": 15, "seedDepth": 1, "seedsPerHole": null, "thinTo": 3}, "leek": {"key": "leek", "name": "Leek", "latin": "Allium porrum", "category": "vegetable", "subcategory": "low", "soilDepth": 40, "sun": "full", "water": "moderate", "height": 40, "width": 15, "sowMonths": [2, 3, 8, 9], "harvestMonths": [6, 7, 11, 12, 1], "daysToMaturity": 120, "season": "cool", "nFixer": false, "perennial": false, "notes": "Italian: Lungo d'Inverno, Gigante d'Italia", "spacing": 15, "sowMethod": "Transplant", "icon": "🧅", "regions": ["tuscany", "netherlands"], "sowPattern": "row", "seedSpacing": 10, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": 15}, "shallot": {"key": "shallot", "name": "Shallot", "latin": "Allium cepa var. aggregatum", "category": "vegetable", "subcategory": "low", "soilDepth": 30, "sun": "full", "water": "moderate", "height": 30, "width": 15, "sowMonths": [10, 11, 2, 3], "harvestMonths": [6, 7], "daysToMaturity": 120, "season": "cool", "nFixer": false, "perennial": false, "notes": "Plant cloves in autumn/spring", "spacing": 15, "sowMethod": "Sets", "icon": "🧅", "regions": ["tuscany", "netherlands"], "sowPattern": "row", "seedSpacing": 15, "rowSpacing": 30, "seedDepth": 3, "seedsPerHole": null, "thinTo": 15}, "turnip": {"key": "turnip", "name": "Turnip", "latin": "Brassica rapa", "category": "vegetable", "subcategory": "low", "soilDepth": 30, "sun": "full", "water": "moderate", "height": 25, "width": 20, "sowMonths": [3, 4, 8, 9], "harvestMonths": [5, 6, 10, 11, 12], "daysToMaturity": 50, "season": "cool", "nFixer": false, "perennial": false, "notes": "Roots + greens edible. Italian: Rape di Chioggia", "spacing": 20, "sowMethod": "Direct", "icon": "🫘", "regions": ["tuscany", "netherlands"], "sowPattern": "row", "seedSpacing": 5, "rowSpacing": 20, "seedDepth": 1, "seedsPerHole": null, "thinTo": 10}, "celery": {"key": "celery", "name": "Celery", "latin": "Apium graveolens", "category": "vegetable", "subcategory": "low", "soilDepth": 40, "sun": "partial", "water": "high", "height": 40, "width": 30, "sowMonths": [3, 4], "harvestMonths": [7, 8, 9, 10], "daysToMaturity": 110, "season": "cool", "nFixer": false, "perennial": false, "notes": "Needs consistent moisture. Italian: Sedano dorato d'Asti", "spacing": 30, "sowMethod": "Transplant", "icon": "🌿", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 10, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": 25}, "melon": {"key": "melon", "name": "Melon", "latin": "Cucumis melo", "category": "vegetable", "subcategory": "low", "soilDepth": 40, "sun": "full", "water": "moderate", "height": 20, "width": 60, "sowMonths": [4, 5], "harvestMonths": [7, 8, 9], "daysToMaturity": 85, "season": "warm", "nFixer": false, "perennial": false, "notes": "Italian: Cantalupo, Retato, Napoletano giallo", "spacing": 60, "sowMethod": "Direct", "icon": "🍈", "regions": ["tuscany", "netherlands"], "sowPattern": "hill", "seedSpacing": 40, "rowSpacing": 60, "seedDepth": 2, "seedsPerHole": 2, "thinTo": 50}, "squash": {"key": "squash", "name": "Squash (zucchini)", "latin": "Cucurbita pepo", "category": "vegetable", "subcategory": "low", "soilDepth": 40, "sun": "full", "water": "moderate", "height": 50, "width": 80, "sowMonths": [4, 5], "harvestMonths": [6, 7, 8, 9, 10], "daysToMaturity": 55, "season": "warm", "nFixer": false, "perennial": false, "notes": "Bush type. Italian: Zucchino Romanesco, Costata. Tromboncino for trellis", "spacing": 60, "sowMethod": "Direct", "icon": "🥒", "regions": ["tuscany", "netherlands"], "sowPattern": "hill", "seedSpacing": 40, "rowSpacing": 60, "seedDepth": 2.5, "seedsPerHole": 2, "thinTo": 50}, "kohlrabi": {"key": "kohlrabi", "name": "Kohlrabi", "latin": "Brassica oleracea var. gongylodes", "category": "vegetable", "subcategory": "low", "soilDepth": 30, "sun": "full", "water": "moderate", "height": 25, "width": 30, "sowMonths": [3, 4, 7, 8], "harvestMonths": [5, 6, 10, 11], "daysToMaturity": 55, "season": "cool", "nFixer": false, "perennial": false, "notes": "Bulbous stem, crisp texture. Harvest at 5-8cm", "spacing": 30, "sowMethod": "Direct", "icon": "🫘", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 20, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": 25}, "cime-rapa": {"key": "cime-rapa", "name": "Cime di rapa", "latin": "Brassica rapa subsp. rapa", "category": "vegetable", "subcategory": "low", "soilDepth": 30, "sun": "full", "water": "moderate", "height": 35, "width": 30, "sowMonths": [2, 3, 8, 9], "harvestMonths": [4, 5, 10, 11, 12], "daysToMaturity": 60, "season": "cool", "nFixer": false, "perennial": false, "notes": "Broccoli rabe. Pugliese staple. Cut stems + leaves", "spacing": 30, "sowMethod": "Direct", "icon": "🥬", "regions": ["tuscany", "netherlands"], "sowPattern": "row", "seedSpacing": 8, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": 15}, "asparagus": {"key": "asparagus", "name": "Asparagus", "latin": "Asparagus officinalis", "category": "vegetable", "subcategory": "low", "soilDepth": 50, "sun": "full", "water": "moderate", "height": 120, "width": 40, "sowMonths": [3, 4], "harvestMonths": [4, 5], "daysToMaturity": 730, "season": "cool", "nFixer": false, "perennial": true, "notes": "Perennial (10+ yrs). Italian: Violetto d'Albenga. Wait 2 yrs for harvest", "spacing": 40, "sowMethod": "Crowns", "icon": "🌿", "regions": ["tuscany", "netherlands"], "sowPattern": "row", "seedSpacing": 30, "rowSpacing": 40, "seedDepth": 15, "seedsPerHole": null, "thinTo": 30}, "white-clover": {"key": "white-clover", "name": "White clover", "latin": "Trifolium repens", "category": "cover-crop", "subcategory": "cover", "soilDepth": 20, "sun": "partial", "water": "low", "height": 15, "width": 30, "sowMonths": [3, 4, 9], "harvestMonths": [4, 5, 6, 9, 10], "daysToMaturity": 60, "season": "cool", "nFixer": true, "perennial": true, "notes": "Perennial N-fixing living mulch. Good in orchards & vineyards", "spacing": 15, "sowMethod": "Direct", "icon": "🌱", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "berseem-clover": {"key": "berseem-clover", "name": "Berseem clover", "latin": "Trifolium alexandrinum", "category": "cover-crop", "subcategory": "cover", "soilDepth": 20, "sun": "full", "water": "moderate", "height": 40, "width": 30, "sowMonths": [3, 4, 9, 10], "harvestMonths": [5, 6, 11, 12], "daysToMaturity": 70, "season": "cool", "nFixer": true, "perennial": false, "notes": "Traditional southern Italian green manure. Strong residual fertility", "spacing": 15, "sowMethod": "Direct", "icon": "🌱", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "sub-clover": {"key": "sub-clover", "name": "Subterranean clover", "latin": "Trifolium subterraneum", "category": "cover-crop", "subcategory": "cover", "soilDepth": 20, "sun": "partial", "water": "low", "height": 10, "width": 30, "sowMonths": [3, 4, 10, 11], "harvestMonths": [5, 6, 4, 5], "daysToMaturity": 80, "season": "cool", "nFixer": true, "perennial": false, "notes": "Self-seeding Mediterranean living mulch. Suits dry conditions. Ideal for orchards", "spacing": 15, "sowMethod": "Direct", "icon": "🌱", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "vetch": {"key": "vetch", "name": "Common vetch", "latin": "Vicia sativa", "category": "cover-crop", "subcategory": "cover", "soilDepth": 20, "sun": "full", "water": "low", "height": 60, "width": 30, "sowMonths": [3, 4, 10, 11], "harvestMonths": [5, 6, 4, 5], "daysToMaturity": 120, "season": "cool", "nFixer": true, "perennial": false, "notes": "Annual N-fixer. Classic green-manure, mixed with oats/rye. Sow autumn/spring", "spacing": 15, "sowMethod": "Direct", "icon": "🌱", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "field-bean-cover": {"key": "field-bean-cover", "name": "Field bean", "latin": "Vicia faba", "category": "cover-crop", "subcategory": "cover", "soilDepth": 40, "sun": "full", "water": "moderate", "height": 100, "width": 40, "sowMonths": [10, 11, 2, 3], "harvestMonths": [4, 5, 6], "daysToMaturity": 120, "season": "cool", "nFixer": true, "perennial": false, "notes": "Strong N-fixer. Chop-and-drop before flowering for green manure. Hardy to -10°C", "spacing": 30, "sowMethod": "Direct", "icon": "🫘", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "sulla": {"key": "sulla", "name": "Sulla", "latin": "Hedysarum coronarium", "category": "cover-crop", "subcategory": "cover", "soilDepth": 20, "sun": "full", "water": "low", "height": 60, "width": 40, "sowMonths": [3, 4, 9, 10], "harvestMonths": [5, 6, 4, 5], "daysToMaturity": 90, "season": "cool", "nFixer": true, "perennial": false, "notes": "Native Italian N-fixer. Proven in Sardinian agroforestry. Pollinator + manure", "spacing": 15, "sowMethod": "Direct", "icon": "🌱", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "trefoil": {"key": "trefoil", "name": "Birdsfoot trefoil", "latin": "Lotus corniculatus", "category": "cover-crop", "subcategory": "cover", "soilDepth": 20, "sun": "full", "water": "low", "height": 30, "width": 30, "sowMonths": [3, 4, 9, 10], "harvestMonths": [5, 6, 9, 10], "daysToMaturity": 70, "season": "cool", "nFixer": true, "perennial": true, "notes": "Outstanding for bees. Drought-tolerant N-fixing ground cover. Lotus corniculatus", "spacing": 15, "sowMethod": "Direct", "icon": "🌱", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "phacelia": {"key": "phacelia", "name": "Phacelia", "latin": "Phacelia tanacetifolia", "category": "cover-crop", "subcategory": "cover", "soilDepth": 20, "sun": "full", "water": "low", "height": 60, "width": 30, "sowMonths": [3, 4, 5, 8, 9], "harvestMonths": [5, 6, 7, 10, 11], "daysToMaturity": 60, "season": "cool", "nFixer": false, "perennial": false, "notes": "Fast-growing. Top pollinator plant. Chop-and-drop before seed set", "spacing": 15, "sowMethod": "Direct", "icon": "🌸", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "rosemary": {"key": "rosemary", "name": "Rosemary", "latin": "Salvia rosmarinus", "category": "herb", "subcategory": "culinary", "soilDepth": 40, "sun": "full", "water": "low", "height": 120, "width": 120, "sowMonths": [], "harvestMonths": [], "daysToMaturity": 60, "season": "", "nFixer": false, "perennial": true, "notes": "Perfectly adapted to silty-sand. Tuscan Blue, Prostratus. Firebreak plant. Excellent bee forage", "spacing": 30, "sowMethod": "Direct", "icon": "🌿", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "lavender": {"key": "lavender", "name": "Lavender", "latin": "Lavandula angustifolia", "category": "herb", "subcategory": "culinary", "soilDepth": 30, "sun": "full", "water": "low", "height": 80, "width": 80, "sowMonths": [], "harvestMonths": [], "daysToMaturity": 60, "season": "", "nFixer": false, "perennial": true, "notes": "Ideal for silty-sand. Hidcote, Grosso, Provence. Firebreak strip. Excellent for essential oil", "spacing": 30, "sowMethod": "Direct", "icon": "🌿", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "sage": {"key": "sage", "name": "Sage", "latin": "Salvia officinalis", "category": "herb", "subcategory": "culinary", "soilDepth": 30, "sun": "full", "water": "low", "height": 60, "width": 60, "sowMonths": [], "harvestMonths": [], "daysToMaturity": 60, "season": "", "nFixer": false, "perennial": true, "notes": "Drought-hardy Mediterranean perennial. Repels cabbage moth, carrot fly. Replace every 3-4 years", "spacing": 30, "sowMethod": "Direct", "icon": "🌿", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "thyme": {"key": "thyme", "name": "Thyme", "latin": "Thymus vulgaris", "category": "herb", "subcategory": "culinary", "soilDepth": 20, "sun": "full", "water": "low", "height": 25, "width": 40, "sowMonths": [], "harvestMonths": [], "daysToMaturity": 60, "season": "", "nFixer": false, "perennial": true, "notes": "Perfect ground cover. Creeping thyme for paths. Excellent firebreak. Drought-tolerant", "spacing": 30, "sowMethod": "Direct", "icon": "🌿", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "oregano": {"key": "oregano", "name": "Oregano", "latin": "Origanum vulgare", "category": "herb", "subcategory": "culinary", "soilDepth": 20, "sun": "full", "water": "low", "height": 40, "width": 50, "sowMonths": [], "harvestMonths": [], "daysToMaturity": 60, "season": "", "nFixer": false, "perennial": true, "notes": "Native to Mediterranean hillsides. Pollinator attractor. More flavour with less water", "spacing": 30, "sowMethod": "Direct", "icon": "🌿", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "marjoram": {"key": "marjoram", "name": "Marjoram", "latin": "Origanum majorana", "category": "herb", "subcategory": "culinary", "soilDepth": 20, "sun": "full", "water": "low", "height": 30, "width": 40, "sowMonths": [], "harvestMonths": [], "daysToMaturity": 60, "season": "", "nFixer": false, "perennial": true, "notes": "Less hardy than oregano. Sweet culinary herb. Plant in warmest spots", "spacing": 30, "sowMethod": "Direct", "icon": "🌿", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "nasturtium": {"key": "nasturtium", "name": "Nasturtium", "latin": "Tropaeolum majus", "category": "flower", "subcategory": "companion", "soilDepth": 20, "sun": "full", "water": "moderate", "height": 25, "width": 60, "sowMonths": [], "harvestMonths": [], "daysToMaturity": 60, "season": "", "nFixer": false, "perennial": false, "notes": "Trap crop for aphids. Edible leaves and flowers. Self-seeds. Prefers poor soil", "spacing": 30, "sowMethod": "Direct", "icon": "🌻", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "calendula": {"key": "calendula", "name": "Calendula", "latin": "Calendula officinalis", "category": "flower", "subcategory": "companion", "soilDepth": 20, "sun": "full", "water": "moderate", "height": 40, "width": 30, "sowMonths": [], "harvestMonths": [], "daysToMaturity": 60, "season": "", "nFixer": false, "perennial": false, "notes": "Self-seeds. Repels aphids, whitefly. Edible flowers. Medicinal (salves, creams)", "spacing": 30, "sowMethod": "Direct", "icon": "🌻", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "yarrow": {"key": "yarrow", "name": "Yarrow", "latin": "Achillea millefolium", "category": "flower", "subcategory": "companion", "soilDepth": 40, "sun": "full", "water": "low", "height": 60, "width": 40, "sowMonths": [], "harvestMonths": [], "daysToMaturity": 60, "season": "", "nFixer": false, "perennial": true, "notes": "Deep roots mine trace minerals. Attracts predatory wasps. Extremely drought-tolerant", "spacing": 30, "sowMethod": "Direct", "icon": "🌻", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "comfrey": {"key": "comfrey", "name": "Comfrey", "latin": "Symphytum officinale", "category": "herb", "subcategory": "medicinal", "soilDepth": 100, "sun": "full", "water": "moderate", "height": 80, "width": 60, "sowMonths": [], "harvestMonths": [], "daysToMaturity": 60, "season": "", "nFixer": false, "perennial": true, "notes": "Deep taproot (2m+) mines minerals. Chop-and-drop mulch. Bocking 14 preferred (non-spreading)", "spacing": 30, "sowMethod": "Direct", "icon": "🌿", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "borage": {"key": "borage", "name": "Borage", "latin": "Borago officinalis", "category": "flower", "subcategory": "companion", "soilDepth": 40, "sun": "full", "water": "moderate", "height": 60, "width": 40, "sowMonths": [], "harvestMonths": [], "daysToMaturity": 60, "season": "", "nFixer": false, "perennial": false, "notes": "Deep taproot mines minerals. Abundant flowers attract bees. Self-seeds. Edible flowers", "spacing": 30, "sowMethod": "Direct", "icon": "🌻", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "chicory": {"key": "chicory", "name": "Chicory", "latin": "Cichorium intybus", "category": "herb", "subcategory": "medicinal", "soilDepth": 60, "sun": "full", "water": "low", "height": 80, "width": 40, "sowMonths": [], "harvestMonths": [], "daysToMaturity": 60, "season": "", "nFixer": false, "perennial": true, "notes": "Deep taproot mines potassium, calcium. Native to Mediterranean. Edible leaves. Juglone-tolerant", "spacing": 30, "sowMethod": "Direct", "icon": "🥬", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "dandelion": {"key": "dandelion", "name": "Dandelion", "latin": "Taraxacum officinale", "category": "herb", "subcategory": "medicinal", "soilDepth": 60, "sun": "full", "water": "low", "height": 25, "width": 20, "sowMonths": [], "harvestMonths": [], "daysToMaturity": 60, "season": "", "nFixer": false, "perennial": true, "notes": "Deep taproot mines calcium, potassium, iron. Early bee food. Edible leaves. Compost activator", "spacing": 30, "sowMethod": "Direct", "icon": "🌻", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "chives": {"key": "chives", "name": "Chives (guild)", "latin": "Allium schoenoprasum", "category": "herb", "subcategory": "culinary", "soilDepth": 20, "sun": "full", "water": "moderate", "height": 30, "width": 25, "sowMonths": [], "harvestMonths": [], "daysToMaturity": 60, "season": "", "nFixer": false, "perennial": true, "notes": "Perennial. Repels aphids, carrot fly. Good for inner zone under trees. Garlic chives more drought-tolerant", "spacing": 30, "sowMethod": "Direct", "icon": "🌿", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "daffodil": {"key": "daffodil", "name": "Daffodil (Tazetta)", "latin": "Narcissus tazetta", "category": "flower", "subcategory": "companion", "soilDepth": 20, "sun": "full", "water": "low", "height": 30, "width": 15, "sowMonths": [], "harvestMonths": [], "daysToMaturity": 60, "season": "", "nFixer": false, "perennial": true, "notes": "Rodent repellent. Early spring flowers. Mediterranean-adapted needing dry summer dormancy", "spacing": 30, "sowMethod": "Direct", "icon": "🌻", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "crocus": {"key": "crocus", "name": "Crocus (Saffron)", "latin": "Crocus sativus", "category": "flower", "subcategory": "companion", "soilDepth": 15, "sun": "full", "water": "low", "height": 15, "width": 10, "sowMonths": [], "harvestMonths": [], "daysToMaturity": 60, "season": "", "nFixer": false, "perennial": true, "notes": "Saffron crocus — most valuable spice. Plant corms in inner zone. Needs dry summer dormancy", "spacing": 30, "sowMethod": "Direct", "icon": "🌻", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "garlic-flower": {"key": "garlic-flower", "name": "Three-cornered leek", "latin": "Allium triquetrum", "category": "flower", "subcategory": "companion", "soilDepth": 15, "sun": "partial", "water": "low", "height": 30, "width": 15, "sowMonths": [], "harvestMonths": [], "daysToMaturity": 60, "season": "", "nFixer": false, "perennial": true, "notes": "Mediterranean-native bulb. Naturalizes under trees. Mild garlic taste. Dies back in summer", "spacing": 30, "sowMethod": "Direct", "icon": "🌻", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "fava-beans": {"key": "fava-beans", "name": "Fava beans", "latin": "Vicia faba", "category": "cover-crop", "subcategory": "cover", "soilDepth": 40, "sun": "full", "water": "moderate", "height": 100, "width": 40, "sowMonths": [10, 11, 2, 3], "harvestMonths": [4, 5, 6], "daysToMaturity": 120, "season": "cool", "nFixer": true, "perennial": false, "notes": "Heavy N-fixer. Edible beans. Autumn-sown overwinters well at 300m. Tuscan varieties", "spacing": 30, "sowMethod": "Direct", "icon": "🌾", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "strawberry-wild": {"key": "strawberry-wild", "name": "Wild strawberry", "latin": "Fragaria vesca", "category": "flower", "subcategory": "ground-cover", "soilDepth": 20, "sun": "partial", "water": "moderate", "height": 15, "width": 30, "sowMonths": [], "harvestMonths": [], "daysToMaturity": 60, "season": "", "nFixer": false, "perennial": true, "notes": "Alpine strawberries. Woodland-edge plants. Partial shade with drip irrigation. Self-seeds", "spacing": 30, "sowMethod": "Direct", "icon": "🌻", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "iris": {"key": "iris", "name": "Iris", "latin": "Iris germanica", "category": "flower", "subcategory": "companion", "soilDepth": 20, "sun": "full", "water": "low", "height": 60, "width": 30, "sowMonths": [], "harvestMonths": [], "daysToMaturity": 60, "season": "", "nFixer": false, "perennial": true, "notes": "Rhizomes deter rodents. Florentine iris has fragrant roots (orris). Needs dry summer dormancy", "spacing": 30, "sowMethod": "Direct", "icon": "🌻", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "lavender-cotton": {"key": "lavender-cotton", "name": "Lavender cotton", "latin": "Santolina chamaecyparissus", "category": "herb", "subcategory": "medicinal", "soilDepth": 20, "sun": "full", "water": "low", "height": 40, "width": 50, "sowMonths": [], "harvestMonths": [], "daysToMaturity": 60, "season": "", "nFixer": false, "perennial": true, "notes": "Mediterranean shrub. Silvery foliage. Pest-repellent. Good for firebreak. Drought-tolerant", "spacing": 30, "sowMethod": "Direct", "icon": "🌿", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "alfalfa": {"key": "alfalfa", "name": "Alfalfa", "latin": "Medicago sativa", "category": "cover-crop", "subcategory": "cover", "soilDepth": 100, "sun": "full", "water": "low", "height": 60, "width": 40, "sowMonths": [], "harvestMonths": [], "daysToMaturity": 60, "season": "", "nFixer": true, "perennial": true, "notes": "Perennial (3-5 years). Deep taproot breaks up compacted soil. Excellent for orchard understory", "spacing": 30, "sowMethod": "Direct", "icon": "🌾", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "crimson-clover": {"key": "crimson-clover", "name": "Crimson clover", "latin": "Trifolium incarnatum", "category": "cover-crop", "subcategory": "cover", "soilDepth": 20, "sun": "full", "water": "low", "height": 40, "width": 30, "sowMonths": [], "harvestMonths": [], "daysToMaturity": 60, "season": "", "nFixer": true, "perennial": false, "notes": "Winter cover crop. Beautiful red flowers. Also called 'Italian clover'. Sow Sep-Oct", "spacing": 30, "sowMethod": "Direct", "icon": "🌾", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "white-lupin": {"key": "white-lupin", "name": "White lupin", "latin": "Lupinus albus", "category": "cover-crop", "subcategory": "cover", "soilDepth": 60, "sun": "full", "water": "low", "height": 100, "width": 40, "sowMonths": [], "harvestMonths": [], "daysToMaturity": 60, "season": "", "nFixer": true, "perennial": false, "notes": "Traditional Italian crop. Seeds require soaking to remove alkaloids. Excellent for sandy soils", "spacing": 30, "sowMethod": "Direct", "icon": "🌾", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "cardoon": {"key": "cardoon", "name": "Cardoon", "latin": "Cynara cardunculus", "category": "vegetable", "subcategory": "medium", "soilDepth": 30, "sun": "☀️ Full", "water": "💧 Low", "height": 120, "width": 0, "sowMonths": [], "harvestMonths": [], "daysToMaturity": 60, "season": "", "nFixer": false, "perennial": true, "notes": "Italian: Cardo. Grown for edible leaf stalks, similar to artichoke.", "spacing": 90, "sowMethod": "Direct", "icon": "🥥", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 50, "rowSpacing": 90, "seedDepth": 2, "seedsPerHole": null, "thinTo": 60}, "endive": {"key": "endive", "name": "Endive", "latin": "Cichorium endivia", "category": "vegetable", "subcategory": "low", "soilDepth": 30, "sun": "☀️ Full", "water": "💧💧 Mod", "height": 30, "width": 0, "sowMonths": [], "harvestMonths": [], "daysToMaturity": 60, "season": "", "nFixer": false, "perennial": false, "notes": "Italian: Indivia riccia (curly endive) and Scarola (broad-leaved escarole). Popular in Italian cuisine.", "spacing": 30, "sowMethod": "Direct", "icon": "🥥", "regions": ["tuscany", "netherlands"], "sowPattern": "row", "seedSpacing": 10, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": 25}, "catalogna-chicory": {"key": "catalogna-chicory", "name": "Catalogna chicory", "latin": "Cichorium intybus Catalogna group", "category": "vegetable", "subcategory": "medium", "soilDepth": 30, "sun": "☀️ Full", "water": "💧💧 Mod", "height": 60, "width": 0, "sowMonths": [], "harvestMonths": [], "daysToMaturity": 60, "season": "", "nFixer": false, "perennial": true, "notes": "Italian: Puntarelle. Catalogna chicory shoots, popular in Lazio. Often prepared as a salad with anchovy dressing.", "spacing": 30, "sowMethod": "Direct", "icon": "🥥", "regions": ["tuscany", "netherlands"], "sowPattern": "row", "seedSpacing": 10, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": 20}, "jerusalem-artichoke": {"key": "jerusalem-artichoke", "name": "Jerusalem artichoke", "latin": "Helianthus tuberosus", "category": "vegetable", "subcategory": "tall", "soilDepth": 30, "sun": "☀️ Full", "water": "💧 Low", "height": 200, "width": 0, "sowMonths": [], "harvestMonths": [], "daysToMaturity": 60, "season": "", "nFixer": false, "perennial": true, "notes": "Italian: Topinambur. Grown for edible tubers. Very hardy, drought-tolerant, spreads easily. Good for marginal areas.", "spacing": 50, "sowMethod": "Direct", "icon": "🍠", "regions": ["tuscany", "netherlands"], "sowPattern": "row", "seedSpacing": 30, "rowSpacing": 50, "seedDepth": 8, "seedsPerHole": null, "thinTo": 30}, "black-salsify": {"key": "black-salsify", "name": "Black salsify", "latin": "Scorzonera hispanica", "category": "vegetable", "subcategory": "low", "soilDepth": 30, "sun": "☀️ Full", "water": "💧💧 Mod", "height": 30, "width": 0, "sowMonths": [], "harvestMonths": [], "daysToMaturity": 60, "season": "", "nFixer": false, "perennial": false, "notes": "Italian: Scorzonera (scorzobianca). Traditional root vegetable, less common but tasty. Black skin, white flesh.", "spacing": 10, "sowMethod": "Direct", "icon": "🥥", "regions": ["tuscany", "netherlands"], "sowPattern": "row", "seedSpacing": 5, "rowSpacing": 30, "seedDepth": 2, "seedsPerHole": null, "thinTo": 8}, "parsnip": {"key": "parsnip", "name": "Parsnip", "latin": "Pastinaca sativa", "category": "vegetable", "subcategory": "low", "soilDepth": 30, "sun": "☀️ Full", "water": "💧💧 Mod", "height": 40, "width": 0, "sowMonths": [], "harvestMonths": [], "daysToMaturity": 60, "season": "", "nFixer": false, "perennial": false, "notes": "Italian: Pastinaca. Sweet root vegetable, improves with frost. Traditional in Tuscan winter cuisine.", "spacing": 25, "sowMethod": "Direct", "icon": "🥥", "regions": ["tuscany", "netherlands"], "sowPattern": "row", "seedSpacing": 5, "rowSpacing": 25, "seedDepth": 1.5, "seedsPerHole": null, "thinTo": 10}, "chamomile": {"key": "chamomile", "name": "Chamomile", "latin": "Matricaria chamomilla", "category": "herb", "subcategory": "", "soilDepth": 30, "sun": "full", "water": "low", "height": 30, "width": 30, "sowMonths": [], "harvestMonths": [], "daysToMaturity": 60, "season": "", "nFixer": false, "perennial": true, "notes": "", "spacing": 30, "sowMethod": "Direct", "icon": "🌼", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "dill": {"key": "dill", "name": "Dill", "latin": "Anethum graveolens", "category": "herb", "subcategory": "", "soilDepth": 30, "sun": "full", "water": "moderate", "height": 90, "width": 30, "sowMonths": [], "harvestMonths": [], "daysToMaturity": 60, "season": "", "nFixer": false, "perennial": false, "notes": "", "spacing": 30, "sowMethod": "Direct", "icon": "🌿", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "echinacea": {"key": "echinacea", "name": "Echinacea", "latin": "Echinacea purpurea", "category": "herb", "subcategory": "", "soilDepth": 30, "sun": "full", "water": "low", "height": 90, "width": 45, "sowMonths": [], "harvestMonths": [], "daysToMaturity": 60, "season": "", "nFixer": false, "perennial": true, "notes": "", "spacing": 30, "sowMethod": "Direct", "icon": "🌸", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "hyssop": {"key": "hyssop", "name": "Hyssop", "latin": "Hyssopus officinalis", "category": "herb", "subcategory": "", "soilDepth": 30, "sun": "full", "water": "low", "height": 60, "width": 45, "sowMonths": [], "harvestMonths": [], "daysToMaturity": 60, "season": "", "nFixer": false, "perennial": true, "notes": "", "spacing": 30, "sowMethod": "Direct", "icon": "🌿", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "lovage": {"key": "lovage", "name": "Lovage", "latin": "Levisticum officinale", "category": "herb", "subcategory": "", "soilDepth": 30, "sun": "full", "water": "high", "height": 180, "width": 60, "sowMonths": [], "harvestMonths": [], "daysToMaturity": 60, "season": "", "nFixer": false, "perennial": true, "notes": "", "spacing": 30, "sowMethod": "Direct", "icon": "🌿", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "mint": {"key": "mint", "name": "Mint", "latin": "Mentha spicata", "category": "herb", "subcategory": "", "soilDepth": 30, "sun": "part", "water": "high", "height": 60, "width": 90, "sowMonths": [], "harvestMonths": [], "daysToMaturity": 60, "season": "", "nFixer": false, "perennial": true, "notes": "", "spacing": 30, "sowMethod": "Direct", "icon": "🌿", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "stevia": {"key": "stevia", "name": "Stevia", "latin": "Stevia rebaudiana", "category": "herb", "subcategory": "", "soilDepth": 30, "sun": "full", "water": "moderate", "height": 60, "width": 45, "sowMonths": [], "harvestMonths": [], "daysToMaturity": 60, "season": "", "nFixer": false, "perennial": true, "notes": "", "spacing": 30, "sowMethod": "Direct", "icon": "🌿", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "valerian": {"key": "valerian", "name": "Valerian", "latin": "Valeriana officinalis", "category": "herb", "subcategory": "", "soilDepth": 30, "sun": "part", "water": "high", "height": 120, "width": 60, "sowMonths": [], "harvestMonths": [], "daysToMaturity": 60, "season": "", "nFixer": false, "perennial": true, "notes": "", "spacing": 30, "sowMethod": "Direct", "icon": "🌸", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "zucchini": {"key": "zucchini", "name": "Zucchini", "latin": "Cucurbita pepo", "category": "vegetable", "subcategory": "medium", "soilDepth": 30, "sun": "full", "water": "high", "height": 40, "width": 90, "sowMonths": [4, 5], "harvestMonths": [7, 8, 9], "daysToMaturity": 50, "season": "warm", "nFixer": false, "perennial": false, "notes": "", "spacing": 50, "sowMethod": "Direct", "icon": "🥒", "regions": ["tuscany", "netherlands"], "sowPattern": "hill", "seedSpacing": 40, "rowSpacing": 50, "seedDepth": 2.5, "seedsPerHole": 2, "thinTo": 50}, "cucumber": {"key": "cucumber", "name": "Cucumber", "latin": "Cucumis sativus", "category": "vegetable", "subcategory": "medium", "soilDepth": 30, "sun": "full", "water": "high", "height": 20, "width": 60, "sowMonths": [4, 5], "harvestMonths": [7, 8, 9], "daysToMaturity": 55, "season": "warm", "nFixer": false, "perennial": false, "notes": "", "spacing": 60, "sowMethod": "Direct", "icon": "🥒", "regions": ["tuscany", "netherlands"], "sowPattern": "hill", "seedSpacing": 30, "rowSpacing": 60, "seedDepth": 2, "seedsPerHole": 2, "thinTo": 40}, "watermelon": {"key": "watermelon", "name": "Watermelon", "latin": "Citrullus lanatus", "category": "vegetable", "subcategory": "medium", "soilDepth": 30, "sun": "full", "water": "moderate", "height": 15, "width": 120, "sowMonths": [4, 5], "harvestMonths": [8, 9], "daysToMaturity": 80, "season": "warm", "nFixer": false, "perennial": false, "notes": "", "spacing": 120, "sowMethod": "Direct", "icon": "🍉", "regions": ["tuscany", "netherlands"], "sowPattern": "hill", "seedSpacing": 60, "rowSpacing": 120, "seedDepth": 2.5, "seedsPerHole": 3, "thinTo": 100}, "pumpkin": {"key": "pumpkin", "name": "Pumpkin", "latin": "Cucurbita maxima", "category": "vegetable", "subcategory": "medium", "soilDepth": 30, "sun": "full", "water": "high", "height": 20, "width": 150, "sowMonths": [4, 5], "harvestMonths": [9, 10], "daysToMaturity": 100, "season": "warm", "nFixer": false, "perennial": false, "notes": "", "spacing": 120, "sowMethod": "Direct", "icon": "🎃", "regions": ["tuscany", "netherlands"], "sowPattern": "hill", "seedSpacing": 60, "rowSpacing": 120, "seedDepth": 2.5, "seedsPerHole": 3, "thinTo": 100}, "daikon": {"key": "daikon", "name": "Daikon", "latin": "Raphanus sativus var. longipinnatus", "category": "vegetable", "subcategory": "medium", "soilDepth": 30, "sun": "full", "water": "moderate", "height": 30, "width": 20, "sowMonths": [3, 4, 8, 9], "harvestMonths": [5, 6, 10, 11], "daysToMaturity": 60, "season": "cool", "nFixer": false, "perennial": false, "notes": "", "spacing": 30, "sowMethod": "Direct", "icon": "🥕", "regions": ["tuscany", "netherlands"], "sowPattern": "row", "seedSpacing": 5, "rowSpacing": 30, "seedDepth": 1.5, "seedsPerHole": null, "thinTo": 15}, "sweet-potato": {"key": "sweet-potato", "name": "Sweet potato", "latin": "Ipomoea batatas", "category": "vegetable", "subcategory": "medium", "soilDepth": 30, "sun": "full", "water": "moderate", "height": 20, "width": 100, "sowMonths": [4, 5], "harvestMonths": [9, 10], "daysToMaturity": 110, "season": "warm", "nFixer": false, "perennial": false, "notes": "", "spacing": 75, "sowMethod": "Direct", "icon": "🍠", "regions": ["tuscany", "netherlands"], "sowPattern": "row", "seedSpacing": 30, "rowSpacing": 75, "seedDepth": 0, "seedsPerHole": null, "thinTo": 30}, "rhubarb": {"key": "rhubarb", "name": "Rhubarb", "latin": "Rheum rhabarbarum", "category": "vegetable", "subcategory": "low", "soilDepth": 30, "sun": "full", "water": "high", "height": 60, "width": 90, "sowMonths": [], "harvestMonths": [], "daysToMaturity": 60, "season": "", "nFixer": false, "perennial": true, "notes": "", "spacing": 90, "sowMethod": "Direct", "icon": "🌿", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 60, "rowSpacing": 90, "seedDepth": 3, "seedsPerHole": null, "thinTo": 80}, "sorrel": {"key": "sorrel", "name": "Sorrel", "latin": "Rumex acetosa", "category": "vegetable", "subcategory": "low", "soilDepth": 30, "sun": "part", "water": "high", "height": 40, "width": 30, "sowMonths": [], "harvestMonths": [], "daysToMaturity": 60, "season": "", "nFixer": false, "perennial": true, "notes": "", "spacing": 30, "sowMethod": "Direct", "icon": "🌿", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 20, "rowSpacing": 30, "seedDepth": 0.5, "seedsPerHole": null, "thinTo": 25}, "buckwheat": {"key": "buckwheat", "name": "Buckwheat", "latin": "Fagopyrum esculentum", "category": "cover-crop", "subcategory": "", "soilDepth": 30, "sun": "full", "water": "low", "height": 60, "width": 30, "sowMonths": [4, 5, 6, 7, 8], "harvestMonths": [6, 7, 8, 9, 10], "daysToMaturity": 45, "season": "warm", "nFixer": false, "perennial": false, "notes": "", "spacing": 30, "sowMethod": "Direct", "icon": "🌾", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "mustard": {"key": "mustard", "name": "Mustard", "latin": "Sinapis alba", "category": "cover-crop", "subcategory": "", "soilDepth": 30, "sun": "full", "water": "moderate", "height": 60, "width": 30, "sowMonths": [3, 4, 8, 9], "harvestMonths": [5, 6, 10, 11], "daysToMaturity": 60, "season": "cool", "nFixer": false, "perennial": false, "notes": "", "spacing": 30, "sowMethod": "Direct", "icon": "🌼", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "rye": {"key": "rye", "name": "Rye", "latin": "Secale cereale", "category": "cover-crop", "subcategory": "", "soilDepth": 30, "sun": "full", "water": "low", "height": 120, "width": 15, "sowMonths": [9, 10], "harvestMonths": [6, 7], "daysToMaturity": 270, "season": "cool", "nFixer": false, "perennial": false, "notes": "", "spacing": 30, "sowMethod": "Direct", "icon": "🌾", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "oats": {"key": "oats", "name": "Oats", "latin": "Avena sativa", "category": "cover-crop", "subcategory": "", "soilDepth": 30, "sun": "full", "water": "moderate", "height": 100, "width": 15, "sowMonths": [3, 4, 9], "harvestMonths": [7, 8], "daysToMaturity": 120, "season": "cool", "nFixer": false, "perennial": false, "notes": "", "spacing": 30, "sowMethod": "Direct", "icon": "🌾", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "barley": {"key": "barley", "name": "Barley", "latin": "Hordeum vulgare", "category": "cover-crop", "subcategory": "", "soilDepth": 30, "sun": "full", "water": "low", "height": 80, "width": 15, "sowMonths": [3, 4, 9, 10], "harvestMonths": [7, 8], "daysToMaturity": 120, "season": "cool", "nFixer": false, "perennial": false, "notes": "", "spacing": 30, "sowMethod": "Direct", "icon": "🌾", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "wheat": {"key": "wheat", "name": "Wheat", "latin": "Triticum aestivum", "category": "cover-crop", "subcategory": "", "soilDepth": 30, "sun": "full", "water": "moderate", "height": 100, "width": 15, "sowMonths": [10, 11], "harvestMonths": [7, 8], "daysToMaturity": 270, "season": "cool", "nFixer": false, "perennial": false, "notes": "", "spacing": 30, "sowMethod": "Direct", "icon": "🌾", "regions": ["tuscany", "netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "egyptian-onion": {"key": "egyptian-onion", "name": "Egyptian Onion", "latin": "Allium × proliferum", "category": "vegetable", "subcategory": "", "soilDepth": "", "sun": "", "water": "", "height": "", "width": "", "sowMonths": [], "harvestMonths": [], "daysToMaturity": "", "season": "", "nFixer": false, "perennial": false, "notes": "Perennial onion that forms bulbils at the top — self-propagating. Can be harvested year-round. Excellent for the herbaceous layer.", "spacing": 25, "sowMethod": "", "icon": "🥕", "regions": ["netherlands"], "sowPattern": "row", "seedSpacing": 10, "rowSpacing": 25, "seedDepth": 2, "seedsPerHole": null, "thinTo": 20}, "ramsons": {"key": "ramsons", "name": "Ramsons", "latin": "Allium ursinum", "category": "herb", "subcategory": "", "soilDepth": "", "sun": "", "water": "", "height": "", "width": "", "sowMonths": [], "harvestMonths": [], "daysToMaturity": "", "season": "", "nFixer": false, "perennial": false, "notes": "Wild garlic — excellent woodland garlic for understory. Early spring green, dies back in summer. Great groundcover for damp, shady spots.", "spacing": "", "sowMethod": "", "icon": "🌱", "regions": ["netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "sea-beet": {"key": "sea-beet", "name": "Sea Beet", "latin": "Beta vulgaris subsp. maritima", "category": "vegetable", "subcategory": "", "soilDepth": "", "sun": "", "water": "", "height": "", "width": "", "sowMonths": [], "harvestMonths": [], "daysToMaturity": "", "season": "", "nFixer": false, "perennial": false, "notes": "Wild ancestor of beetroot and chard. Edible leaves year-round, salt-tolerant. Excellent for coastal food forests. Performs in poor soil.", "spacing": 30, "sowMethod": "", "icon": "🥕", "regions": ["netherlands"], "sowPattern": "row", "seedSpacing": 10, "rowSpacing": 30, "seedDepth": 2, "seedsPerHole": null, "thinTo": 20}, "turkish-rocket": {"key": "turkish-rocket", "name": "Turkish Rocket", "latin": "Bunias orientalis", "category": "vegetable", "subcategory": "", "soilDepth": "", "sun": "", "water": "", "height": "", "width": "", "sowMonths": [], "harvestMonths": [], "daysToMaturity": "", "season": "", "nFixer": false, "perennial": false, "notes": "Perennial mustard-like green — very productive, deep nitrogen-cycling taproot. Leaves taste like mild rocket. One of the best perennial vegetables.", "spacing": 30, "sowMethod": "", "icon": "🥕", "regions": ["netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": 25}, "quamash": {"key": "quamash", "name": "Quamash", "latin": "Camassia quamash", "category": "vegetable", "subcategory": "", "soilDepth": "", "sun": "", "water": "", "height": "", "width": "", "sowMonths": [], "harvestMonths": [], "daysToMaturity": "", "season": "", "nFixer": false, "perennial": false, "notes": "Edible bulbs (like sweet potato, roasted). Striking blue flower spikes. Thrives in moist soil. Important traditional food of Pacific Northwest First Nations.", "spacing": 20, "sowMethod": "", "icon": "🥕", "regions": ["netherlands"], "sowPattern": "row", "seedSpacing": 10, "rowSpacing": 20, "seedDepth": 8, "seedsPerHole": null, "thinTo": 10}, "red-valerian": {"key": "red-valerian", "name": "Red Valerian", "latin": "Centranthus ruber", "category": "flower", "subcategory": "", "soilDepth": "", "sun": "", "water": "", "height": "", "width": "", "sowMonths": [], "harvestMonths": [], "daysToMaturity": "", "season": "", "nFixer": false, "perennial": false, "notes": "Edible flowers and leaves, drought-tolerant. Excellent for pollinators — butterflies and bees love it. Self-seeds readily.", "spacing": "", "sowMethod": "", "icon": "🌸", "regions": ["netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "daylily": {"key": "daylily", "name": "Daylily", "latin": "Hemerocallis fulva", "category": "flower", "subcategory": "", "soilDepth": "", "sun": "", "water": "", "height": "", "width": "", "sowMonths": [], "harvestMonths": [], "daysToMaturity": "", "season": "", "nFixer": false, "perennial": false, "notes": "All parts edible (flowers, buds, young shoots, tubers). Very hardy, excellent groundcover. IMPORTANT: Some species have diuretic effects — eat in moderation.", "spacing": "", "sowMethod": "", "icon": "🌸", "regions": ["netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "musk-mallow": {"key": "musk-mallow", "name": "Musk Mallow", "latin": "Malva moschata", "category": "flower", "subcategory": "", "soilDepth": "", "sun": "", "water": "", "height": "", "width": "", "sowMonths": [], "harvestMonths": [], "daysToMaturity": "", "season": "", "nFixer": false, "perennial": false, "notes": "Edible leaves and flowers, medicinal (soothing, demulcent). Self-seeding groundcover. Attractive pink flowers.", "spacing": "", "sowMethod": "", "icon": "🌸", "regions": ["netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "mayapple": {"key": "mayapple", "name": "Mayapple", "latin": "Podophyllum peltatum", "category": "herb", "subcategory": "", "soilDepth": "", "sun": "", "water": "", "height": "", "width": "", "sowMonths": [], "harvestMonths": [], "daysToMaturity": "", "season": "", "nFixer": false, "perennial": false, "notes": "Edible ripe fruit (the only non-toxic part — all other parts, including unripe fruit, are toxic). Excellent shade-loving groundcover. Ripe fruit tastes like lemon-mango.", "spacing": "", "sowMethod": "", "icon": "🌱", "regions": ["netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "solomons-seal": {"key": "solomons-seal", "name": "Solomon's Seal", "latin": "Polygonatum odoratum", "category": "herb", "subcategory": "", "soilDepth": "", "sun": "", "water": "", "height": "", "width": "", "sowMonths": [], "harvestMonths": [], "daysToMaturity": "", "season": "", "nFixer": false, "perennial": false, "notes": "Edible young shoots (like asparagus). Medicinal root (traditionally used for joints). Elegant, arching shade-tolerant perennial.", "spacing": "", "sowMethod": "", "icon": "🌱", "regions": ["netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "lungwort": {"key": "lungwort", "name": "Lungwort", "latin": "Pulmonaria officinalis", "category": "herb", "subcategory": "", "soilDepth": "", "sun": "", "water": "", "height": "", "width": "", "sowMonths": [], "harvestMonths": [], "daysToMaturity": "", "season": "", "nFixer": false, "perennial": false, "notes": "Edible leaves (mild, mucilaginous), early spring flowers for bees (pink-to-blue). Medicinal — traditionally used for lung health. Excellent groundcover.", "spacing": "", "sowMethod": "", "icon": "🌱", "regions": ["netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "sweet-violet": {"key": "sweet-violet", "name": "Sweet Violet", "latin": "Viola odorata", "category": "flower", "subcategory": "", "soilDepth": "", "sun": "", "water": "", "height": "", "width": "", "sowMonths": [], "harvestMonths": [], "daysToMaturity": "", "season": "", "nFixer": false, "perennial": false, "notes": "Edible flowers and leaves (perfumed flowers for candying and salads). Early spring bloomer — crucial for early bees. Excellent groundcover for shade.", "spacing": "", "sowMethod": "", "icon": "🌸", "regions": ["netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "ground-elder": {"key": "ground-elder", "name": "Ground Elder", "latin": "Aegopodium podagraria", "category": "herb", "subcategory": "", "soilDepth": "", "sun": "", "water": "", "height": "", "width": "", "sowMonths": [], "harvestMonths": [], "daysToMaturity": "", "season": "", "nFixer": false, "perennial": false, "notes": "VERY invasive — but an excellent mineral accumulator and weed-suppressing groundcover in areas where its spread can be contained. Edible leaves (like spinach). Use with extreme caution.", "spacing": "", "sowMethod": "", "icon": "🌱", "regions": ["netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "anise-hyssop": {"key": "anise-hyssop", "name": "Anise Hyssop", "latin": "Agastache foeniculum", "category": "herb", "subcategory": "", "soilDepth": "", "sun": "", "water": "", "height": "", "width": "", "sowMonths": [], "harvestMonths": [], "daysToMaturity": "", "season": "", "nFixer": false, "perennial": false, "notes": "Edible flowers and leaves (anise/licorice flavour), excellent tea herb. Medicinal (digestive). Outstanding pollinator plant — bees and butterflies love it.", "spacing": "", "sowMethod": "", "icon": "🌱", "regions": ["netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "angelica": {"key": "angelica", "name": "Angelica", "latin": "Angelica archangelica", "category": "herb", "subcategory": "", "soilDepth": "", "sun": "", "water": "", "height": "", "width": "", "sowMonths": [], "harvestMonths": [], "daysToMaturity": "", "season": "", "nFixer": false, "perennial": false, "notes": "Stems candied (traditional cake decoration), medicinal (digestive, colds). Biennial/short-lived perennial. Impressive architectural structure. Needs moist soil.", "spacing": "", "sowMethod": "", "icon": "🌱", "regions": ["netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "udo": {"key": "udo", "name": "Udo", "latin": "Aralia cordata", "category": "vegetable", "subcategory": "", "soilDepth": "", "sun": "", "water": "", "height": "", "width": "", "sowMonths": [], "harvestMonths": [], "daysToMaturity": "", "season": "", "nFixer": false, "perennial": false, "notes": "Edible spring shoots (like asparagus — a Japanese delicacy). Large architectural leaves. Partial shade tolerant.", "spacing": 60, "sowMethod": "", "icon": "🥕", "regions": ["netherlands"], "sowPattern": "square", "seedSpacing": 50, "rowSpacing": 60, "seedDepth": 2, "seedsPerHole": null, "thinTo": 50}, "golden-saxifrage": {"key": "golden-saxifrage", "name": "Golden Saxifrage", "latin": "Chrysosplenium alternifolium", "category": "herb", "subcategory": "", "soilDepth": "", "sun": "", "water": "", "height": "", "width": "", "sowMonths": [], "harvestMonths": [], "daysToMaturity": "", "season": "", "nFixer": false, "perennial": false, "notes": "Low-growing groundcover for moist, shady spots. Edible leaves (mild flavour). Excellent for damp, difficult areas.", "spacing": "", "sowMethod": "", "icon": "🌱", "regions": ["netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "pignut": {"key": "pignut", "name": "Pignut", "latin": "Conopodium majus", "category": "vegetable", "subcategory": "", "soilDepth": "", "sun": "", "water": "", "height": "", "width": "", "sowMonths": [], "harvestMonths": [], "daysToMaturity": "", "season": "", "nFixer": false, "perennial": false, "notes": "Small edible tuber (tastes like hazelnut-flavored potato). European woodland plant. Good for the root layer.", "spacing": 30, "sowMethod": "", "icon": "🥕", "regions": ["netherlands"], "sowPattern": "row", "seedSpacing": 10, "rowSpacing": 30, "seedDepth": 2, "seedsPerHole": null, "thinTo": 20}, "chinese-mallow": {"key": "chinese-mallow", "name": "Chinese Mallow", "latin": "Malva verticillata", "category": "vegetable", "subcategory": "", "soilDepth": "", "sun": "", "water": "", "height": "", "width": "", "sowMonths": [], "harvestMonths": [], "daysToMaturity": "", "season": "", "nFixer": false, "perennial": false, "notes": "Edible leaves (like lettuce, mild flavour). High mucilage content. Self-seeding annual/biennial. Used in Chinese cuisine.", "spacing": 30, "sowMethod": "", "icon": "🥕", "regions": ["netherlands"], "sowPattern": "row", "seedSpacing": 10, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": 20}, "lemon-balm": {"key": "lemon-balm", "name": "Lemon Balm", "latin": "Melissa officinalis", "category": "herb", "subcategory": "", "soilDepth": "", "sun": "", "water": "", "height": "", "width": "", "sowMonths": [], "harvestMonths": [], "daysToMaturity": "", "season": "", "nFixer": false, "perennial": false, "notes": "Edible/medicinal leaves (lemon-scented, calming tea). Excellent pollinator plant. Vigorous grower — can spread. Cut back after flowering.", "spacing": "", "sowMethod": "", "icon": "🌱", "regions": ["netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "sweet-cicely": {"key": "sweet-cicely", "name": "Sweet Cicely", "latin": "Myrrhis odorata", "category": "herb", "subcategory": "", "soilDepth": "", "sun": "", "water": "", "height": "", "width": "", "sowMonths": [], "harvestMonths": [], "daysToMaturity": "", "season": "", "nFixer": false, "perennial": false, "notes": "Anise-flavoured leaves and green seeds. Shade-tolerant, excellent pollinator plant. One of the best shade-tolerant culinary herbs.", "spacing": "", "sowMethod": "", "icon": "🌱", "regions": ["netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "creeping-bramble": {"key": "creeping-bramble", "name": "Creeping Bramble", "latin": "Rubus pentalobus", "category": "ground-cover", "subcategory": "", "soilDepth": "", "sun": "", "water": "", "height": "", "width": "", "sowMonths": [], "harvestMonths": [], "daysToMaturity": "", "season": "", "nFixer": false, "perennial": false, "notes": "Excellent dense, non-invasive groundcover with edible fruit. Creeping habit — hugs the ground. Perfect for suppressing weeds around trees.", "spacing": "", "sowMethod": "", "icon": "🌿", "regions": ["netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "hog-peanut": {"key": "hog-peanut", "name": "Hog Peanut", "latin": "Amphicarpaea bracteata", "category": "vegetable", "subcategory": "", "soilDepth": "", "sun": "", "water": "", "height": "", "width": "", "sowMonths": [], "harvestMonths": [], "daysToMaturity": "", "season": "", "nFixer": true, "perennial": false, "notes": "Unusual N-fixing plant that produces both above-ground seeds AND underground peanuts. Edible seeds. Great for shade-tolerant groundcover.", "spacing": 30, "sowMethod": "", "icon": "🥕", "regions": ["netherlands"], "sowPattern": "row", "seedSpacing": 15, "rowSpacing": 30, "seedDepth": 2, "seedsPerHole": null, "thinTo": 20}, "groundnut": {"key": "groundnut", "name": "Groundnut", "latin": "Apios americana", "category": "vegetable", "subcategory": "", "soilDepth": "", "sun": "", "water": "", "height": "", "width": "", "sowMonths": [], "harvestMonths": [], "daysToMaturity": "", "season": "", "nFixer": true, "perennial": false, "notes": "N-fixing vine with edible tubers (high protein, nutty flavour). Traditional Native American staple. Needs support (climber). Beautiful brownish-purple flowers.", "spacing": 30, "sowMethod": "", "icon": "🥕", "regions": ["netherlands"], "sowPattern": "row", "seedSpacing": 15, "rowSpacing": 30, "seedDepth": 2, "seedsPerHole": null, "thinTo": 20}, "burdock": {"key": "burdock", "name": "Burdock", "latin": "Arctium lappa", "category": "vegetable", "subcategory": "", "soilDepth": "", "sun": "", "water": "", "height": "", "width": "", "sowMonths": [], "harvestMonths": [], "daysToMaturity": "", "season": "", "nFixer": false, "perennial": false, "notes": "Deep-taprooted mineral accumulator — excellent dynamic accumulator. Edible root (gobo in Japanese cuisine). Leaves are also edible. Deeply aerates soil.", "spacing": 20, "sowMethod": "", "icon": "🥕", "regions": ["netherlands"], "sowPattern": "row", "seedSpacing": 10, "rowSpacing": 40, "seedDepth": 2, "seedsPerHole": null, "thinTo": 20}, "horseradish": {"key": "horseradish", "name": "Horseradish", "latin": "Armoracia rusticana", "category": "vegetable", "subcategory": "", "soilDepth": "", "sun": "", "water": "", "height": "", "width": "", "sowMonths": [], "harvestMonths": [], "daysToMaturity": "", "season": "", "nFixer": false, "perennial": false, "notes": "Pungent root spice. Deep taproot — excellent mineral accumulator. Pest repellant properties. VERY invasive — contain in a buried pot or specific area.", "spacing": 40, "sowMethod": "", "icon": "🥕", "regions": ["netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 40, "seedDepth": 5, "seedsPerHole": null, "thinTo": 30}, "campanula-rapunculus": {"key": "campanula-rapunculus", "name": "Rampion", "latin": "Campanula rapunculus", "category": "vegetable", "subcategory": "", "soilDepth": "", "sun": "", "water": "", "height": "", "width": "", "sowMonths": [], "harvestMonths": [], "daysToMaturity": "", "season": "", "nFixer": false, "perennial": false, "notes": "Edible root and leaves (traditional European vegetable). Biennial. The 'Rapunzel' fairy tale is named after this plant. Nice bell-shaped flowers.", "spacing": 10, "sowMethod": "", "icon": "🥕", "regions": ["netherlands"], "sowPattern": "row", "seedSpacing": 5, "rowSpacing": 20, "seedDepth": 1, "seedsPerHole": null, "thinTo": 10}, "common-liquorice": {"key": "common-liquorice", "name": "Common Liquorice", "latin": "Glycyrrhiza glabra", "category": "herb", "subcategory": "", "soilDepth": "", "sun": "", "water": "", "height": "", "width": "", "sowMonths": [], "harvestMonths": [], "daysToMaturity": "", "season": "", "nFixer": true, "perennial": false, "notes": "N-fixing perennial. Sweet root (glycyrrhizin — 50x sweeter than sugar). Deep taproot for soil aeration. Needs 3-4 years before first root harvest. Medicinal.", "spacing": "", "sowMethod": "", "icon": "🌱", "regions": ["netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "skirret": {"key": "skirret", "name": "Skirret", "latin": "Sium sisarum", "category": "vegetable", "subcategory": "", "soilDepth": "", "sun": "", "water": "", "height": "", "width": "", "sowMonths": [], "harvestMonths": [], "daysToMaturity": "", "season": "", "nFixer": false, "perennial": false, "notes": "Sweet, edible roots (tastes like parsnip/carrot — medieval European vegetable). Needs moist soil. Clusters of thin, sweet roots. Hardy perennial.", "spacing": 40, "sowMethod": "", "icon": "🥕", "regions": ["netherlands"], "sowPattern": "row", "seedSpacing": 15, "rowSpacing": 40, "seedDepth": 1, "seedsPerHole": null, "thinTo": 20}, "ulluco": {"key": "ulluco", "name": "Ulluco", "latin": "Ullucus tuberosus", "category": "vegetable", "subcategory": "", "soilDepth": "", "sun": "", "water": "", "height": "", "width": "", "sowMonths": [], "harvestMonths": [], "daysToMaturity": "", "season": "", "nFixer": false, "perennial": false, "notes": "Colorful edible tubers (staple in the Andes, waxy texture like potato). Needs frost protection in NL. Can be stored for months after harvest.", "spacing": 40, "sowMethod": "", "icon": "🥕", "regions": ["netherlands"], "sowPattern": "row", "seedSpacing": 20, "rowSpacing": 40, "seedDepth": 8, "seedsPerHole": null, "thinTo": 20}, "dwarf-gunnera": {"key": "dwarf-gunnera", "name": "Dwarf Gunnera", "latin": "Gunnera magellanica", "category": "herb", "subcategory": "", "soilDepth": "", "sun": "", "water": "", "height": "", "width": "", "sowMonths": [], "harvestMonths": [], "daysToMaturity": "", "season": "", "nFixer": true, "perennial": false, "notes": "Unique N-fixing groundcover — symbiosis with Nostoc cyanobacteria (the only known flowering plant genus with this). Creeping habit. Edible stems.", "spacing": "", "sowMethod": "", "icon": "🌱", "regions": ["netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "earthnut-pea": {"key": "earthnut-pea", "name": "Earthnut Pea", "latin": "Lathyrus tuberosus", "category": "herb", "subcategory": "", "soilDepth": "", "sun": "", "water": "", "height": "", "width": "", "sowMonths": [], "harvestMonths": [], "daysToMaturity": "", "season": "", "nFixer": true, "perennial": false, "notes": "N-fixing perennial with edible tubers (nutty, sweet). Beautiful pink flowers. Excellent for the root layer.", "spacing": "", "sowMethod": "", "icon": "🌱", "regions": ["netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "everlasting-pea": {"key": "everlasting-pea", "name": "Everlasting Pea", "latin": "Lathyrus latifolius", "category": "flower", "subcategory": "", "soilDepth": "", "sun": "", "water": "", "height": "", "width": "", "sowMonths": [], "harvestMonths": [], "daysToMaturity": "", "season": "", "nFixer": true, "perennial": false, "notes": "N-fixing perennial climber. Edible young pea pods (but seeds are mildly toxic in large quantities). Beautiful pink flowers. Long blooming season.", "spacing": "", "sowMethod": "", "icon": "🌸", "regions": ["netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "field-horsetail": {"key": "field-horsetail", "name": "Field Horsetail", "latin": "Equisetum arvense", "category": "herb", "subcategory": "", "soilDepth": "", "sun": "", "water": "", "height": "", "width": "", "sowMonths": [], "harvestMonths": [], "daysToMaturity": "", "season": "", "nFixer": false, "perennial": false, "notes": "Outstanding mineral accumulator — highest silica content of any plant. Deep root system. Medicinal (diuretic, bone health). Very invasive in wet areas.", "spacing": "", "sowMethod": "", "icon": "🌱", "regions": ["netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "watercress": {"key": "watercress", "name": "Watercress", "latin": "Nasturtium officinale", "category": "vegetable", "subcategory": "", "soilDepth": "", "sun": "", "water": "", "height": "", "width": "", "sowMonths": [], "harvestMonths": [], "daysToMaturity": "", "season": "", "nFixer": false, "perennial": false, "notes": "Nutrient-dense aquatic perennial green — needs clean running water in NL. Very high in minerals (Ca, K, P, Fe, S, Na). Perfect for the water layer.", "spacing": 20, "sowMethod": "", "icon": "🥕", "regions": ["netherlands"], "sowPattern": "square", "seedSpacing": 20, "rowSpacing": 20, "seedDepth": 0.5, "seedsPerHole": null, "thinTo": 15}, "wilde-kamperfoelie": {"key": "wilde-kamperfoelie", "name": "Honeysuckle", "latin": "Lonicera periclymenum", "category": "climber", "subcategory": "", "soilDepth": "", "sun": "", "water": "", "height": "", "width": "", "sowMonths": [], "harvestMonths": [], "daysToMaturity": "", "season": "", "nFixer": false, "perennial": false, "notes": "", "spacing": "", "sowMethod": "", "icon": "🌿", "regions": ["netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "riet": {"key": "riet", "name": "Common reed", "latin": "Phragmites australis", "category": "perennial-herb", "subcategory": "", "soilDepth": "", "sun": "", "water": "", "height": "", "width": "", "sowMonths": [], "harvestMonths": [], "daysToMaturity": "", "season": "", "nFixer": false, "perennial": false, "notes": "", "spacing": "", "sowMethod": "", "icon": "🌱", "regions": ["netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "witte-waterlelie": {"key": "witte-waterlelie", "name": "White water lily", "latin": "Nymphaea alba", "category": "aquatic", "subcategory": "", "soilDepth": "", "sun": "", "water": "", "height": "", "width": "", "sowMonths": [], "harvestMonths": [], "daysToMaturity": "", "season": "", "nFixer": false, "perennial": false, "notes": "", "spacing": "", "sowMethod": "", "icon": "💧", "regions": ["netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}, "speenkruid": {"key": "speenkruid", "name": "Lesser celandine", "latin": "Ficaria verna", "category": "perennial-herb", "subcategory": "", "soilDepth": "", "sun": "", "water": "", "height": "", "width": "", "sowMonths": [], "harvestMonths": [], "daysToMaturity": "", "season": "", "nFixer": false, "perennial": false, "notes": "", "spacing": "", "sowMethod": "", "icon": "🌱", "regions": ["netherlands"], "sowPattern": "square", "seedSpacing": 30, "rowSpacing": 30, "seedDepth": 1, "seedsPerHole": null, "thinTo": null}};
+
+// ============ PLANTS (generated from SPECIES_DB with region filter) ============
+let PLANTS = {};
+const PLANT_CATEGORIES = ['vegetable', 'herb', 'cover-crop', 'flower', 'perennial-herb', 'ground-cover', 'aquatic', 'climber'];
+
+function buildPlants(regionFilter) {
+  PLANTS = {};
+  Object.keys(SPECIES_DB).forEach(function(k) {
+    var s = SPECIES_DB[k];
+    if (PLANT_CATEGORIES.indexOf(s.category) < 0) return;
+    if (regionFilter !== 'all' && (!s.regions || s.regions.indexOf(regionFilter) < 0)) return;
+    var heightCat = s.subcategory || 'low';
+    if (['tall','medium','low'].indexOf(heightCat) < 0) heightCat = 'low';
+    if (s.category === 'cover-crop') heightCat = 'cover';
+    var sunStr = s.sun === 'full' ? '☀️ Full' : s.sun === 'partial' ? '⛅ Partial' : s.sun === 'shade' ? '🌑 Shade' : '☀️ Full';
+    var waterStr = s.water === 'low' ? '💧 Low' : s.water === 'moderate' ? '💧💧 Mod' : s.water === 'high' ? '💧💧💧 High' : '💧💧 Mod';
+    PLANTS[k] = {
+      name: s.name, icon: s.icon || '🌱', category: heightCat,
+      spacing: s.spacing || 30, soil: (s.soilDepth || 30) + 'cm',
+      sun: sunStr, water: waterStr, sow: s.sowMethod || 'Direct',
+      note: s.notes || '', sowMonths: s.sowMonths || [],
+      harvestMonths: s.harvestMonths || [], daysToMaturity: s.daysToMaturity || 60,
+      season: s.season || 'cool', latin: s.latin || '', family: '',
+      // Sowing spec (2026-08-06)
+      sowPattern: s.sowPattern || (s.spacing ? 'square' : 'row'),
+      seedSpacing: s.seedSpacing || s.spacing || 30,
+      rowSpacing: s.rowSpacing || s.spacing || 30,
+      seedDepth: s.seedDepth || 1,
+      seedsPerHole: s.seedsPerHole || null,
+      thinTo: s.thinTo || null
+    };
+  });
+}
+
+// Read region from URL param, fall back to the design brief's region
+let regionFilter = 'all';
+var urlParams = new URLSearchParams(window.location.search);
+var regionParam = urlParams.get('region');
+if (regionParam !== 'tuscany' && regionParam !== 'netherlands') {
+  try {
+    var briefRegion = JSON.parse(localStorage.getItem('tuscan-brief-v1') || '{}').region;
+    if (briefRegion === 'tuscany' || briefRegion === 'netherlands') regionParam = briefRegion;
+  } catch (e) {}
+}
+if (regionParam === 'tuscany') regionFilter = 'tuscany';
+else if (regionParam === 'netherlands') regionFilter = 'netherlands';
+
+// Build plants for the selected region
+buildPlants(regionFilter);
+
+// Show region badge
+if (regionFilter !== 'all') {
+  var regionBadge = document.createElement('span');
+  regionBadge.style.cssText = 'display:inline-block;padding:1px 8px;border-radius:8px;font-size:0.7em;background:rgba(90,138,74,0.15);border:1px solid #5a8a4a;color:#aed581;margin-left:6px';
+  regionBadge.textContent = regionFilter === 'tuscany' ? '🇮🇹 Tuscany' : '🇳🇱 Netherlands';
+  var sub = document.querySelector('.subtitle');
+  if (sub) sub.appendChild(regionBadge);
+}
+
+// Update palette count
+document.addEventListener('DOMContentLoaded', function() {
+  var count = Object.keys(PLANTS).length;
+  var h3 = document.querySelector('.palette h3');
+  if (h3) h3.textContent = '🌱 Plant Palette (' + count + ' species)';
+  var bc = document.getElementById('bed-count');
+  if (bc) bc.textContent = rows.length;
+});
+
+const CATEGORIES = {
+  tall:{label:'🌳 Tall (>120cm)',style:'tall'},
+  medium:{label:'🌿 Medium (45-120cm)',style:'medium'},
+  low:{label:'🌱 Low (<45cm)',style:'low'},
+  cover:{label:'🔄 Cover Crops (green manure)',style:'low'}
+};
+
+const MONTHS_SHORT = ['J','F','M','A','M','J','J','A','S','O','N','D'];
+const MONTHS_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+// ============ STATE (real-world garden model) ============
+// Module = 6 rows across one 10m cell. Each row has 2 slots (one per cell,
+// 10m each). Joined rows = one 20m bed (two cells). Bed width 0.75m.
+// Path width computed: (cell - rows*bedWidth)/rows ≈ 0.92m.
+let gardenCfg = {
+  modules: 2,        // 1..3  → 6 / 12 / 18 rows
+  rowsPerModule: 6,
+  bedWidth: 0.75,    // m
+  slotLen: 10        // m per slot (= one cell)
+};
+// rows[r] = { joined: bool, slots: [[plants...],[plants...]] }
+let rows = [];
+let showCalendar = false;
+let showSowHarvest = false;
+let datePickerTarget = null; // {rowIndex, slotIndex, plantIndex}
+
+function rowCount() { return gardenCfg.modules * gardenCfg.rowsPerModule; }
+function rowName(r) {
+  const m = Math.floor(r / gardenCfg.rowsPerModule) + 1;
+  const l = 'ABCDEF'[r % gardenCfg.rowsPerModule];
+  return 'M' + m + '-' + l;
+}
+function rowType(r) { const pat = ['tall','low','medium','low','tall','low']; return pat[r % gardenCfg.rowsPerModule]; }
+function rowLengthM(r) { return rows[r] && rows[r].joined ? gardenCfg.slotLen * 2 : gardenCfg.slotLen; }
+function rowAreaM2(r) { return gardenCfg.bedWidth * rowLengthM(r); }
+function pathWidthM() {
+  return (gardenCfg.slotLen - gardenCfg.rowsPerModule * gardenCfg.bedWidth) / gardenCfg.rowsPerModule;
+}
+function initRows() {
+  rows = [];
+  for (let r = 0; r < rowCount(); r++) rows.push({ joined: false, slots: [[], []] });
+}
+
+// ============ HELPERS ============
+function todayStr() {
+  const d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+
+function saveLocalStorage() {
+  try {
+    localStorage.setItem('tuscanVegGarden', JSON.stringify({version:3, cfg: gardenCfg, rows: rows}));
+  } catch(e) {}
+}
+
+function normPlant(item) {
+  if (typeof item === 'string') return {key: item, plantedDate: todayStr()};
+  if (item && typeof item === 'object' && item.key) return {key: item.key, plantedDate: item.plantedDate || todayStr()};
+  return null;
+}
+
+function loadLocalStorage() {
+  try {
+    const data = JSON.parse(localStorage.getItem('tuscanVegGarden'));
+    if (!data) return false;
+    if (data.version === 3 && Array.isArray(data.rows)) {
+      gardenCfg = Object.assign(gardenCfg, data.cfg || {});
+      // clamp config to sane bounds
+      gardenCfg.modules = Math.max(1, Math.min(3, gardenCfg.modules || 2));
+      gardenCfg.bedWidth = Math.max(0.5, Math.min(1.2, gardenCfg.bedWidth || 0.75));
+      gardenCfg.slotLen = Math.max(5, Math.min(20, gardenCfg.slotLen || 10));
+      rows = [];
+      for (let r = 0; r < rowCount(); r++) {
+        const src = data.rows[r] || {joined: false, slots: [[], []]};
+        rows.push({
+          joined: !!src.joined,
+          slots: [
+            (src.slots && src.slots[0] ? src.slots[0].map(normPlant).filter(Boolean) : []),
+            (src.slots && src.slots[1] ? src.slots[1].map(normPlant).filter(Boolean) : [])
+          ]
+        });
+      }
+      return true;
+    }
+    if (data.beds && data.beds.length >= 6) {
+      // v2 migration: flat 12 beds → 2 modules; each old bed becomes a joined row (slot A)
+      gardenCfg.modules = Math.max(1, Math.min(3, Math.ceil(data.beds.length / 6)));
+      gardenCfg.bedWidth = 0.75;
+      gardenCfg.slotLen = 10;
+      rows = [];
+      for (let r = 0; r < rowCount(); r++) {
+        const old = data.beds[r] || [];
+        rows.push({joined: true, slots: [old.map(normPlant).filter(Boolean), []]});
+      }
+      return true;
+    }
+  } catch(e) {}
+  return false;
+}
+
+function getDaysSince(dateStr) {
+  if (!dateStr) return 0;
+  const d = new Date(dateStr);
+  const now = new Date();
+  return Math.floor((now - d) / (1000 * 60 * 60 * 24));
+}
+
+function getDaysColor(days, daysToMaturity) {
+  if (daysToMaturity <= 0) return '#81c784';
+  const pct = days / daysToMaturity;
+  if (pct <= 0.5) return '#81c784'; // green
+  if (pct <= 1.0) return '#ffd54f'; // yellow
+  return '#ef5350'; // red
+}
+
+function formatMonthRange(months) {
+  if (!months || months.length === 0) return '—';
+  const sorted = [...months].sort((a,b) => a-b);
+  const ranges = [];
+  let start = sorted[0], end = sorted[0];
+  for (let i = 1; i <= sorted.length; i++) {
+    if (sorted[i] === end + 1) {
+      end = sorted[i];
+    } else {
+      ranges.push(start === end ? MONTHS_NAMES[start-1] : MONTHS_NAMES[start-1] + '–' + MONTHS_NAMES[end-1]);
+      start = sorted[i];
+      end = sorted[i];
+    }
+  }
+  return ranges.join(', ');
+}
+
+// ============ RENDERING ============
+function render() {
+  renderPalette();
+  saveLocalStorage();
+  renderGardenSpec();
+  if (showCalendar) {
+    renderCalendar();
+    document.getElementById('beds-container').style.display = 'none';
+    document.getElementById('calendar-container').classList.add('active');
+  } else {
+    renderBeds();
+    document.getElementById('beds-container').style.display = '';
+    document.getElementById('calendar-container').classList.remove('active');
+  }
+}
+
+function renderPalette() {
+  const container = document.getElementById('palette-content');
+  container.innerHTML = '';
+  for (const [catKey, cat] of Object.entries(CATEGORIES)) {
+    const group = document.createElement('div');
+    group.className = 'palette-group';
+    const h4 = document.createElement('h4');
+    h4.textContent = cat.label;
+    group.appendChild(h4);
+    for (const [key, plant] of Object.entries(PLANTS)) {
+      if (plant.category !== catKey) continue;
+      const el = document.createElement('div');
+      el.className = 'palette-item';
+      el.draggable = true;
+      el.innerHTML = `<span class="icon">${plant.icon}</span> ${plant.name}`;
+      el.dataset.plantKey = key;
+      el.ondragstart = function(e) {
+        e.dataTransfer.setData('text/plain', key);
+        e.dataTransfer.effectAllowed = 'copy';
+        setTimeout(() => this.style.opacity = '0.5', 0);
+      };
+      el.ondragend = function() { this.style.opacity = '1'; };
+      el.ondblclick = function() {
+        const key = this.dataset.plantKey;
+        const type = PLANTS[key].category;
+        for (let r = 0; r < rows.length; r++) {
+          if (rowType(r) === type) {
+            rows[r].slots[0].push({key: key, plantedDate: todayStr()});
+            render();
+            showInfo(`Added ${PLANTS[key].name} to row ${rowName(r)}`);
+            return;
+          }
+        }
+        rows[0].slots[0].push({key: key, plantedDate: todayStr()});
+        render();
+      };
+      group.appendChild(el);
+    }
+    container.appendChild(group);
+  }
+}
+
+function makePlantEl(r, s, j, obj) {
+  const key = typeof obj === 'string' ? obj : obj.key;
+  const plantedDate = typeof obj === 'string' ? todayStr() : (obj.plantedDate || todayStr());
+  const plant = PLANTS[key];
+  if (!plant) return null;
+  const el = document.createElement('div');
+  el.className = 'plant-in-bed';
+  el.draggable = true;
+  const days = getDaysSince(plantedDate);
+  const badgeColor = getDaysColor(days, plant.daysToMaturity || 0);
+  const badgeHtml = `<span class="days-badge" style="background:${badgeColor};color:#0d1b2a;" onclick="event.stopPropagation();openDatePicker(${r},${s},${j})" title="Click to set planted date">${days} days</span>`;
+  el.innerHTML = `${plant.icon} ${plant.name} ${badgeHtml} <span class="remove-btn" onclick="event.stopPropagation();removePlant(${r},${s},${j})">✕</span>`;
+  el.ondragstart = function(e) {
+    e.dataTransfer.setData('text/plain', key);
+    e.dataTransfer.setData('application/row-index', String(r));
+    e.dataTransfer.setData('application/slot-index', String(s));
+    e.dataTransfer.setData('application/plant-index', String(j));
+    e.dataTransfer.effectAllowed = 'move';
+  };
+  el.ondragend = function() {};
+  el.onclick = function(e) {
+    if (e.target.classList.contains('remove-btn') || e.target.classList.contains('days-badge')) return;
+    showPlantInfo(key, plantedDate);
+  };
+  if (showSowHarvest && plant.sowMonths && plant.harvestMonths) {
+    const bar = document.createElement('div');
+    bar.className = 'sow-harvest-bar';
+    const allMonths = new Set([...plant.sowMonths, ...plant.harvestMonths]);
+    if (allMonths.size > 0) {
+      for (let m = 1; m <= 12; m++) {
+        const seg = document.createElement('div');
+        seg.className = 'sh-seg';
+        const isSow = plant.sowMonths.includes(m);
+        const isHarvest = plant.harvestMonths.includes(m);
+        if (isSow && isHarvest) {
+          seg.style.cssText = `flex:1;background:linear-gradient(90deg,rgba(129,199,132,0.5) 0%,rgba(255,213,79,0.5) 100%);border-right:1px solid rgba(255,255,255,0.05);`;
+        } else if (isSow) {
+          seg.style.cssText = `flex:1;background:rgba(129,199,132,0.5);border-right:1px solid rgba(255,255,255,0.05);`;
+        } else if (isHarvest) {
+          seg.style.cssText = `flex:1;background:rgba(255,213,79,0.5);border-right:1px solid rgba(255,255,255,0.05);`;
+        } else {
+          seg.style.cssText = `flex:1;background:transparent;border-right:1px solid rgba(255,255,255,0.05);`;
+        }
+        bar.appendChild(seg);
+      }
+    }
+    el.appendChild(bar);
+  }
+  return el;
+}
+
+function setupDropTarget(el, r, s) {
+  el.ondragover = function(e) { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; this.classList.add('dragover'); };
+  el.ondragleave = function() { this.classList.remove('dragover'); };
+  el.ondrop = function(e) {
+    e.preventDefault();
+    this.classList.remove('dragover');
+    const key = e.dataTransfer.getData('text/plain');
+    if (!key) return;
+    const srcRowStr = e.dataTransfer.getData('application/row-index');
+    if (srcRowStr !== '') {
+      const srcR = parseInt(srcRowStr);
+      const srcS = parseInt(e.dataTransfer.getData('application/slot-index'));
+      const srcP = parseInt(e.dataTransfer.getData('application/plant-index'));
+      if (srcR >= 0 && srcR < rows.length && srcS >= 0 && srcS <= 1 &&
+          srcP >= 0 && srcP < rows[srcR].slots[srcS].length) {
+        const obj = rows[srcR].slots[srcS].splice(srcP, 1)[0];
+        rows[r].slots[s].push(obj);
+        render();
+        showInfo(`Moved ${PLANTS[obj.key] ? PLANTS[obj.key].name : obj.key} to ${rowName(r)}`);
+      }
+    } else if (PLANTS[key]) {
+      rows[r].slots[s].push({key: key, plantedDate: todayStr()});
+      render();
+      showInfo(`Added ${PLANTS[key].name} to ${rowName(r)}`);
+    }
+  };
+}
+
+function renderBeds() {
+  const container = document.getElementById('beds-container');
+  container.innerHTML = '';
+  const pathM = pathWidthM();
+  let lastModule = -1;
+
+  for (let r = 0; r < rows.length; r++) {
+    const mod = Math.floor(r / gardenCfg.rowsPerModule);
+    const type = rowType(r);
+    const name = rowName(r);
+    const joined = rows[r].joined;
+
+    // Module separator label
+    if (mod !== lastModule) {
+      const modLabel = document.createElement('div');
+      modLabel.className = 'bed-row-module-label';
+      modLabel.textContent = `▍MODULE ${mod + 1} — 6 rows · ${gardenCfg.slotLen}m × ${gardenCfg.slotLen}m cell · paths ~${(pathM * 100).toFixed(0)}cm`;
+      container.appendChild(modLabel);
+      lastModule = mod;
+    }
+
+    const row = document.createElement('div');
+    row.className = 'bed-row';
+
+    // Label + join toggle
+    const label = document.createElement('div');
+    label.className = 'bed-label';
+    label.textContent = `${name} · ${type.charAt(0).toUpperCase() + type.slice(1)}`;
+    row.appendChild(label);
+
+    const joinBtn = document.createElement('button');
+    joinBtn.className = 'join-toggle' + (joined ? ' joined' : '');
+    joinBtn.textContent = joined ? '🔗 20m joined' : '✂️ 2×10m split';
+    joinBtn.title = joined ? 'Split into two 10m beds' : 'Join into one 20m bed';
+    joinBtn.onclick = function() { toggleJoin(r); };
+    row.appendChild(joinBtn);
+
+    if (joined) {
+      // One 20m bed (both slots merge visually; plants kept in slot 0)
+      const bed = document.createElement('div');
+      bed.className = `bed-joined bed-slot-${type}`;
+      const area = document.createElement('div');
+      area.className = 'bed-area';
+      const cap = slotCapacity(r, 0);
+      area.textContent = `20m · ${rowAreaM2(r).toFixed(1)} m²` + (cap ? ` · ≈${cap}/bed` : '');
+      bed.appendChild(area);
+      const spacer = document.createElement('div');
+      spacer.style.cssText = 'width:100%;height:14px;';
+      bed.appendChild(spacer);
+      setupDropTarget(bed, r, 0);
+      const plants = (rows[r].slots[0] || []).concat(rows[r].slots[1] || []);
+      for (let j = 0; j < plants.length; j++) {
+        const el = makePlantEl(r, j < rows[r].slots[0].length ? 0 : 1, j < rows[r].slots[0].length ? j : j - rows[r].slots[0].length, plants[j]);
+        if (el) bed.appendChild(el);
+      }
+      if (showSowHarvest && plants.length > 0) {
+        const legend = document.createElement('div');
+        legend.className = 'sow-harvest-legend';
+        legend.innerHTML = `<span><span class="legend-dot" style="background:rgba(129,199,132,0.5);"></span>Sow</span><span><span class="legend-dot" style="background:rgba(255,213,79,0.5);"></span>Harvest</span><span><span class="legend-dot" style="background:linear-gradient(90deg,rgba(129,199,132,0.5) 0%,rgba(255,213,79,0.5) 100%);"></span>Both</span>`;
+        bed.appendChild(legend);
+      }
+      row.appendChild(bed);
+    } else {
+      // Two 10m beds (slots 0 and 1)
+      for (let s = 0; s < 2; s++) {
+        const bed = document.createElement('div');
+        bed.className = `bed-slot bed-slot-${type}`;
+        const area = document.createElement('div');
+        area.className = 'bed-area';
+        const cap = slotCapacity(r, s);
+        area.textContent = `${gardenCfg.slotLen}m · ${rowAreaM2(r).toFixed(1)} m²` + (cap ? ` · ≈${cap}` : '');
+        bed.appendChild(area);
+        const tag = document.createElement('div');
+        tag.className = 'slot-tag';
+        tag.textContent = s === 0 ? 'A' : 'B';
+        bed.appendChild(tag);
+        const spacer = document.createElement('div');
+        spacer.style.cssText = 'width:100%;height:14px;';
+        bed.appendChild(spacer);
+        setupDropTarget(bed, r, s);
+        const plants = rows[r].slots[s] || [];
+        for (let j = 0; j < plants.length; j++) {
+          const el = makePlantEl(r, s, j, plants[j]);
+          if (el) bed.appendChild(el);
+        }
+        if (showSowHarvest && plants.length > 0) {
+          const legend = document.createElement('div');
+          legend.className = 'sow-harvest-legend';
+          legend.innerHTML = `<span><span class="legend-dot" style="background:rgba(129,199,132,0.5);"></span>Sow</span><span><span class="legend-dot" style="background:rgba(255,213,79,0.5);"></span>Harvest</span>`;
+          bed.appendChild(legend);
+        }
+        row.appendChild(bed);
+      }
+    }
+
+    container.appendChild(row);
+  }
+}
+
+function toggleJoin(r) {
+  const row = rows[r];
+  if (row.joined) {
+    row.joined = false;
+  } else {
+    // merge slot B into A, then clear B
+    row.slots[0] = (row.slots[0] || []).concat(row.slots[1] || []);
+    row.slots[1] = [];
+    row.joined = true;
+  }
+  render();
+  renderGardenSpec();
+  showInfo(row.joined ? `${rowName(r)} joined → one 20m bed` : `${rowName(r)} split → two 10m beds`);
+}
+
+// ============ CALENDAR VIEW ============
+function renderCalendar() {
+  const container = document.getElementById('calendar-container');
+  const now = new Date();
+  const currentMonth = now.getMonth() + 1;
+
+  let html = '<table class="calendar-grid"><thead><tr><th class="bed-label-cell"></th>';
+  for (let m = 1; m <= 12; m++) {
+    html += `<th${m === currentMonth ? ' style="color:#81c784;font-weight:600;"' : ''}>${MONTHS_SHORT[m-1]}</th>`;
+  }
+  html += '</tr></thead><tbody>';
+
+  for (let i = 0; i < rows.length; i++) {
+    const type = rowType(i);
+    const name = rowName(i);
+    const plants = (rows[i].slots[0] || []).concat(rows[i].slots[1] || []);
+    const suffix = rows[i].joined ? ' · 20m' : ' · 2×10m';
+
+    html += `<tr><td class="bed-label-cell"><span class="bed-row-label">${name}${suffix}</span></td>`;
+
+    for (let m = 1; m <= 12; m++) {
+      let cellClass = '';
+      let icons = '';
+
+      for (const obj of plants) {
+        const key = typeof obj === 'string' ? obj : obj.key;
+        const plant = PLANTS[key];
+        if (!plant) continue;
+
+        const isSow = plant.sowMonths && plant.sowMonths.includes(m);
+        const isHarvest = plant.harvestMonths && plant.harvestMonths.includes(m);
+
+        if (isSow || isHarvest) {
+          icons += `<span class="plant-icon" onclick="showPlantInfo('${key}')" title="${plant.name}">${plant.icon}</span>`;
+        }
+
+        if (isSow && isHarvest) {
+          if (cellClass !== 'cell-both') cellClass = 'cell-both';
+        } else if (isSow) {
+          if (cellClass !== 'cell-both') cellClass = 'cell-sow';
+        } else if (isHarvest) {
+          if (cellClass !== 'cell-both') cellClass = 'cell-harvest';
+        }
+      }
+
+      if (m === currentMonth) {
+        cellClass += ' month-current';
+      }
+
+      html += `<td class="${cellClass}">${icons}</td>`;
+    }
+
+    html += '</tr>';
+  }
+
+  html += '</tbody></table>';
+  container.innerHTML = html;
+}
+
+// ============ PLANT MANAGEMENT ============
+function removePlant(r, s, plantIndex) {
+  if (rows[r] && rows[r].slots[s]) rows[r].slots[s].splice(plantIndex, 1);
+  render();
+}
+
+function clearAll() {
+  if (!confirm('Clear all beds?')) return;
+  initRows();
+  render();
+  showInfo('All beds cleared');
+}
+
+function resetDefault() {
+  gardenCfg.modules = 2;
+  gardenCfg.bedWidth = 0.75;
+  gardenCfg.slotLen = 10;
+  initRows();
+  const d = todayStr();
+  const suggestions = [
+    [{key:'tomato',plantedDate:d},{key:'pole-beans',plantedDate:d},{key:'basil',plantedDate:d}],
+    [{key:'lettuce',plantedDate:d},{key:'radish',plantedDate:d},{key:'spinach',plantedDate:d}],
+    [{key:'cavolo-nero',plantedDate:d},{key:'fennel',plantedDate:d},{key:'peppers',plantedDate:d}],
+    [{key:'carrots',plantedDate:d},{key:'onions',plantedDate:d},{key:'garlic-veg',plantedDate:d}],
+    [{key:'climbing-cucumber',plantedDate:d},{key:'sunflower',plantedDate:d}],
+    [{key:'strawberry-veg',plantedDate:d},{key:'parsley',plantedDate:d}],
+    [{key:'swiss-chard',plantedDate:d},{key:'broccoli',plantedDate:d},{key:'eggplant',plantedDate:d}],
+    [{key:'radicchio',plantedDate:d},{key:'beets',plantedDate:d},{key:'cilantro',plantedDate:d}],
+    [{key:'corn',plantedDate:d},{key:'pole-beans',plantedDate:d}],
+    [{key:'chives-veg',plantedDate:d},{key:'lettuce',plantedDate:d}],
+    [{key:'artichoke',plantedDate:d},{key:'kale',plantedDate:d},{key:'fennel',plantedDate:d}],
+    [{key:'carrots',plantedDate:d},{key:'radish',plantedDate:d},{key:'onions',plantedDate:d}]
+  ];
+  for (let i = 0; i < rows.length; i++) {
+    rows[i].slots[0] = (suggestions[i % suggestions.length] || []).map(p => ({...p}));
+  }
+  render();
+  renderGardenSpec();
+  syncSetupUI();
+  showInfo('Default layout loaded');
+}
+
+function sowingSpecHtml(plant) {
+  if (!plant || !plant.sowPattern) return '';
+  const pat = plant.sowPattern;
+  let h = '<div class="sow-spec">';
+  const patLbl = { square: 'Square grid', diamond: 'Diamond (offset) grid', row: 'Rows', hill: 'Hill / station' }[pat] || pat;
+  if (pat === 'hill') {
+    h += `<div>📍 <b>${patLbl}</b> — ${plant.seedsPerHole || 2} seeds per hole · holes ${plant.seedSpacing}cm apart</div>`;
+    if (plant.rowSpacing) h += `<div>📐 Rows <b>${plant.rowSpacing}cm</b> apart</div>`;
+  } else if (pat === 'square') {
+    h += `<div>📍 <b>${patLbl}</b> — ${plant.seedSpacing}×${plant.rowSpacing}cm grid</div>`;
+  } else {
+    h += `<div>📍 <b>${patLbl}</b> — seeds <b>${plant.seedSpacing}cm</b> apart in-row</div>`;
+    if (plant.rowSpacing) h += `<div>📐 Rows <b>${plant.rowSpacing}cm</b> apart</div>`;
+  }
+  if (plant.seedDepth) h += `<div>⛏️ Sow <b>${plant.seedDepth}cm</b> deep</div>`;
+  if (plant.thinTo) h += `<div>✂️ Thin to <b>${plant.thinTo}cm</b> between plants</div>`;
+  const cap = plantSlotCapacity(plant);
+  if (cap) h += `<div>🧮 <b>≈${cap} plants</b> per 10m slot (7.5 m²)</div>`;
+  h += '</div>';
+  return h;
+}
+
+function showPlantInfo(key, plantedDate) {
+  const plant = PLANTS[key];
+  if (!plant) return;
+  const panel = document.getElementById('info-panel');
+  const content = document.getElementById('info-content');
+
+  let sowHarvestHtml = '';
+  if (plant.sowMonths || plant.harvestMonths || plant.daysToMaturity || plant.season) {
+    sowHarvestHtml = '<div class="sow-harvest-info">';
+    if (plant.sowMonths) sowHarvestHtml += `<div>🌱 <b>Sow:</b> ${formatMonthRange(plant.sowMonths)}</div>`;
+    if (plant.harvestMonths) sowHarvestHtml += `<div>🥬 <b>Harvest:</b> ${formatMonthRange(plant.harvestMonths)}</div>`;
+    if (plant.daysToMaturity) {
+      sowHarvestHtml += `<div>📅 <b>${plant.daysToMaturity} days</b> to maturity`;
+      if (plantedDate) {
+        const days = getDaysSince(plantedDate);
+        const pct = plant.daysToMaturity > 0 ? Math.round((days / plant.daysToMaturity) * 100) : 0;
+        sowHarvestHtml += ` · <span style="color:${getDaysColor(days, plant.daysToMaturity)}">${days} days since planting (${Math.min(pct,100)}%)</span>`;
+      }
+      sowHarvestHtml += '</div>';
+    }
+    if (plant.season) {
+      const seasonIcon = plant.season === 'warm' ? '☀️' : '❄️';
+      sowHarvestHtml += `<div>${seasonIcon} <b>${plant.season.charAt(0).toUpperCase()+plant.season.slice(1)}</b> season crop</div>`;
+    }
+    sowHarvestHtml += '</div>';
+  }
+
+  content.innerHTML = `
+    <h4>${plant.icon} ${plant.name}</h4>
+    <p><span class="stat">${plant.sun}</span><span class="stat">${plant.water}</span><span class="stat">🌱 Soil: ${plant.soil}</span><span class="stat">${plant.sow}</span></p>
+    ${sowingSpecHtml(plant)}
+    <p style="color:rgba(255,255,255,0.5);">📏 ${plant.spacing}cm final plant spacing · ${plant.note}</p>
+    ${sowHarvestHtml}
+  `;
+  panel.classList.add('active');
+  // Don't auto-hide if showing sow/harvest info (user needs time to read)
+  if (!sowHarvestHtml) {
+    setTimeout(() => panel.classList.remove('active'), 5000);
+  }
+}
+
+function showInfo(msg) {
+  const panel = document.getElementById('info-panel');
+  const content = document.getElementById('info-content');
+  content.innerHTML = `<h4 style="text-align:center;">${msg}</h4>`;
+  panel.classList.add('active');
+  setTimeout(() => panel.classList.remove('active'), 3000);
+}
+
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.info-panel') && !e.target.closest('.plant-in-bed') && !e.target.closest('.date-picker-popup')) {
+    document.getElementById('info-panel').classList.remove('active');
+    document.getElementById('date-picker-popup').classList.remove('active');
+  }
+});
+
+// ============ DATE PICKER ============
+function openDatePicker(r, s, plantIndex) {
+  datePickerTarget = {r, s, plantIndex};
+  const obj = rows[r].slots[s][plantIndex];
+  const plantedDate = typeof obj === 'string' ? todayStr() : (obj.plantedDate || todayStr());
+  document.getElementById('date-picker-input').value = plantedDate;
+  document.getElementById('date-picker-popup').classList.add('active');
+}
+
+function closeDatePicker() {
+  document.getElementById('date-picker-popup').classList.remove('active');
+  datePickerTarget = null;
+}
+
+function confirmDatePicker() {
+  if (!datePickerTarget) return;
+  const {r, s, plantIndex} = datePickerTarget;
+  const newDate = document.getElementById('date-picker-input').value;
+  if (newDate) {
+    const obj = rows[r].slots[s][plantIndex];
+    if (typeof obj === 'string') {
+      rows[r].slots[s][plantIndex] = {key: obj, plantedDate: newDate};
+    } else {
+      obj.plantedDate = newDate;
+    }
+    render();
+    showInfo('Planted date updated');
+  }
+  closeDatePicker();
+}
+
+// ============ TOGGLES ============
+function toggleCalendar() {
+  showCalendar = !showCalendar;
+  document.getElementById('calendar-toggle-btn').textContent = showCalendar ? '📋 Show Beds' : '📅 Show Calendar';
+  if (showCalendar) document.getElementById('calendar-toggle-btn').classList.add('active-toggle');
+  else document.getElementById('calendar-toggle-btn').classList.remove('active-toggle');
+  render();
+}
+
+function toggleSowHarvest() {
+  showSowHarvest = !showSowHarvest;
+  document.getElementById('sowharvest-toggle-btn').textContent = showSowHarvest ? '🌱 Hide Sow/Harvest' : '🌱 Show Sow/Harvest';
+  if (showSowHarvest) document.getElementById('sowharvest-toggle-btn').classList.add('active-toggle');
+  else document.getElementById('sowharvest-toggle-btn').classList.remove('active-toggle');
+  render();
+}
+
+// ============ EXPORT / IMPORT ============
+function exportLayout() {
+  const exportRows = rows.map(row => ({
+    joined: row.joined,
+    slots: row.slots.map(slot => slot.map(item => {
+      if (typeof item === 'string') return {key: item, plantedDate: todayStr()};
+      return {...item};
+    }))
+  }));
+  const data = {
+    version: 3,
+    created: new Date().toISOString(),
+    cfg: {...gardenCfg},
+    rows: exportRows
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'tuscan-veg-garden-layout.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  showInfo('Layout exported!');
+}
+
+// ============ FIELD VIEW EXPORT (standalone HTML, works offline) ============
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function mShort(m) { return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][m-1]; }
+function monthRange(months) {
+  if (!months || !months.length) return '';
+  const s = [...months].sort((a,b)=>a-b);
+  let out = [], start = s[0], prev = s[0];
+  for (let i = 1; i <= s.length; i++) {
+    if (s[i] === prev + 1) { prev = s[i]; continue; }
+    out.push(start === prev ? mShort(start) : mShort(start) + '–' + mShort(prev));
+    start = s[i]; prev = s[i];
+  }
+  return out.join(', ');
+}
+
+function exportFieldView() {
+  if (!rows.length) { showInfo('⚠️ No garden yet — set up rows first'); return; }
+  const pathM = pathWidthM();
+  const tot = gardenTotals();
+
+  // Brief line (embedded at export time)
+  let briefLine = '';
+  try {
+    const b = JSON.parse(localStorage.getItem('tuscan-brief-v1') || '{}');
+    const soilLbl = {sandy:'Sandy',silty:'Silty',loam:'Loam',clay:'Clay',chalky:'Chalky',peaty:'Peaty'}[b.defaultSoil] || b.defaultSoil || '';
+    const bits = [];
+    if (b.title) bits.push('📍 ' + b.title);
+    if (b.plotW && b.plotH) bits.push('📐 ' + b.plotW + '×' + b.plotH + 'm');
+    if (soilLbl) bits.push('🪨 ' + soilLbl);
+    if (b.altitude) bits.push('⛰️ ~' + b.altitude + 'm');
+    if (b.climateZone) bits.push('🌡️ Zone ' + b.climateZone);
+    if (b.aspect) bits.push('🧭 ' + b.aspect);
+    if (b.slope) bits.push('📉 ' + b.slope);
+    if (bits.length) briefLine = '<p class="brief-line">' + bits.join(' · ') + '</p>';
+  } catch(e) {}
+
+  // Compact species reference (only the plants actually placed)
+  const species = {};
+  const usedKeys = new Set();
+  rows.forEach(row => row.slots.forEach(slot => slot.forEach(p => {
+    const key = typeof p === 'string' ? p : p.key;
+    if (!key || usedKeys.has(key)) return;
+    usedKeys.add(key);
+    const sp = PLANTS[key] || {};
+    species[key] = { n: sp.name || key, i: sp.icon || '🌱', s: sp.spacing || 30, sow: sp.sowMonths || [], har: sp.harvestMonths || [], d: sp.daysToMaturity || 60,
+      pat: sp.sowPattern || '', ss: sp.seedSpacing || 0, rs: sp.rowSpacing || 0, dp: sp.seedDepth || 0, ph: sp.seedsPerHole || null, th: sp.thinTo || null };
+  })));
+  const speciesJson = JSON.stringify(species).replace(/<\//g, '<\\/');
+
+  // Row-by-row HTML (static)
+  let rowsHtml = '';
+  let lastModule = -1;
+  rows.forEach((row, r) => {
+    const mod = Math.floor(r / gardenCfg.rowsPerModule);
+    const type = rowType(r);
+    const name = rowName(r);
+    if (mod !== lastModule) {
+      rowsHtml += '<div class="mod-label">▍MODULE ' + (mod + 1) + ' — 6 rows · ' + gardenCfg.slotLen + 'm cell · paths ~' + (pathM * 100).toFixed(0) + 'cm</div>';
+      lastModule = mod;
+    }
+    const typeCap = type.charAt(0).toUpperCase() + type.slice(1);
+    if (row.joined) {
+      const plants = (row.slots[0] || []).concat(row.slots[1] || []);
+      rowsHtml += '<div class="grow"><div class="rlabel">' + name + ' · ' + typeCap + '</div>' +
+        '<div class="bed joined f-' + type + '"><div class="bmeta">🔗 20m · ' + rowAreaM2(r).toFixed(1) + ' m²</div>' +
+        plants.map((p, idx) => {
+          const key = typeof p === 'string' ? p : p.key;
+          const sp = PLANTS[key] || {};
+          return '<a href="#p-' + esc(key) + '" class="plant">' + (sp.icon || '🌱') + ' ' + esc(sp.name || key) + '</a>';
+        }).join('') + '</div></div>';
+    } else {
+      rowsHtml += '<div class="grow"><div class="rlabel">' + name + ' · ' + typeCap + '</div><div class="split-row">' +
+        [0, 1].map(s => {
+          const plants = row.slots[s] || [];
+          return '<div class="bed split f-' + type + '"><div class="bmeta">' + (s === 0 ? 'A' : 'B') + ' · ' + gardenCfg.slotLen + 'm · ' + rowAreaM2(r).toFixed(1) + ' m²</div>' +
+            plants.map(p => {
+              const key = typeof p === 'string' ? p : p.key;
+              const sp = PLANTS[key] || {};
+              return '<a href="#p-' + esc(key) + '" class="plant">' + (sp.icon || '🌱') + ' ' + esc(sp.name || key) + '</a>';
+            }).join('') + '</div>';
+        }).join('') + '</div></div>';
+    }
+  });
+
+  // Plant detail panels (:target)
+  let detailHtml = '';
+  usedKeys.forEach(key => {
+    const sp = species[key];
+    const sow = sp.sow.length ? monthRange(sp.sow) : '—';
+    const har = sp.har.length ? monthRange(sp.har) : '—';
+    let sowSpec = '';
+    if (sp.pat) {
+      const patLbl = { square: 'Square grid', diamond: 'Diamond (offset) grid', row: 'Rows', hill: 'Hill / station' }[sp.pat] || sp.pat;
+      if (sp.pat === 'hill') {
+        sowSpec = '<div class="cd-row"><span class="cd-key">Sowing</span><span class="cd-val">' + (sp.ph || 2) + ' seeds/hole @ ' + sp.ss + 'cm apart, rows ' + sp.rs + 'cm apart</span></div>';
+      } else if (sp.pat === 'square') {
+        sowSpec = '<div class="cd-row"><span class="cd-key">Sowing</span><span class="cd-val">' + patLbl + ' ' + sp.ss + '×' + sp.rs + 'cm</span></div>';
+      } else {
+        sowSpec = '<div class="cd-row"><span class="cd-key">Sowing</span><span class="cd-val">' + patLbl + ' · seeds ' + sp.ss + 'cm apart in-row, rows ' + sp.rs + 'cm apart</span></div>';
+      }
+      if (sp.dp) sowSpec += '<div class="cd-row"><span class="cd-key">Depth</span><span class="cd-val">' + sp.dp + 'cm</span></div>';
+      if (sp.th) sowSpec += '<div class="cd-row"><span class="cd-key">Thin to</span><span class="cd-val">' + sp.th + 'cm</span></div>';
+    }
+    detailHtml += '<div class="p-detail" id="p-' + esc(key) + '"><a href="#top" class="close">✕</a>' +
+      '<h3>' + sp.i + ' ' + esc(sp.n) + '</h3>' +
+      '<div class="cd-row"><span class="cd-key">Spacing</span><span class="cd-val">' + sp.s + 'cm</span></div>' +
+      sowSpec +
+      '<div class="cd-row"><span class="cd-key">Sow</span><span class="cd-val">' + sow + '</span></div>' +
+      '<div class="cd-row"><span class="cd-key">Harvest</span><span class="cd-val">' + har + '</span></div>' +
+      '<div class="cd-row"><span class="cd-key">Maturity</span><span class="cd-val">' + sp.d + ' days</span></div>' +
+      '</div>';
+  });
+
+  const html = '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="UTF-8">\n' +
+  '<meta name="viewport" content="width=device-width,initial-scale=1.0">\n' +
+  '<title>Vegetable Garden — Field View</title>\n<style>\n' +
+  '*{box-sizing:border-box;margin:0;padding:0}\n' +
+  'body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;background:#0a1a0a;color:#c8d8c0;padding:12px;max-width:900px;margin:0 auto;line-height:1.5}\n' +
+  'h1{font-family:Georgia,"Palatino",serif;color:#5a8a4a;text-align:center;font-size:1.3rem;margin-bottom:2px}\n' +
+  '.subtitle{text-align:center;color:#6a8068;font-size:0.75rem;margin-bottom:6px}\n' +
+  '.brief-line{text-align:center;color:#8a9a8a;font-size:0.7rem;margin-bottom:10px}\n' +
+  '.spec{display:flex;flex-wrap:wrap;gap:4px 12px;justify-content:center;margin-bottom:12px;font-size:0.72rem;background:#142114;border:1px solid #1a301a;border-radius:6px;padding:8px 10px}\n' +
+  '.spec b{color:#e8f0e0}\n' +
+  '.mod-label{font-size:0.62rem;color:#6a8068;text-align:center;margin:10px 0 4px;letter-spacing:2px}\n' +
+  '.grow{display:flex;align-items:center;gap:8px;margin-bottom:6px}\n' +
+  '.rlabel{width:64px;font-size:0.65rem;color:#8a9a8a;text-align:right;flex-shrink:0}\n' +
+  '.split-row{flex:1;display:flex;gap:6px}\n' +
+  '.bed{flex:1;border-radius:6px;padding:6px 8px;display:flex;flex-wrap:wrap;gap:4px;align-content:flex-start;min-height:56px;position:relative}\n' +
+  '.bed.joined{border:2px solid rgba(255,213,79,0.35)}\n' +
+  '.bed.split{border:2px dashed rgba(255,255,255,0.12)}\n' +
+  '.f-tall{background:rgba(27,94,32,0.35)}\n.f-medium{background:rgba(76,175,80,0.3)}\n.f-low{background:rgba(139,195,74,0.2)}\n' +
+  '.bmeta{position:absolute;top:2px;right:6px;font-size:0.55rem;color:rgba(255,255,255,0.35)}\n' +
+  '.plant{font-size:0.68rem;color:#e8f0e0;text-decoration:none;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:4px;padding:1px 6px;margin-top:10px}\n' +
+  '.plant:hover{background:rgba(90,138,74,0.3)}\n' +
+  '.p-detail{display:none;background:#0d1a0d;border:1px solid #2a4028;border-radius:8px;padding:14px;margin-bottom:10px;scroll-margin-top:70px}\n' +
+  '.p-detail:target{display:block}\n' +
+  '.p-detail .close{float:right;color:#6a8068;text-decoration:none;font-size:1.1rem}\n' +
+  '.p-detail h3{color:#5a8a4a;font-family:Georgia,serif;font-size:0.95rem;margin-bottom:7px}\n' +
+  '.cd-row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #1a301a;font-size:0.78rem}\n' +
+  '.cd-row:last-child{border-bottom:none}\n' +
+  '.cd-key{color:#6a8068;flex-shrink:0;margin-right:10px}\n' +
+  '.cd-val{color:#e8f0e0;text-align:right}\n' +
+  '.legend{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-top:12px;font-size:0.62rem;color:#6a8068}\n' +
+  '</style>\n</head>\n<body>\n<a id="top"></a>\n' +
+  '<h1>🥕 Vegetable Garden — Field View</h1>\n' +
+  '<p class="subtitle">' + rows.length + ' rows · ' + gardenCfg.modules + ' module' + (gardenCfg.modules > 1 ? 's' : '') + ' · ' + gardenCfg.bedWidth + 'm beds × ' + gardenCfg.slotLen + 'm slots · paths ~' + (pathM * 100).toFixed(0) + 'cm</p>\n' +
+  briefLine +
+  '<div class="spec">' +
+  '<span>🧮 <b>' + rows.length + ' rows</b></span>' +
+  '<span>🔗 <b>' + tot.joinedCount + ' joined</b> (20m)</span>' +
+  '<span>✂️ <b>' + tot.splitCount + ' split</b> (2×' + gardenCfg.slotLen + 'm)</span>' +
+  '<span>🌱 <b>' + tot.growing.toFixed(0) + ' m² growing</b></span>' +
+  '<span>🧩 <b>' + tot.planted + ' plants</b></span>' +
+  '<span>📍 <b>' + (2 * gardenCfg.modules) + ' cells</b></span>' +
+  '</div>\n' +
+  '<div class="garden">' + rowsHtml + '</div>\n' +
+  detailHtml +
+  '<div class="legend">Tap a plant for spacing, sow & harvest · ' + usedKeys.size + ' species in this garden</div>\n' +
+  '</body>\n</html>';
+
+  const blob = new Blob([html], {type:'text/html'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'veg-garden-field-view.html';
+  a.click();
+  URL.revokeObjectURL(url);
+  showInfo('📤 Field view exported!');
+}
+
+function applyLoadedLayout(data) {
+  if (data.version === 3 && Array.isArray(data.rows)) {
+    gardenCfg = Object.assign({modules: 2, rowsPerModule: 6, bedWidth: 0.75, slotLen: 10}, data.cfg || {});
+    gardenCfg.modules = Math.max(1, Math.min(3, gardenCfg.modules || 2));
+    gardenCfg.bedWidth = Math.max(0.5, Math.min(1.2, gardenCfg.bedWidth || 0.75));
+    gardenCfg.slotLen = Math.max(5, Math.min(20, gardenCfg.slotLen || 10));
+    rows = [];
+    for (let r = 0; r < rowCount(); r++) {
+      const src = data.rows[r] || {joined: false, slots: [[], []]};
+      rows.push({
+        joined: !!src.joined,
+        slots: [
+          (src.slots && src.slots[0] ? src.slots[0].map(normPlant).filter(Boolean) : []),
+          (src.slots && src.slots[1] ? src.slots[1].map(normPlant).filter(Boolean) : [])
+        ]
+      });
+    }
+    return true;
+  }
+  if (data.beds && data.beds.length >= 6) {
+    // v2 import: flat beds → modules, joined rows
+    gardenCfg.modules = Math.max(1, Math.min(3, Math.ceil(data.beds.length / 6)));
+    gardenCfg.bedWidth = 0.75;
+    gardenCfg.slotLen = 10;
+    rows = [];
+    for (let r = 0; r < rowCount(); r++) {
+      const old = data.beds[r] || [];
+      rows.push({joined: true, slots: [old.map(normPlant).filter(Boolean), []]});
+    }
+    return true;
+  }
+  return false;
+}
+
+function importLayout(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (applyLoadedLayout(data)) {
+        render();
+        renderGardenSpec();
+        syncSetupUI();
+        showInfo('Layout imported!');
+      } else {
+        showInfo('Invalid file format');
+      }
+    } catch(err) {
+      showInfo('Error reading file');
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
+// ============ SPEC CARD + ZONE MINIMAP ============
+function gardenTotals() {
+  let joinedCount = 0, splitCount = 0, growing = 0, planted = 0;
+  for (let r = 0; r < rows.length; r++) {
+    if (rows[r].joined) joinedCount++;
+    else splitCount++;
+    growing += rowAreaM2(r);
+    planted += (rows[r].slots[0] || []).length + (rows[r].slots[1] || []).length;
+  }
+  return {joinedCount, splitCount, growing, planted};
+}
+
+// Plants that fit in one slot (or joined bed) given the sowing pattern.
+// Only meaningful when a slot holds ONE crop — mixed slots return null.
+function slotCapacity(r, s) {
+  const area = rowAreaM2(r) * 10000;               // cm²
+  const plants = (rows[r].slots[s] || []).map(p => typeof p === 'string' ? PLANTS[p] : PLANTS[p.key]).filter(Boolean);
+  if (plants.length !== 1) return null;
+  const p = plants[0];
+  const pat = p.sowPattern || 'square';
+  const seed = (p.seedSpacing || p.spacing || 30) / 100;   // m
+  const row = (p.rowSpacing || p.spacing || 30) / 100;     // m
+  let perM2;
+  if (pat === 'hill') perM2 = (p.seedsPerHole || 2) / (seed * row);
+  else if (pat === 'diamond') perM2 = 1.155 / (seed * row);   // ~15% denser
+  else perM2 = 1 / (seed * row);                              // square & row
+  return Math.round(area / 10000 * perM2);
+}
+
+// Per-plant capacity in a standard 10m slot (for the info panel).
+function plantSlotCapacity(p) {
+  if (!p || !p.sowPattern) return null;
+  const areaM2 = 10 * 0.75;                                  // 10m slot × 0.75m bed
+  const seed = (p.seedSpacing || p.spacing || 30) / 100;
+  const row = (p.rowSpacing || p.spacing || 30) / 100;
+  let perM2;
+  if (p.sowPattern === 'hill') perM2 = (p.seedsPerHole || 2) / (seed * row);
+  else if (p.sowPattern === 'diamond') perM2 = 1.155 / (seed * row);
+  else perM2 = 1 / (seed * row);
+  return Math.round(areaM2 * perM2);
+}
+
+function renderGardenSpec() {
+  const grid = document.getElementById('garden-spec-grid');
+  const note = document.getElementById('garden-spec-note');
+  const minimap = document.getElementById('zone-minimap');
+  if (!grid) return;
+  const pathM = pathWidthM();
+  const tot = gardenTotals();
+  const blockLenCells = 2;                          // 2 cells along the beds (20m)
+  const blockWidCells = gardenCfg.modules;          // modules side by side across width
+  const cellsTotal = blockLenCells * blockWidCells;
+  const footprintM2 = blockLenCells * blockWidCells * gardenCfg.slotLen * gardenCfg.slotLen;
+
+  grid.innerHTML =
+    `<div class="spec-item">🧮 <b>${rows.length} rows</b> · ${gardenCfg.modules} module${gardenCfg.modules > 1 ? 's' : ''} (6/module)</div>` +
+    `<div class="spec-item">📏 <b>${gardenCfg.bedWidth}m × ${gardenCfg.slotLen}m</b> per slot · ${gardenCfg.bedWidth}m × ${gardenCfg.slotLen * 2}m joined</div>` +
+    `<div class="spec-item">🛤️ <b>~${(pathM * 100).toFixed(0)}cm paths</b> between rows</div>` +
+    `<div class="spec-item">🔗 <b>${tot.joinedCount} joined</b> (20m) · ✂️ <b>${tot.splitCount} split</b> (2×10m)</div>` +
+    `<div class="spec-item">🌱 <b>${tot.growing.toFixed(0)} m² growing</b> · ${tot.planted} plants placed</div>` +
+    `<div class="spec-item">📍 <b>${cellsTotal} cells</b> (${blockLenCells}×${blockWidCells}) · ${footprintM2.toFixed(0)} m² footprint</div>`;
+
+  note.innerHTML = `Real-world layout: 6 rows across each ${gardenCfg.slotLen}m cell — bed ${gardenCfg.bedWidth}m + ~${(pathM * 100).toFixed(0)}cm walk. Beds run ${gardenCfg.slotLen * 2}m (2 cells) when joined. Set modules, width and slot length above.`;
+
+  // Zone minimap: plot grid from brief (default 10×10 cells), block highlighted
+  let plotW = 10, plotH = 10;
+  try {
+    const b = JSON.parse(localStorage.getItem('tuscan-brief-v1') || '{}');
+    if (b.plotW && b.plotH && b.cellSize) {
+      plotW = Math.max(2, Math.round(b.plotW / b.cellSize));
+      plotH = Math.max(2, Math.round(b.plotH / b.cellSize));
+    }
+  } catch(e) {}
+  let cells = '';
+  const startR = Math.max(0, plotH - 1 - blockWidCells);  // south edge (bottom)
+  const startC = Math.floor((plotW - blockLenCells) / 2);
+  for (let rr = 0; rr < plotH; rr++) {
+    for (let cc = 0; cc < plotW; cc++) {
+      const inBlock = rr >= startR && rr < startR + blockWidCells && cc >= startC && cc < startC + blockLenCells;
+      cells += `<div class="zm-cell${inBlock ? ' block' : ''}"></div>`;
+    }
+  }
+  minimap.style.gridTemplateColumns = `repeat(${plotW}, 1fr)`;
+  minimap.innerHTML = cells;
+  minimap.title = `Zone 1 garden block: ${blockLenCells}×${blockWidCells} cells (${blockLenCells * gardenCfg.slotLen}m × ${blockWidCells * gardenCfg.slotLen}m), south edge of ${plotW}×${plotH} cell plot`;
+}
+
+// ============ SETUP PANEL ============
+function syncSetupUI() {
+  const mSel = document.getElementById('cfg-modules');
+  const wInp = document.getElementById('cfg-width');
+  const sInp = document.getElementById('cfg-slot');
+  if (mSel) mSel.value = String(gardenCfg.modules);
+  if (wInp) wInp.value = String(gardenCfg.bedWidth);
+  if (sInp) sInp.value = String(gardenCfg.slotLen);
+  const hint = document.getElementById('garden-hint');
+  if (hint) hint.textContent = `= ${rowCount()} rows · paths ~${(pathWidthM() * 100).toFixed(0)}cm`;
+}
+
+function onSetupChange() {
+  const mSel = document.getElementById('cfg-modules');
+  const wInp = document.getElementById('cfg-width');
+  const sInp = document.getElementById('cfg-slot');
+  if (!mSel) return;
+  const newModules = parseInt(mSel.value, 10) || 2;
+  const newWidth = parseFloat(wInp.value) || 0.75;
+  const newSlot = parseFloat(sInp.value) || 10;
+
+  // preserve existing plants when growing; trim when shrinking
+  const oldRows = rows;
+  gardenCfg.modules = Math.max(1, Math.min(3, newModules));
+  gardenCfg.bedWidth = Math.max(0.5, Math.min(1.2, newWidth));
+  gardenCfg.slotLen = Math.max(5, Math.min(20, newSlot));
+  rows = [];
+  for (let r = 0; r < rowCount(); r++) {
+    if (oldRows[r]) rows.push(oldRows[r]);
+    else rows.push({joined: false, slots: [[], []]});
+  }
+  render();
+  renderGardenSpec();
+  syncSetupUI();
+}
+
+// ============ INIT ============
+// Region filter is resolved near the top (URL param → brief fallback).
+// Show region badge in subtitle.
+if (regionParam === 'tuscany' || regionParam === 'netherlands') {
+  var regionBadge = document.createElement('span');
+  regionBadge.style.cssText = 'display:inline-block;padding:1px 8px;border-radius:8px;font-size:0.7em;background:rgba(90,138,74,0.15);border:1px solid #5a8a4a;color:#aed581;margin-left:6px';
+  regionBadge.textContent = regionParam === 'tuscany' ? '🇮🇹 Tuscany' : '🇳🇱 Netherlands';
+  document.querySelector('.subtitle').appendChild(regionBadge);
+}
+
+// Setup panel listeners
+document.addEventListener('DOMContentLoaded', function() {
+  var mSel = document.getElementById('cfg-modules');
+  var wInp = document.getElementById('cfg-width');
+  var sInp = document.getElementById('cfg-slot');
+  if (mSel) mSel.addEventListener('change', onSetupChange);
+  if (wInp) wInp.addEventListener('change', onSetupChange);
+  if (sInp) sInp.addEventListener('change', onSetupChange);
+});
+
+initRows();
+renderPalette();
+if (!loadLocalStorage()) {
+  resetDefault();
+} else {
+  render();
+  renderGardenSpec();
+  syncSetupUI();
+}
+
+// ============ LIVE DB REFRESH ============
+// Try to load plants.json and rebuild the species DB from the real source.
+// Falls back silently to the embedded snapshot (offline / file://).
+fetch('plants.json').then(function (r) { return r.json(); }).then(function (db) {
+  var live = {};
+  Object.keys(db).forEach(function (k) {
+    var s = db[k];
+    if (PLANT_CATEGORIES.indexOf(s.category) < 0) return;
+    if (regionFilter !== 'all' && (!s.regions || s.regions.indexOf(regionFilter) < 0)) return;
+    live[k] = s;
+  });
+  // Only swap if the live DB actually differs (new species, changed fields)
+  var changed = Object.keys(live).length !== Object.keys(SPECIES_DB).length;
+  if (!changed) {
+    var lk = Object.keys(live);
+    for (var i = 0; i < lk.length; i++) {
+      if (JSON.stringify(live[lk[i]]) !== JSON.stringify(SPECIES_DB[lk[i]])) { changed = true; break; }
+    }
+  }
+  if (!changed) return;
+  SPECIES_DB = live;
+  buildPlants(regionFilter);
+  // Re-render palette + current view; keep the user's bed assignments
+  var h3 = document.querySelector('.palette h3');
+  if (h3) h3.textContent = '🌱 Plant Palette (' + Object.keys(PLANTS).length + ' species)';
+  renderPalette();
+  render();
+}).catch(function () { /* offline — keep embedded snapshot */ });
+</script>
+</body>
+</html>

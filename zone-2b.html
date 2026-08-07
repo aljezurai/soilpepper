@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOILPEPPER — Zone 2b Detail</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#0d1b2a;color:#e0e0d0;padding:15px;max-width:1200px;margin:0 auto;}
+h1{text-align:center;color:#c5e1a5;margin-bottom:8px;font-size:1.4em;}
+.subtitle{text-align:center;color:rgba(255,255,255,0.5);font-size:0.85em;margin-bottom:10px;}
+.controls{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;justify-content:center;}
+.btn-toggle{padding:6px 14px;border:1px solid rgba(255,255,255,0.2);border-radius:6px;cursor:pointer;font-size:0.75em;background:rgba(255,255,255,0.05);color:#ccc;transition:all .2s;}
+.btn-toggle.active{background:rgba(129,199,132,0.25);border-color:#81c784;color:#c5e1a5;}
+.btn-toggle:hover{background:rgba(255,255,255,0.1);}
+.main-layout{display:flex;gap:15px;margin-bottom:15px;}
+.map-wrap{flex:2;position:relative;}
+.info-side{flex:1;min-width:280px;}
+.plot-container{position:relative;width:100%;aspect-ratio:1;background:#1a2e1a;border:2px solid rgba(255,255,255,0.15);border-radius:8px;overflow:hidden;}
+/* Layer overlays */
+.layer-overlay{position:absolute;inset:0;pointer-events:none;z-index:2;transition:opacity .3s;}
+.layer-overlay.hidden{opacity:0;}
+/* Swales */
+.swale{position:absolute;left:3%;width:94%;height:2px;z-index:3;pointer-events:none;}
+.swale::after{content:'';position:absolute;left:0;top:0;width:100%;height:1px;border-bottom:2.5px dashed rgba(33,150,243,0.4);}
+.swale-label{position:absolute;right:2%;top:-10px;font-size:0.4em;color:rgba(33,150,243,0.4);}
+/* Frost zones */
+.frost-overlay{background:linear-gradient(to bottom,rgba(0,100,200,0) 0%,rgba(0,100,200,0) 30%,rgba(0,80,180,0.08) 55%,rgba(0,60,160,0.15) 75%,rgba(0,40,140,0.25) 100%);}
+/* Fire risk */
+.fire-layer{background:linear-gradient(135deg,transparent 60%,rgba(244,67,54,0.12) 85%,rgba(244,67,54,0.25) 100%);}
+/* Wind */
+.wind-layer svg{width:100%;height:100%;}
+/* Sun */
+.sun-layer{background:linear-gradient(135deg,transparent 50%,rgba(255,235,59,0.06) 75%,rgba(255,235,59,0.12) 100%);}
+/* Water */
+.water-layer{background:linear-gradient(180deg,transparent 0%,transparent 15%,rgba(33,150,243,0.04) 16%,rgba(33,150,243,0.04) 58%,transparent 59%,transparent 100%);}
+/* Scale bar */
+.scale-bar{position:absolute;bottom:3%;left:15%;width:70%;height:6px;pointer-events:none;z-index:8;}
+.scale-bar .bar{width:100%;height:1px;background:rgba(255,255,255,0.2);position:relative;margin-top:8px;}
+.scale-bar .tick{position:absolute;top:-3px;width:1px;height:7px;background:rgba(255,255,255,0.2);}
+.scale-bar .tick-label{position:absolute;top:9px;font-size:0.4em;color:rgba(255,255,255,0.35);transform:translateX(-50%);}
+/* Plant markers */
+.plant{position:absolute;display:flex;flex-direction:column;align-items:center;cursor:pointer;z-index:4;transition:transform .2s;}
+.plant:hover{transform:scale(1.15);z-index:5;}
+.plant-icon{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.7em;box-shadow:0 2px 6px rgba(0,0,0,0.4);}
+.plant-label{font-size:0.4em;margin-top:1px;text-shadow:0 1px 3px rgba(0,0,0,0.9);white-space:nowrap;max-width:60px;overflow:hidden;text-overflow:ellipsis;text-align:center;color:rgba(255,255,255,0.85);}
+.plant .roles{font-size:0.3em;margin-top:0;color:rgba(255,255,255,0.5);text-shadow:0 1px 3px rgba(0,0,0,0.9);}
+.water-drops{font-size:0.35em;color:#64b5f6;text-shadow:0 1px 2px rgba(0,0,0,0.8);}
+/* Layer colored borders */
+.layer-canopy .plant-icon{background:rgba(27,94,32,0.85) !important;border:2px solid #1b5e20;}
+.layer-subcanopy .plant-icon{background:rgba(46,125,50,0.8) !important;border:2px solid #2e7d32;}
+.layer-shrub .plant-icon{background:rgba(76,175,80,0.75) !important;border:2px solid #4caf50;}
+.layer-herb .plant-icon{background:rgba(139,195,74,0.75) !important;border:2px solid #8bc34a;}
+.layer-ground .plant-icon{background:rgba(158,187,97,0.75) !important;border:2px solid #9ebb61;}
+.layer-climber .plant-icon{background:rgba(139,69,19,0.75) !important;border:2px solid #8b4513;}
+.layer-nfixer .plant-icon{background:rgba(0,150,136,0.75) !important;border:2px solid #009688;}
+.marginal .plant-icon{border-style:dashed !important;border-color:#ff9800 !important;border-width:2.5px !important;box-shadow:0 0 8px rgba(255,152,0,0.3);}
+/* Info panel */
+.info-panel{position:absolute;bottom:5%;left:5%;width:90%;max-height:35%;background:rgba(13,27,42,0.92);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:10px 12px;z-index:10;overflow-y:auto;display:none;backdrop-filter:blur(4px);}
+.info-panel.active{display:block;}
+.info-panel h4{color:#c5e1a5;font-size:0.8em;margin-bottom:4px;}
+.info-panel p{font-size:0.65em;color:rgba(255,255,255,0.7);margin-bottom:3px;line-height:1.4;}
+.info-panel .stat{display:inline-block;padding:1px 6px;border-radius:4px;background:rgba(255,255,255,0.06);margin:1px 3px 1px 0;font-size:0.6em;}
+/* Side panel */
+.side-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:12px;margin-bottom:10px;}
+.side-card h3{color:#c5e1a5;font-size:0.85em;margin-bottom:6px;}
+.side-card p{font-size:0.7em;color:rgba(255,255,255,0.65);line-height:1.5;}
+.side-card .stat-row{display:flex;justify-content:space-between;padding:3px 0;font-size:0.7em;border-bottom:1px solid rgba(255,255,255,0.04);}
+.side-card .stat-label{color:rgba(255,255,255,0.5);}
+.side-card .stat-val{color:#e0e0d0;}
+/* Layer depth bar */
+.layer-bar{display:flex;flex-direction:column-reverse;gap:2px;margin:10px 0;}
+.layer-row{display:flex;align-items:center;gap:8px;padding:4px 8px;border-radius:4px;background:rgba(255,255,255,0.03);font-size:0.6em;}
+.layer-row .color-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.layer-row .layer-name{color:#c5e1a5;min-width:60px;flex-shrink:0;}
+.layer-row .layer-fill{flex:1;height:14px;border-radius:3px;background:rgba(255,255,255,0.05);overflow:hidden;}
+.layer-row .layer-fill-bar{height:100%;border-radius:3px;}
+/* Legend */
+.legend{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0;}
+.legend-item{display:flex;align-items:center;gap:4px;font-size:0.55em;color:rgba(255,255,255,0.6);}
+.legend-swatch{width:10px;height:10px;border-radius:3px;flex-shrink:0;}
+/* Summary table */
+.summary-table{width:100%;border-collapse:collapse;font-size:0.6em;margin-top:8px;}
+.summary-table th{padding:5px 6px;text-align:left;background:rgba(255,255,255,0.05);color:#c5e1a5;border-bottom:1px solid rgba(255,255,255,0.1);}
+.summary-table td{padding:4px 6px;border-bottom:1px solid rgba(255,255,255,0.04);color:rgba(255,255,255,0.7);}
+.summary-table tr.clickable{cursor:pointer;transition:background .2s;}
+.summary-table tr.clickable:hover{background:rgba(129,199,132,0.08);}
+.badge{display:inline-block;padding:1px 5px;border-radius:3px;font-size:0.7em;}
+.badge-thrive{background:rgba(76,175,80,0.2);color:#81c784;}
+.badge-marginal{background:rgba(255,152,0,0.2);color:#ffb74d;}
+.badge-fire{background:rgba(244,67,54,0.2);color:#ef5350;}
+/* Info button */
+.info-btn{position:absolute;top:5px;right:5px;z-index:7;width:22px;height:22px;border-radius:50%;border:1px solid rgba(255,255,255,0.2);background:rgba(0,0,0,0.3);color:#ccc;font-size:0.5em;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.info-btn:hover{background:rgba(255,255,255,0.1);}
+/* Responsive */
+@media(max-width:700px){.main-layout{flex-direction:column;}.info-side{min-width:auto;}}
+</style>
+</head>
+<body>
+
+<h1>🌿 Zone 2b — Berries, Canopy & N-Fixers</h1>
+<div class="subtitle">East side · 40m × 22m · Adjacent to pond · SE firebreak · South-facing slope</div>
+
+<div class="controls">
+  <button class="btn-toggle active" onclick="toggleLayer('all')">🔄 All</button>
+  <button class="btn-toggle active" onclick="toggleLayer('canopy')">🌳 Canopy</button>
+  <button class="btn-toggle active" onclick="toggleLayer('subcanopy')">🌿 Sub-canopy</button>
+  <button class="btn-toggle active" onclick="toggleLayer('shrub')">🫐 Berries</button>
+  <button class="btn-toggle active" onclick="toggleLayer('nfixer')">🔷 N-fixers</button>
+  <button class="btn-toggle active" onclick="toggleLayer('herb')">🌻 Herbs</button>
+  <button class="btn-toggle active" onclick="toggleLayer('ground')">🌱 Ground</button>
+  <button class="btn-toggle active" onclick="toggleLayer('climber')">🌿 Climber</button>
+  <button class="btn-toggle" onclick="toggleOverlay('frost')">❄️ Frost</button>
+  <button class="btn-toggle" onclick="toggleOverlay('fire-se')">🔥 Fire</button>
+  <button class="btn-toggle" onclick="toggleOverlay('wind')">💨 Wind</button>
+  <button class="btn-toggle" onclick="toggleOverlay('sun')">☀️ Sun</button>
+  <button class="btn-toggle" onclick="toggleOverlay('water')">💧 Water</button>
+</div>
+
+<div class="main-layout">
+  <div class="map-wrap">
+    <div class="plot-container" id="plot">
+
+      <!-- Overlays -->
+      <div class="layer-overlay frost-overlay hidden" id="layer-frost"></div>
+      <div class="layer-overlay fire-layer hidden" id="layer-fire"></div>
+      <div class="layer-overlay wind-layer hidden" id="layer-wind"><svg viewBox="0 0 100 100"><g opacity="0.25"><path d="M80 30 Q60 28 40 32" stroke="#64b5f6" stroke-width="2" fill="none" marker-end="url(#arrow)"/><path d="M75 50 Q55 48 35 52" stroke="#64b5f6" stroke-width="2" fill="none" marker-end="url(#arrow)"/><text x="82" y="35" font-size="5" fill="#64b5f6">Sirocco →</text></g></svg></div>
+      <div class="layer-overlay sun-layer hidden" id="layer-sun"></div>
+      <div class="layer-overlay water-layer hidden" id="layer-water"></div>
+
+      <!-- Scale bar (50m) -->
+      <div class="scale-bar">
+        <span style="position:absolute;left:0;bottom:12px;font-size:0.35em;color:rgba(255,255,255,0.3);">0</span>
+        <span style="position:absolute;left:25%;bottom:12px;font-size:0.35em;color:rgba(255,255,255,0.3);">12.5m</span>
+        <span style="position:absolute;left:50%;bottom:12px;font-size:0.35em;color:rgba(255,255,255,0.3);">25m</span>
+        <span style="position:absolute;left:75%;bottom:12px;font-size:0.35em;color:rgba(255,255,255,0.3);">37.5m</span>
+        <span style="position:absolute;left:100%;bottom:12px;font-size:0.35em;color:rgba(255,255,255,0.3);">50m</span>
+        <div class="bar">
+          <div class="tick" style="left:0%"></div>
+          <div class="tick" style="left:25%"></div>
+          <div class="tick" style="left:50%"></div>
+          <div class="tick" style="left:75%"></div>
+          <div class="tick" style="left:100%"></div>
+        </div>
+      </div>
+
+      <!-- Zone 2b boundary -->
+      <div style="position:absolute;top:5%;left:3%;width:94%;height:90%;border:2px dashed rgba(129,199,132,0.3);border-radius:6px;z-index:1;pointer-events:none;"></div>
+
+      <!-- Swale lines (2.5 swales cross Zone 2b at ~22%, 40%, 58%, 72% top) -->
+      <div class="swale" style="top:22%;"><div class="swale-label">Swale 1</div></div>
+      <div class="swale" style="top:40%;"><div class="swale-label">Swale 2</div></div>
+      <div class="swale" style="top:58%;"><div class="swale-label">Swale 3</div></div>
+      <div class="swale" style="top:72%;"><div class="swale-label">Swale 4</div></div>
+
+      <!-- Firebreak strip (SE edge) -->
+      <div style="position:absolute;top:70%;right:0;width:12%;height:28%;background:rgba(244,67,54,0.08);border-left:2px dashed rgba(244,67,54,0.3);z-index:2;pointer-events:none;"></div>
+      <div style="position:absolute;bottom:5%;right:1%;font-size:0.4em;color:rgba(244,67,54,0.4);z-index:3;pointer-events:none;">🔥 Firebreak</div>
+
+      <!-- N ↑ -->
+      <div style="position:absolute;top:2%;left:3%;font-size:0.45em;color:rgba(255,255,255,0.3);z-index:8;pointer-events:none;">N ↑</div>
+
+      <!-- Temperature gradient -->
+      <div style="position:absolute;bottom:2%;left:3%;font-size:0.35em;color:rgba(255,255,255,0.2);z-index:8;pointer-events:none;">Zone 8b-9a · ~300m</div>
+      <div style="position:absolute;top:3%;right:3%;font-size:0.35em;color:rgba(255,255,255,0.2);z-index:8;pointer-events:none;">🌡️ Upper -5°C → Pocket -12°C</div>
+
+      <!-- ============ ALL 15 PLANTS ============ -->
+
+      <!-- CANOPY — Pomegranate (swale berm 1, east side) -->
+      <div class="plant layer-canopy" style="top:16%;left:60%;" data-layer="canopy" onclick="showInfo('pomegranate')">
+        <div class="plant-icon">🍎</div>
+        <div class="plant-label">Pomegranate</div>
+        <div class="water-drops">💧</div>
+        <div class="roles">🐝🚫🔥</div>
+      </div>
+
+      <!-- CANOPY — Pomegranate 2 (swale berm 1, further east) -->
+      <div class="plant layer-canopy" style="top:14%;left:78%;" data-layer="canopy" onclick="showInfo('pomegranate')">
+        <div class="plant-icon">🍎</div>
+        <div class="plant-label">Pomegranate</div>
+        <div class="water-drops">💧</div>
+        <div class="roles">🐝🚫🔥</div>
+      </div>
+
+      <!-- CANOPY — Jujube (swale berm 2, east side, firebreak zone) -->
+      <div class="plant layer-canopy" style="top:33%;left:82%;" data-layer="canopy" onclick="showInfo('jujube')">
+        <div class="plant-icon">🍒</div>
+        <div class="plant-label">Jujube</div>
+        <div class="water-drops">💧</div>
+        <div class="roles">🐝🍎🔥</div>
+      </div>
+
+      <!-- CANOPY — Jujube 2 (swale berm 2, central) -->
+      <div class="plant layer-canopy" style="top:35%;left:62%;" data-layer="canopy" onclick="showInfo('jujube')">
+        <div class="plant-icon">🍒</div>
+        <div class="plant-label">Jujube</div>
+        <div class="water-drops">💧</div>
+        <div class="roles">🐝🍎🔥</div>
+      </div>
+
+      <!-- SUB-CANOPY — Goji berry -->
+      <div class="plant layer-subcanopy" style="top:22%;left:52%;" data-layer="subcanopy" onclick="showInfo('goji')">
+        <div class="plant-icon">🫐</div>
+        <div class="plant-label">Goji berry</div>
+        <div class="water-drops">💧💧</div>
+        <div class="roles">🐝🍎</div>
+      </div>
+
+      <!-- SUB-CANOPY — Elderberry -->
+      <div class="plant layer-subcanopy" style="top:27%;left:72%;" data-layer="subcanopy" onclick="showInfo('elderberry')">
+        <div class="plant-icon">🫐</div>
+        <div class="plant-label">Elderberry</div>
+        <div class="water-drops">💧💧</div>
+        <div class="roles">🐝🍎🌿</div>
+      </div>
+
+      <!-- SHRUB — Blackberry -->
+      <div class="plant layer-shrub" style="top:44%;left:55%;" data-layer="shrub" onclick="showInfo('blackberry')">
+        <div class="plant-icon">🫐</div>
+        <div class="plant-label">Blackberry</div>
+        <div class="water-drops">💧💧</div>
+        <div class="roles">🐝🍎🚫</div>
+      </div>
+
+      <!-- SHRUB MARGINAL — Raspberry ⚠️ -->
+      <div class="plant layer-shrub marginal" style="top:48%;left:78%;" data-layer="shrub" onclick="showInfo('raspberry')">
+        <div class="plant-icon">🫐</div>
+        <div class="plant-label">Raspberry ⚠️</div>
+        <div class="water-drops">💧💧💧</div>
+        <div class="roles">🐝🍎🌱</div>
+      </div>
+
+      <!-- SHRUB MARGINAL — Red currant ⚠️ -->
+      <div class="plant layer-shrub marginal" style="top:50%;left:48%;" data-layer="shrub" onclick="showInfo('currant')">
+        <div class="plant-icon">🫐</div>
+        <div class="plant-label">Red currant ⚠️</div>
+        <div class="water-drops">💧💧💧</div>
+        <div class="roles">🐝🍎</div>
+      </div>
+
+      <!-- N-FIXER — Sea buckthorn (outer edge, windbreak) -->
+      <div class="plant layer-nfixer" style="top:60%;left:86%;" data-layer="nfixer" onclick="showInfo('seabuckthorn')">
+        <div class="plant-icon">🔄</div>
+        <div class="plant-label">Sea buckthorn</div>
+        <div class="water-drops">💧</div>
+        <div class="roles">🔄🍎🚫</div>
+      </div>
+
+      <!-- N-FIXER — Goumi (outer edge, windbreak) -->
+      <div class="plant layer-nfixer" style="top:65%;left:50%;" data-layer="nfixer" onclick="showInfo('goumi')">
+        <div class="plant-icon">🔄</div>
+        <div class="plant-label">Goumi</div>
+        <div class="water-drops">💧💧</div>
+        <div class="roles">🔄🐝🍎</div>
+      </div>
+
+      <!-- HERB — Comfrey -->
+      <div class="plant layer-herb" style="top:30%;left:42%;" data-layer="herb" onclick="showInfo('comfrey')">
+        <div class="plant-icon">🌿</div>
+        <div class="plant-label">Comfrey</div>
+        <div class="water-drops">💧💧</div>
+        <div class="roles">⛏️🌿🐝</div>
+      </div>
+
+      <!-- HERB — Yarrow -->
+      <div class="plant layer-herb" style="top:40%;left:32%;" data-layer="herb" onclick="showInfo('yarrow')">
+        <div class="plant-icon">🌼</div>
+        <div class="plant-label">Yarrow</div>
+        <div class="water-drops">💧</div>
+        <div class="roles">⛏️🐝🌿</div>
+      </div>
+
+      <!-- HERB — Borage -->
+      <div class="plant layer-herb" style="top:55%;left:28%;" data-layer="herb" onclick="showInfo('borage')">
+        <div class="plant-icon">🌸</div>
+        <div class="plant-label">Borage</div>
+        <div class="water-drops">💧</div>
+        <div class="roles">🐝⛏️🍎</div>
+      </div>
+
+      <!-- GROUND — Thyme -->
+      <div class="plant layer-ground" style="top:70%;left:38%;" data-layer="ground" onclick="showInfo('thyme')">
+        <div class="plant-icon">🌱</div>
+        <div class="plant-label">Thyme</div>
+        <div class="water-drops">💧</div>
+        <div class="roles">🌱🚫🐝</div>
+      </div>
+
+      <!-- GROUND — White clover -->
+      <div class="plant layer-ground" style="top:76%;left:28%;" data-layer="ground" onclick="showInfo('clover')">
+        <div class="plant-icon">🌱</div>
+        <div class="plant-label">White clover</div>
+        <div class="water-drops">💧</div>
+        <div class="roles">🔄🌱🐝</div>
+      </div>
+
+      <!-- CLIMBER — Grape (climbing pomegranate) -->
+      <div class="plant layer-climber" style="top:12%;left:64%;" data-layer="climber" onclick="showInfo('grape')">
+        <div class="plant-icon">🍇</div>
+        <div class="plant-label">Grape climbing ↑</div>
+        <div class="water-drops">💧</div>
+        <div class="roles">🍎🐝</div>
+      </div>
+
+      <!-- CLIMBER — Grape (climbing jujube) -->
+      <div class="plant layer-climber" style="top:30%;left:72%;" data-layer="climber" onclick="showInfo('grape')">
+        <div class="plant-icon">🍇</div>
+        <div class="plant-label">Grape climbing ↑</div>
+        <div class="water-drops">💧</div>
+        <div class="roles">🍎🐝</div>
+      </div>
+
+      <!-- Info panel -->
+      <div class="info-panel active" id="info-panel">
+        <div id="info-content">
+          <h4>🌿 Click any plant for details</h4>
+          <p>This map shows the detailed design of Zone 2b — 15 species in a 7-layer forest garden stack. Toggle layers above to see each level, or click a plant for its full profile.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="info-side">
+    <!-- Zone 2b info card -->
+    <div class="side-card">
+      <h3>🌿 Zone 2b — East Side</h3>
+      <div class="stat-row"><span class="stat-label">Area</span><span class="stat-val">~40m × 22m = 880m²</span></div>
+      <div class="stat-row"><span class="stat-label">Position</span><span class="stat-val">East side, adjacent to pond</span></div>
+      <div class="stat-row"><span class="stat-label">Swales</span><span class="stat-val">4 swales cross this zone</span></div>
+      <div class="stat-row"><span class="stat-label">Primary roles</span><span class="stat-val">Berries, Canopy, N-fixers</span></div>
+      <div class="stat-row"><span class="stat-label">Fire risk</span><span class="stat-val">SE boundary — firebreak with herbs</span></div>
+      <div class="stat-row"><span class="stat-label">Water source</span><span class="stat-val">Pond adjacent (humidity buffer)</span></div>
+      <div class="stat-row"><span class="stat-label">Design principle</span><span class="stat-val">7-layer forest garden stacking</span></div>
+    </div>
+
+    <!-- Vertical layers bar -->
+    <div class="side-card">
+      <h3>📐 7-Layer Stack</h3>
+      <div class="layer-bar">
+        <div class="layer-row">
+          <span class="color-dot" style="background:#1b5e20;"></span>
+          <span class="layer-name">7. Canopy</span>
+          <div class="layer-fill"><div class="layer-fill-bar" style="width:100%;background:#1b5e20;opacity:0.6;"></div></div>
+          <span style="font-size:0.55em;color:rgba(255,255,255,0.5);white-space:nowrap;">Pomegranate, Jujube</span>
+        </div>
+        <div class="layer-row">
+          <span class="color-dot" style="background:#2e7d32;"></span>
+          <span class="layer-name">6. Sub-canopy</span>
+          <div class="layer-fill"><div class="layer-fill-bar" style="width:75%;background:#2e7d32;opacity:0.5;"></div></div>
+          <span style="font-size:0.55em;color:rgba(255,255,255,0.5);white-space:nowrap;">Goji, Elderberry</span>
+        </div>
+        <div class="layer-row">
+          <span class="color-dot" style="background:#4caf50;"></span>
+          <span class="layer-name">5. Shrub</span>
+          <div class="layer-fill"><div class="layer-fill-bar" style="width:60%;background:#4caf50;opacity:0.5;"></div></div>
+          <span style="font-size:0.55em;color:rgba(255,255,255,0.5);white-space:nowrap;">Black/Rasp/Currant</span>
+        </div>
+        <div class="layer-row">
+          <span class="color-dot" style="background:#009688;"></span>
+          <span class="layer-name">N-fixers</span>
+          <div class="layer-fill"><div class="layer-fill-bar" style="width:50%;background:#009688;opacity:0.5;"></div></div>
+          <span style="font-size:0.55em;color:rgba(255,255,255,0.5);white-space:nowrap;">Sea buckthorn, Goumi</span>
+        </div>
+        <div class="layer-row">
+          <span class="color-dot" style="background:#8bc34a;"></span>
+          <span class="layer-name">4. Herb</span>
+          <div class="layer-fill"><div class="layer-fill-bar" style="width:40%;background:#8bc34a;opacity:0.5;"></div></div>
+          <span style="font-size:0.55em;color:rgba(255,255,255,0.5);white-space:nowrap;">Comfrey, Yarrow, Borage</span>
+        </div>
+        <div class="layer-row">
+          <span class="color-dot" style="background:#9ebb61;"></span>
+          <span class="layer-name">3. Ground</span>
+          <div class="layer-fill"><div class="layer-fill-bar" style="width:30%;background:#9ebb61;opacity:0.5;"></div></div>
+          <span style="font-size:0.55em;color:rgba(255,255,255,0.5);white-space:nowrap;">Thyme, White clover</span>
+        </div>
+        <div class="layer-row">
+          <span class="color-dot" style="background:#8b4513;"></span>
+          <span class="layer-name">1. Climber</span>
+          <div class="layer-fill"><div class="layer-fill-bar" style="width:70%;background:#8b4513;opacity:0.5;"></div></div>
+          <span style="font-size:0.55em;color:rgba(255,255,255,0.5);white-space:nowrap;">Grape (table) ↑</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Legend -->
+    <div class="side-card">
+      <h3>🎨 Legend</h3>
+      <div class="legend">
+        <div class="legend-item"><span class="legend-swatch" style="background:#1b5e20;"></span>Canopy</div>
+        <div class="legend-item"><span class="legend-swatch" style="background:#2e7d32;"></span>Sub-canopy</div>
+        <div class="legend-item"><span class="legend-swatch" style="background:#4caf50;"></span>Berries</div>
+        <div class="legend-item"><span class="legend-swatch" style="background:#009688;"></span>N-fixers</div>
+        <div class="legend-item"><span class="legend-swatch" style="background:#8bc34a;"></span>Herbs</div>
+        <div class="legend-item"><span class="legend-swatch" style="background:#9ebb61;"></span>Ground cover</div>
+        <div class="legend-item"><span class="legend-swatch" style="background:#8b4513;"></span>Climber</div>
+        <div class="legend-item"><span class="legend-swatch" style="background:transparent;border:2px dashed #ff9800;"></span>⚠️ Marginal</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Summary table -->
+<div style="margin-top:8px;">
+  <button class="btn-toggle active" onclick="toggleTable()">📋 Toggle Summary Table</button>
+</div>
+<div id="summary-section">
+  <table class="summary-table">
+    <tr>
+      <th>Plant</th><th>Layer</th><th>Functions</th><th>Water</th><th>Fire</th><th>Status</th>
+    </tr>
+    <tr class="clickable" onclick="showInfo('pomegranate')">
+      <td>🍎 Pomegranate</td><td>Canopy</td><td>🐝🚫🔥</td><td>💧 Low</td><td>🔥 Good</td><td><span class="badge badge-thrive">✅ Thrives</span></td>
+    </tr>
+    <tr class="clickable" onclick="showInfo('jujube')">
+      <td>🍒 Jujube</td><td>Canopy</td><td>🐝🍎🔥</td><td>💧 Low</td><td>🔥 Good</td><td><span class="badge badge-thrive">✅ Thrives</span></td>
+    </tr>
+    <tr class="clickable" onclick="showInfo('goji')">
+      <td>🫐 Goji berry</td><td>Sub-canopy</td><td>🐝🍎</td><td>💧💧 Mod</td><td>—</td><td><span class="badge badge-thrive">✅ Thrives</span></td>
+    </tr>
+    <tr class="clickable" onclick="showInfo('elderberry')">
+      <td>🫐 Elderberry</td><td>Sub-canopy</td><td>🐝🍎🌿</td><td>💧💧 Mod</td><td>—</td><td><span class="badge badge-thrive">✅ Thrives</span></td>
+    </tr>
+    <tr class="clickable" onclick="showInfo('blackberry')">
+      <td>🫐 Blackberry</td><td>Shrub</td><td>🐝🍎🚫</td><td>💧💧 Mod</td><td>Low</td><td><span class="badge badge-thrive">✅ Thrives</span></td>
+    </tr>
+    <tr class="clickable" onclick="showInfo('raspberry')">
+      <td>🫐 Raspberry ⚠️</td><td>Shrub</td><td>🐝🍎🌱</td><td>💧💧💧 High</td><td>Low</td><td><span class="badge badge-marginal">⚠️ Marginal</span></td>
+    </tr>
+    <tr class="clickable" onclick="showInfo('currant')">
+      <td>🫐 Red currant ⚠️</td><td>Shrub</td><td>🐝🍎</td><td>💧💧💧 High</td><td>Low</td><td><span class="badge badge-marginal">⚠️ Marginal</span></td>
+    </tr>
+    <tr class="clickable" onclick="showInfo('seabuckthorn')">
+      <td>🔄 Sea buckthorn</td><td>N-fixer</td><td>🔄🍎🚫</td><td>💧 Low</td><td>Mod</td><td><span class="badge badge-thrive">✅ Thrives</span></td>
+    </tr>
+    <tr class="clickable" onclick="showInfo('goumi')">
+      <td>🔄 Goumi</td><td>N-fixer</td><td>🔄🐝🍎</td><td>💧💧 Mod</td><td>Mod</td><td><span class="badge badge-thrive">✅ Thrives</span></td>
+    </tr>
+    <tr class="clickable" onclick="showInfo('comfrey')">
+      <td>🌿 Comfrey</td><td>Herb</td><td>⛏️🌿🐝</td><td>💧💧 Mod</td><td>—</td><td><span class="badge badge-thrive">✅ Thrives</span></td>
+    </tr>
+    <tr class="clickable" onclick="showInfo('yarrow')">
+      <td>🌼 Yarrow</td><td>Herb</td><td>⛏️🐝🌿</td><td>💧 Low</td><td>—</td><td><span class="badge badge-thrive">✅ Thrives</span></td>
+    </tr>
+    <tr class="clickable" onclick="showInfo('borage')">
+      <td>🌸 Borage</td><td>Herb</td><td>🐝⛏️🍎</td><td>💧 Low</td><td>—</td><td><span class="badge badge-thrive">✅ Thrives</span></td>
+    </tr>
+    <tr class="clickable" onclick="showInfo('thyme')">
+      <td>🌱 Thyme</td><td>Ground cover</td><td>🌱🚫🐝</td><td>💧 Low</td><td>🔥 Good</td><td><span class="badge badge-thrive">✅ Thrives</span></td>
+    </tr>
+    <tr class="clickable" onclick="showInfo('clover')">
+      <td>🌱 White clover</td><td>Ground cover</td><td>🔄🌱🐝</td><td>💧 Low</td><td>—</td><td><span class="badge badge-thrive">✅ Thrives</span></td>
+    </tr>
+    <tr class="clickable" onclick="showInfo('grape')">
+      <td>🍇 Grape (table)</td><td>Climber</td><td>🍎🐝</td><td>💧 Low</td><td>Mod</td><td><span class="badge badge-thrive">✅ Thrives</span></td>
+    </tr>
+  </table>
+</div>
+
+<!-- Hidden plant details -->
+<div id="plant-data" style="display:none;">
+  <div id="pomegranate-h"><h4>🍎 Pomegranate — Punica granatum</h4><p><span class="stat">🍎 Yield</span><span class="stat">🔥 Fire-resist</span><span class="stat">🐝 Pollinator</span></p><p><strong>Soil benefit:</strong> Deep roots stabilize slope. Moderate leaf litter. Tolerates poor soil. Fire-resistant wood — excellent for SE firebreak zone.</p><p><strong>Varieties:</strong> 'Dente di Cavallo' (Italian), 'Wonderful', 'Salavatski'. <strong>Spacing:</strong> 4m × 4m. <strong>Water:</strong> 💧 Low — dry-farmed after Y2. <strong>Frost:</strong> Hardy to -10°C. <strong>🔥 Fire:</strong> High-moisture fruit + wood = good fire resistance.</p></div>
+  <div id="jujube-h"><h4>🍒 Jujube — Ziziphus jujuba</h4><p><span class="stat">🍎 Yield</span><span class="stat">🐝 Pollinator</span><span class="stat">🔥 Fire-resist</span></p><p><strong>Soil benefit:</strong> Deep taproot breaks subsoil. Drought-adapted — minimal competition. Fixes slopes. Produces abundant leaf litter.</p><p><strong>Varieties:</strong> 'Tibetan', 'Li', 'Lang'. <strong>Spacing:</strong> 4m × 4m. <strong>Water:</strong> 💧 Low — extremely drought-tolerant. <strong>Frost:</strong> Hardy to -15°C. <strong>🔥 Fire:</strong> High-moisture wood. Excellent for firebreak zone.</p></div>
+  <div id="goji-h"><h4>🫐 Goji berry — Lycium barbarum</h4><p><span class="stat">🍎 Yield</span><span class="stat">🐝 Pollinator</span></p><p><strong>Soil benefit:</strong> Deep roots. Tolerates poor, alkaline soil. Moderate leaf litter. Low competition — good under canopy trees.</p><p><strong>Varieties:</strong> 'Sweet Lifeberry', 'Crimson Star'. <strong>Spacing:</strong> 2m apart. <strong>Water:</strong> 💧💧 Moderate — some irrigation for fruiting. <strong>Frost:</strong> Hardy to -15°C.</p></div>
+  <div id="elderberry-h"><h4>🫐 Elderberry — Sambucus nigra</h4><p><span class="stat">🍎 Yield</span><span class="stat">🐝 Pollinator</span><span class="stat">🌿 Mulcher</span></p><p><strong>Soil benefit:</strong> Fast-growing biomass producer. Chop-and-drop mulch. Attracts birds + pollinators. Shallow roots — good for swale edges.</p><p><strong>Varieties:</strong> 'Sambu', 'Haschberg'. <strong>Spacing:</strong> 2.5m apart. <strong>Water:</strong> 💧💧 Moderate — needs some summer water. <strong>Frost:</strong> Hardy to -20°C.</p></div>
+  <div id="blackberry-h"><h4>🫐 Blackberry — Rubus spp.</h4><p><span class="stat">🍎 Yield</span><span class="stat">🐝 Pollinator</span><span class="stat">🚫 Pest repel</span></p><p><strong>Soil benefit:</strong> Dense root system stabilizes soil. Biennial canes add organic matter. Good for slope edges. Attracts birds and beneficial insects.</p><p><strong>Varieties:</strong> 'Loch Ness' (thornless), 'Chester' (thornless). <strong>Spacing:</strong> 2m apart. <strong>Water:</strong> 💧💧 Moderate — more with summer watering. <strong>Frost:</strong> Hardy to -15°C. Strongly suited to Tuscany.</p></div>
+  <div id="raspberry-h"><h4>🫐 Raspberry ⚠️ — Rubus idaeus</h4><p><span class="stat">🍎 Yield</span><span class="stat">🐝 Pollinator</span><span class="stat">🌱 Ground</span></p><p><strong>Soil benefit:</strong> Dense root system. Moderate biomass. Needs heavy mulch. ⚠️ <strong>Marginal at this site:</strong> needs afternoon shade + consistent drip irrigation.</p><p><strong>Varieties:</strong> 'Heritage', 'Autumn Bliss' (primocane = fruit on new wood, less frost risk). <strong>Spacing:</strong> 1m apart, 6-12 canes. <strong>Water:</strong> 💧💧💧 High — drip non-negotiable. <strong>Frost:</strong> Canes hardy to -25°C.</p></div>
+  <div id="currant-h"><h4>🫐 Red currant ⚠️ — Ribes rubrum</h4><p><span class="stat">🍎 Yield</span><span class="stat">🐝 Pollinator</span></p><p><strong>Soil benefit:</strong> Low biomass. Needs annual compost. ⚠️ <strong>Marginal:</strong> struggles in Mediterranean heat. Needs afternoon shade + drip.</p><p><strong>Varieties:</strong> 'Jonkheer van Tets', 'Rovada'. <strong>Spacing:</strong> 1.5m apart, 2-3 bushes only. <strong>Water:</strong> 💧💧💧 High — constant moisture essential. <strong>Frost:</strong> Hardy to -30°C.</p></div>
+  <div id="seabuckthorn-h"><h4>🔄 Sea buckthorn — Hippophae rhamnoides</h4><p><span class="stat">🔄 N-fixer</span><span class="stat">🍎 Yield</span><span class="stat">🚫 Windbreak</span></p><p><strong>Soil benefit:</strong> N-fixer — enriches soil for surrounding plants. Deep root system stabilizes slopes. Excellent windbreak. Edible berries high in vitamin C. Thorns = natural barrier.</p><p><strong>Spacing:</strong> 2m apart in hedge. <strong>Water:</strong> 💧 Low — extremely drought-tolerant. <strong>Frost:</strong> Hardy to -25°C. Male + female plants needed for fruit.</p></div>
+  <div id="goumi-h"><h4>🔄 Goumi — Elaeagnus multiflora</h4><p><span class="stat">🔄 N-fixer</span><span class="stat">🐝 Pollinator</span><span class="stat">🍎 Yield</span></p><p><strong>Soil benefit:</strong> N-fixer — root nodules enrich soil. Edible berries. Attracts pollinators. Dense shrub form. Non-invasive. Tolerates dry conditions.</p><p><strong>Spacing:</strong> 2m apart. <strong>Water:</strong> 💧💧 Moderate — some irrigation for fruiting. <strong>Frost:</strong> Hardy to -15°C. Excellent companion for Zone 2b edges.</p></div>
+  <div id="comfrey-h"><h4>🌿 Comfrey — Symphytum officinale</h4><p><span class="stat">⛏️ Accumulator</span><span class="stat">🌿 Mulcher</span><span class="stat">🐝 Pollinator</span></p><p><strong>Soil benefit:</strong> KEY plant. Deep taproot mines minerals from subsoil. Chop-and-drop 3-5x/year = green manure. Leaves = potassium-rich mulch. Accumulator of K, P, Ca, Mg. Attracts bees (purple flowers).</p><p><strong>Varieties:</strong> Bocking 14 (sterile — won't self-seed). <strong>Spacing:</strong> 1m apart. <strong>Water:</strong> 💧💧 Moderate — needs some water in summer for best growth. <strong>Frost:</strong> Dies back in winter, regrows. Hardy to -20°C.</p></div>
+  <div id="yarrow-h"><h4>🌼 Yarrow — Achillea millefolium</h4><p><span class="stat">⛏️ Accumulator</span><span class="stat">🐝 Pollinator</span><span class="stat">🌿 Mulcher</span></p><p><strong>Soil benefit:</strong> Deep taproot mines K, Ca, P, Cu. Increases essential oil content in nearby herbs (companion effect). Excellent pollinator attractor. Medicinal. Drought-tolerant.</p><p><strong>Spacing:</strong> 0.5m apart, self-seeds. <strong>Water:</strong> 💧 Low — drought-tolerant. <strong>Frost:</strong> Hardy to -25°C.</p></div>
+  <div id="borage-h"><h4>🌸 Borage — Borago officinalis</h4><p><span class="stat">🐝 Pollinator</span><span class="stat">⛏️ Accumulator</span><span class="stat">🍎 Edible</span></p><p><strong>Soil benefit:</strong> Deep taproot mines minerals. Excellent bee forage (blue flowers = bee magnet). Self-seeds (permanent patch). Edible flowers and leaves. Repels tomato hornworm. Good chop-and-drop biomass.</p><p><strong>Spacing:</strong> 0.4m apart. <strong>Water:</strong> 💧 Low — self-seeds and persists. <strong>Frost:</strong> Annual — self-seeds reliably.</p></div>
+  <div id="thyme-h"><h4>🌱 Thyme — Thymus vulgaris</h4><p><span class="stat">🌱 Ground cover</span><span class="stat">🚫 Pest repel</span><span class="stat">🐝 Pollinator</span></p><p><strong>Soil benefit:</strong> Excellent ground cover — prevents erosion. Low-growing mat suppresses weeds. Releases fragrance when walked on. Attracts bees. Pest-repellent. Drought-tolerant.</p><p><strong>Varieties:</strong> Creeping thyme for paths, upright for kitchen. <strong>Spacing:</strong> 0.3m apart for full coverage. <strong>Water:</strong> 💧 Low — never irrigate after establishment. <strong>🔥 Fire:</strong> Good — low fuel volume.</p></div>
+  <div id="clover-h"><h4>🌱 White clover — Trifolium repens</h4><p><span class="stat">🔄 N-fixer</span><span class="stat">🌱 Ground cover</span><span class="stat">🐝 Pollinator</span></p><p><strong>Soil benefit:</strong> N-fixer — converts atmospheric N to plant-available form. Living mulch — suppresses weeds, retains moisture. Bee forage. Chicken forage. Tolerates foot traffic.</p><p><strong>Varieties:</strong> 'Ladino', 'Dutch White'. <strong>Spacing:</strong> Scatter seed. <strong>Water:</strong> 💧 Low — self-seeds in Mediterranean. <strong>Frost:</strong> Hardy to -20°C.</p></div>
+  <div id="grape-h"><h4>🍇 Grape (table) — Vitis vinifera</h4><p><span class="stat">🍎 Yield</span><span class="stat">🐝 Pollinator</span></p><p><strong>Soil benefit:</strong> Deep root system (3m+) breaks up subsoil. Low nutrient competition with shallow-rooted plants. Mycorrhizal. Climbs up canopy trees = vertical stacking.</p><p><strong>Varieties:</strong> 'Italia' (table), 'Moscato' (table/wine). <strong>Spacing:</strong> One vine per canopy tree, climbing trunk + branches. <strong>Water:</strong> 💧 Low — dry-farmed after Y1. <strong>Frost:</strong> Dormant to -15°C.</p></div>
+</div>
+
+<script>
+// Layer visibility toggles
+const layers = ['canopy','subcanopy','shrub','nfixer','herb','ground','climber'];
+const overlays = ['frost','fire','wind','sun','water'];
+
+function toggleLayer(layer){
+  if(layer==='all'){
+    const allActive = document.querySelectorAll('.btn-toggle.active').length <= layers.length;
+    document.querySelectorAll('[onclick*="toggleLayer"]').forEach(b=>{
+      if(b.getAttribute('data-layer')){
+        b.classList.toggle('active',!allActive);
+        const vis = !allActive;
+        document.querySelectorAll(`.plant[data-layer="${b.getAttribute('data-layer')}"]`).forEach(p=>p.style.display=vis?'':'none');
+      }
+    });
+    document.querySelectorAll('[onclick*="toggleLayer"]').forEach(b=>{
+      if(b.textContent==='🔄 All'){
+        b.classList.toggle('active',!allActive);
+        b.textContent = allActive?'🔄 All Off':'🔄 All';
+      }
+    });
+    return;
+  }
+  const btn = document.querySelector(`[onclick*="toggleLayer('${layer}'"]`)||document.querySelector(`[onclick*="toggleLayer(&#39;${layer}&#39;"]`);
+  if(btn){
+    btn.classList.toggle('active');
+    const vis = btn.classList.contains('active');
+    document.querySelectorAll(`.plant[data-layer="${layer}"]`).forEach(p=>p.style.display=vis?'':'none');
+  }
+  // Update All button text
+  const allBtn = document.querySelector('[onclick*="toggleLayer"][onclick*="all"]')||document.querySelector('[onclick*="toggleLayer(&#39;all&#39;"]');
+  if(allBtn){
+    const allActive = layers.every(l => (document.querySelector(`[onclick*="toggleLayer('${l}'"]`)||document.querySelector(`[onclick*="toggleLayer(&#39;${l}&#39;"]`))?.classList.contains('active'));
+    allBtn.textContent = allActive ? '🔄 All' : '🔄 Partial';
+  }
+}
+
+function toggleOverlay(name){
+  const btn = document.querySelector(`[onclick*="toggleOverlay('${name}'"]`)||document.querySelector(`[onclick*="toggleOverlay(&#39;${name}&#39;"]`);
+  if(!btn) return;
+  btn.classList.toggle('active');
+  const el = document.getElementById(`layer-${name}`);
+  if(el) el.classList.toggle('hidden');
+}
+
+// Info panel
+function showInfo(name){
+  const source = document.getElementById(name+'-h');
+  if(!source) return;
+  const panel = document.getElementById('info-panel');
+  const content = document.getElementById('info-content');
+  content.innerHTML = source.innerHTML;
+  panel.classList.add('active');
+}
+
+function toggleTable(){
+  const t = document.getElementById('summary-section');
+  t.style.display = t.style.display==='none'?'':'none';
+}
+
+// Click away from info panel
+document.addEventListener('click', function(e){
+  if(e.target.closest('.plant') || e.target.closest('.btn-toggle') || e.target.closest('.btn')) return;
+  const panel = document.getElementById('info-panel');
+  const content = document.getElementById('info-content');
+  if(!e.target.closest('.info-panel')){
+    content.innerHTML = '<h4>🌿 Click any plant for details</h4><p>This map shows the detailed design of Zone 2b — 15 species in a 7-layer forest garden stack. Toggle layers above to see each level, or click a plant for its full profile.</p>';
+  }
+});
+</script>
+</body>
+</html>

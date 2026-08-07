@@ -1,0 +1,1758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SOILPEPPER — Master Plan Grid</title>
+<style>
+/* ===== RESET ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px}
+
+/* ===== THEME: Juniper Ridge (matches index) ===== */
+:root{
+  --bg:#0a1a0a;
+  --bg-card:#142114;
+  --bg-card-hover:#1a2a1a;
+  --border:#1a301a;
+  --border-accent:#2a4028;
+  --text:#c8d8c0;
+  --text-dim:#6a8068;
+  --text-bright:#e8f0e0;
+  --accent-emerald:#5a8a4a;
+  --accent-teal:#c4a040;
+  --accent-amber:#e8dcc0;
+  --font-head:'Palatino','Palatino Linotype','Georgia',serif;
+  --font-body:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  --font-mono:'Courier New','Consolas','Liberation Mono',monospace;
+  --radius:6px;
+  --shadow:0 2px 12px rgba(0,0,0,0.3);
+}
+body{
+  font-family:var(--font-body);background:var(--bg);color:var(--text);
+  min-height:100vh;line-height:1.5;padding:16px;
+  max-width:1200px;margin:0 auto;
+}
+h1{font-family:var(--font-head);color:var(--accent-emerald);text-align:center;
+   font-size:1.5rem;margin-bottom:2px}
+.subtitle{text-align:center;color:var(--text-dim);font-size:0.8rem;margin-bottom:14px}
+
+/* ===== TOP BAR ===== */
+.topbar{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;
+  margin-bottom:14px;padding:10px 14px;background:var(--bg-card);
+  border:1px solid var(--border);border-radius:var(--radius)}
+.topbar .plot-info{font-size:0.75rem;color:var(--text-dim);font-family:var(--font-mono)}
+.topbar .plot-info strong{color:var(--accent-teal);font-weight:500}
+.btn{padding:7px 14px;border-radius:var(--radius);border:1px solid var(--border-accent);
+  background:var(--bg-card-hover);color:var(--text);cursor:pointer;
+  font-size:0.78rem;transition:all .15s;font-family:var(--font-body)}
+.btn:hover{background:var(--accent-emerald);color:#0a1a0a;border-color:var(--accent-emerald)}
+.btn.primary{background:var(--accent-emerald);color:#0a1a0a;border-color:var(--accent-emerald);font-weight:600}
+.btn.primary:hover{filter:brightness(1.1)}
+.btn.danger{color:#e57373;border-color:rgba(229,115,115,0.4)}
+.btn.danger:hover{background:#6a3030;color:#fff;border-color:#6a3030}
+
+/* ===== LEGEND ===== */
+.legend{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:14px;font-size:0.72rem}
+.legend-item{display:flex;align-items:center;gap:5px;padding:3px 9px;background:var(--bg-card);
+  border:1px solid var(--border);border-radius:4px}
+.legend-swatch{width:14px;height:14px;border-radius:3px;border:1px solid rgba(255,255,255,0.15)}
+
+/* ===== GRID ===== */
+.grid-wrap{position:relative;background:var(--bg-card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:14px;margin-bottom:14px}
+.grid-relative{position:relative;}
+.grid-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;
+  font-size:0.72rem;color:var(--text-dim);font-family:var(--font-mono)}
+.grid-meta .axis{color:var(--accent-teal)}
+.grid{
+  display:grid;gap:3px;background:var(--border);padding:3px;border-radius:6px;
+  grid-template-columns:repeat(10,1fr);grid-template-rows:repeat(10,1fr);
+  aspect-ratio:1;width:100%;
+}
+/* iOS <15 fallback: height set via JS (squareGrid) */
+.cell{
+  background:var(--bg);border-radius:3px;cursor:pointer;position:relative;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:all .12s;min-height:0;overflow:hidden;
+  border:1px solid rgba(255,255,255,0.06);
+}
+.cell:hover{box-shadow:0 0 0 2px var(--accent-emerald) inset;z-index:2}
+.cell .cell-icon{font-size:clamp(9px,2.2vw,22px);line-height:1}
+.cell .cell-label{font-size:clamp(5px,0.9vw,9px);color:rgba(255,255,255,0.7);
+  text-align:center;line-height:1.1;margin-top:2px;padding:0 2px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%}
+.cell .cell-coord{position:absolute;top:1px;left:3px;font-size:clamp(4px,0.7vw,7px);
+  color:rgba(255,255,255,0.25);font-family:var(--font-mono)}
+.cell .cell-number{position:absolute;bottom:2px;right:3px;font-size:clamp(6px,1.1vw,11px);
+  font-weight:700;color:rgba(255,255,255,0.4);font-family:var(--font-head);
+  text-shadow:0 1px 3px rgba(0,0,0,0.6);line-height:1}
+/* function colors */
+.cell.f-guild{background:linear-gradient(135deg,#1f4a1f,#2a5a2a)}
+.cell.f-vegetable{background:linear-gradient(135deg,#3a5a1a,#4a7025)}
+.cell.f-water{background:linear-gradient(135deg,#12406e,#1a5a9a)}
+.cell.f-road{background:linear-gradient(135deg,#5a4030,#6a4a38)}
+.cell.f-construction{background:linear-gradient(135deg,#5a2525,#7a3030)}
+.cell.f-open{background:linear-gradient(135deg,#122412,#1a301a)}
+.cell.f-empty{background:var(--bg)}
+.cell.f-empty .cell-coord{color:rgba(255,255,255,0.15)}
+.cell.selected{box-shadow:0 0 0 2px var(--accent-teal) inset;z-index:3}
+/* zone & soil badges */
+.cell .cell-zone{position:absolute;top:1px;right:3px;font-size:clamp(5px,0.8vw,8px);
+  font-weight:700;color:#fff;font-family:var(--font-mono);
+  background:rgba(0,0,0,0.5);padding:0 3px;border-radius:3px;line-height:1.3;z-index:4}
+.cell .cell-soil{position:absolute;bottom:1px;left:3px;font-size:clamp(4px,0.6vw,7px);
+  color:rgba(255,255,255,0.85);font-family:var(--font-mono);text-transform:uppercase;
+  background:rgba(0,0,0,0.45);padding:0 3px;border-radius:3px;line-height:1.3;z-index:4}
+/* view switcher + paint bar */
+.view-btn.active{background:var(--accent-emerald);color:#0a1a0a;border-color:var(--accent-emerald);font-weight:600}
+.paintbar{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:center;
+  margin-bottom:10px;font-size:0.75rem}
+.paint-label{color:var(--text-dim);align-self:center;font-size:0.68rem;
+  text-transform:uppercase;letter-spacing:0.5px}
+.paint-chip{padding:6px 12px;border-radius:5px;border:1px solid rgba(255,255,255,0.3);
+  cursor:pointer;font-size:0.75rem;color:#fff;font-weight:600;font-family:var(--font-body);
+  text-shadow:0 1px 2px rgba(0,0,0,0.6);transition:all .12s}
+.paint-chip:hover{filter:brightness(1.2)}
+.paint-chip.active{box-shadow:0 0 0 2px var(--accent-teal) inset;transform:scale(1.06)}
+.paint-chip.clear{background:var(--bg-card-hover);color:var(--text-dim);text-shadow:none;
+  border-color:var(--border-accent);font-weight:400}
+/* ===== SECTOR OVERLAYS (on the grid) ===== */
+.sector-overlays{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:5;overflow:hidden;}
+.sector-layer{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;transition:opacity .25s;}
+.sector-layer.hidden{opacity:0;}
+.sector-layer svg{position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible;}
+
+/* ===== STATS ===== */
+.stats{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:14px}
+.stat{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:8px 14px;text-align:center;min-width:90px}
+.stat .num{font-size:1.4rem;font-weight:600;color:var(--accent-teal);font-family:var(--font-head)}
+.stat .lbl{font-size:0.62rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px}
+
+/* ===== SIDE PANEL ===== */
+.side-panel{position:fixed;top:0;right:0;bottom:0;width:min(420px,100%);
+  background:#0d1a0d;border-left:1px solid var(--border-accent);z-index:100;
+  transform:translateX(100%);transition:transform .25s ease;display:flex;flex-direction:column;
+  box-shadow:-4px 0 20px rgba(0,0,0,0.5)}
+.side-panel.open{transform:translateX(0)}
+.side-panel .panel-head{display:flex;justify-content:space-between;align-items:center;
+  padding:14px 18px;border-bottom:1px solid var(--border);background:var(--bg-card)}
+.side-panel .panel-head h3{font-family:var(--font-head);color:var(--accent-emerald);font-size:1rem}
+.side-panel .close-btn{cursor:pointer;color:var(--text-dim);font-size:1.3rem;line-height:1;padding:4px}
+.side-panel .close-btn:hover{color:#e57373}
+.side-panel .panel-body{padding:18px;overflow-y:auto;flex:1}
+.side-panel .coord-badge{display:inline-block;background:var(--bg-card-hover);padding:3px 10px;
+  border-radius:4px;font-size:0.75rem;color:var(--accent-teal);font-family:var(--font-mono);margin-bottom:14px}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:0.72rem;color:var(--text-dim);
+  text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px}
+.field select,.field input{
+  width:100%;background:var(--bg);color:var(--text);border:1px solid var(--border-accent);
+  border-radius:var(--radius);padding:9px 12px;font-size:0.85rem;font-family:var(--font-body)}
+.field select:focus,.field input:focus{outline:none;border-color:var(--accent-emerald)}
+.field .hint{font-size:0.68rem;color:var(--text-dim);margin-top:4px;line-height:1.4}
+.guild-preview{display:none;background:var(--bg-card-hover);border:1px solid var(--border);
+  border-radius:var(--radius);padding:12px;margin-top:10px}
+.guild-preview.show{display:block}
+.guild-preview .gp-title{font-size:0.8rem;color:var(--accent-teal);margin-bottom:6px}
+.guild-preview .gp-tree{font-size:1.5rem;text-align:center;margin-bottom:4px}
+.guild-preview .gp-name{font-size:0.85rem;text-align:center;color:var(--text-bright);margin-bottom:8px}
+.guild-preview .gp-rings{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.guild-preview .gp-ring{font-size:0.62rem;color:var(--text-dim);background:var(--bg);
+  padding:3px 8px;border-radius:4px;border:1px solid var(--border)}
+.btn-block{width:100%;margin-top:4px}
+.btn-full{width:100%;margin-top:10px;padding:10px;font-size:0.85rem}
+.panel-actions{border-top:1px solid var(--border);padding:14px 18px;background:var(--bg-card)}
+.removed-note{font-size:0.7rem;color:var(--text-dim);text-align:center;margin-top:10px}
+
+/* ===== SETUP MODAL ===== */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;
+  display:none;align-items:center;justify-content:center;padding:16px}
+.modal-bg.open{display:flex}
+.modal{background:#0d1a0d;border:1px solid var(--border-accent);border-radius:10px;
+  padding:24px;max-width:440px;width:100%;max-height:90vh;overflow-y:auto}
+.modal h2{font-family:var(--font-head);color:var(--accent-emerald);font-size:1.2rem;margin-bottom:6px}
+.modal p{font-size:0.8rem;color:var(--text-dim);margin-bottom:16px}
+.modal .field-row{display:flex;gap:10px;flex-wrap:wrap}
+.modal .field-row .field{flex:1;min-width:90px}
+.modal .presets{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.modal .preset{padding:6px 12px;border-radius:5px;border:1px solid var(--border-accent);
+  background:var(--bg-card-hover);cursor:pointer;font-size:0.75rem;color:var(--text)}
+.modal .preset:hover{background:var(--accent-emerald);color:#0a1a0a}
+.modal .preset.active{background:var(--accent-emerald);color:#0a1a0a;border-color:var(--accent-emerald)}
+
+/* ===== TOAST ===== */
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);
+  background:var(--accent-emerald);color:#0a1a0a;padding:10px 20px;border-radius:8px;
+  font-size:0.8rem;font-weight:600;z-index:300;transition:transform .3s ease;opacity:0}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+
+/* ===== FOOTER ===== */
+.footer{text-align:center;color:var(--text-dim);font-size:0.68rem;
+  font-family:var(--font-mono);margin-top:20px;padding-top:14px;border-top:1px solid var(--border)}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:600px){
+  .grid{gap:2px}
+  .cell .cell-label{display:none}
+  .topbar{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<h1>🗺️ Master Plan Grid</h1>
+<p class="subtitle">Divide the plot into cells and assign a function to each — the whole design on one map.</p>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <span class="plot-info" id="plot-info">Plot: —</span>
+  <button class="btn" onclick="openSetup()">⚙️ Plot Setup</button>
+  <button class="btn" onclick="openWaterSetup()">💧 Water Setup</button>
+  <button class="btn" onclick="exportPlan()">📤 Export</button>
+  <button class="btn" onclick="document.getElementById('import-file').click()">📥 Import</button>
+  <input type="file" id="import-file" accept=".json,application/json" style="display:none" onchange="importPlan(event)">
+</div>
+
+<!-- VIEW SWITCHER -->
+<div class="topbar" id="viewbar">
+  <button class="btn view-btn active" id="view-function" onclick="setView('function')">🎨 Functions</button>
+  <button class="btn view-btn" id="view-zone" onclick="setView('zone')">🧭 Zones</button>
+  <button class="btn view-btn" id="view-soil" onclick="setView('soil')">🪨 Soil</button>
+  <button class="btn view-btn" id="view-sectors" onclick="setView('sectors')">🌪️ Sectors</button>
+  <button class="btn" onclick="suggestZones()" title="Auto-assign Z0-Z5 rings around your house as a starting point">✨ Suggest Zones</button>
+  <button class="btn" onclick="undo()" title="Undo last change (Ctrl+Z)">↩️ Undo</button>
+  <button class="btn danger" onclick="clearLayer()" id="clear-layer-btn" title="Clear zones or soil (keep functions)" style="display:none">🧹 Clear layer</button>
+</div>
+<div class="paintbar" id="paintbar" style="display:none"></div>
+
+<!-- LEGEND -->
+<div class="legend" id="legend">
+  <span class="legend-item"><span class="legend-swatch" style="background:#2a5a2a"></span> 🌳 Guild</span>
+  <span class="legend-item"><span class="legend-swatch" style="background:#4a7025"></span> 🥕 Vegetable</span>
+  <span class="legend-item"><span class="legend-swatch" style="background:#1a5a9a"></span> 💧 Water</span>
+  <span class="legend-item"><span class="legend-swatch" style="background:#6a4a38"></span> 🛣️ Road / Access</span>
+  <span class="legend-item"><span class="legend-swatch" style="background:#7a3030"></span> 🏠 Construction</span>
+  <span class="legend-item"><span class="legend-swatch" style="background:#1a301a"></span> 🌿 Open / Unassigned</span>
+</div>
+
+<!-- STATS -->
+<div class="stats" id="stats"></div>
+
+<!-- GRID -->
+<div class="grid-wrap">
+  <div class="grid-meta">
+    <span class="axis" id="axis-label">—</span>
+    <span id="assigned-count">0 / 0 assigned</span>
+  </div>
+  <div class="grid-relative">
+    <div class="grid" id="grid"></div>
+    <!-- Sector overlays (shown in Sectors view) -->
+    <div class="sector-overlays" id="sector-overlays" style="display:none">
+      <div class="sector-layer" id="layer-sun"></div>
+      <div class="sector-layer" id="layer-wind"></div>
+      <div class="sector-layer" id="layer-fire"></div>
+      <div class="sector-layer" id="layer-frost"></div>
+      <div class="sector-layer" id="layer-water"></div>
+      <div class="sector-layer" id="layer-wildlife"></div>
+    </div>
+  </div>
+</div>
+
+<!-- SIDE PANEL -->
+<div class="side-panel" id="side-panel">
+  <div class="panel-head">
+    <h3>Cell Assignment</h3>
+    <span class="close-btn" onclick="closePanel()">✕</span>
+  </div>
+  <div class="panel-body">
+    <span class="coord-badge" id="panel-coord">—</span>
+    <div class="field">
+      <label>Function</label>
+      <select id="func-select" onchange="onFuncChange()">
+        <option value="open">🌿 Open / Unassigned</option>
+        <option value="guild">🌳 Guild</option>
+        <option value="vegetable">🥕 Vegetable Garden</option>
+        <option value="water">💧 Water</option>
+        <option value="road">🛣️ Road / Access</option>
+        <option value="construction">🏠 Construction</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Zone</label>
+      <select id="zone-select" onchange="onZoneChange()">
+        <option value="">— not set —</option>
+        <option value="0">Z0 · House & immediate</option>
+        <option value="1">Z1 · Kitchen garden</option>
+        <option value="2">Z2 · Orchard / coop</option>
+        <option value="3">Z3 · Field crops</option>
+        <option value="4">Z4 · Semi-managed</option>
+        <option value="5">Z5 · Wild</option>
+      </select>
+      <div class="hint">Permaculture zones by use intensity — 0 closest to the house, 5 wildest.</div>
+    </div>
+    <div class="field">
+      <label>Soil type</label>
+      <select id="soil-select" onchange="onSoilChange()">
+        <option value="">— not set —</option>
+        <option value="sandy">Sandy</option>
+        <option value="silty">Silty</option>
+        <option value="loam">Loam</option>
+        <option value="clay">Clay</option>
+        <option value="chalky">Chalky</option>
+        <option value="peaty">Peaty</option>
+      </select>
+      <div class="hint" id="soil-match-hint"></div>
+    </div>
+    <div class="field" id="label-field" style="display:none">
+      <label>Label (optional)</label>
+      <input type="text" id="label-input" placeholder="e.g. Pond, Shed, Main path" oninput="onLabelInput()">
+    </div>
+    <div class="field" id="tree-field" style="display:none">
+      <label>Guild Tree</label>
+      <select id="tree-select" onchange="onTreeChange()"></select>
+      <div class="hint">Select the central tree. Open the full guild diagram to design companions.</div>
+      <div class="guild-preview" id="guild-preview">
+        <div class="gp-title">Selected Guild</div>
+        <div class="gp-tree" id="gp-icon">🌳</div>
+        <div class="gp-name" id="gp-name">—</div>
+        <div class="gp-rings" id="gp-rings"></div>
+      </div>
+      <button class="btn btn-full" id="open-guild-btn" onclick="openGuildDiagram()">📂 Open Guild Diagram →</button>
+    </div>
+    <div class="field" id="veg-field" style="display:none">
+      <label>🥕 Vegetable Garden</label>
+      <div class="hint">This cell is a vegetable garden. Open the planner to design the beds (modules, 10m slots, join toggles) and assign plants.</div>
+      <button class="btn btn-full" id="open-veg-btn" onclick="openVegPlanner()">🥕 Open Vegetable Garden Planner →</button>
+    </div>
+    <div class="removed-note" id="removed-note" style="display:none"></div>
+  </div>
+  <div class="panel-actions">
+    <button class="btn btn-block danger" onclick="removeAssignment()">🗑️ Clear this cell</button>
+  </div>
+</div>
+
+<!-- SETUP MODAL -->
+<div class="modal-bg" id="setup-modal">
+  <div class="modal">
+    <h2>⚙️ Plot Setup</h2>
+    <p>Define your plot. Cells are created automatically at a fixed size. Defaults match this 1ha Tuscan site.</p>
+    <div class="presets">
+      <span class="preset" onclick="applyPreset(100,100,10)">1 ha · 100×100m · 10m cells</span>
+      <span class="preset" onclick="applyPreset(50,50,10)">0.25 ha · 50×50m · 10m cells</span>
+      <span class="preset" onclick="applyPreset(20,40,10)">800 m² · 20×40m · 10m cells</span>
+    </div>
+    <div class="field">
+      <label>Site title (design brief)</label>
+      <input type="text" id="setup-title" placeholder="e.g. Tuscan hillside" value="Tuscan hillside">
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Width (m)</label>
+        <input type="number" id="setup-w" min="1" value="100">
+      </div>
+      <div class="field">
+        <label>Height (m)</label>
+        <input type="number" id="setup-h" min="1" value="100">
+      </div>
+      <div class="field">
+        <label>Cell size (m)</label>
+        <input type="number" id="setup-cell" min="1" value="10">
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Altitude (m)</label>
+        <input type="number" id="setup-alt" min="0" value="300">
+      </div>
+      <div class="field">
+        <label>Climate zone</label>
+        <input type="text" id="setup-climate" placeholder="e.g. 8b–9a" value="8b-9a">
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Aspect (slope direction)</label>
+        <select id="setup-aspect">
+          <option value="South (180°)">South (180°)</option>
+          <option value="SE (135°)">SE (135°)</option>
+          <option value="SW (225°)">SW (225°)</option>
+          <option value="East (90°)">East (90°)</option>
+          <option value="West (270°)">West (270°)</option>
+          <option value="North (0°)">North (0°)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Slope</label>
+        <select id="setup-slope">
+          <option value="~5% gentle">~5% gentle</option>
+          <option value="~10% moderate" selected>~10% moderate</option>
+          <option value="~20% steep">~20% steep</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label>Resulting grid</label>
+      <div class="hint" id="setup-result">—</div>
+    </div>
+    <div class="field">
+      <label>Default soil type (design brief)</label>
+      <select id="setup-soil">
+        <option value="sandy">Sandy</option>
+        <option value="silty" selected>Silty (silty-sand)</option>
+        <option value="loam">Loam</option>
+        <option value="clay">Clay</option>
+        <option value="chalky">Chalky</option>
+        <option value="peaty">Peaty</option>
+      </select>
+      <div class="hint">Base soil for the whole plot — paint patches per cell later. Brief for Tuscany: silty-sand.</div>
+    </div>
+    <button class="btn btn-full primary" onclick="applySetup()">Apply</button>
+    <button class="btn btn-full" onclick="closeSetup()" style="margin-top:8px">Cancel</button>
+  </div>
+</div>
+
+<!-- WATER SETUP MODAL -->
+<div class="modal-bg" id="water-modal">
+  <div class="modal">
+    <h2>💧 Water System Setup</h2>
+    <p>Define the water infrastructure for this site. Saved to <code>tuscan-water-v1</code> — read by the Water Management page, Site Layout and Design Proposal.</p>
+    <div class="field-row">
+      <div class="field">
+        <label>Roof area (m²)</label>
+        <input type="number" id="water-roof" min="0" value="250">
+      </div>
+      <div class="field">
+        <label>Rainfall (mm/yr)</label>
+        <input type="number" id="water-rain" min="0" value="800">
+      </div>
+      <div class="field">
+        <label>Roof efficiency</label>
+        <input type="number" id="water-eff" min="0" max="1" step="0.05" value="0.85">
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Irrigation pond (m³)</label>
+        <input type="number" id="water-pond" min="0" value="200">
+      </div>
+      <div class="field">
+        <label>Natural pool (m³)</label>
+        <input type="number" id="water-pool" min="0" value="112">
+      </div>
+      <div class="field">
+        <label>Annual demand (m³)</label>
+        <input type="number" id="water-demand" min="0" value="958">
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Rainwater tanks</label>
+        <input type="number" id="water-tanks" min="0" value="3">
+      </div>
+      <div class="field">
+        <label>Tank size (L each)</label>
+        <input type="number" id="water-tank-size" min="0" value="5000">
+      </div>
+      <div class="field">
+        <label>Swales</label>
+        <input type="number" id="water-swales" min="0" value="4">
+      </div>
+    </div>
+    <div class="field">
+      <label>Gravity head (m)</label>
+      <input type="number" id="water-head" min="0" value="10">
+      <div class="hint">Vertical drop from pond to garden — determines drip pressure.</div>
+    </div>
+    <div class="field">
+      <label>Resulting roof harvest</label>
+      <div class="hint" id="water-result">—</div>
+    </div>
+    <button class="btn btn-full primary" onclick="applyWaterSetup()">Save Water Setup</button>
+    <button class="btn btn-full" onclick="closeWaterSetup()" style="margin-top:8px">Cancel</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="footer">Master Plan Grid · Juniper Ridge theme · auto-saves to this browser</div>
+
+<script>
+/* ============ STATE ============ */
+const STORAGE_KEY = 'masterplan-v1';
+const BRIEF_KEY = 'tuscan-brief-v1';   // shared design brief — read by all tools
+const DEFAULT_BRIEF = {
+  region: 'tuscany',
+  title: 'Tuscan hillside',
+  plotW: 100, plotH: 100, cellSize: 10,
+  defaultSoil: 'silty',
+  altitude: 300,
+  climateZone: '8b-9a',
+  aspect: 'South (180°)',
+  slope: '~10% moderate',
+  updatedAt: null
+};
+const FUNC_META = {
+  guild:       { icon: '🌳', label: 'Guild' },
+  vegetable:   { icon: '🥕', label: 'Vegetable Garden' },
+  water:       { icon: '💧', label: 'Water' },
+  road:        { icon: '🛣️', label: 'Road / Access' },
+  construction:{ icon: '🏠', label: 'Construction' },
+  open:        { icon: '🌿', label: 'Open' }
+};
+const ZONE_META = {
+  0: { label: 'Z0 · House',      color: '#8d5a4a' },
+  1: { label: 'Z1 · Kitchen',    color: '#7a8a3a' },
+  2: { label: 'Z2 · Orchard',    color: '#5a7a3a' },
+  3: { label: 'Z3 · Field',      color: '#8a7a3a' },
+  4: { label: 'Z4 · Semi-wild',  color: '#4a6a5a' },
+  5: { label: 'Z5 · Wild',       color: '#3a5a4a' }
+};
+// Standard permaculture zone advice per function
+const ZONE_ADVICE = {
+  construction: '0',   // house itself
+  guild: '2',          // orchards & guilds = Zone 2
+  vegetable: '1',      // kitchen garden = Zone 1
+  water: '3',          // water features often lower/field edge
+  road: '3',           // access through field zone
+  open: ''             // no advice
+};
+// Sector overlay layers (Tuscan — same geometry as Helicopter View)
+const SECTOR_LAYERS = {
+  sun: {
+    label: '☀️ Sun',
+    svg: '<svg viewBox="0 0 100 100">' +
+      '<path d="M 50 65 L 15 15 A 60 60 0 0 1 85 15 Z" fill="rgba(255,193,7,0.35)" stroke="rgba(255,193,7,0.55)" stroke-width="0.5"/>' +
+      '<path d="M 50 65 L 32 30 A 50 50 0 0 1 68 30 Z" fill="rgba(255,152,0,0.3)" stroke="rgba(255,152,0,0.5)" stroke-width="0.5"/>' +
+      '<text x="50" y="12" text-anchor="middle" fill="rgba(255,193,7,0.6)" font-size="3" font-weight="bold">☀️ Summer 70°</text>' +
+      '<text x="50" y="24" text-anchor="middle" fill="rgba(255,152,0,0.5)" font-size="2.4" font-weight="bold">❄️ Winter 24°</text></svg>'
+  },
+  wind: {
+    label: '💨 Wind',
+    svg: '<svg viewBox="0 0 100 100">' +
+      '<line x1="5" y1="90" x2="45" y2="45" stroke="rgba(33,150,243,0.4)" stroke-width="2" stroke-dasharray="4,3"/>' +
+      '<line x1="15" y1="85" x2="50" y2="40" stroke="rgba(33,150,243,0.3)" stroke-width="1.5" stroke-dasharray="4,3"/>' +
+      '<text x="8" y="82" fill="rgba(33,150,243,0.55)" font-size="2.5" font-weight="bold">💨 SW</text>' +
+      '<text x="18" y="30" fill="rgba(33,150,243,0.4)" font-size="2" font-weight="bold">Prevailing SW</text>' +
+      '<line x1="20" y1="5" x2="50" y2="35" stroke="rgba(0,188,212,0.35)" stroke-width="1.5" stroke-dasharray="3,4"/>' +
+      '<text x="12" y="4" fill="rgba(0,188,212,0.5)" font-size="2" font-weight="bold">❄️ Tramontana NW</text>' +
+      '<line x1="85" y1="85" x2="60" y2="50" stroke="rgba(244,67,54,0.3)" stroke-width="1.5" stroke-dasharray="3,4"/>' +
+      '<text x="78" y="82" fill="rgba(244,67,54,0.45)" font-size="2" font-weight="bold">🔥 Sirocco SE</text></svg>'
+  },
+  fire: {
+    label: '🔥 Fire',
+    svg: '<svg viewBox="0 0 100 100">' +
+      '<path d="M 50 50 L 100 100 L 100 50 Z" fill="rgba(244,67,54,0.1)" stroke="rgba(244,67,54,0.25)" stroke-width="0.5"/>' +
+      '<text x="76" y="72" fill="rgba(244,67,54,0.5)" font-size="2.5" font-weight="bold">🔥 Fire risk</text>' +
+      '<text x="70" y="77" fill="rgba(244,67,54,0.35)" font-size="1.8">Jul-Sep · Sirocco</text></svg>'
+  },
+  frost: {
+    label: '❄️ Frost',
+    svg: '<svg viewBox="0 0 100 100">' +
+      '<line x1="50" y1="5" x2="50" y2="40" stroke="rgba(156,39,176,0.3)" stroke-width="1.5"/>' +
+      '<line x1="30" y1="5" x2="30" y2="35" stroke="rgba(156,39,176,0.2)" stroke-width="1"/>' +
+      '<line x1="70" y1="5" x2="70" y2="35" stroke="rgba(156,39,176,0.2)" stroke-width="1"/>' +
+      '<text x="50" y="3" fill="rgba(156,39,176,0.5)" font-size="2" text-anchor="middle" font-weight="bold">❄️ Cold air drainage downhill</text>' +
+      '<text x="50" y="45" fill="rgba(156,39,176,0.3)" font-size="1.5" text-anchor="middle" font-style="italic">Frost pocket (lower slope)</text></svg>'
+  },
+  water: {
+    label: '💧 Water',
+    svg: '<svg viewBox="0 0 100 100">' +
+      '<text x="5" y="50" fill="rgba(0,188,212,0.4)" font-size="2.5">🌧️ 800mm/yr</text>' +
+      '<text x="5" y="55" fill="rgba(0,188,212,0.3)" font-size="1.8">8,000 m³ on 1ha</text>' +
+      '<line x1="50" y1="5" x2="50" y2="45" stroke="rgba(0,188,212,0.25)" stroke-width="1"/>' +
+      '<line x1="35" y1="5" x2="35" y2="40" stroke="rgba(0,188,212,0.15)" stroke-width="0.8"/>' +
+      '<line x1="65" y1="5" x2="65" y2="40" stroke="rgba(0,188,212,0.15)" stroke-width="0.8"/>' +
+      '<text x="50" y="48" fill="rgba(0,188,212,0.35)" font-size="1.8" text-anchor="middle">4 swales catch runoff</text></svg>'
+  },
+  wildlife: {
+    label: '🦌 Wildlife',
+    svg: '<svg viewBox="0 0 100 100">' +
+      '<rect x="0" y="0" width="100" height="8" fill="rgba(139,195,74,0.12)" stroke="rgba(139,195,74,0.25)" stroke-width="0.5" stroke-dasharray="2,2" rx="2"/>' +
+      '<text x="50" y="5" fill="rgba(139,195,74,0.45)" font-size="2" text-anchor="middle" font-weight="bold">🦌 Wildlife corridor</text>' +
+      '<line x1="50" y1="8" x2="50" y2="30" stroke="rgba(139,195,74,0.2)" stroke-width="1" stroke-dasharray="2,3"/>' +
+      '<line x1="30" y1="8" x2="30" y2="25" stroke="rgba(139,195,74,0.15)" stroke-width="0.8" stroke-dasharray="2,3"/>' +
+      '<line x1="70" y1="8" x2="70" y2="25" stroke="rgba(139,195,74,0.15)" stroke-width="0.8" stroke-dasharray="2,3"/></svg>'
+  }
+};
+const SOIL_META = {
+  sandy:  { label: 'Sandy',  color: '#b59a62', emoji: '🏜️' },
+  silty:  { label: 'Silty',  color: '#9a8a5a', emoji: '🌾' },
+  loam:   { label: 'Loam',   color: '#7a6a45', emoji: '🌱' },
+  clay:   { label: 'Clay',   color: '#8a5a45', emoji: '🟤' },
+  chalky: { label: 'Chalky', color: '#b8b0a0', emoji: '🪨' },
+  peaty:  { label: 'Peaty',  color: '#5a4a35', emoji: '🟫' }
+};
+let view = 'function';       // 'function' | 'zone' | 'soil'
+let paintMode = null;        // {kind:'zone'|'soil', value:'...'} while painting
+let plan = null;      // { width, height, cellSize, cols, rows, cells: {r_c:{function,treeKey,label,zone,soil}} }
+let selectedCell = null; // "r_c"
+let trees = [];       // list of tree/shrub keys for the tree selector
+
+// Species DB — loaded from plants.json (same 256-species source as other tools)
+let SPECIES = {};
+
+/* ============ PERSISTENCE ============ */
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(plan)); } catch(e) {}
+}
+function load() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch(e) {}
+  return null;
+}
+/* ============ DESIGN BRIEF (shared with all tools) ============ */
+function loadBrief() {
+  try {
+    const raw = localStorage.getItem(BRIEF_KEY);
+    if (raw) return Object.assign({}, DEFAULT_BRIEF, JSON.parse(raw));
+  } catch(e) {}
+  return Object.assign({}, DEFAULT_BRIEF);
+}
+function saveBrief(b) {
+  b.updatedAt = new Date().toISOString();
+  try { localStorage.setItem(BRIEF_KEY, JSON.stringify(b)); } catch(e) {}
+}
+function briefFromPlan(p) {
+  const region = getRegionParam();
+  return {
+    region: region,
+    title: document.getElementById('setup-title') ? document.getElementById('setup-title').value : 'Tuscan hillside',
+    plotW: p.width, plotH: p.height, cellSize: p.cellSize,
+    defaultSoil: p.defaultSoil || 'silty',
+    altitude: parseInt(document.getElementById('setup-alt').value) || 300,
+    climateZone: document.getElementById('setup-climate').value || '8b-9a',
+    aspect: document.getElementById('setup-aspect').value || 'South (180°)',
+    slope: document.getElementById('setup-slope').value || '~10% moderate',
+    updatedAt: null
+  };
+}
+/* ============ WATER SYSTEM (shared tuscan-water-v1) ============ */
+const WATER_KEY = 'tuscan-water-v1';
+const DEFAULT_WATER = {
+  roofArea: 250,      // m²
+  rainfall: 800,      // mm/yr
+  roofEff: 0.85,
+  pondSize: 200,      // m³
+  poolSize: 112,      // m³
+  demand: 958,        // m³/yr
+  tankCount: 3,
+  tankSize: 5000,     // L each
+  swales: 4,
+  gravityHead: 10,    // m
+  updatedAt: null
+};
+function loadWater() {
+  try {
+    const raw = localStorage.getItem(WATER_KEY);
+    if (raw) return Object.assign({}, DEFAULT_WATER, JSON.parse(raw));
+  } catch(e) {}
+  return Object.assign({}, DEFAULT_WATER);
+}
+function saveWater(w) {
+  w.updatedAt = new Date().toISOString();
+  try { localStorage.setItem(WATER_KEY, JSON.stringify(w)); } catch(e) {}
+}
+function roofHarvest(w) {
+  return Math.round((w.roofArea * w.rainfall * w.roofEff) / 1000); // L → m³
+}
+function waterResultPreview() {
+  const w = {
+    roofArea: parseInt(document.getElementById('water-roof').value) || 0,
+    rainfall: parseInt(document.getElementById('water-rain').value) || 0,
+    roofEff: parseFloat(document.getElementById('water-eff').value) || 0
+  };
+  const m3 = roofHarvest(w);
+  document.getElementById('water-result').textContent =
+    m3 + ' m³/yr (' + (m3 * 1000).toLocaleString() + ' L) — from ' + w.roofArea + 'm² roof × ' + w.rainfall + 'mm × ' + w.roofEff + ' eff.';
+}
+function openWaterSetup() {
+  const w = loadWater();
+  document.getElementById('water-roof').value = w.roofArea;
+  document.getElementById('water-rain').value = w.rainfall;
+  document.getElementById('water-eff').value = w.roofEff;
+  document.getElementById('water-pond').value = w.pondSize;
+  document.getElementById('water-pool').value = w.poolSize;
+  document.getElementById('water-demand').value = w.demand;
+  document.getElementById('water-tanks').value = w.tankCount;
+  document.getElementById('water-tank-size').value = w.tankSize;
+  document.getElementById('water-swales').value = w.swales;
+  document.getElementById('water-head').value = w.gravityHead;
+  waterResultPreview();
+  document.getElementById('water-modal').classList.add('open');
+  ['water-roof','water-rain','water-eff'].forEach(id =>
+    document.getElementById(id).oninput = waterResultPreview);
+}
+function closeWaterSetup() {
+  document.getElementById('water-modal').classList.remove('open');
+}
+function applyWaterSetup() {
+  const w = {
+    roofArea: parseInt(document.getElementById('water-roof').value) || 250,
+    rainfall: parseInt(document.getElementById('water-rain').value) || 800,
+    roofEff: parseFloat(document.getElementById('water-eff').value) || 0.85,
+    pondSize: parseInt(document.getElementById('water-pond').value) || 200,
+    poolSize: parseInt(document.getElementById('water-pool').value) || 112,
+    demand: parseInt(document.getElementById('water-demand').value) || 958,
+    tankCount: parseInt(document.getElementById('water-tanks').value) || 3,
+    tankSize: parseInt(document.getElementById('water-tank-size').value) || 5000,
+    swales: parseInt(document.getElementById('water-swales').value) || 4,
+    gravityHead: parseInt(document.getElementById('water-head').value) || 10,
+    updatedAt: null
+  };
+  saveWater(w);
+  closeWaterSetup();
+  showToast('💧 Water setup saved · roof harvest ' + roofHarvest(w) + ' m³/yr');
+}
+/* ============ HISTORY (UNDO) ============ */
+let history = [];
+const HISTORY_MAX = 50;
+function snapshot() {
+  if (!plan) return;
+  try { history.push(JSON.stringify(plan)); } catch(e) {}
+  if (history.length > HISTORY_MAX) history.shift();
+}
+function undo() {
+  if (!history.length) { showToast('Nothing to undo'); return; }
+  const prev = history.pop();
+  try {
+    plan = JSON.parse(prev);
+    save(); renderAll();
+    showToast('↩️ Undone');
+  } catch(e) { showToast('⚠️ Could not restore'); }
+}
+function clearLayer() {
+  if (!plan || view === 'function') return;
+  const key = view === 'zone' ? 'zone' : 'soil';
+  snapshot();
+  let n = 0;
+  Object.keys(plan.cells).forEach(function(k) {
+    const cell = plan.cells[k];
+    if (!cell) return;
+    if (key === 'zone') {
+      delete cell.zone;
+    } else {
+      delete cell.soil;
+    }
+    const kept = cell.function || cell.treeKey || cell.label || (key === 'zone' ? cell.soil : cell.zone);
+    if (!kept) delete plan.cells[k];
+    n++;
+  });
+  save(); renderAll();
+  showToast('🧹 Cleared all ' + (key === 'zone' ? 'zones' : 'soil types'));
+}
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+/* ============ SETUP ============ */
+function applyPreset(w, h, cell) {
+  document.getElementById('setup-w').value = w;
+  document.getElementById('setup-h').value = h;
+  document.getElementById('setup-cell').value = cell;
+  updateSetupResult();
+}
+function updateSetupResult() {
+  const w = parseInt(document.getElementById('setup-w').value) || 0;
+  const h = parseInt(document.getElementById('setup-h').value) || 0;
+  const c = parseInt(document.getElementById('setup-cell').value) || 0;
+  const cols = Math.max(1, Math.ceil(w / c));
+  const rows = Math.max(1, Math.ceil(h / c));
+  document.getElementById('setup-result').textContent =
+    `${cols} × ${rows} cells (${cols * rows} total) · each ${c}×${c}m`;
+}
+function applySetup() {
+  const w = parseInt(document.getElementById('setup-w').value) || 100;
+  const h = parseInt(document.getElementById('setup-h').value) || 100;
+  const c = parseInt(document.getElementById('setup-cell').value) || 10;
+  const soil = document.getElementById('setup-soil').value || 'silty';
+  if (w < c || h < c) { showToast('⚠️ Plot must be at least one cell'); return; }
+  const cols = Math.ceil(w / c);
+  const rows = Math.ceil(h / c);
+  snapshot();
+  plan = { width: w, height: h, cellSize: c, cols, rows, defaultSoil: soil, cells: {} };
+  saveBrief(briefFromPlan(plan));
+  save(); renderAll();
+  closeSetup();
+  showToast('✅ New plot created · default soil: ' + (SOIL_META[soil] ? SOIL_META[soil].label : soil));
+}
+function openSetup() {
+  const brief = loadBrief();
+  document.getElementById('setup-w').value = plan ? plan.width : brief.plotW;
+  document.getElementById('setup-h').value = plan ? plan.height : brief.plotH;
+  document.getElementById('setup-cell').value = plan ? plan.cellSize : brief.cellSize;
+  const titleEl = document.getElementById('setup-title');
+  if (titleEl) titleEl.value = brief.title || 'Tuscan hillside';
+  const altEl = document.getElementById('setup-alt');
+  if (altEl) altEl.value = brief.altitude || 300;
+  const clEl = document.getElementById('setup-climate');
+  if (clEl) clEl.value = brief.climateZone || '8b-9a';
+  const aspEl = document.getElementById('setup-aspect');
+  if (aspEl && brief.aspect && Array.from(aspEl.options).some(o => o.value === brief.aspect)) aspEl.value = brief.aspect;
+  const slEl = document.getElementById('setup-slope');
+  if (slEl && brief.slope && Array.from(slEl.options).some(o => o.value === brief.slope)) slEl.value = brief.slope;
+  const soilSel = document.getElementById('setup-soil');
+  if (soilSel && (plan && plan.defaultSoil || brief.defaultSoil)) soilSel.value = (plan && plan.defaultSoil) || brief.defaultSoil;
+  updateSetupResult();
+  const m = document.getElementById('setup-modal');
+  m.classList.add('open');
+  // wire inputs
+  ['setup-w','setup-h','setup-cell'].forEach(id =>
+    document.getElementById(id).oninput = updateSetupResult);
+}
+function closeSetup() {
+  document.getElementById('setup-modal').classList.remove('open');
+}
+
+/* ============ CELL STATE ============ */
+function cellKey(r, c) { return r + '_' + c; }
+function getCell(r, c) {
+  const k = cellKey(r, c);
+  return plan.cells[k] || null;
+}
+function setCell(r, c, data) {
+  const k = cellKey(r, c);
+  snapshot();
+  if (data) plan.cells[k] = data;
+  else delete plan.cells[k];
+  save(); renderAll();
+}
+
+/* ============ VIEWS & PAINT ============ */
+function setView(v) {
+  view = v;
+  paintMode = null;
+  ['function','zone','soil','sectors'].forEach(function(vv) {
+    const b = document.getElementById('view-' + vv);
+    if (b) b.classList.toggle('active', vv === v);
+  });
+  const clb = document.getElementById('clear-layer-btn');
+  if (clb) clb.style.display = (v === 'zone' || v === 'soil') ? 'inline-block' : 'none';
+  // sector overlays only in sectors view
+  const ov = document.getElementById('sector-overlays');
+  if (ov) {
+    ov.style.display = (v === 'sectors') ? 'block' : 'none';
+    if (v === 'sectors') buildSectorLayers();
+  }
+  renderPaintbar();
+  renderAll();
+}
+function buildSectorLayers() {
+  Object.keys(SECTOR_LAYERS).forEach(function(k) {
+    const el = document.getElementById('layer-' + k);
+    if (el && !el.dataset.built) {
+      el.innerHTML = SECTOR_LAYERS[k].svg;
+      el.dataset.built = '1';
+    }
+  });
+}
+function toggleSectorLayer(key) {
+  const el = document.getElementById('layer-' + key);
+  if (el) el.classList.toggle('hidden');
+  const b = document.getElementById('sector-btn-' + key);
+  if (b) b.classList.toggle('active');
+}
+function renderPaintbar() {
+  const bar = document.getElementById('paintbar');
+  if (view === 'function') { bar.style.display = 'none'; bar.innerHTML = ''; return; }
+  if (view === 'sectors') {
+    let html = '<span class="paint-label">🌪️ Sector layers:</span>';
+    Object.keys(SECTOR_LAYERS).forEach(function(k) {
+      const el = document.getElementById('layer-' + k);
+      const on = !(el && el.classList.contains('hidden'));
+      html += '<button class="paint-chip' + (on ? ' active' : '') + '" id="sector-btn-' + k + '" onclick="toggleSectorLayer(\'' + k + '\')">' + SECTOR_LAYERS[k].label + '</button>';
+    });
+    html += '<button class="paint-chip clear" onclick="sectorLayersAll()">🔄 Toggle all</button>';
+    bar.innerHTML = html;
+    bar.style.display = 'flex';
+    return;
+  }
+  const isZone = view === 'zone';
+  const meta = isZone ? ZONE_META : SOIL_META;
+  const kind = isZone ? 'zone' : 'soil';
+  let html = '<span class="paint-label">✏️ Paint ' + (isZone ? 'zones' : 'soil') + ':</span>';
+  Object.keys(meta).forEach(function(k) {
+    const active = paintMode && paintMode.kind === kind && paintMode.value === k;
+    html += '<button class="paint-chip' + (active ? ' active' : '') + '" style="background:' + meta[k].color +
+      '" onclick="setPaint(\'' + kind + '\',\'' + k + '\')">' + (isZone ? ('Z' + k) : (meta[k].emoji + ' ' + meta[k].label)) + '</button>';
+  });
+  html += '<button class="paint-chip clear" onclick="setPaint(null,null)">✕ stop</button>';
+  bar.innerHTML = html;
+  bar.style.display = 'flex';
+}
+function sectorLayersAll() {
+  const allOn = Object.keys(SECTOR_LAYERS).some(function(k) {
+    return document.getElementById('layer-' + k) && document.getElementById('layer-' + k).classList.contains('hidden');
+  });
+  Object.keys(SECTOR_LAYERS).forEach(function(k) {
+    const el = document.getElementById('layer-' + k);
+    const b = document.getElementById('sector-btn-' + k);
+    if (el) el.classList.toggle('hidden', allOn ? false : true);
+    if (b) b.classList.toggle('active', allOn ? true : false);
+  });
+}
+function setPaint(kind, value) {
+  paintMode = (kind && value) ? {kind: kind, value: value} : null;
+  renderPaintbar();
+  document.getElementById('grid').style.cursor = paintMode ? 'crosshair' : '';
+}
+function paintCell(r, c) {
+  if (!paintMode) return;
+  const prev = getCell(r, c) || {};
+  const data = {
+    function: prev.function || null,
+    treeKey: prev.treeKey || null,
+    label: prev.label || null,
+    zone: prev.zone || null,
+    soil: prev.soil || null
+  };
+  data[paintMode.kind] = paintMode.value;
+  // drop nulls
+  const clean = {};
+  Object.keys(data).forEach(function(k) { if (data[k]) clean[k] = data[k]; });
+  setCell(r, c, Object.keys(clean).length ? clean : null);
+}
+function suggestZones() {
+  if (!plan) return;
+  snapshot();
+  // Find house(s): construction cells (or nearest to plot centre if none)
+  const houses = [];
+  Object.keys(plan.cells).forEach(function(k) {
+    const cell = plan.cells[k];
+    if (cell && cell.function === 'construction') {
+      const p = k.split('_'); houses.push([parseInt(p[0]), parseInt(p[1])]);
+    }
+  });
+  if (!houses.length) {
+    // default house: centre of plot
+    houses.push([Math.floor(plan.rows / 2), Math.floor(plan.cols / 2)]);
+  }
+  // Distance rings from nearest house → zone mapping
+  function ring(r, c) {
+    let best = Infinity;
+    houses.forEach(function(h) {
+      const d = Math.max(Math.abs(r - h[0]), Math.abs(c - h[1]));
+      if (d < best) best = d;
+    });
+    // Chebyshev distance → zone: 0→Z0, 1→Z1, 2→Z2, 3→Z3, 4→Z4, 5+→Z5
+    return Math.min(5, best);
+  }
+  let assigned = 0;
+  for (let r = 0; r < plan.rows; r++) {
+    for (let c = 0; c < plan.cols; c++) {
+      const z = ring(r, c);
+      const prev = getCell(r, c) || {};
+      const data = {
+        function: prev.function || null,
+        treeKey: prev.treeKey || null,
+        label: prev.label || null,
+        soil: prev.soil || null,
+        zone: String(z)
+      };
+      const clean = {};
+      Object.keys(data).forEach(function(k) { if (data[k]) clean[k] = data[k]; });
+      plan.cells[cellKey(r, c)] = Object.keys(clean).length ? clean : null;
+      if (clean.zone) assigned++;
+    }
+  }
+  // House cells keep construction function + Z0
+  houses.forEach(function(h) {
+    const k = cellKey(h[0], h[1]);
+    const prev = plan.cells[k] || {};
+    plan.cells[k] = Object.assign({}, prev, { function: 'construction', zone: '0' });
+  });
+  save(); renderAll();
+  showToast('✨ Zones suggested — ' + assigned + ' cells zoned (tap to adjust)');
+}
+function updateLegend() {
+  const legend = document.getElementById('legend');
+  if (view === 'zone') {
+    legend.innerHTML = Object.keys(ZONE_META).map(function(z) {
+      return '<span class="legend-item"><span class="legend-swatch" style="background:' + ZONE_META[z].color + '"></span> ' + ZONE_META[z].label + '</span>';
+    }).join('');
+  } else if (view === 'soil') {
+    legend.innerHTML = Object.keys(SOIL_META).map(function(s) {
+      return '<span class="legend-item"><span class="legend-swatch" style="background:' + SOIL_META[s].color + '"></span> ' + SOIL_META[s].emoji + ' ' + SOIL_META[s].label + '</span>';
+    }).join('');
+  } else if (view === 'sectors') {
+    legend.innerHTML =
+      '<span class="legend-item"><span class="legend-swatch" style="background:rgba(255,193,7,0.5)"></span> ☀️ Sun arcs</span>' +
+      '<span class="legend-item"><span class="legend-swatch" style="background:rgba(33,150,243,0.5)"></span> 💨 Winds</span>' +
+      '<span class="legend-item"><span class="legend-swatch" style="background:rgba(244,67,54,0.5)"></span> 🔥 Fire risk</span>' +
+      '<span class="legend-item"><span class="legend-swatch" style="background:rgba(156,39,176,0.5)"></span> ❄️ Frost drainage</span>' +
+      '<span class="legend-item"><span class="legend-swatch" style="background:rgba(0,188,212,0.5)"></span> 💧 Water/runoff</span>' +
+      '<span class="legend-item"><span class="legend-swatch" style="background:rgba(139,195,74,0.5)"></span> 🦌 Wildlife</span>' +
+      '<span class="legend-item" style="border-style:dashed;">Cells underneath = your plan</span>';
+  } else {
+    legend.innerHTML =
+      '<span class="legend-item"><span class="legend-swatch" style="background:#2a5a2a"></span> 🌳 Guild</span>' +
+      '<span class="legend-item"><span class="legend-swatch" style="background:#1a5a9a"></span> 💧 Water</span>' +
+      '<span class="legend-item"><span class="legend-swatch" style="background:#6a4a38"></span> 🛣️ Road / Access</span>' +
+      '<span class="legend-item"><span class="legend-swatch" style="background:#7a3030"></span> 🏠 Construction</span>' +
+      '<span class="legend-item"><span class="legend-swatch" style="background:#1a301a"></span> 🌿 Open / Unassigned</span>';
+  }
+}
+
+/* ============ RENDER ============ */
+function squareGrid() {
+  // iOS <15 doesn't support aspect-ratio — set height explicitly
+  const g = document.getElementById('grid');
+  if (!g) return;
+  g.style.height = g.offsetWidth + 'px';
+}
+function renderAll() {
+  if (!plan) return;
+  updateLegend();
+  renderGrid();
+  squareGrid();
+  renderStats();
+  renderMeta();
+  syncPanel();
+}
+function renderGrid() {
+  const g = document.getElementById('grid');
+  g.style.gridTemplateColumns = `repeat(${plan.cols},1fr)`;
+  g.style.gridTemplateRows = `repeat(${plan.rows},1fr)`;
+  g.innerHTML = '';
+  g.style.cursor = paintMode ? 'crosshair' : '';
+  for (let r = 0; r < plan.rows; r++) {
+    for (let c = 0; c < plan.cols; c++) {
+      const k = cellKey(r, c);
+      const cell = getCell(r, c);
+      const div = document.createElement('div');
+      div.className = 'cell f-' + (cell ? cell.function : 'empty');
+      if (selectedCell === k) div.classList.add('selected');
+      const meta = cell ? FUNC_META[cell.function] : null;
+      if (meta) {
+        const icon = document.createElement('div');
+        icon.className = 'cell-icon';
+        icon.textContent = meta.icon;
+        div.appendChild(icon);
+        if (cell.label) {
+          const lb = document.createElement('div');
+          lb.className = 'cell-label';
+          lb.textContent = cell.label;
+          div.appendChild(lb);
+        }
+      } else {
+        const icon = document.createElement('div');
+        icon.className = 'cell-icon';
+        icon.textContent = '+';
+        icon.style.opacity = '0.25';
+        div.appendChild(icon);
+      }
+      // view-based color wash (keeps function icon visible)
+      if (view === 'zone') {
+        const z = cell && cell.zone !== undefined && cell.zone !== null ? String(cell.zone) : null;
+        if (z !== null && ZONE_META[z]) {
+          div.style.background = ZONE_META[z].color;
+          const zb = document.createElement('div');
+          zb.className = 'cell-zone';
+          zb.textContent = 'Z' + z;
+          div.appendChild(zb);
+        }
+      } else if (view === 'soil') {
+        const s = (cell && cell.soil) ? cell.soil : (plan.defaultSoil || null);
+        if (s && SOIL_META[s]) {
+          div.style.background = SOIL_META[s].color;
+          const sb = document.createElement('div');
+          sb.className = 'cell-soil';
+          sb.textContent = SOIL_META[s].label;
+          div.appendChild(sb);
+        }
+      }
+      const coord = document.createElement('div');
+      coord.className = 'cell-coord';
+      coord.textContent = `(${r},${c})`;
+      div.appendChild(coord);
+      const num = document.createElement('div');
+      num.className = 'cell-number';
+      num.textContent = r * plan.cols + c + 1;
+      div.appendChild(num);
+      div.title = cell ? ((FUNC_META[cell.function] ? FUNC_META[cell.function].label : 'Zoned') + (cell.label ? ' — ' + cell.label : '')) + ' · #' + (r * plan.cols + c + 1) : 'Unassigned · #' + (r * plan.cols + c + 1);
+      (function(rk, ck) {
+        div.onclick = function() {
+          if (paintMode) { paintCell(rk, ck); return; }
+          selectCell(rk, ck);
+        };
+      })(r, c);
+      g.appendChild(div);
+    }
+  }
+}
+function renderStats() {
+  const s = document.getElementById('stats');
+  if (view === 'sectors') {
+    s.innerHTML =
+      stat('sun', '☀️', 'Summer 70° · Winter 24°') +
+      stat('wind', '💨', 'SW prevailing · NW cold · SE hot') +
+      stat('fire', '🔥', 'SE risk · Jul-Sep') +
+      stat('frost', '❄️', 'Drains downhill') +
+      stat('water', '💧', '800mm · 8,000 m³') +
+      stat('wild', '🦌', 'N corridor');
+    return;
+  }
+  if (view === 'zone') {
+    const zc = {0:0,1:0,2:0,3:0,4:0,5:0};
+    Object.values(plan.cells).forEach(function(cell) {
+      if (cell && cell.zone !== undefined && cell.zone !== null && zc[cell.zone] !== undefined) zc[cell.zone]++;
+    });
+    s.innerHTML =
+      stat('z0', zc[0], 'Z0 House') +
+      stat('z1', zc[1], 'Z1 Kitchen') +
+      stat('z2', zc[2], 'Z2 Orchard') +
+      stat('z3', zc[3], 'Z3 Field') +
+      stat('z4', zc[4], 'Z4 Semi') +
+      stat('z5', zc[5], 'Z5 Wild');
+    return;
+  }
+  if (view === 'soil') {
+    const sc = {sandy:0, silty:0, loam:0, clay:0, chalky:0, peaty:0};
+    const def = plan.defaultSoil || 'silty';
+    const defLabel = SOIL_META[def] ? SOIL_META[def].label : 'Default';
+    let explicit = 0, defCount = 0;
+    for (let r = 0; r < plan.rows; r++) {
+      for (let c = 0; c < plan.cols; c++) {
+        const cell = getCell(r, c);
+        if (cell && cell.soil && sc[cell.soil] !== undefined) {
+          sc[cell.soil]++;
+          explicit++;
+        }
+      }
+    }
+    defCount = plan.cols * plan.rows - explicit;
+    const explicitHtml = Object.keys(sc).filter(function(k) { return sc[k] > 0; }).map(function(k) {
+      return stat('s-' + k, sc[k], SOIL_META[k].emoji + ' ' + SOIL_META[k].label);
+    }).join('');
+    s.innerHTML = explicitHtml + (defCount > 0 ? stat('default', defCount, '📋 Default (' + defLabel + ')') : '');
+    return;
+  }
+  const counts = { guild:0, water:0, road:0, construction:0, open:0 };
+  Object.values(plan.cells).forEach(function(cell) {
+    if (cell && counts[cell.function] !== undefined) counts[cell.function]++;
+  });
+  const total = plan.cols * plan.rows;
+  s.innerHTML =
+    stat('guild', counts.guild, 'Guilds') +
+    stat('water', counts.water, 'Water') +
+    stat('road', counts.road, 'Access') +
+    stat('construction', counts.construction, 'Buildings') +
+    stat('open', counts.open, 'Open') +
+    stat('total', counts.guild+counts.water+counts.road+counts.construction, 'Assigned');
+  function stat(cat, num, lbl) {
+    return `<div class="stat"><div class="num">${num}</div><div class="lbl">${lbl}</div></div>`;
+  }
+}
+function renderMeta() {
+  const brief = loadBrief();
+  document.getElementById('plot-info').innerHTML =
+    `<strong>${plan.width}×${plan.height}m</strong> · ${plan.cols}×${plan.rows} cells · ${plan.cellSize}m each` +
+    (brief.title ? ` · 📋 ${brief.title}` : '');
+  document.getElementById('axis-label').textContent =
+    `Scale: 1 cell = ${plan.cellSize}×${plan.cellSize}m · ${plan.cols} cols × ${plan.rows} rows`;
+  const assigned = Object.keys(plan.cells).length;
+  document.getElementById('assigned-count').textContent =
+    `${assigned} / ${plan.cols * plan.rows} assigned`;
+}
+
+/* ============ SELECTION & PANEL ============ */
+function selectCell(r, c) {
+  selectedCell = cellKey(r, c);
+  renderGrid();
+  syncPanel();
+  document.getElementById('side-panel').classList.add('open');
+}
+function closePanel() {
+  document.getElementById('side-panel').classList.remove('open');
+  selectedCell = null;
+  renderGrid();
+}
+function syncPanel() {
+  if (!plan || !selectedCell) return;
+  const parts = selectedCell.split('_');
+  const r = parseInt(parts[0]), c = parseInt(parts[1]);
+  const cellNumber = r * plan.cols + c + 1;
+  const cell = getCell(r, c);
+  document.getElementById('panel-coord').textContent = `#${cellNumber} — Cell (${r},${c}) · ${r*plan.cellSize}-${(r+1)*plan.cellSize}m V × ${c*plan.cellSize}-${(c+1)*plan.cellSize}m H`;
+  const sel = document.getElementById('func-select');
+  sel.value = cell ? cell.function : 'open';
+  // zone + soil selects
+  const zoneSel = document.getElementById('zone-select');
+  if (zoneSel) zoneSel.value = (cell && cell.zone !== undefined && cell.zone !== null) ? String(cell.zone) : '';
+  const soilSel = document.getElementById('soil-select');
+  if (soilSel) soilSel.value = (cell && cell.soil) || '';
+  updateSoilHint(cell);
+  // label field
+  const labelField = document.getElementById('label-field');
+  const labelInput = document.getElementById('label-input');
+  const showLabel = cell && (cell.function === 'water' || cell.function === 'road' || cell.function === 'construction' || cell.function === 'vegetable');
+  labelField.style.display = showLabel ? 'block' : 'none';
+  labelInput.value = showLabel ? (cell.label || '') : '';
+  // tree field (guild only)
+  const treeField = document.getElementById('tree-field');
+  const isGuild = sel.value === 'guild';
+  treeField.style.display = isGuild ? 'block' : 'none';
+  if (isGuild) {
+    const ts = document.getElementById('tree-select');
+    if (cell && cell.treeKey && Array.from(ts.options).some(o => o.value === cell.treeKey)) {
+      ts.value = cell.treeKey;
+    } else if (cell && cell.treeKey && !Array.from(ts.options).some(o => o.value === cell.treeKey)) {
+      ts.value = ''; // tree not in current region filter
+    }
+    updateGuildPreview();
+  }
+  // vegetable field (vegetable only)
+  const vegField = document.getElementById('veg-field');
+  if (vegField) vegField.style.display = sel.value === 'vegetable' ? 'block' : 'none';
+  // removed note
+  const note = document.getElementById('removed-note');
+  note.style.display = 'none';
+}
+window.addEventListener('resize', function() {
+  if (plan) squareGrid();
+});
+function onFuncChange() {
+  const v = document.getElementById('func-select').value;
+  const enforceTree = v === 'guild';
+  document.getElementById('label-field').style.display =
+    (v === 'water' || v === 'road' || v === 'construction' || v === 'vegetable') ? 'block' : 'none';
+  if (!enforceTree && v !== 'water' && v !== 'road' && v !== 'construction' && v !== 'vegetable') {
+    document.getElementById('label-input').value = '';
+  }
+  document.getElementById('tree-field').style.display = enforceTree ? 'block' : 'none';
+  const vegField = document.getElementById('veg-field');
+  if (vegField) vegField.style.display = v === 'vegetable' ? 'block' : 'none';
+  if (enforceTree) updateGuildPreview();
+  // Zone advice: auto-suggest the standard permaculture zone for this function
+  const zoneSel = document.getElementById('zone-select');
+  if (zoneSel && ZONE_ADVICE[v] !== undefined) {
+    zoneSel.value = ZONE_ADVICE[v];
+    const hint = zoneSel.parentElement.querySelector('.hint');
+    if (hint) hint.innerHTML = 'Advised: <strong>' + ZONE_META[ZONE_ADVICE[v]].label + '</strong> — change if you like.';
+  }
+  commit();
+}
+function onZoneChange() {
+  commit();
+}
+function onSoilChange() {
+  commit();
+  if (selectedCell) {
+    const parts = selectedCell.split('_');
+    updateSoilHint(getCell(parseInt(parts[0]), parseInt(parts[1])));
+  }
+}
+function updateSoilHint(cell) {
+  const hint = document.getElementById('soil-match-hint');
+  if (!hint) return;
+  const soil = (cell && cell.soil) ? cell.soil : (plan && plan.defaultSoil ? plan.defaultSoil : null);
+  const treeKey = cell && cell.function === 'guild' ? cell.treeKey : null;
+  const sp = treeKey && SPECIES[treeKey] ? SPECIES[treeKey] : null;
+  if (!soil) { hint.textContent = ''; return; }
+  const soilLabel = SOIL_META[soil] ? SOIL_META[soil].label : soil;
+  const isDefault = !(cell && cell.soil);
+  if (sp) {
+    const prefs = (sp.soilType || []).map(function(t) { return SOIL_META[t] ? SOIL_META[t].label : t; });
+    const ok = (sp.soilType || []).indexOf(soil) >= 0;
+    hint.innerHTML = ok
+      ? '✅ ' + sp.name + ' likes this ' + soilLabel.toLowerCase() + ' soil' + (isDefault ? ' (site default).' : '.')
+      : '⚠️ ' + sp.name + ' prefers: ' + (prefs.length ? prefs.join(', ') : 'unknown') + ' — this cell is ' + soilLabel.toLowerCase() + (isDefault ? ' (site default).' : '.');
+  } else {
+    hint.textContent = 'Cell soil: ' + soilLabel + (isDefault ? ' (site default)' : '') + '.';
+  }
+}
+function onLabelInput() {
+  commit();
+}
+function onTreeChange() {
+  updateGuildPreview();
+  commit();
+}
+function commit() {
+  if (!plan || !selectedCell) return;
+  const parts = selectedCell.split('_');
+  const r = parseInt(parts[0]), c = parseInt(parts[1]);
+  const func = document.getElementById('func-select').value;
+  const labelField = document.getElementById('label-field');
+  const label = (labelField && labelField.style.display !== 'none') ? document.getElementById('label-input').value.trim() : '';
+  const treeKey = document.getElementById('tree-select').value;
+  const zone = document.getElementById('zone-select').value;
+  const soil = document.getElementById('soil-select').value;
+  let data = null;
+  if (func !== 'open' || zone || soil) {
+    data = {};
+    if (func !== 'open') data.function = func;
+    if (label) data.label = label;
+    if (func === 'guild' && treeKey) data.treeKey = treeKey;
+    if (zone) data.zone = zone;
+    if (soil) data.soil = soil;
+  }
+  setCell(r, c, data);
+}
+function removeAssignment() {
+  if (!plan || !selectedCell) return;
+  const parts = selectedCell.split('_');
+  setCell(parseInt(parts[0]), parseInt(parts[1]), null);
+  const zs = document.getElementById('zone-select'); if (zs) zs.value = '';
+  const ss = document.getElementById('soil-select'); if (ss) ss.value = '';
+  const hint = document.getElementById('soil-match-hint'); if (hint) hint.textContent = '';
+  const note = document.getElementById('removed-note');
+  note.textContent = 'Cell cleared.';
+  note.style.display = 'block';
+}
+
+/* ============ GUILD PREVIEW & OPEN ============ */
+function updateGuildPreview() {
+  const treeKey = document.getElementById('tree-select').value;
+  const pv = document.getElementById('guild-preview');
+  if (!treeKey || !SPECIES[treeKey]) { pv.classList.remove('show'); return; }
+  const s = SPECIES[treeKey];
+  document.getElementById('gp-icon').textContent = s.icon || '🌳';
+  document.getElementById('gp-name').textContent = s.name + (s.latin ? ' · ' + s.latin : '');
+  const rings = document.getElementById('gp-rings');
+  if (s.guild && s.guild.gives) {
+    const ringNames = [];
+    const gives = s.guild.gives;
+    if (gives.some(g => ['light-shade','biomass','mulcher','groundcover'].includes(g))) ringNames.push('Inner');
+    if (gives.some(g => ['nitrogen','accumulator','dynamic-accumulator','n-fixer'].includes(g))) ringNames.push('Mid');
+    if (gives.some(g => ['pollinator','pest-repellent','habitat','windbreak'].includes(g))) ringNames.push('Outer');
+    rings.innerHTML = ringNames.length
+      ? ringNames.map(n => `<span class="gp-ring">${n}</span>`).join('')
+      : `<span class="gp-ring">Guild</span>`;
+  } else {
+    rings.innerHTML = `<span class="gp-ring">Guild</span>`;
+  }
+  pv.classList.add('show');
+}
+function openGuildDiagram() {
+  const treeKey = document.getElementById('tree-select').value;
+  if (!treeKey) { showToast('⚠️ Select a tree first'); return; }
+  const region = getRegionParam();
+  window.open('guild-diagrams.html?region=' + region + '&tree=' + encodeURIComponent(treeKey), '_blank');
+}
+function openVegPlanner() {
+  const region = getRegionParam();
+  const parts = selectedCell ? selectedCell.split('_') : null;
+  const cellParams = parts ? '&cell=' + parts[0] + '_' + parts[1] : '';
+  window.open('veg-planner.html?region=' + region + cellParams, '_blank');
+}
+function getRegionParam() {
+  const p = new URLSearchParams(window.location.search);
+  return p.get('region') || 'tuscany';
+}
+
+/* ============ TREE SELECTOR ============ */
+function populateTreeSelect() {
+  const ts = document.getElementById('tree-select');
+  ts.innerHTML = '';
+  trees.forEach(function(k) {
+    const s = SPECIES[k];
+    const o = document.createElement('option');
+    o.value = k;
+    o.textContent = (s.icon || '🌳') + ' ' + s.name;
+    ts.appendChild(o);
+  });
+}
+
+/* ============ EXPORT / IMPORT ============ */
+// Guild generation logic (mirrors guild-diagrams.html for export fidelity)
+const GIVE_ROLES = {
+  inner: ['pest-repellent', 'trap-crop', 'mycorrhizal-host'],
+  mid: ['n-fixer', 'minerals-accumulator', 'biomass', 'mulch'],
+  outer: ['pollinator-attractor', 'ground-cover', 'weed-suppression', 'beneficial-habitat', 'evergreen-shelter']
+};
+function scorePair(aKey, bKey) {
+  var a = SPECIES[aKey], b = SPECIES[bKey];
+  if (!a || !a.guild || !b || !b.guild) return 0;
+  var score = 0, ag = a.guild, bg = b.guild;
+  (ag.gives || []).forEach(function(g) { if ((bg.needs || []).indexOf(g) >= 0) score += 2; });
+  (bg.gives || []).forEach(function(g) { if ((ag.needs || []).indexOf(g) >= 0) score += 2; });
+  if ((ag.companions || []).indexOf(bKey) >= 0 || (bg.companions || []).indexOf(aKey) >= 0) score += 5;
+  if ((ag.antagonists || []).indexOf(bKey) >= 0 || (bg.antagonists || []).indexOf(aKey) >= 0) score -= 10;
+  if (ag.rootZone && bg.rootZone && ag.rootZone !== bg.rootZone) score += 1;
+  return score;
+}
+function ringForSpecies(key) {
+  var s = SPECIES[key];
+  if (!s || !s.guild || !s.guild.gives) return 'outer';
+  var gives = s.guild.gives;
+  if (gives.some(function(g) { return GIVE_ROLES.inner.indexOf(g) >= 0; })) return 'inner';
+  if (gives.some(function(g) { return GIVE_ROLES.mid.indexOf(g) >= 0; })) return 'mid';
+  return 'outer';
+}
+function generateGuild(treeKey, region) {
+  var tree = SPECIES[treeKey];
+  if (!tree) return null;
+  var candidates = Object.keys(SPECIES).filter(function(k) {
+    if (k === treeKey) return false;
+    var s = SPECIES[k];
+    if (s.category === 'tree' || s.category === 'shrub') return false;
+    if (region && region !== 'all' && (!s.regions || s.regions.indexOf(region) < 0)) return false;
+    return true;
+  }).map(function(k) {
+    return {key: k, score: scorePair(k, treeKey), ring: ringForSpecies(k)};
+  }).sort(function(a, b) { return b.score - a.score; });
+  var picked = {inner: [], mid: [], outer: []};
+  var used = {};
+  ['inner', 'mid', 'outer'].forEach(function(r) {
+    candidates.filter(function(c) { return !used[c.key] && c.ring === r; }).slice(0, 5).forEach(function(c) {
+      picked[r].push(c.key); used[c.key] = true;
+    });
+  });
+  candidates.filter(function(c) { return !used[c.key]; }).forEach(function(c) {
+    ['inner', 'mid', 'outer'].forEach(function(r) {
+      if (picked[r].length < 5 && !used[c.key]) { picked[r].push(c.key); used[c.key] = true; }
+    });
+  });
+  return {tree: treeKey, inner: picked.inner, mid: picked.mid, outer: picked.outer};
+}
+function loadGuild(treeKey) {
+  try { var d = localStorage.getItem('gd-' + treeKey); if (d) return JSON.parse(d); } catch(e) {}
+  return null;
+}
+function exportPlan() {
+  if (!plan) { showToast('⚠️ Create a plot first'); return; }
+  var region = getRegionParam();
+  // Compact species reference: trees + all guild companions used in the plan
+  var minSpecies = {};
+  var guilds = {};   // treeKey -> {tree, inner:[], mid:[], outer:[]}
+  function addSpecies(key) {
+    if (!SPECIES[key] || minSpecies[key]) return;
+    var s = SPECIES[key];
+    minSpecies[key] = {
+      name: s.name || key,
+      latin: s.latin || '',
+      icon: s.icon || '🌱'
+    };
+  }
+  Object.keys(plan.cells).forEach(function(k) {
+    var cell = plan.cells[k];
+    if (cell && cell.function === 'guild' && cell.treeKey && SPECIES[cell.treeKey]) {
+      addSpecies(cell.treeKey);
+      // Use user's saved guild design if present, else generate the suggestion
+      var guild = loadGuild(cell.treeKey) || generateGuild(cell.treeKey, region);
+      if (guild) {
+        guilds[cell.treeKey] = guild;
+        ['inner', 'mid', 'outer'].forEach(function(r) {
+          (guild[r] || []).forEach(function(ck) { addSpecies(ck); });
+        });
+      }
+    }
+  });
+  // Build the grid as static HTML + detail panels (no JS needed to view)
+  var gridHtml = buildGridHtml();
+  var detailHtml = buildDetailHtml();
+  var planJson = JSON.stringify(plan);
+  var speciesJson = JSON.stringify(minSpecies);
+  var guildsJson = JSON.stringify(guilds);
+  var briefJson = JSON.stringify(loadBrief());
+  var html = buildStandaloneHtml(planJson, speciesJson, guildsJson, briefJson, gridHtml, detailHtml, plan.cols, plan.rows, region);
+  var blob = new Blob([html], { type: 'text/html' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'master-plan-' + (region === 'netherlands' ? 'nl' : 'tuscany') + '.html';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  showToast('📤 Field viewer exported');
+}
+
+var EXPORT_FUNC = {guild:['🌳','Guild'],vegetable:['🥕','Vegetable Garden'],water:['💧','Water'],road:['🛣️','Road / Access'],construction:['🏠','Construction'],open:['🌿','Open']};
+var EXPORT_FUNC_VAL = {guild:'🌳',vegetable:'🥕',water:'💧',road:'🛣️',construction:'🏠',open:'🌿'};
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function cellTitle(r, c, cell) {
+  var num = r * plan.cols + c + 1;
+  if (!cell) return 'Unassigned #' + num;
+  var meta = EXPORT_FUNC[cell.function];
+  var nm = meta ? meta[1] : cell.function;
+  var extra = [];
+  if (cell.zone !== undefined && cell.zone !== null && ZONE_META[cell.zone]) extra.push('Z' + cell.zone);
+  if (cell.soil && SOIL_META[cell.soil]) extra.push(SOIL_META[cell.soil].label);
+  return '#' + num + ' ' + nm + (cell.label ? ' — ' + cell.label : '') + (extra.length ? ' · ' + extra.join(' · ') : '');
+}
+function buildGridHtml() {
+  var parts = [];
+  for (var r = 0; r < plan.rows; r++) {
+    for (var c = 0; c < plan.cols; c++) {
+      var k = r + '_' + c;
+      var cell = plan.cells[k];
+      var fn = cell ? cell.function : 'empty';
+      var num = r * plan.cols + c + 1;
+      var h = '<a href="#cell-' + num + '" class="cell f-' + fn + '" title="' + escHtml(cellTitle(r, c, cell)) + '">';
+      if (cell) {
+        var meta = EXPORT_FUNC[fn];
+        if (meta) h += '<div class="ci">' + meta[0] + '</div>';
+        var label = cell.label || (meta ? meta[1] : '');
+        if (fn === 'guild' && cell.treeKey && SPECIES[cell.treeKey]) label = SPECIES[cell.treeKey].name;
+        if (label) h += '<div class="cl">' + escHtml(label) + '</div>';
+        if (cell.zone !== undefined && cell.zone !== null && ZONE_META[cell.zone]) h += '<span class="cz">Z' + cell.zone + '</span>';
+        if (cell.soil && SOIL_META[cell.soil]) h += '<span class="cs">' + SOIL_META[cell.soil].label + '</span>';
+      } else {
+        h += '<div class="ci" style="opacity:0.25">+</div>';
+      }
+      h += '<div class="cn">' + num + '</div></a>';
+      parts.push(h);
+    }
+  }
+  return parts.join('\n');
+}
+function buildDetailHtml() {
+  var parts = [];
+  var region = getRegionParam();
+  Object.keys(plan.cells).forEach(function(k) {
+    var parts2 = k.split('_');
+    var r = parseInt(parts2[0]), c = parseInt(parts2[1]);
+    var cell = plan.cells[k];
+    var num = r * plan.cols + c + 1;
+    var cs = plan.cellSize;
+    var title = cellTitle(r, c, cell);
+    var h = '<div class="cell-detail" id="cell-' + num + '">';
+    h += '<div class="close-wrap"><a href="#top" class="close-btn">✕</a></div>';
+    h += '<h3>' + escHtml(title) + '</h3>';
+    h += '<div class="cd-row"><span class="cd-key">Position</span><span class="cd-val">Row ' + (r+1) + ' · Col ' + (c+1) + ' (' + (r*cs) + '-' + ((r+1)*cs) + 'm V × ' + (c*cs) + '-' + ((c+1)*cs) + 'm H)</span></div>';
+    h += '<div class="cd-row"><span class="cd-key">Function</span><span class="cd-val">' + (EXPORT_FUNC_VAL[cell.function] || '') + ' ' + (EXPORT_FUNC[cell.function] ? EXPORT_FUNC[cell.function][1] : cell.function) + '</span></div>';
+    if (cell.function === 'guild' && cell.treeKey) {
+      var sp = SPECIES[cell.treeKey];
+      h += '<div class="cd-row"><span class="cd-key">Tree</span><span class="cd-val">' + (sp ? (sp.icon || '') + ' ' + escHtml(sp.name) + (sp.latin ? ' · ' + escHtml(sp.latin) : '') : escHtml(cell.treeKey)) + '</span></div>';
+      var guild = loadGuild(cell.treeKey) || generateGuild(cell.treeKey, region);
+      if (guild) {
+        var totalComp = 0;
+        var info = {inner:{name:'Inner — Trunk Zone',icon:'🟫'},mid:{name:'Mid — Drip Line',icon:'🟢'},outer:{name:'Outer — Canopy Edge',icon:'🔵'}};
+        ['inner','mid','outer'].forEach(function(rr) {
+          var list = guild[rr] || [];
+          totalComp += list.length;
+          if (list.length) {
+            h += '<div class="cd-guild-ring ' + rr + '"><h4>' + info[rr].icon + ' ' + info[rr].name + '</h4><div class="cd-guild-comps">';
+            list.forEach(function(ck) {
+              var cs = SPECIES[ck];
+              h += '<span class="cd-guild-tag">' + (cs ? (cs.icon || '🌱') + ' ' + escHtml(cs.name) : escHtml(ck)) + '</span>';
+            });
+            h += '</div></div>';
+          }
+        });
+        h += '<div class="cd-row"><span class="cd-key">Companions</span><span class="cd-val">' + totalComp + ' species</span></div>';
+      }
+    } else if (cell.function === 'guild' && !cell.treeKey) {
+      h += '<div class="cd-row"><span class="cd-key">Tree</span><span class="cd-val">Not selected</span></div>';
+    }
+    if (cell.zone !== undefined && cell.zone !== null && ZONE_META[cell.zone]) {
+      h += '<div class="cd-row"><span class="cd-key">Zone</span><span class="cd-val">Z' + cell.zone + ' · ' + ZONE_META[cell.zone].label.replace('Z' + cell.zone + ' · ', '') + '</span></div>';
+    }
+    if (cell.soil && SOIL_META[cell.soil]) {
+      h += '<div class="cd-row"><span class="cd-key">Soil</span><span class="cd-val">' + SOIL_META[cell.soil].emoji + ' ' + SOIL_META[cell.soil].label + '</span></div>';
+    }
+    if (cell.label && cell.function !== 'guild') {
+      h += '<div class="cd-row"><span class="cd-key">Label</span><span class="cd-val">' + escHtml(cell.label) + '</span></div>';
+    }
+    h += '</div>';
+    parts.push(h);
+  });
+  return parts.join('\n');
+}
+
+function buildStandaloneHtml(planJson, speciesJson, guildsJson, briefJson, gridHtml, detailHtml, planCols, planRows, region) {
+  // Escape closing script tag sequences to avoid breaking the embedded script tag
+  var safePlan = planJson.replace(/<\//g, '<\\/');
+  var safeSpecies = speciesJson.replace(/<\//g, '<\\/');
+  var safeGuilds = guildsJson.replace(/<\//g, '<\\/');
+  var safeBrief = briefJson.replace(/<\//g, '<\\/');
+  // Brief header line (embedded at export time — static, no JS needed)
+  var briefLine = '';
+  try {
+    var b = JSON.parse(briefJson);
+    var soilLbl = SOIL_META[b.defaultSoil] ? SOIL_META[b.defaultSoil].label : (b.defaultSoil || '');
+    var bits = [];
+    if (b.title) bits.push('📍 ' + b.title);
+    if (b.plotW && b.plotH) bits.push('📐 ' + b.plotW + '×' + b.plotH + 'm');
+    if (soilLbl) bits.push('🪨 ' + soilLbl);
+    if (b.altitude) bits.push('⛰️ ~' + b.altitude + 'm');
+    if (b.climateZone) bits.push('🌡️ Zone ' + b.climateZone);
+    if (b.aspect) bits.push('🧭 ' + b.aspect);
+    if (b.slope) bits.push('📉 ' + b.slope);
+    if (bits.length) briefLine = '<p class="brief-line">' + bits.join(' · ') + '</p>';
+  } catch(e) {}
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Master Plan \u2014 Field Viewer</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  background:#0a1a0a;color:#c8d8c0;padding:12px;max-width:1000px;margin:0 auto;line-height:1.5}
+h1{font-family:Georgia,'Palatino',serif;color:#5a8a4a;text-align:center;font-size:1.3rem;margin-bottom:2px}
+.subtitle{text-align:center;color:#6a8068;font-size:0.75rem;margin-bottom:10px}
+.legend{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin-bottom:10px;font-size:0.65rem}
+.legend-item{display:flex;align-items:center;gap:3px;padding:2px 7px;background:#142114;border:1px solid #1a301a;border-radius:4px}
+.sw{width:11px;height:11px;border-radius:3px;border:1px solid rgba(255,255,255,0.15)}
+.grid-wrap{background:#142114;border:1px solid #1a301a;border-radius:6px;padding:10px;margin-bottom:10px}
+.grid-meta{display:flex;justify-content:space-between;font-size:0.65rem;color:#6a8068;margin-bottom:6px;font-family:'Courier New',monospace;padding:0 2px}
+.grid{display:grid;gap:2px;background:#1a301a;padding:2px;border-radius:4px;width:100%;height:auto;aspect-ratio:1}
+.cell{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  border-radius:3px;cursor:pointer;position:relative;overflow:hidden;text-decoration:none;
+  background:#0a1a0a;border:1px solid rgba(255,255,255,0.06);color:inherit}
+.cell .ci{font-size:clamp(8px,2vw,20px);line-height:1}
+.cell .cl{font-size:clamp(4px,0.8vw,8px);color:rgba(255,255,255,0.75);text-align:center;line-height:1.1;
+  margin-top:1px;padding:0 1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%}
+.cell .cn{position:absolute;bottom:2px;right:2px;font-size:clamp(5px,1vw,10px);font-weight:700;
+  color:rgba(255,255,255,0.4);font-family:Georgia,serif;text-shadow:0 1px 3px rgba(0,0,0,0.6)}
+.cell .cz{position:absolute;top:1px;right:2px;font-size:clamp(4px,0.7vw,7px);font-weight:700;
+  color:#fff;background:rgba(0,0,0,0.55);padding:0 2px;border-radius:2px;line-height:1.3}
+.cell .cs{position:absolute;bottom:1px;left:2px;font-size:clamp(3px,0.55vw,6px);
+  color:rgba(255,255,255,0.9);background:rgba(0,0,0,0.5);padding:0 2px;border-radius:2px;line-height:1.3;
+  text-transform:uppercase;letter-spacing:0.3px}
+.cell.f-guild{background:linear-gradient(135deg,#1f4a1f,#2a5a2a)}
+.cell.f-vegetable{background:linear-gradient(135deg,#3a5a1a,#4a7025)}
+.cell.f-water{background:linear-gradient(135deg,#12406e,#1a5a9a)}
+.cell.f-road{background:linear-gradient(135deg,#5a4030,#6a4a38)}
+.cell.f-construction{background:linear-gradient(135deg,#5a2525,#7a3030)}
+.cell.f-open{background:linear-gradient(135deg,#122412,#1a301a)}
+.cell.f-empty{background:#0a1a0a}
+.cell:hover{box-shadow:0 0 0 2px #5a8a4a inset;z-index:2}
+/* Detail panels via :target - pure CSS, no JS needed */
+.cell-detail{display:none;background:#0d1a0d;border:1px solid #2a4028;border-radius:8px;padding:14px;margin-bottom:10px;scroll-margin-top:80px}
+.cell-detail:target{display:block}
+.cell-detail h3{color:#5a8a4a;font-family:Georgia,serif;font-size:0.95rem;margin-bottom:7px}
+.cell-detail .close-wrap{float:right}
+.cell-detail .close-btn{color:#6a8068;text-decoration:none;font-size:1.1rem;padding:2px 6px;cursor:pointer}
+.cell-detail .close-btn:hover{color:#e57373}
+.cd-row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #1a301a;font-size:0.78rem}
+.cd-row:last-child{border-bottom:none}
+.cd-key{color:#6a8068;flex-shrink:0;margin-right:10px}
+.cd-val{color:#e8f0e0;text-align:right}
+.cd-guild-ring{margin:8px 0;padding:8px;border-radius:5px;background:#122412}
+.cd-guild-ring.inner{border-left:3px solid #8d6e63}
+.cd-guild-ring.mid{border-left:3px solid #66bb6a}
+.cd-guild-ring.outer{border-left:3px solid #42a5f5}
+.cd-guild-ring h4{font-size:0.65rem;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+.cd-guild-comps{display:flex;flex-wrap:wrap;gap:3px}
+.cd-guild-tag{display:inline-flex;align-items:center;gap:2px;padding:2px 6px;background:#0a1a0a;border-radius:4px;font-size:0.7rem;color:#c8d8c0;border:1px solid #1a301a}
+.footer{text-align:center;color:#6a8068;font-size:0.6rem;font-family:'Courier New',monospace;margin-top:10px}
+.brief-line{text-align:center;color:#a8b8a0;font-size:0.7rem;background:#142114;
+  border:1px solid #1a301a;border-radius:5px;padding:5px 10px;margin:0 auto 10px;max-width:640px}
+@media(max-width:600px){.grid{gap:1px}.cell .cl{display:none}}
+</style>
+</head>
+<body>
+<a id="top"></a>
+<h1>\u{1f5fa}\ufe0f Master Plan \u2014 Field Viewer</h1>
+<p class="subtitle">Tap a numbered cell to see details \u2014 no internet needed</p>
+${briefLine}
+<div class="legend">
+  <span class="legend-item"><span class="sw" style="background:#2a5a2a"></span> Guild</span>
+  <span class="legend-item"><span class="sw" style="background:#4a7025"></span> 🥕 Vegetable</span>
+  <span class="legend-item"><span class="sw" style="background:#1a5a9a"></span> Water</span>
+  <span class="legend-item"><span class="sw" style="background:#6a4a38"></span> Road</span>
+  <span class="legend-item"><span class="sw" style="background:#7a3030"></span> Construction</span>
+  <span class="legend-item"><span class="sw" style="background:#1a301a"></span> Open</span>
+</div>
+<div class="grid-wrap">
+  <div class="grid-meta"><span>${planCols}\u00d7${planRows} cells</span></div>
+  <div class="grid" id="grid" style="grid-template-columns:repeat(${planCols},1fr);grid-template-rows:repeat(${planRows},1fr)">
+${gridHtml}
+  </div>
+</div>
+<div class="detail-section">
+${detailHtml}
+</div>
+<div class="footer">Exported from Master Plan Grid \u00b7 opens offline anywhere</div>
+</body>
+</html>`;}
+function importPlan(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (!data.width || !data.height || !data.cellSize || !data.cells) {
+        throw new Error('bad format');
+      }
+      snapshot();
+      plan = data;
+      save(); renderAll();
+      showToast('📥 Plan imported');
+    } catch(err) {
+      showToast('⚠️ Invalid plan file');
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
+/* ============ KEYBOARD ============ */
+document.addEventListener('keydown', function(e) {
+  // Ctrl/Cmd+Z → undo (but not when typing in an input)
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
+    const tag = (e.target.tagName || '').toLowerCase();
+    if (tag !== 'input' && tag !== 'textarea' && tag !== 'select') {
+      e.preventDefault();
+      undo();
+    }
+  }
+  // Escape → leave paint mode
+  if (e.key === 'Escape' && paintMode) {
+    setPaint(null, null);
+  }
+});
+
+/* ============ SPECIES LOAD ============ */
+function loadSpecies() {
+  // Only tree/shrub species can be guild centers
+  Object.keys(SPECIES).forEach(function(k) {
+    const s = SPECIES[k];
+    if (s.category === 'tree' || s.category === 'shrub') trees.push(k);
+  });
+  trees.sort(function(a, b) { return SPECIES[a].name.localeCompare(SPECIES[b].name); });
+  populateTreeSelect();
+}
+
+/* ============ INIT ============ */
+document.addEventListener('DOMContentLoaded', function() {
+  // Load species DB (inline JSON fetched from plants.json)
+  fetch('plants.json').then(r => r.json()).then(function(data) {
+    SPECIES = data;
+    loadSpecies();
+    boot();
+  }).catch(function() {
+    // Fallback: minimal — allow grid without species
+    boot();
+  });
+});
+function boot() {
+  plan = load();
+  if (!plan) {
+    // First visit: default 1ha Tuscan plot, show setup
+    const region = getRegionParam();
+    const defSoil = region === 'netherlands' ? 'sandy' : 'silty';
+    plan = { width: 100, height: 100, cellSize: 10, cols: 10, rows: 10, defaultSoil: defSoil, cells: {} };
+    save();
+    openSetup();
+  } else if (!plan.defaultSoil) {
+    // legacy plan: apply region default
+    const region = getRegionParam();
+    plan.defaultSoil = region === 'netherlands' ? 'sandy' : 'silty';
+    save();
+  }
+  // Keep the shared brief in sync with the current plan
+  const brief = loadBrief();
+  if (brief.plotW !== plan.width || brief.plotH !== plan.height || brief.cellSize !== plan.cellSize || brief.defaultSoil !== plan.defaultSoil || brief.region !== getRegionParam()) {
+    const b = briefFromPlan(plan);
+    b.title = brief.title; b.altitude = brief.altitude; b.climateZone = brief.climateZone;
+    b.aspect = brief.aspect; b.slope = brief.slope;
+    saveBrief(b);
+  }
+  renderAll();
+}
+</script>
+</body>
+</html>
