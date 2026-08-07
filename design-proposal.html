@@ -133,9 +133,30 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:3px;font-size:1.7em;}
 <script>
 (function () {
   // Shared design brief from Master Plan (tuscan-brief-v1). Static tools only
-  // READ it — they never write. Falls back to sensible Tuscan defaults.
+  // READ it — they never write. Falls back to region-appropriate defaults:
+  // Tuscan defaults for tuscany, Dutch defaults for netherlands (2026-08-07).
   var KEY = 'tuscan-brief-v1';
-  var DEF = {
+
+  // Region from URL first (tools pass ?region=), else the stored brief, else tuscany
+  var urlRegion = null;
+  try {
+    var q = new URLSearchParams(window.location.search);
+    urlRegion = q.get('region');
+  } catch (e) {}
+  var storedRegion = null;
+  try {
+    var raw0 = localStorage.getItem(KEY);
+    if (raw0) storedRegion = (JSON.parse(raw0) || {}).region;
+  } catch (e) {}
+  var region = (urlRegion === 'netherlands' || urlRegion === 'tuscany') ? urlRegion : (storedRegion === 'netherlands' ? 'netherlands' : 'tuscany');
+  var NL = region === 'netherlands';
+
+  var DEF = NL ? {
+    region: 'netherlands', title: 'Mijn perceel',
+    plotW: 80, plotH: 60, cellSize: 10,
+    defaultSoil: 'sandy', altitude: 12, climateZone: '7b-8a',
+    aspect: 'West (270°)', slope: '~2% flauw'
+  } : {
     region: 'tuscany', title: 'Tuscan hillside',
     plotW: 100, plotH: 100, cellSize: 10,
     defaultSoil: 'silty', altitude: 300, climateZone: '8b-9a',
@@ -146,9 +167,16 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:3px;font-size:1.7em;}
     var raw = localStorage.getItem(KEY);
     if (raw) { var p = JSON.parse(raw); for (var k in DEF) if (p[k] !== undefined) b[k] = p[k]; }
   } catch (e) {}
+  // The stored brief's own region wins if it exists (one source of truth)
+  if (storedRegion === 'netherlands' || storedRegion === 'tuscany') region = storedRegion;
+  NL = region === 'netherlands';
 
   var soilLbl = { sandy: 'Sandy', silty: 'Silty', loam: 'Loam', clay: 'Clay', chalky: 'Chalky', peaty: 'Peaty' }[b.defaultSoil] || b.defaultSoil;
-  var regionLbl = b.region === 'netherlands' ? 'Netherlands' : 'Tuscany';
+  var soilLblNL = { sandy: 'Zandgrond', silty: 'Silt', loam: 'Leem', clay: 'Klei', chalky: 'Kalkrijk', peaty: 'Veen' }[b.defaultSoil] || b.defaultSoil;
+  var regionLbl = NL ? 'Nederland' : 'Tuscany';
+  var soilTxt = NL ? soilLblNL : (soilLbl + ' soil');
+  var cellsTxt = NL ? 'cellen' : 'cells';
+  var editTxt = NL ? 'Bewerken in Master Plan' : 'Edit in Master Plan';
 
   // Build the strip
   var strip = document.createElement('div');
@@ -158,13 +186,13 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:3px;font-size:1.7em;}
   var parts = [
     '<span style="color:#c4a040;font-weight:600">' + (b.title || 'Design') + '</span>',
     '<span>' + regionLbl + '</span>',
-    '<span>' + b.plotW + '×' + b.plotH + 'm · ' + b.cellSize + 'm cells</span>',
-    '<span>' + soilLbl + ' soil</span>',
+    '<span>' + b.plotW + '×' + b.plotH + 'm · ' + b.cellSize + 'm ' + cellsTxt + '</span>',
+    '<span>' + soilTxt + '</span>',
     '<span>~' + b.altitude + 'm</span>',
     '<span>Zone ' + b.climateZone + '</span>',
     '<span>' + b.aspect + '</span>',
     '<span>' + b.slope + '</span>',
-    '<a href="master-plan.html?region=' + b.region + '" style="color:#5a8a4a;text-decoration:none;font-weight:600">⚙️ Edit in Master Plan</a>'
+    '<a href="master-plan.html?region=' + region + '" style="color:#5a8a4a;text-decoration:none;font-weight:600">⚙️ ' + editTxt + '</a>'
   ];
   strip.innerHTML = parts.join('<span style="opacity:0.4">·</span>');
   var body = document.body;
@@ -214,22 +242,22 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:3px;font-size:1.7em;}
     // Live summary sentence + sun stats (if present)
     var facing = function (deg) {
       var d = parseInt(deg, 10);
-      if (d >= 315 || d < 45) return 'north-facing';
-      if (d >= 45 && d < 135) return 'east-facing';
-      if (d >= 135 && d < 225) return 'south-facing';
-      return 'west-facing';
+      if (d >= 315 || d < 45) return NL ? 'op het noorden' : 'north-facing';
+      if (d >= 45 && d < 135) return NL ? 'op het oosten' : 'east-facing';
+      if (d >= 135 && d < 225) return NL ? 'op het zuiden' : 'south-facing';
+      return NL ? 'op het westen' : 'west-facing';
     };
     var sumAlt = document.getElementById('sum-altitude');
     if (sumAlt && b.altitude) sumAlt.textContent = '~' + b.altitude + 'm';
     var sumReg = document.getElementById('sum-region');
-    if (sumReg) sumReg.textContent = b.region === 'netherlands' ? 'the Netherlands' : 'Tuscany';
+    if (sumReg) sumReg.textContent = NL ? 'Nederland' : 'Tuscany';
     var sumAsp = document.getElementById('sum-aspect');
     if (sumAsp && b.aspect) {
       var dA = String(b.aspect).match(/(\d+)/);
       if (dA) sumAsp.textContent = facing(dA[1]);
     }
     var latEl2 = document.getElementById('lat');
-    var latVal = latEl2 ? (parseFloat(latEl2.value) || 43) : 43;
+    var latVal = latEl2 ? (parseFloat(latEl2.value) || (NL ? 52 : 43)) : (NL ? 52 : 43);
     var stLat = document.getElementById('st-lat');
     if (stLat) stLat.textContent = Math.round(latVal) + '°N';
     var stSum = document.getElementById('st-summer');
@@ -248,7 +276,7 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:3px;font-size:1.7em;}
       wmPlot.textContent = (ha >= 1 ? (Math.round(ha * 10) / 10) + ' ha' : Math.round(b.plotW * b.plotH) + ' m²');
     }
     var wmAlt = document.getElementById('wm-alt');
-    if (wmAlt && b.altitude) wmAlt.textContent = '~' + b.altitude + 'm altitude';
+    if (wmAlt && b.altitude) wmAlt.textContent = '~' + b.altitude + 'm ' + (NL ? 'hoogte' : 'altitude');
     // Design Proposal: Site Overview body from the brief (if present)
     var dpAlt = document.getElementById('dp-alt');
     if (dpAlt && b.altitude) dpAlt.textContent = b.altitude;
@@ -275,14 +303,14 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:3px;font-size:1.7em;}
     var subArea = document.getElementById('sub-area');
     if (subArea && b.plotW && b.plotH) {
       var sHa = (b.plotW * b.plotH) / 10000;
-      subArea.textContent = (sHa >= 1 ? sHa + 'ha Hillside' : Math.round(b.plotW * b.plotH) + 'm² Site');
+      subArea.textContent = NL ? (sHa >= 1 ? sHa + 'ha Terrein' : Math.round(b.plotW * b.plotH) + 'm² Terrein') : (sHa >= 1 ? sHa + 'ha Hillside' : Math.round(b.plotW * b.plotH) + 'm² Site');
     }
     var subAlt = document.getElementById('sub-alt');
     if (subAlt && b.altitude) subAlt.textContent = b.altitude;
     var subZone = document.getElementById('sub-zone');
     if (subZone && b.climateZone) subZone.textContent = b.climateZone;
     var subLoc = document.getElementById('sub-loc');
-    if (subLoc) subLoc.textContent = b.region === 'netherlands' ? 'Netherlands' : 'Tuscany, Italy';
+    if (subLoc) subLoc.textContent = NL ? 'Nederland' : 'Tuscany, Italy';
     if (typeof updateSectors === 'function') updateSectors();
   }
   if (document.readyState === 'loading') {
@@ -292,6 +320,10 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:3px;font-size:1.7em;}
   }
 })();
 </script>
+
+
+
+
 
 
 
