@@ -338,6 +338,12 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:4px;font-size:1.4em;}
 
 
 
+
+
+
+
+
+
 <h1 data-i18n-none="🥬 Vegetable Garden Planner" id="h1-title">🥬 <span data-i18n="vegPlanner">Vegetable Garden Planner</span> — <span id="bed-count">12</span> <span data-i18n="beds">Beds</span></h1>
   <div class="subtitle" data-i18n="subDrag">Drag plants from the palette onto beds · Hover over a plant to remove · Click for details · Click days badge to set date</div>
 
@@ -522,7 +528,8 @@ var T = {
     zone1Block: 'Zone 1 garden block', southEdge: 'south edge of', plants: 'plants',
     patSquare: 'Square grid', patDiamond: 'Diamond (offset) grid', patRow: 'Rows', patHill: 'Hill / station',
     seedsPerHole: 'seeds per hole', holes: 'holes', apart: 'apart', grid: 'grid', seeds: 'seeds', inRow: 'in-row',
-    sowDeep: 'Sow', thinTo: 'Thin to', betweenPlants: 'between plants'
+    sowDeep: 'Sow', thinTo: 'Thin to', betweenPlants: 'between plants',
+    sowing: 'Sowing', depth: 'Depth', maturity: 'Maturity', days: 'days', beds: 'beds', slots: 'slots'
   },
   nl: {
     beds: 'Bedden', subDrag: 'Sleep planten van het palet naar de bedden · Hover over een plant om te verwijderen · Klik voor details · Klik op de dagen-badge om datum te zetten',
@@ -552,7 +559,8 @@ var T = {
     zone1Block: 'Zone 1 tuinblok', southEdge: 'zuidrand van', plants: 'planten',
     patSquare: 'Vierkant raster', patDiamond: 'Diagonaal (versprongen) raster', patRow: 'Rijen', patHill: 'Heuvel / plantgat',
     seedsPerHole: 'zaden per plantgat', holes: 'gaten', apart: 'uit elkaar', grid: 'raster', seeds: 'zaden', inRow: 'in de rij',
-    sowDeep: 'Zaai', thinTo: 'Uitdunnen tot', betweenPlants: 'tussen planten'
+    sowDeep: 'Zaai', thinTo: 'Uitdunnen tot', betweenPlants: 'tussen planten',
+    sowing: 'Zaaien', depth: 'Diepte', maturity: 'Volwassen', days: 'dagen', beds: 'bedden', slots: 'percelen'
   }
 };
 function tt(k) { return (T[LANG] && T[LANG][k] !== undefined) ? T[LANG][k] : (T.en[k] !== undefined ? T.en[k] : k); }
@@ -1214,7 +1222,7 @@ function monthRange(months) {
 }
 
 function exportFieldView() {
-  if (!rows.length) { showInfo('⚠️ No garden yet — set up rows first'); return; }
+  if (!rows.length) { showInfo(LANG === 'nl' ? '⚠️ Nog geen tuin — stel eerst rijen in' : '⚠️ No garden yet — set up rows first'); return; }
   const pathM = pathWidthM();
   const tot = gardenTotals();
 
@@ -1222,7 +1230,9 @@ function exportFieldView() {
   let briefLine = '';
   try {
     const b = JSON.parse(localStorage.getItem('tuscan-brief-v1') || '{}');
-    const soilLbl = {sandy:'Sandy',silty:'Silty',loam:'Loam',clay:'Clay',chalky:'Chalky',peaty:'Peaty'}[b.defaultSoil] || b.defaultSoil || '';
+    const soilLbl = LANG === 'nl'
+      ? ({sandy:'Zandgrond',silty:'Silt',loam:'Leem',clay:'Klei',chalky:'Kalkrijk',peaty:'Veen'}[b.defaultSoil] || b.defaultSoil || '')
+      : ({sandy:'Sandy',silty:'Silty',loam:'Loam',clay:'Clay',chalky:'Chalky',peaty:'Peaty'}[b.defaultSoil] || b.defaultSoil || '');
     const bits = [];
     if (b.title) bits.push('📍 ' + b.title);
     if (b.plotW && b.plotH) bits.push('📐 ' + b.plotW + '×' + b.plotH + 'm');
@@ -1255,14 +1265,14 @@ function exportFieldView() {
     const type = rowType(r);
     const name = rowName(r);
     if (mod !== lastModule) {
-      rowsHtml += '<div class="mod-label">▍MODULE ' + (mod + 1) + ' — 6 rows · ' + gardenCfg.slotLen + 'm cell · paths ~' + (pathM * 100).toFixed(0) + 'cm</div>';
+      rowsHtml += '<div class="mod-label">▍' + tt('module') + ' ' + (mod + 1) + ' — ' + gardenCfg.rowsPerModule + ' ' + tt('rows') + ' · ' + gardenCfg.slotLen + 'm ' + tt('cell') + ' · ' + tt('paths') + ' ~' + (pathM * 100).toFixed(0) + 'cm</div>';
       lastModule = mod;
     }
-    const typeCap = type.charAt(0).toUpperCase() + type.slice(1);
+    const typeCap = tt(type);
     if (row.joined) {
       const plants = (row.slots[0] || []).concat(row.slots[1] || []);
       rowsHtml += '<div class="grow"><div class="rlabel">' + name + ' · ' + typeCap + '</div>' +
-        '<div class="bed joined f-' + type + '"><div class="bmeta">🔗 20m · ' + rowAreaM2(r).toFixed(1) + ' m²</div>' +
+        '<div class="bed joined f-' + type + '"><div class="bmeta">🔗 20m ' + tt('joined') + ' · ' + rowAreaM2(r).toFixed(1) + ' m²</div>' +
         plants.map((p, idx) => {
           const key = typeof p === 'string' ? p : p.key;
           const sp = PLANTS[key] || {};
@@ -1290,30 +1300,30 @@ function exportFieldView() {
     const har = sp.har.length ? monthRange(sp.har) : '—';
     let sowSpec = '';
     if (sp.pat) {
-      const patLbl = { square: 'Square grid', diamond: 'Diamond (offset) grid', row: 'Rows', hill: 'Hill / station' }[sp.pat] || sp.pat;
+      const patLbl = { square: tt('patSquare'), diamond: tt('patDiamond'), row: tt('patRow'), hill: tt('patHill') }[sp.pat] || sp.pat;
       if (sp.pat === 'hill') {
-        sowSpec = '<div class="cd-row"><span class="cd-key">Sowing</span><span class="cd-val">' + (sp.ph || 2) + ' seeds/hole @ ' + sp.ss + 'cm apart, rows ' + sp.rs + 'cm apart</span></div>';
+        sowSpec = '<div class="cd-row"><span class="cd-key">' + tt('sowing') + '</span><span class="cd-val">' + (sp.ph || 2) + ' ' + tt('seedsPerHole') + ' @ ' + sp.ss + 'cm ' + tt('apart') + ', ' + tt('rows') + ' ' + sp.rs + 'cm ' + tt('apart') + '</span></div>';
       } else if (sp.pat === 'square') {
-        sowSpec = '<div class="cd-row"><span class="cd-key">Sowing</span><span class="cd-val">' + patLbl + ' ' + sp.ss + '×' + sp.rs + 'cm</span></div>';
+        sowSpec = '<div class="cd-row"><span class="cd-key">' + tt('sowing') + '</span><span class="cd-val">' + patLbl + ' ' + sp.ss + '×' + sp.rs + 'cm</span></div>';
       } else {
-        sowSpec = '<div class="cd-row"><span class="cd-key">Sowing</span><span class="cd-val">' + patLbl + ' · seeds ' + sp.ss + 'cm apart in-row, rows ' + sp.rs + 'cm apart</span></div>';
+        sowSpec = '<div class="cd-row"><span class="cd-key">' + tt('sowing') + '</span><span class="cd-val">' + patLbl + ' · ' + tt('seeds') + ' ' + sp.ss + 'cm ' + tt('apart') + ' ' + tt('inRow') + ', ' + tt('rows') + ' ' + sp.rs + 'cm ' + tt('apart') + '</span></div>';
       }
-      if (sp.dp) sowSpec += '<div class="cd-row"><span class="cd-key">Depth</span><span class="cd-val">' + sp.dp + 'cm</span></div>';
-      if (sp.th) sowSpec += '<div class="cd-row"><span class="cd-key">Thin to</span><span class="cd-val">' + sp.th + 'cm</span></div>';
+      if (sp.dp) sowSpec += '<div class="cd-row"><span class="cd-key">' + tt('depth') + '</span><span class="cd-val">' + sp.dp + 'cm</span></div>';
+      if (sp.th) sowSpec += '<div class="cd-row"><span class="cd-key">' + tt('thinTo') + '</span><span class="cd-val">' + sp.th + 'cm</span></div>';
     }
     detailHtml += '<div class="p-detail" id="p-' + esc(key) + '"><a href="#top" class="close">✕</a>' +
       '<h3>' + sp.i + ' ' + esc(sp.n) + '</h3>' +
-      '<div class="cd-row"><span class="cd-key">Spacing</span><span class="cd-val">' + sp.s + 'cm</span></div>' +
+      '<div class="cd-row"><span class="cd-key">' + tt('spacing') + '</span><span class="cd-val">' + sp.s + 'cm</span></div>' +
       sowSpec +
-      '<div class="cd-row"><span class="cd-key">Sow</span><span class="cd-val">' + sow + '</span></div>' +
-      '<div class="cd-row"><span class="cd-key">Harvest</span><span class="cd-val">' + har + '</span></div>' +
-      '<div class="cd-row"><span class="cd-key">Maturity</span><span class="cd-val">' + sp.d + ' days</span></div>' +
+      '<div class="cd-row"><span class="cd-key">' + tt('sow') + '</span><span class="cd-val">' + sow + '</span></div>' +
+      '<div class="cd-row"><span class="cd-key">' + tt('harvest') + '</span><span class="cd-val">' + har + '</span></div>' +
+      '<div class="cd-row"><span class="cd-key">' + tt('maturity') + '</span><span class="cd-val">' + sp.d + ' ' + tt('days') + '</span></div>' +
       '</div>';
   });
 
-  const html = '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="UTF-8">\n' +
+  const html = '<!DOCTYPE html>\n<html lang="' + (LANG === 'nl' ? 'nl' : 'en') + '">\n<head>\n<meta charset="UTF-8">\n' +
   '<meta name="viewport" content="width=device-width,initial-scale=1.0">\n' +
-  '<title>Vegetable Garden — Field View</title>\n<style>\n' +
+  '<title>' + (LANG === 'nl' ? 'Groententuin — Veldweergave' : 'Vegetable Garden — Field View') + '</title>\n<style>\n' +
   '*{box-sizing:border-box;margin:0;padding:0}\n' +
   'body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;background:#0a1a0a;color:#c8d8c0;padding:12px;max-width:900px;margin:0 auto;line-height:1.5}\n' +
   'h1{font-family:Georgia,"Palatino",serif;color:#5a8a4a;text-align:center;font-size:1.3rem;margin-bottom:2px}\n' +
@@ -1342,20 +1352,20 @@ function exportFieldView() {
   '.cd-val{color:#e8f0e0;text-align:right}\n' +
   '.legend{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-top:12px;font-size:0.62rem;color:#6a8068}\n' +
   '</style>\n</head>\n<body>\n<a id="top"></a>\n' +
-  '<h1>🥕 Vegetable Garden — Field View</h1>\n' +
-  '<p class="subtitle">' + rows.length + ' rows · ' + gardenCfg.modules + ' module' + (gardenCfg.modules > 1 ? 's' : '') + ' · ' + gardenCfg.bedWidth + 'm beds × ' + gardenCfg.slotLen + 'm slots · paths ~' + (pathM * 100).toFixed(0) + 'cm</p>\n' +
+  '<h1>🥕 ' + (LANG === 'nl' ? 'Groententuin — Veldweergave' : 'Vegetable Garden — Field View') + '</h1>\n' +
+  '<p class="subtitle">' + rows.length + ' ' + tt('rows') + ' · ' + gardenCfg.modules + ' ' + tt('module') + (gardenCfg.modules > 1 ? 's' : '') + ' · ' + gardenCfg.bedWidth + 'm ' + tt('beds') + ' × ' + gardenCfg.slotLen + 'm ' + tt('slots') + ' · ' + tt('paths') + ' ~' + (pathM * 100).toFixed(0) + 'cm</p>\n' +
   briefLine +
   '<div class="spec">' +
-  '<span>🧮 <b>' + rows.length + ' rows</b></span>' +
-  '<span>🔗 <b>' + tot.joinedCount + ' joined</b> (20m)</span>' +
-  '<span>✂️ <b>' + tot.splitCount + ' split</b> (2×' + gardenCfg.slotLen + 'm)</span>' +
-  '<span>🌱 <b>' + tot.growing.toFixed(0) + ' m² growing</b></span>' +
-  '<span>🧩 <b>' + tot.planted + ' plants</b></span>' +
-  '<span>📍 <b>' + (2 * gardenCfg.modules) + ' cells</b></span>' +
+  '<span>🧮 <b>' + rows.length + ' ' + tt('rows') + '</b></span>' +
+  '<span>🔗 <b>' + tot.joinedCount + ' ' + tt('joined') + '</b> (20m)</span>' +
+  '<span>✂️ <b>' + tot.splitCount + ' ' + tt('split') + '</b> (2×' + gardenCfg.slotLen + 'm)</span>' +
+  '<span>🌱 <b>' + tot.growing.toFixed(0) + ' m² ' + tt('growing') + '</b></span>' +
+  '<span>🧩 <b>' + tot.planted + ' ' + tt('plants') + '</b></span>' +
+  '<span>📍 <b>' + (2 * gardenCfg.modules) + ' ' + tt('cells') + '</b></span>' +
   '</div>\n' +
   '<div class="garden">' + rowsHtml + '</div>\n' +
   detailHtml +
-  '<div class="legend">Tap a plant for spacing, sow & harvest · ' + usedKeys.size + ' species in this garden</div>\n' +
+  '<div class="legend">' + (LANG === 'nl' ? ('Tik op een plant voor afstand, zaaien & oogsten · ' + usedKeys.size + ' soorten in deze tuin') : ('Tap a plant for spacing, sow & harvest · ' + usedKeys.size + ' species in this garden')) + '</div>\n' +
   '</body>\n</html>';
 
   const blob = new Blob([html], {type:'text/html'});
@@ -1365,7 +1375,7 @@ function exportFieldView() {
   a.download = 'veg-garden-field-view.html';
   a.click();
   URL.revokeObjectURL(url);
-  showInfo('📤 Field view exported!');
+  showInfo(LANG === 'nl' ? '📤 Veldweergave geëxporteerd!' : '📤 Field view exported!');
 }
 
 function applyLoadedLayout(data) {
