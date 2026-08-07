@@ -130,6 +130,11 @@ tr:hover{background:#0d1b2a;}
   // Sector Analysis: prefill params from the brief once the page is ready
   // (one-way: brief is the source of truth; user can still override locally)
   function prefillSectorParams() {
+    // Latitude: NL default 52, Tuscany 43 (only if user hasn't set one)
+    var latEl = document.getElementById('lat');
+    if (latEl && !latEl.dataset.userSet) {
+      latEl.value = NL ? 52 : 43;
+    }
     // Aspect: match degrees (e.g. "South (180°)" → 180) to the select options
     var aspEl = document.getElementById('aspect');
     if (aspEl && b.aspect) {
@@ -553,6 +558,154 @@ var T = {
   }
 };
 function tt(k) { return (T[LANG] && T[LANG][k] !== undefined) ? T[LANG][k] : (T.en[k] !== undefined ? T.en[k] : k); }
+var NL_LOGIC = {
+  // WIND — maritime, storms weighted up, no Tramontana/Sirocco
+  windStats: 'Heersend: ZW (225°)<span class="stat"><span data-i18n="windStorm">Storm:</span> ZW — Atlantische stormen</span>',
+  windPrevailP: '<strong>Heersende wind (ZW):</strong> Vochtige, Atlantische zeelucht — de dominante wind in Nederland. Brengt het hele jaar door regen (gematigd zeeklimaat). Geen beschermende helling: de wind raakt het perceel volop. Windschermen zijn <strong>essentieel</strong> voor tere planten, fruitbomen en kippen.',
+  windColdP: '<strong>Koude wind (N/NO):</strong> Continentale lucht uit Scandinavië/Siberië bij hoge druk — droog en koud, vorst in de winter. Op vlak land is er <strong>geen natuurlijke beschutting</strong>: het gebouw en hagen zijn de belangrijkste windbrekers.',
+  windHotP: '<strong>Stormwind (ZW — herfst/winter):</strong> Zware Atlantische stormen (soms >100 km/u) zijn de <strong>grootste windsector</strong> in Nederland. Bomen kunnen omwaaien, gewassen beschadigen. Stevige windschermen en goed verankerde bomen zijn cruciaal.',
+  windLi1: 'Windscherm/haag op de <strong>ZW-grens</strong> (heersende wind) beschermt de tuin — in NL harder nodig dan in Toscane',
+  windLi2: 'De noordkant van het gebouw is een <strong>koude, beschutte zone</strong> — ideaal voor koude opslag, compost, wintergroenten',
+  windLi3: 'Dubbele windschermrij (bomen + struiken) op de ZW-grens tegen <strong>stormschade</strong> — de belangrijkste investering op vlak land',
+  windLi4: 'Fruitbomen ten <strong>zuiden van het gebouw</strong> profiteren van beschutting + gereflecteerde warmte',
+  windLi5: 'Kippen hebben een <strong>stormbestendig</strong> windscherm aan de ZW-kant nodig',
+
+  // WATER — rain all year, high water table, drainage emphasis
+  waterStats: 'Neerslag: 850mm/jaar<span class="stat"><span data-i18n="waterCatch">Opvang:</span> 8.500 m³/jaar</span><span class="stat"><span data-i18n="waterDry">Droog seizoen:</span> geen — regen het hele jaar</span>',
+  waterPattern: '<strong>Neerslagpatroon:</strong> Gematigd zeeklimaat — regen <strong>gelijkmatig over het hele jaar</strong> (~850mm), geen droog zomerseizoen. Korte, hevige buien vaker door klimaatverandering. Vlak land: water blijft staan i.p.v. af te stromen.',
+  waterFlow: '<strong>Waterstroming:</strong> Op vlak land is er <strong>geen natuurlijke afvoer</strong> — regen zakt traag in of blijft staan (hoge grondwaterstand, klei/zand). Drainage en waterberging zijn belangrijker dan wateropvang: greppels, wadi\'s en vijvers bufferen piekbuien.',
+  waterLi1: 'Swales/greppels op vlak land vangen piekbuien op en voorkomen wateroverlast — berging i.p.v. afvoer',
+  waterLi2: 'Vijver als <strong>bufferbekken</strong> bij piekbuien + irrigatiereserve voor droge zomerweken',
+  waterLi3: 'Dakwater (170.000L/jaar) → 3 × 5.000L tanks → tuin + huishouden (onmisbaar in NL-zomer)',
+  waterLi4: 'Natuurlijk zwembad (15×5×1,5m) bij het huis — zwemmen + piekbuffer + irrigatiereserve',
+  waterLi5: 'Put/bron als back-up — hoge grondwaterstand maakt dit goedkoop en betrouwbaar',
+  waterLi6: 'Regenminnende planten (vlier, wilg, populier, munt, waterkers) gedijen bij hoge grondwaterstand',
+
+  // FROST — flat land, no slope drainage, later last frost
+  frostStats: 'Klimaat: 7b-8a<span class="stat"><span data-i18n="frostLast">Laatste vorst:</span> ~mei</span><span class="stat"><span data-i18n="frostFirst">Eerste vorst:</span> ~okt</span><span class="stat"><span data-i18n="frostFree">Vorstvrij:</span> 150-170 dagen</span>',
+  frostDyn: '<strong>Vorstdynamiek:</strong> Op <strong>vlak land</strong> kan koude lucht nergens wegstromen — vorst vormt zich overal, met koude plekken in laagtes en achter hagen. Geen warme bovenhelling: <strong>bescherming</strong> (vlies, koude bakken, zuidmuren) is belangrijker dan positie op de helling.',
+  frostPockets: '<strong>Vorstkuilen:</strong> Laagtes, dichte hagen en obstakels houden koude lucht vast. Bouw <strong>doorlatende</strong> hagen zodat lucht kan circuleren. De zuidmuur van het gebouw is het warmste microklimaat — gebruik die voor vorstgevoelige planten.',
+  frostLi1: 'Tere planten (tomaten, paprika, aubergine) starten <strong>binnen of in koude bakken</strong> — buiten planten na ~half mei (IJsheiligen)',
+  frostLi2: 'Winterharde groenten (boerenkool, spruitjes, prei, pastinaak) overleven de Nederlandse winter prima',
+  frostLi3: 'Vorstgevoelige fruitbomen (perzik, abrikoos) tegen een <strong>zuidmuur</strong> of in een kas — niet buiten op vlak land',
+  frostLi4: 'Vliesdoek en koude bakken verlengen het seizoen — belangrijkste vorstbescherming op vlak land',
+  frostLi5: 'Het gebouw zelf moet zo ontworpen zijn dat koude lucht kan circuleren, niet ophoopt aan de noordkant',
+  frostLi6: 'Natuurlijk zwembad/vijver op het laagste punt — koudste plek, geen vorstrisico voor het gebouw',
+
+  // FIRE — de-emphasized for NL
+  fireStats: 'Risico: <strong>laag</strong><span class="stat"><span data-i18n="fireHotWind">Heite wind:</span> n.v.t.</span><span class="stat"><span data-i18n="fireVeg">Vegetatie:</span> groen, maritiem</span>',
+  fireIntro: '<strong>Brandrisico is LAAG in Nederland.</strong> Geen mediterraan droog seizoen en geen Sirocco — vegetatie blijft het hele jaar vochtig. Bij extreme droogte (zeldzaam) kan droog gras/riet branden. Basisvoorzorg volstaat: geen open vuur bij droogte, compost vochtig houden.',
+  fireLi1: 'Eenvoudige voorzorg: geen open vuur bij langdurige droogte (zeldzaam in NL)',
+  fireLi2: 'Vijver/waterlichaam dient tevens als bluswaterbron — mooi meegenomen, niet noodzakelijk',
+  fireLi3: 'Vermijd zeer brandbaar materiaal direct tegen het huis: houtopslag op afstand houden',
+  fireLi4: 'Vochthoudende beplanting rond het huis (gazon, bodembedekkers) — voldoende in NL',
+  fireLi5: 'Houd de composthoop vochtig — voorkomt broei en brand bij extreme droogte',
+  fireLi6: 'Riet en droog gras in de herfst: maaien en afvoeren bij aanhoudende droogte',
+  fireLi7: 'Toegangsweg breed genoeg voor hulpdiensten (3m+) — standaard in NL',
+
+  // WILDLIFE — Dutch species
+  wlStats: 'Herten: bosranden<span class="stat"><span data-i18n="wBoar">Vos/bunzing:</span> ja</span><span class="stat"><span data-i18n="wBirds">Vogels:</span> jaarrond</span><span class="stat"><span data-i18n="wInsects">Insecten:</span> bestuivers</span>',
+  wlIntro: '<strong>Natuurcorridors</strong> volgen sloten, houtwallen en waterlopen. Herten en reeën komen uit bosranden, vossen en bunzingen jagen \'s nachts, konijnen en mollen graven. Vogels (merel, koolmees, spreeuw) zijn jaarrond aanwezig.',
+  wlLi1: '<strong>Afrastering</strong> tegen konijnen en reeën rond de moestuin — konijnen graven onder hekken, gaas nodig',
+  wlLi2: 'Reeën vreten jonge boompjes: bescherm de eerste 3 jaar met boombeschermers',
+  wlLi3: 'Creëer een <strong>natuurcorridor</strong> langs de randen — inheemse hagen (meidoorn, sleedoorn), bessen, watertoegang',
+  wlLi4: 'Vijver trekt kikkers, libellen en vogels aan — natuurlijke plaagbestrijding',
+  wlLi5: 'Kippen hebben <strong>roofdierbestendig verblijf</strong> nodig \'s nachts (vos, marter, buizerd)',
+  wlLi6: 'Bijen-vriendelijke bloemen overal — bestuiving is cruciaal voor fruitbomen en groenten',
+
+  // VIEW — flat landscape
+  vStats: 'Beste uitzicht: rondom<span class="stat"><span data-i18n="vPrivacy">Privacy:</span> buren/omgeving</span><span class="stat"><span data-i18n="vAccess">Toegang:</span> vanaf de weg</span>',
+  vViewP: '<strong>Uitzicht:</strong> Vlak Nederlands landschap — geen panoramische heuvelvallei. Het uitzicht is rondom gelijk; de waarde zit in <strong>rust, groen en ruimte</strong>. Oriënteer het terras op de zon (zuid) en op de mooiste kant van het perceel.',
+  vPrivacyP: '<strong>Privacy:</strong> Op vlak land kijk je direct bij de buren aan. <strong>Hagen en houtwallen</strong> (beuk, haagbeuk, meidoorn) schermen af zonder de wind te blokkeren — combineer privacy met windbescherming.',
+  vLi1: 'Hoofdramen van het huis op het <strong>zuiden</strong> — zonnewinst + uitzicht op de tuin',
+  vLi2: 'Terras/buiteneten aan de <strong>zuidkant</strong> van het gebouw',
+  vLi3: 'Toegangsweg vanaf de <strong>openbare weg</strong> — kort en recht, standaard in NL',
+  vLi4: 'Parkeerplaats aan de noordkant van het gebouw, uit het zicht',
+  vLi5: 'Moestuin zichtbaar vanuit het huis — je ziet wat aandacht nodig heeft',
+  vLi6: 'Compostplek iets verborgen (NO van het gebouw) — praktisch maar niet in het hoofd-uitzicht',
+
+  // MATRIX cells
+  mxSunImpact: 'Vlak land = gelijke zon overal<br>Winterzon laag (14°) — lange schaduwen',
+  mxSunMit: 'Passieve zonne-oriëntatie van gebouw<br>Loofbomen voor zomerschaduw',
+  mxWindImpact: 'Vochtig, maritiem — regen het hele jaar<br>Raakt het vlakke perceel volop — stormgevoelig',
+  mxWindMit: 'ZW windscherm (dubbel) essentieel<br>Fruitbomen gebruiken wind voor bestuiving',
+  mxColdImpact: 'Koude, droge continentale lucht (N/NO)<br>Geen natuurlijke beschutting op vlak land',
+  mxColdMit: 'Gebouw + hagen als windbreker<br>Koude bakken voor seizoensverlenging',
+  mxHotImpact: 'Stormwind (ZW) — schade in herfst/winter',
+  mxHotMit: 'Stevige windschermen<br>Bomen goed verankeren',
+  mxRainDir: 'ZW-systeem + Atlantisch<br>850mm/jaar, 8.500 m³ op 1ha',
+  mxRainImpact: 'Regen het hele jaar<br>Vlak land: water blijft staan (hoge grondwaterstand)',
+  mxRainMit: 'Greppels/wadi\'s bergen piekbuien<br>Vijver als bufferbekken',
+  mxFrostDir: 'Koude lucht blijft liggen — vorst overal<br>Koude plekken in laagtes en achter hagen',
+  mxFrostImpact: 'Geen warme bovenhelling<br>Bescherming (vlies/koude bak) noodzakelijk',
+  mxFrostMit: 'Tere planten binnen starten, na IJsheiligen planten<br>Doorlatende hagen, zuidmuur benutten',
+  mxFireDir: 'Geen Sirocco — laag risico<br>Extreme droogte zeldzaam',
+  mxFireImpact: 'Laag risico in gematigd zeeklimaat',
+  mxFireMit: 'Basisvoorzorg: compost vochtig, geen open vuur bij droogte',
+  mxWlDir: 'Bosranden, sloten, houtwallen',
+  mxWlImpact: 'Reeën, konijnen, vossen, vogels, bestuivers',
+  mxWlMit: 'Konijnenwerend gaas rond moestuin<br>Boombeschermers, bestuivershabitat',
+  mxViewDir: 'Vlak, rondom gelijk',
+  mxViewImpact: 'Waarde in rust, groen en ruimte',
+  mxViewMit: 'Hagen voor privacy + wind<br>Terras op zuiden',
+
+  // ZONE implications
+  z0In: 'Zon (zuid), Wind (ZW storm), Vorst (geen drainage), Privacy (buren)',
+  z0Res: 'Wonen op het zuiden, noordkant voor opslag/utility, winddichte constructie, zuidmuur als warmste plek',
+  z1In: 'Zon (gelijk), Heersende wind (ZW), Vorst (laat, ~mei), Konijnen/reeën',
+  z1Res: 'ZW windscherm, tere groenten na IJsheiligen of onder vlies, konijnenwerend gaas, verhoogde bedden tegen grondwater',
+  z2In: 'Zon (gelijk), Stormwind (ZW), Water (hoge grondwaterstand), Wild (reeën/konijnen)',
+  z2Res: 'Fruitbomen met windscherm, goed verankerd, boombeschermers, rassen die tegen zeeklimaat kunnen (appel, peer, pruim, kers)',
+  z3In: 'Water (hoge grondwaterstand), Wind (ZW), Wild (vogels)',
+  z3Res: 'Greppels/wadi\'s tegen wateroverlast, windbestendige gewassen, vogelnetten over bessen',
+  z4In: 'Wind (storm), Wild (corridor), Vorst (vlak)',
+  z4Res: 'Windscherm (els, wilg, meidoorn), natuurcorridor, inheemse soorten',
+  z5In: 'Wild (habitat), Water (sloten)',
+  z5Res: 'Minimale ingreep, slootranden natuurvriendelijk beheren, biodiversiteitscorridor',
+
+  // MODULAR params
+  mpLatDesc: 'Bepaalt zonnebooghoeken. NL: ~52°N — lagere zon dan Toscane (43°N)',
+  mpAltDesc: 'Beïnvloedt temperatuur en vorstdatums. NL: ~12m — geen hoogte-effect',
+  mpRainDesc: 'Jaarlijkse neerslag. NL: ~850mm, gelijkmatig verdeeld over het jaar',
+  mpSlopeDesc: 'Steilheid. NL: vlak (~2%) — geen hellingseffecten, water blijft staan'
+};
+function applyNLLogic() {
+  if (LANG !== 'nl') return;
+  Object.keys(NL_LOGIC).forEach(function(k) {
+    var el = document.querySelector('[data-i18n="' + k + '"]');
+    if (el) el.innerHTML = NL_LOGIC[k];
+  });
+  // stat lines are plain <p> without data-i18n on the whole line — target by panel
+  var windStats = NL_LOGIC.windStats, waterStats = NL_LOGIC.waterStats, frostStats = NL_LOGIC.frostStats, fireStats = NL_LOGIC.fireStats, wlStats = NL_LOGIC.wlStats, vStats = NL_LOGIC.vStats;
+  var map = { 'panel-wind': windStats, 'panel-water': waterStats, 'panel-frost': frostStats, 'panel-fire': fireStats, 'panel-wildlife': wlStats, 'panel-view': vStats };
+  Object.keys(map).forEach(function(pid) {
+    var p = document.getElementById(pid);
+    if (!p) return;
+    var firstP = p.querySelector('p');
+    if (firstP) firstP.innerHTML = map[pid];
+  });
+  // param inputs: NL labels for wind/coldwind options + notes
+  var windSel = document.getElementById('wind');
+  if (windSel) {
+    for (var i = 0; i < windSel.options.length; i++) {
+      var o = windSel.options[i];
+      if (o.value === '225') o.textContent = 'ZW (225°) — Atlantisch';
+      else if (o.value === '135') o.textContent = 'ZO (135°)';
+      else if (o.value === '270') o.textContent = 'W (270°) — storm';
+    }
+  }
+  var coldSel = document.getElementById('coldwind');
+  if (coldSel) {
+    for (var j = 0; j < coldSel.options.length; j++) {
+      var co = coldSel.options[j];
+      if (co.value === '330') co.textContent = 'NW (330°)';
+      else if (co.value === '0') co.textContent = 'N (0°) — Siberisch';
+      else if (co.value === '360') co.textContent = 'N (360°) — Siberisch';
+    }
+  }
+  var latNote = document.querySelector('.param-row input#lat + .note');
+  if (latNote) latNote.textContent = '°N (Nederland ~52°N)';
+}
 function applyI18nSA() {
   document.querySelectorAll('[data-i18n]').forEach(function(el) {
     var key = el.getAttribute('data-i18n');
@@ -790,12 +943,12 @@ function applyI18nSA() {
 <p style="font-size:0.85em;color:#b0bca0;"><span data-i18n="modularIntro">This sector analysis is built with parameterised inputs. To adapt it for another plot, change the values at the top and the sectors update automatically.</span></p>
 <table>
 <tr><th data-i18n="thParam">Parameter</th><th data-i18n="thValue">Current value</th><th data-i18n="thDesc">Description</th></tr>
-<tr><td><span data-i18n="mpLat">Latitude</span></td><td>43°N</td><td><span data-i18n="mpLatDesc">Determines sun arc angles. Change for any latitude globally</span></td></tr>
+<tr><td><span data-i18n="mpLat">Latitude</span></td><td id="mp-lat-val">43°N</td><td><span data-i18n="mpLatDesc">Determines sun arc angles. Change for any latitude globally</span></td></tr>
 <tr><td><span data-i18n="mpAspect">Aspect</span></td><td id="param-aspect">South (180°)</td><td><span data-i18n="mpAspectDesc">Slope direction. Changes frost, sun, and wind exposure</span></td></tr>
 <tr><td><span data-i18n="mpWind">Prevailing wind</span></td><td>SW (225°)</td><td><span data-i18n="mpWindDesc">Dominant wind direction. Change for coastal/inland sites</span></td></tr>
 <tr><td><span data-i18n="mpCold">Cold wind</span></td><td>NW (330°)</td><td><span data-i18n="mpColdDesc">Winter wind direction. Different in continental climates</span></td></tr>
 <tr><td><span data-i18n="mpAlt">Altitude</span></td><td id="param-altitude">300m</td><td><span data-i18n="mpAltDesc">Affects temperature, frost dates, and growing season length</span></td></tr>
-<tr><td><span data-i18n="mpRain">Rainfall</span></td><td>800mm/yr</td><td><span data-i18n="mpRainDesc">Annual precipitation. Changes water harvesting design</span></td></tr>
+<tr><td><span data-i18n="mpRain">Rainfall</span></td><td id="mp-rain-val">800mm/yr</td><td><span data-i18n="mpRainDesc">Annual precipitation. Changes water harvesting design</span></td></tr>
 <tr><td><span data-i18n="mpSlope">Slope gradient</span></td><td id="param-slope">10%</td><td><span data-i18n="mpSlopeDesc">Steepness. Affects runoff, erosion, frost drainage</span></td></tr>
 </table>
 
@@ -832,15 +985,16 @@ function updateSectors() {
   const plot = document.getElementById('sectorPlot');
 
   // Sectors with angles, colors, ranges
+  var isNL = LANG === 'nl';
   const sectors = [
-    {id:'sun-summer', label: LANG === 'nl' ? '☀️ Zomerse zon' : '☀️ Summer sun', color:'rgba(255,193,7,0.15)', border:'rgba(255,193,7,0.4)', start:sun.summerRise, end:sun.summerSet, arc:true},
-    {id:'sun-winter', label: LANG === 'nl' ? '❄️ Winterzon' : '❄️ Winter sun', color:'rgba(255,193,7,0.08)', border:'rgba(255,193,7,0.25)', start:sun.winterRise, end:sun.winterSet, arc:true},
-    {id:'wind-prevail', label: LANG === 'nl' ? '💨 ZW-wind' : '💨 SW wind', color:'rgba(33,150,243,0.12)', border:'rgba(33,150,243,0.35)', start:wind-20, end:wind+20, arc:true},
-    {id:'wind-cold', label: LANG === 'nl' ? '❄️ Noordenwind' : '❄️ Tramontana', color:'rgba(33,150,243,0.08)', border:'rgba(33,150,243,0.2)', start:coldwind-15, end:coldwind+15, arc:true},
-    {id:'wind-hot', label: LANG === 'nl' ? '🔥 Zuidoostenwind' : '🔥 Sirocco', color:'rgba(244,67,54,0.1)', border:'rgba(244,67,54,0.25)', start:135-15, end:135+15, arc:true},
-    {id:'frost', label: LANG === 'nl' ? '❄️ Vorstdrainage' : '❄️ Frost drainage', color:'rgba(156,39,176,0.08)', border:'rgba(156,39,176,0.2)', start:0, end:360, arc:false},
-    {id:'fire', label: LANG === 'nl' ? '🔥 Brandrisico' : '🔥 Fire risk', color:'rgba(244,67,54,0.08)', border:'rgba(244,67,54,0.2)', start:135-25, end:135+25, arc:true},
-    {id:'view', label: LANG === 'nl' ? '👁️ Beste uitzicht' : '👁️ Best view', color:'rgba(0,230,118,0.08)', border:'rgba(0,230,118,0.2)', start:180-40, end:180+40, arc:true}
+    {id:'sun-summer', label: isNL ? '☀️ Zomerse zon' : '☀️ Summer sun', color:'rgba(255,193,7,0.15)', border:'rgba(255,193,7,0.4)', start:sun.summerRise, end:sun.summerSet, arc:true},
+    {id:'sun-winter', label: isNL ? '❄️ Winterzon' : '❄️ Winter sun', color:'rgba(255,193,7,0.08)', border:'rgba(255,193,7,0.25)', start:sun.winterRise, end:sun.winterSet, arc:true},
+    {id:'wind-prevail', label: isNL ? '💨 ZW-wind (Atlantisch)' : '💨 SW wind', color:'rgba(33,150,243,0.12)', border:'rgba(33,150,243,0.35)', start:wind-20, end:wind+20, arc:true},
+    {id:'wind-cold', label: isNL ? '❄️ N/NO-wind (Siberisch)' : '❄️ Tramontana', color:'rgba(33,150,243,0.08)', border:'rgba(33,150,243,0.2)', start:coldwind-15, end:coldwind+15, arc:true},
+    {id:'wind-storm', label: isNL ? '🌪️ Storm (ZW — herfst/winter)' : '🔥 Sirocco', color: isNL ? 'rgba(244,67,54,0.14)' : 'rgba(244,67,54,0.1)', border: isNL ? 'rgba(244,67,54,0.35)' : 'rgba(244,67,54,0.25)', start:wind-35, end:wind+35, arc:true},
+    {id:'frost', label: isNL ? '❄️ Vorst (vlak land)' : '❄️ Frost drainage', color:'rgba(156,39,176,0.08)', border:'rgba(156,39,176,0.2)', start:0, end:360, arc:false},
+    {id:'fire', label: isNL ? '🔥 Brandrisico (laag)' : '🔥 Fire risk', color: isNL ? 'rgba(244,67,54,0.04)' : 'rgba(244,67,54,0.08)', border: isNL ? 'rgba(244,67,54,0.12)' : 'rgba(244,67,54,0.2)', start:135-25, end:135+25, arc:true},
+    {id:'view', label: isNL ? '👁️ Rondom uitzicht' : '👁️ Best view', color:'rgba(0,230,118,0.08)', border:'rgba(0,230,118,0.2)', start:180-40, end:180+40, arc:true}
   ];
 
   // Clear old arcs
@@ -930,6 +1084,12 @@ function updateSectors() {
     plot.appendChild(label);
   });
 
+  // Modular params table — NL values
+  var mpLatVal = document.getElementById('mp-lat-val');
+  if (mpLatVal) mpLatVal.textContent = Math.round(lat) + '°N';
+  var mpRainVal = document.getElementById('mp-rain-val');
+  if (mpRainVal) mpRainVal.textContent = rainfall + 'mm/jaar';
+
   // Update legend
   const legend = document.getElementById('legend');
   legend.innerHTML = sectors.map(s => {
@@ -948,6 +1108,7 @@ function showSector(id, btn) {
 // Initialize on load
 applyI18nSA();
 applyI18nSA();
+applyNLLogic();
 updateSectors();
 </script>
 </body>
