@@ -370,7 +370,111 @@ var T = {
     s1: '📋 Design Brief', s2: '🌍 Sector Analysis Summary', s3: '🏡 Zone Plan', s4: '💧 Water Strategy',
     s5: '🛤️ Access & Infrastructure', s6: '🌿 Species Selection', s7: '🌳 Guild Integration', s8: '🔥 Fire Safety',
     s9: '📅 Implementation Phasing', s10: '🧠 Design Rationale',
-    badgeComplete: '✅ Complete', siteOverview: 'Site Overview', designGoals: 'Design Goals', corePrinciples: 'Core Principles'
+    badgeComplete: '✅ Complete', siteOverview: 'Site Overview', designGoals: 'Design Goals', corePrinciples: 'Core Principles',
+    soLocation: 'Location:', soArea: 'Area:', soClimate: 'Climate:', soSoil: 'Soil:', soRainfall: 'Rainfall:', soBuilding: 'Building:', soFrost: 'Frost-free period:',
+    dgSelf: 'Self-sufficiency:', dgSelfTxt: 'Vegetable garden for 2 people, fruit trees, berry bushes, herbs',
+    dgWater: 'Water autonomy:', dgWaterTxt: 'Well + rainwater harvesting (15m³ tanks) + irrigation pond (200m³) + natural pool (112m³)',
+    dgFire: 'Fire safety:', dgFireTxt: 'SE firebreak, fire-resistant species, water access for firefighting',
+    dgBio: 'Biodiversity:', dgBioTxt: 'Native species, wildlife corridor, pollinator habitat, 7-layer forest garden',
+    dgInt: 'Integration:', dgIntTxt: 'Chickens (6 hens), bees (2–4 hives), greywater system, compost cycling',
+    dgLow: 'Low maintenance:', dgLowTxt: 'No-dig beds, direct sow, perennial vegetables, self-regulating guilds',
+    cp1: 'Every plant must have mutual soil benefit', cp2: 'Vegetables: 30cm organic topsoil, Trees: 50cm',
+    cp3: 'Minimal digging, direct sow preferred', cp4: 'Practical paths, no crop rotation', cp5: 'Key factors: sun, wind, height, width at maturity',
+    s2Intro: 'The site\'s <strong>south-facing slope</strong> at ~300m altitude in Tuscany creates a unique set of sector influences. 9 sectors — 6 directional and 3 topographical — define the design constraints and opportunities. The south-facing aspect is the dominant advantage: maximum solar gain, natural shelter from cold north winds, and excellent frost drainage.',
+    dpSector: 'Sector', dpType: 'Type', dpDirection: 'Direction', dpResponse: 'Design Response',
+    dpDir: 'Directional', dpDirTopo: 'Directional + Topo', dpTopo: 'Topographical', dpComb: 'Combination',
+    dpSunDir: 'SE→SW arc (summer 120°, winter 60°)', dpSunRes: 'Passive solar orientation, deciduous trees for summer shade, tall crops north',
+    dpSWRes: 'Windbreak hedge on SW boundary, fruit trees use wind for pollination',
+    dpTramRes: 'South-facing slope provides natural shelter, building as windbreak',
+    dpSiroccoRes: 'Pond on SE side creates humidity buffer, firebreak on SE boundary',
+    dpRainRes: 'Swales capture runoff, pond for gravity irrigation, roof harvest <span data-water="roofHarvestL">170,000</span>L/yr',
+    dpFrostDir: 'Cold air drains downhill', dpFrostRes: 'Tender plants upper slope, porous barriers, frost-sensitive trees mid-slope',
+    dpFireRes: 'Firebreak, fire-resistant species, water pond as firefighting source',
+    dpWlDir: 'Forest edge (north) → downhill', dpWlRes: 'Fencing, tree guards, native hedgerows, wildlife corridor on edges',
+    dpViewDir: 'South-facing panorama', dpViewRes: 'Main windows + terrace south, partial screening for privacy',
+    s2Key: '<strong>Key takeaway:</strong> The south-facing slope is the single most important asset — it maximizes solar gain, provides natural frost drainage, and shelters the site from cold NW winds. The SE (Sirocco) wind is the primary risk vector, driving both fire danger and desiccation.',
+    s3Intro: 'Zones are arranged from the building (Zone 0) outward, following the south-facing slope. The warmest, most accessible areas closest to the house host the most intensive production. Outer zones transition to managed woodland, firebreak, and wild corridors.',
+    s3LiveH4: '🗺️ Your Master Plan — actual zone assignments', loading: 'Loading…',
+    z0Name: '🏠 Zone 0 — House (250m²)', z0Detail: 'South-facing stone building. Roof catchment (<span data-water="roofArea">250</span>m²) → <span data-water="tanks">3</span>× <span data-water="tankSize">5,000</span>L tanks. Greywater to Zone 1. Thermal mass. South wall for fig trees + potted citrus.',
+    z1Name: '🥬 Zone 1 — Kitchen Garden (~500m²)', z1Detail: 'Immediately south of building. 12 no-dig raised beds (T,L,M,L,T,L,M,L,T,L,M,L layout). 49+ plants. Herb spiral, cold frames. Drip irrigation from rainwater tanks.',
+    z2Name: '🍎 Zone 2 — Orchard & Guilds (~2,000m²)', z2Detail: '<span data-count="treeshrub">116</span> tree/shrub species positioned by frost/fire/wind/sun/water. 13 tree guilds (Fig, Persimmon, Grape, Peach, Plum, Apple, Pear, Hazelnut, Walnut, Lemon, Carob, Almond, Pistachio). 19 Zone 2b companions. 7-layer forest garden, 15 species.',
+    z3Name: '🫒 Zone 3 — Olive Grove & Field Crops (~4,000m²)', z3Detail: '25 olive trees (Frantoio, Leccino, Moraiolo, Pendolino). Cover crops: vetch, clover, fava beans. Chestnuts on cooler north edge. Grain/legume rotation.',
+    z4Name: '🌲 Zone 4 — Managed Woodland (~2,500m²)', z4Detail: 'North/NW windbreak: Eleagnus, Italian alder, black locust, broom. Forage trees: oak, carob, mulberry. Firebreak transition. Boar-proof fence.',
+    z5Name: '🌿 Zone 5 — Wild Corridor (~1,000m²)', z5Detail: 'Native Mediterranean maquis: myrtle, arbutus, heather, broom. No intervention. Wildlife corridor. Biodiversity reservoir for beneficial insects.',
+    zChickens: '<strong>Chickens:</strong> 6 hens (Livorno/dual-purpose) rotated through orchard post-harvest. Stationary coop with electric netting. ~5–6 eggs/day in season.',
+    zBees: '<strong>Bees:</strong> 2–4 hives in south-facing, sheltered spot with morning sun. Near orchard for pollination. 20–60 kg honey/year.',
+    s4Intro: 'Four water sources provide <strong>excellent water security</strong> for the 1ha site. The system is designed around gravity-fed irrigation, with the irrigation pond at the highest point of the property. Annual rainfall on the 1ha is <span data-water="rain">8,000</span> m³ — even a fraction captured by swales makes the system robust.',
+    wRainTitle: '🌧️ Rainwater Harvesting', wRainDetail: '<span data-water="roofArea">250</span>m² roof × <span data-water="rainfall">800</span>mm × <span data-water="eff">0.85</span> = ~<span data-water="roofHarvestL">170,000</span>L/yr. <span data-water="tanks">3</span>× <span data-water="tankSize">5,000</span>L tanks (<span data-water="tankTotalM3">15</span>m³ total). Gravity-fed to Zone 1. First-flush diverter.',
+    wPondTitle: '🏞️ Irrigation Pond', wPondDetail: '<span data-water="pond">200</span>m³ at highest point. Gravity head ~<span data-water="head">10</span>m → <span data-water="pressure">0.98</span> bar pressure. Sealed with bentonite/liner. Doubles as firefighting reserve.',
+    wPoolTitle: '🏊 Natural Pool', wPoolDetail: '15×5×1.5m = <span data-water="pool">112</span>m³. Swimming + thermal mass + irrigation reserve. With aquatic plants for natural filtration.',
+    wWellTitle: '⛰️ Well', wWellDetail: 'Existing, confirmed. Primary household water. Backup irrigation during drought years. Variable output.',
+    wSwaleH4: 'Swale System', wSwaleP: '<span data-water="swales">4</span> contour swales (~50cm deep, 1m wide) spaced at ~<span data-water="swaleSpacing">2.5</span>m vertical intervals across the slope. Each swale has a berm on the downhill side where trees are planted. Swales intercept surface runoff, spread it across the slope, and recharge groundwater. Total water harvesting: hundreds of thousands of liters per year.',
+    wDripH4: 'Gravity Drip Irrigation', wDripP: 'Orchard and vegetable garden use on-line dripper lines with pressure compensation. Each fruit tree: 2–4 drippers at 4–8 L/h. Vegetable beds: 16mm drip tape with 30cm emitter spacing. Automated with timer (battery/solar). Summer irrigation is essential — only ~25mm rain in July.',
+    wBudgetH4: 'Annual Water Budget', wUse: 'Use', wNeed: 'Annual Need', wSource: 'Primary Source',
+    wVeg: 'Vegetable garden (500m²)', wOrchard: 'Orchard (64 trees)', wHouse: 'Household (2 people)', wChickens: 'Chickens (6 hens)', wRoof: 'Roof harvest',
+    accH4: 'Access', accVehicle: '<strong>Vehicle access:</strong> From the north (existing road on woodland edge). Access road wide enough for fire truck (3.5m+).',
+    accParking: '<strong>Parking:</strong> North side of the building, screened from main view.',
+    accPaths: '<strong>Pedestrian paths:</strong> Practical paths connecting house → garden → orchard → pond. No formal paths in wild zones.',
+    accSlope: '<strong>Slope access:</strong> Gentle gradient paths follow contours where possible, stairs on steeper sections.',
+    infraH4: 'Infrastructure',
+    infraShed: '<strong>🧰 Toolshed:</strong> Near the Zone 1–2 boundary, easily accessible from house and garden.',
+    infraCoop: '<strong>🐔 Chicken coop:</strong> Stationary secure coop at Zone 1–2 boundary, with movable electric netting for rotation.',
+    infraBees: '<strong>🐝 Beehives:</strong> 2–4 hives in south-facing, wind-sheltered spot with morning sun.',
+    infraCompost: '<strong>🔄 Compost system:</strong> 3-bin system (1m³ each) on north side of Zone 1 (shaded, near kitchen). Second compost area at orchard edge for prunings.',
+    infraFrames: '<strong>🧱 Cold frames:</strong> On south wall of building for season extension.',
+    infraHerb: '<strong>🌿 Herb spiral:</strong> Adjacent to kitchen door — rosemary, thyme, sage, oregano, lavender, mint, parsley.',
+    infraFence: '<strong>🚧 Fencing:</strong> Boar-proof fence on woodland boundary. Deer protection for young trees (tree guards, first 3 years).',
+    s6Intro: 'The species database contains <strong><span data-count="species">256</span> species</strong> with 10 filter dimensions (soil type, category, sun, water, function, season, perennial, N-fixer, fire-resistant, native). 31 species were formally assessed for suitability. Key selections by function:',
+    scFruit: '🍎 Fruit Trees', scOlives: '🫒 Olives & Nuts', scBerries: '🫐 Berries & Vines', scVeg: '🥬 Vegetable Garden',
+    scNfix: '🌿 N-Fixers', scPoll: '🌸 Pollinators', scFire: '🔥 Fire-Resistant', scWind: '🌲 Windbreak & Forage',
+    scMaquis: '🌿 Native Maquis', scWater: '💧 Water-Loving',
+    s7Intro: '<strong>13 tree guilds</strong> form the backbone of the orchard, each with a 3-ring structure: inner (support/companion), mid (guild-specific), and outer (canopy/edge). The guild system creates self-regulating, low-maintenance ecosystems around each tree.',
+    s7RingH4: '3-Ring Guild Structure', ringInner: 'Inner Ring (0.5–1m)', ringMid: 'Mid Ring (1–2m)', ringOuter: 'Outer Ring (2–4m+)',
+    s7InvH4: 'Guild Inventory', gTree: 'Tree Guild', gInner: 'Inner Companions', gMid: 'Mid Companions', gNotes: 'Notes',
+    s7FgH4: 'Zone 2b Forest Garden', s7FgP: '15 species across 7 layers (canopy, sub-canopy, shrub, herb, ground cover, climber, root) with 4 swales on contour. SE firebreak creates a transition zone. The 7-layer design maximizes vertical space and creates diverse microclimates.',
+    s8Intro: '<strong>Wildfire risk is REAL in Tuscany.</strong> The combination of hot, dry summers (Jul–Sep peak), dry Mediterranean vegetation, and the Sirocco wind from the SE creates a significant fire sector. The south-facing slope also means vegetation is drier and more combustible.',
+    fsSe: 'SE Firebreak Zone', fsSeDesc: '0–10m cleared strip on the SE boundary. Deciduous trees (lower flammability) + mown green strip. Irrigated green buffer acts as firebreak.',
+    fsSpecies: 'Fire-Resistant Species', fsSpeciesDesc: 'Near structures: Olive, Fig, Mulberry, Citrus, Aloe, Lavender, Rosemary, Sage, Iceplant, Pomegranate, Strawberry Tree. Avoid pines, eucalyptus, junipers, cypress.',
+    fsWater: 'Water for Firefighting', fsWaterDesc: 'Irrigation pond (200m³) on SE side serves as water source for firefighting. Natural pool (112m³) as secondary reserve. Access road wide enough for fire truck (3.5m+).',
+    fsHum: 'Humidity Buffer', fsHumDesc: 'Pond and swales on the SE side create humidity buffer against Sirocco drying. Well-watered Zone 1 (vegetable garden) on SE side of building acts as green firebreak.',
+    fsFuel: 'Fuel Load Management', fsFuelDesc: 'Zone 4 managed woodland — keep fuel load low. Compost pile shaded and moist in summer. No flammable debris near structures. Regular pruning and clearance.',
+    fsBuild: 'Building Protection', fsBuildDesc: 'Stone construction (non-combustible). Defensible space of 10m around building. Ember-resistant vents. Fire-resistant roof materials.',
+    s9Intro: 'Three-year phased implementation prioritising infrastructure first (water, access, fire safety), then production systems (orchard, guilds), then maturation and fine-tuning.',
+    y1: 'Year 1 — Infrastructure & Foundation', y2: 'Year 2 — Orchard, Guilds & Forest Garden', y3: 'Year 3+ — Maturation & Fine-Tuning',
+    s10Intro: 'Key design decisions and the reasoning behind them. Each choice is rooted in the site\'s specific conditions: climate, topography, soil, and the client\'s goals for self-sufficiency and resilience.',
+    rq1: '🏠 Why is the building south-facing?', ra1: 'The south-facing slope maximises passive solar gain (~30% more radiation than flat land), provides natural shelter from cold NW winds (Tramontana), and allows frost drainage downhill. The building\'s south wall is the warmest microclimate — ideal for season extension and tender plants.',
+    rq2: '🍎 Why are frost-sensitive trees on the upper slope?', ra2: 'Cold air is heavier than warm air — it flows downhill like water. The upper part of the slope is 2–4°C warmer on frost nights than the valley bottom. Peaches, apricots, and almonds (early bloomers) go highest.',
+    rq3: '💧 Why is the pond at the highest point?', ra3: 'Gravity-fed drip irrigation requires elevation head. The pond at the highest point provides ~8–10m head = 0.78 bar pressure — sufficient for drip irrigation without pumps. This is a permanent energy-free solution.',
+    rq4: '🌊 Why 4 swales, not more?', ra4: '4 swales at ~7m vertical intervals on a 10% slope (total ~100m length) provide adequate water harvesting for the 1ha site. More swales would over-engineer the system; fewer would miss the water-spreading benefit. Each swale captures ~50–200L per meter.',
+    rq5: '🔥 Why the SE firebreak?', ra5: 'The Sirocco wind from the SE (135°) is the primary fire risk vector — hot, dry, and carries embers. The firebreak + pond on the SE side creates a defensible space. The irrigated vegetable garden on the south side acts as an additional green firebreak.',
+    rq6: '🌳 Why 13 tree guilds with 3-ring structure?', ra6: 'The 3-ring structure (inner/mid/outer) creates a self-regulating ecosystem around each tree. Inner ring: mineral accumulation + pest repellent. Mid ring: N-fixation + ground cover. Outer ring: edge habitat + pollination. This reduces maintenance by 60–80% vs. conventional orchard.',
+    rq7: '🥬 Why no-dig raised beds?', ra7: 'No-dig preserves soil structure, fungal networks, and earthworm populations. 30cm of organic topsoil is sufficient for deep-rooted vegetables. Raised beds warm faster in spring, improve drainage on silty-sand, and provide clear paths for maintenance.',
+    rq8: '🐝 Why chickens AND bees?', ra8: 'Chickens provide pest control, fertilization, and egg production. Bees provide pollination (critical for 90% of fruit trees) and honey. Together they create a closed-loop system: chickens eat pests, bees pollinate crops, manure feeds plants.',
+    rq9: '🌿 Why Zone 2b forest garden?', ra9: 'The 7-layer forest garden (15 species) maximises vertical space on the slope, creating diverse microclimates. The SE firebreak transition zone doubles as a productive edge. 4 swales on contour provide water to the entire system without irrigation.',
+    rq10: '📐 Why Tuscan heritage varieties?', ra10: 'Tuscan cultivars (Frantoio, Leccino, Moraiolo, Pendolino for olives; Brogiotto Nero for figs; Cavolo Nero for kale) are proven over centuries of local adaptation. They have better disease resistance, drought tolerance, and flavour than imported varieties.',
+    y1li1: '<strong>💧 Water:</strong> Install rainwater tanks (3× 5,000L) with first-flush diverters. Dig irrigation pond (<span data-water="pond">200</span>m³). Install well pump if needed.',
+    y1li2: '<strong>🌊 Swales:</strong> Dig 4 contour swales with berms (~50cm deep, 1m wide).',
+    y1li3: '<strong>🥬 Vegetable garden:</strong> Establish 12 no-dig raised beds (30cm organic topsoil). Install drip irrigation. Plant cool-season crops.',
+    y1li4: '<strong>🔥 Firebreak:</strong> Clear SE firebreak zone. Plant fire-resistant hedge.',
+    y1li5: '<strong>🛤️ Access:</strong> Grade access road. Build pedestrian paths. Install parking area.',
+    y1li6: '<strong>🏠 Infrastructure:</strong> Toolshed, chicken coop, 3-bin compost system. Greywater system from house to Zone 1.',
+    y1li7: '<strong>🌱 Soil prep:</strong> Green manure cover crops on orchard areas. Sheet mulching on future beds.',
+    y2li1: '<strong>🍎 Orchard:</strong> Plant 116 tree/shrub species in their assigned positions (frost/fire/wind/sun optimised). Install tree guards.',
+    y2li2: '<strong>🌳 Guilds:</strong> Establish 13 tree guilds with inner companions (comfrey, chives, garlic, daffodils).',
+    y2li3: '<strong>🌿 Zone 2b:</strong> Plant 15-species forest garden (7 layers) with 4 swales. SE firebreak planting.',
+    y2li4: '<strong>🫐 Berry hedgerows:</strong> Plant perimeter hedgerows (raspberry, currant, blackberry, aronia, elderberry).',
+    y2li5: '<strong>🐝 Bees:</strong> Install 2–4 hives in south-facing, sheltered spot.',
+    y2li6: '<strong>🫒 Olive grove:</strong> Plant 25 olive trees (Frantoio, Leccino, Moraiolo, Pendolino). Cover crop between rows.',
+    y2li7: '<strong>🏊 Natural pool:</strong> Excavate and line 15×5×1.5m natural pool with aquatic plants.',
+    y2li8: '<strong>🌲 Zone 4:</strong> Plant windbreak (Eleagnus, Italian alder, black locust, broom). Forage trees (oak, carob, mulberry).',
+    y3li1: '<strong>🌿 Maturation:</strong> Guilds mature — mid-ring companions (clover, yarrow, oregano, strawberries). Outer ring fills in.',
+    y3li2: '<strong>🔄 Soil building:</strong> Sheet mulching, chop-and-drop from comfrey, green manure rotations.',
+    y3li3: '<strong>🐔 Chicken rotation:</strong> Full integration — orchard post-harvest, winter garden clearing, pest control.',
+    y3li4: '<strong>🌱 Propagation:</strong> Expand from own seed/divisions. Plant cuttings from guild companions.',
+    y3li5: '<strong>📊 Monitoring:</strong> Track species success, adjust siting, observe microclimate patterns.',
+    y3li6: '<strong>🌿 Zone 5:</strong> Establish wild corridor with native maquis species (myrtle, arbutus, heather).',
+    y3li7: '<strong>🔧 Fine-tuning:</strong> Adjust irrigation timing, prune for shape, replace any losses, expand productive areas.',
+    y3li8: '<strong>🔄 Cycling:</strong> Compost system reaches steady state. Full nutrient cycling operational.'
   },
   nl: {
     title: '🌿 Ontwerpvoorstel',
@@ -382,7 +486,111 @@ var T = {
     s1: '📋 Ontwerpbrief', s2: '🌍 Sectoranalyse-samenvatting', s3: '🏡 Zonenplan', s4: '💧 Waterstrategie',
     s5: '🛤️ Toegang & Infrastructuur', s6: '🌿 Soortenselectie', s7: '🌳 Gilde-integratie', s8: '🔥 Brandveiligheid',
     s9: '📅 Implementatiefasering', s10: '🧠 Ontwerp-onderbouwing',
-    badgeComplete: '✅ Compleet', siteOverview: 'Locatieoverzicht', designGoals: 'Ontwerpdoelen', corePrinciples: 'Kernprincipes'
+    badgeComplete: '✅ Compleet', siteOverview: 'Locatieoverzicht', designGoals: 'Ontwerpdoelen', corePrinciples: 'Kernprincipes',
+    soLocation: 'Locatie:', soArea: 'Oppervlakte:', soClimate: 'Klimaat:', soSoil: 'Grond:', soRainfall: 'Neerslag:', soBuilding: 'Gebouw:', soFrost: 'Vorstvrije periode:',
+    dgSelf: 'Zelfvoorziening:', dgSelfTxt: 'Moestuin voor 2 personen, fruitbomen, bessenstruiken, kruiden',
+    dgWater: 'Waterautonomie:', dgWaterTxt: 'Put + regenwateropvang (15m³ tanks) + irrigatievijver (200m³) + natuurlijk zwembad (112m³)',
+    dgFire: 'Brandveiligheid:', dgFireTxt: 'ZO-brandgang, brandwerende soorten, watertoegang voor brandbestrijding',
+    dgBio: 'Biodiversiteit:', dgBioTxt: 'Inheemse soorten, natuurcorridor, bestuivershabitat, 7-laags bostuin',
+    dgInt: 'Integratie:', dgIntTxt: 'Kippen (6 hennen), bijen (2–4 korven), grijswatersysteem, compostcyclus',
+    dgLow: 'Weinig onderhoud:', dgLowTxt: 'No-dig bedden, direct zaaien, vaste groenten, zelfregulerende gildes',
+    cp1: 'Elke plant moet wederzijds bodemvoordeel hebben', cp2: 'Groenten: 30cm organische toplaag, Bomen: 50cm',
+    cp3: 'Minimaal graven, direct zaaien heeft voorkeur', cp4: 'Praktische paden, geen vruchtwisseling', cp5: 'Sleutelfactoren: zon, wind, hoogte, breedte op volwassen leeftijd',
+    s2Intro: 'De <strong>op het zuiden gerichte helling</strong> van de locatie op ~300m hoogte in Toscane creëert een unieke set sectorinvloeden. 9 sectoren — 6 richtings- en 3 topografische — bepalen de ontwerpbeperkingen en -kansen. Het zuidelijke aspect is het grootste voordeel: maximale zonnewinst, natuurlijke beschutting tegen koude noordenwind en uitstekende vorstdrainage.',
+    dpSector: 'Sector', dpType: 'Type', dpDirection: 'Richting', dpResponse: 'Ontwerprespons',
+    dpDir: 'Richting', dpDirTopo: 'Richting + topo', dpTopo: 'Topografisch', dpComb: 'Combinatie',
+    dpSunDir: 'ZO→ZW boog (zomer 120°, winter 60°)', dpSunRes: 'Passieve zonne-oriëntatie, loofbomen voor zomerschaduw, hoge gewassen noord',
+    dpSWRes: 'Windschermhaag op ZW-grens, fruitbomen gebruiken wind voor bestuiving',
+    dpTramRes: 'Zuidelijke helling biedt natuurlijke beschutting, gebouw als windscherm',
+    dpSiroccoRes: 'Vijver aan ZO-kant creëert vochtbuffer, brandgang op ZO-grens',
+    dpRainRes: 'Swales vangen afvoer op, vijver voor zwaartekrachtirrigatie, dakopvang <span data-water="roofHarvestL">170.000</span>L/jaar',
+    dpFrostDir: 'Koude lucht stroomt bergafwaarts', dpFrostRes: 'Tere planten bovenhelling, doorlatende barrières, vorstgevoelige bomen middenhelling',
+    dpFireRes: 'Brandgang, brandwerende soorten, watervijver als brandblusbron',
+    dpWlDir: 'Bosrand (noord) → bergafwaarts', dpWlRes: 'Afrastering, boombeschermers, inheemse hagen, natuurcorridor aan randen',
+    dpViewDir: 'Panorama op het zuiden', dpViewRes: 'Hoofdramen + terras zuid, gedeeltelijke afscherming voor privacy',
+    s2Key: '<strong>Belangrijkste conclusie:</strong> De zuidelijke helling is het belangrijkste bezit — hij maximaliseert zonnewinst, zorgt voor natuurlijke vorstdrainage en beschut de locatie tegen koude NW-winden. De ZO-wind (Sirocco) is de belangrijkste risicofactor, die zowel brandgevaar als uitdroging veroorzaakt.',
+    s3Intro: 'Zones zijn gerangschikt vanuit het gebouw (Zone 0) naar buiten, langs de zuidelijke helling. De warmste, meest toegankelijke gebieden dicht bij het huis herbergen de meest intensieve productie. Buitenste zones gaan over in beheerd bos, brandgang en wilde corridors.',
+    s3LiveH4: '🗺️ Jouw Masterplan — actuele zonetoewijzingen', loading: 'Laden…',
+    z0Name: '🏠 Zone 0 — Huis (250m²)', z0Detail: 'Stenen gebouw op het zuiden. Dakopvang (<span data-water="roofArea">250</span>m²) → <span data-water="tanks">3</span>× <span data-water="tankSize">5.000</span>L tanks. Grijswater naar Zone 1. Thermische massa. Zuidmuur voor vijgenbomen + potcitrus.',
+    z1Name: '🥬 Zone 1 — Moestuin (~500m²)', z1Detail: 'Direct ten zuiden van het gebouw. 12 no-dig verhoogde bedden (T,L,M,L,T,L,M,L,T,L,M,L-indeling). 49+ planten. Kruidenspiraal, koude bakken. Druppelirrigatie vanuit regenwatertanks.',
+    z2Name: '🍎 Zone 2 — Boomgaard & Gildes (~2.000m²)', z2Detail: '<span data-count="treeshrub">116</span> boom/struiksoorten geplaatst op vorst/brand/wind/zon/water. 13 boomgildes (Vijg, Dadelpruim, Druif, Perzik, Pruim, Appel, Peer, Hazelnoot, Walnoot, Citroen, Johannesbroodboom, Amandel, Pistache). 19 Zone 2b-compagnons. 7-laags bostuin, 15 soorten.',
+    z3Name: '🫒 Zone 3 — Olijfgaard & Veldgewassen (~4.000m²)', z3Detail: '25 olijfbomen (Frantoio, Leccino, Moraiolo, Pendolino). Groenbemesters: wikke, klaver, tuinbonen. Kastanjes op de koelere noordrand. Graan/peulvruchten-rotatie.',
+    z4Name: '🌲 Zone 4 — Beheerd Bos (~2.500m²)', z4Detail: 'Noord/NW windscherm: Eleagnus, Italiaanse els, valse acacia, brem. Voederbomen: eik, johannesbroodboom, moerbei. Brandgang-overgang. Zwijnenwerend hek.',
+    z5Name: '🌿 Zone 5 — Wilde Corridor (~1.000m²)', z5Detail: 'Inheemse mediterrane maquis: mirte, aardbeiboom, heide, brem. Geen ingrepen. Natuurcorridor. Biodiversiteitsreservoir voor nuttige insecten.',
+    zChickens: '<strong>Kippen:</strong> 6 hennen (Livorno/dubbeldoel) gerouleerd door de boomgaard na de oogst. Vast hok met elektrisch net. ~5–6 eieren/dag in het seizoen.',
+    zBees: '<strong>Bijen:</strong> 2–4 korven op een zuidgerichte, beschutte plek met ochtendzon. Dicht bij de boomgaard voor bestuiving. 20–60 kg honing/jaar.',
+    s4Intro: 'Vier waterbronnen zorgen voor <strong>uitstekende waterzekerheid</strong> voor de 1ha-locatie. Het systeem is ontworpen rond zwaartekrachtirrigatie, met de irrigatievijver op het hoogste punt van het terrein. Jaarlijkse neerslag op de 1ha is <span data-water="rain">8.000</span> m³ — zelfs een fractie opgevangen door swales maakt het systeem robuust.',
+    wRainTitle: '🌧️ Regenwateropvang', wRainDetail: '<span data-water="roofArea">250</span>m² dak × <span data-water="rainfall">800</span>mm × <span data-water="eff">0,85</span> = ~<span data-water="roofHarvestL">170.000</span>L/jaar. <span data-water="tanks">3</span>× <span data-water="tankSize">5.000</span>L tanks (<span data-water="tankTotalM3">15</span>m³ totaal). Zwaartekracht naar Zone 1. Eerste-spoeling-afscheider.',
+    wPondTitle: '🏞️ Irrigatievijver', wPondDetail: '<span data-water="pond">200</span>m³ op het hoogste punt. Zwaartekrachtval ~<span data-water="head">10</span>m → <span data-water="pressure">0,98</span> bar druk. Afgedicht met bentoniet/folie. Dient tevens als brandblusreserve.',
+    wPoolTitle: '🏊 Natuurlijk Zwembad', wPoolDetail: '15×5×1,5m = <span data-water="pool">112</span>m³. Zwemmen + thermische massa + irrigatiereserve. Met waterplanten voor natuurlijke filtratie.',
+    wWellTitle: '⛰️ Put', wWellDetail: 'Bestaand, bevestigd. Primair huishoudwater. Back-upirrigatie in droge jaren. Variabele opbrengst.',
+    wSwaleH4: 'Swale-systeem', wSwaleP: '<span data-water="swales">4</span> contour-swales (~50cm diep, 1m breed) op ~<span data-water="swaleSpacing">2,5</span>m verticale afstand over de helling. Elke swale heeft een berm aan de benedenkant waar bomen worden geplant. Swales onderscheppen oppervlakte-afvoer, spreiden het over de helling en vullen grondwater aan. Totale wateropvang: honderdduizenden liters per jaar.',
+    wDripH4: 'Zwaartekracht-druppelirrigatie', wDripP: 'Boomgaard en moestuin gebruiken inline-druppelleidingen met drukcompensatie. Elke fruitboom: 2–4 druppelaars op 4–8 L/u. Groentebedden: 16mm druppellint met 30cm emitterafstand. Geautomatiseerd met timer (batterij/zon). Zomerirrigatie is essentieel — slechts ~25mm regen in juli.',
+    wBudgetH4: 'Jaarlijks waterbudget', wUse: 'Gebruik', wNeed: 'Jaarlijkse behoefte', wSource: 'Primaire bron',
+    wVeg: 'Moestuin (500m²)', wOrchard: 'Boomgaard (64 bomen)', wHouse: 'Huishouden (2 personen)', wChickens: 'Kippen (6 hennen)', wRoof: 'Dakopvang',
+    accH4: 'Toegang', accVehicle: '<strong>Voertuigtoegang:</strong> Vanuit het noorden (bestaande weg aan de bosrand). Toegangsweg breed genoeg voor een brandweerwagen (3,5m+).',
+    accParking: '<strong>Parkeren:</strong> Noordkant van het gebouw, uit het hoofd-uitzicht.',
+    accPaths: '<strong>Voetpaden:</strong> Praktische paden die huis → tuin → boomgaard → vijver verbinden. Geen formele paden in wilde zones.',
+    accSlope: '<strong>Hellingspad:</strong> Paden met zachte helling volgen waar mogelijk de contouren, trappen op steilere stukken.',
+    infraH4: 'Infrastructuur',
+    infraShed: '<strong>🧰 Gereedschapsschuur:</strong> Bij de Zone 1–2 grens, gemakkelijk bereikbaar vanuit huis en tuin.',
+    infraCoop: '<strong>🐔 Kippenhok:</strong> Vast, veilig hok bij de Zone 1–2 grens, met verplaatsbaar elektrisch net voor rotatie.',
+    infraBees: '<strong>🐝 Bijenkorven:</strong> 2–4 korven op een zuidgerichte, windbeschutte plek met ochtendzon.',
+    infraCompost: '<strong>🔄 Compostsysteem:</strong> 3-bakken systeem (1m³ elk) aan de noordkant van Zone 1 (schaduw, bij de keuken). Tweede compostplek aan de boomgaardrand voor snoeihout.',
+    infraFrames: '<strong>🧱 Koude bakken:</strong> Tegen de zuidmuur van het gebouw voor seizoensverlenging.',
+    infraHerb: '<strong>🌿 Kruidenspiraal:</strong> Naast de keukendeur — rozemarijn, tijm, salie, oregano, lavendel, munt, peterselie.',
+    infraFence: '<strong>🚧 Afrastering:</strong> Zwijnenwerend hek aan de bosrand. Hertenbescherming voor jonge bomen (boombeschermers, eerste 3 jaar).',
+    s6Intro: 'De soortendatabase bevat <strong><span data-count="species">256</span> soorten</strong> met 10 filterdimensies (grondsoort, categorie, zon, water, functie, seizoen, overblijvend, stikstofbinder, brandwerend, inheems). 31 soorten zijn formeel beoordeeld op geschiktheid. Belangrijkste keuzes per functie:',
+    scFruit: '🍎 Fruitbomen', scOlives: '🫒 Olijven & Noten', scBerries: '🫐 Bessen & Ranken', scVeg: '🥬 Moestuin',
+    scNfix: '🌿 Stikstofbinders', scPoll: '🌸 Bestuivers', scFire: '🔥 Brandwerend', scWind: '🌲 Windscherm & Voeder',
+    scMaquis: '🌿 Inheemse Maquis', scWater: '💧 Watervriendelijk',
+    s7Intro: '<strong>13 boomgildes</strong> vormen de ruggengraat van de boomgaard, elk met een 3-ringstructuur: binnenring (steun/compagnon), middenring (gilde-specifiek) en buitenring (kroon/rand). Het gildesysteem creëert zelfregulerende, onderhoudsarme ecosystemen rond elke boom.',
+    s7RingH4: '3-ring Gilde-structuur', ringInner: 'Binnenring (0,5–1m)', ringMid: 'Middenring (1–2m)', ringOuter: 'Buitenring (2–4m+)',
+    s7InvH4: 'Gilde-inventaris', gTree: 'Boomgilde', gInner: 'Binnen-compagnons', gMid: 'Midden-compagnons', gNotes: 'Opmerkingen',
+    s7FgH4: 'Zone 2b Bostuin', s7FgP: '15 soorten over 7 lagen (kroon, onderkroon, struik, kruid, bodembedekker, klimmer, wortel) met 4 swales op contour. De ZO-brandgang creëert een overgangszone. Het 7-laags ontwerp maximaliseert verticale ruimte en creëert diverse microklimaten.',
+    s8Intro: '<strong>Natuurbrandrisico is ECHT in Toscane.</strong> De combinatie van hete, droge zomers (jul–sep piek), droge mediterrane vegetatie en de Sirocco-wind uit het ZO creëert een significante brandsector. De zuidelijke helling betekent ook dat de vegetatie droger en brandbaarder is.',
+    fsSe: 'ZO-brandgangzone', fsSeDesc: '0–10m vrijgemaakte strook op de ZO-grens. Loofbomen (minder brandbaar) + gemaaide groenstrook. Geïrrigeerde groene buffer werkt als brandgang.',
+    fsSpecies: 'Brandwerende soorten', fsSpeciesDesc: 'Bij gebouwen: Olijf, Vijg, Moerbei, Citrus, Aloë, Lavendel, Rozemarijn, Salie, IJsplant, Granaatappel, Aardbeiboom. Vermijd dennen, eucalyptus, jeneverbes, cipres.',
+    fsWater: 'Water voor brandbestrijding', fsWaterDesc: 'Irrigatievijver (200m³) aan de ZO-kant dient als waterbron voor brandbestrijding. Natuurlijk zwembad (112m³) als secundaire reserve. Toegangsweg breed genoeg voor een brandweerwagen (3,5m+).',
+    fsHum: 'Vochtbuffer', fsHumDesc: 'Vijver en swales aan de ZO-kant creëren een vochtbuffer tegen Sirocco-uitdroging. Goed bewaterde Zone 1 (moestuin) aan de ZO-kant van het gebouw werkt als groene brandgang.',
+    fsFuel: 'Brandstofbeheer', fsFuelDesc: 'Zone 4 beheerd bos — houd de brandstofbelasting laag. Composthoop in de zomer in de schaduw en vochtig. Geen brandbaar afval bij gebouwen. Regelmatig snoeien en vrijmaken.',
+    fsBuild: 'Gebouwbescherming', fsBuildDesc: 'Stenen constructie (niet-brandbaar). Verdedigbare ruimte van 10m rond het gebouw. Vonkbestendige ventilatie. Brandwerende dakmaterialen.',
+    s9Intro: 'Driejarige gefaseerde implementatie die eerst infrastructuur prioriteert (water, toegang, brandveiligheid), daarna productiesystemen (boomgaard, gildes), dan rijping en fijnafstelling.',
+    y1: 'Jaar 1 — Infrastructuur & Fundament', y2: 'Jaar 2 — Boomgaard, Gildes & Bostuin', y3: 'Jaar 3+ — Rijping & Fijnafstelling',
+    s10Intro: 'Belangrijkste ontwerpbeslissingen en de redenering erachter. Elke keuze is geworteld in de specifieke omstandigheden van de locatie: klimaat, topografie, grond en de doelen van de opdrachtgever voor zelfvoorziening en veerkracht.',
+    rq1: '🏠 Waarom ligt het gebouw op het zuiden?', ra1: 'De zuidelijke helling maximaliseert passieve zonnewinst (~30% meer straling dan vlak land), biedt natuurlijke beschutting tegen koude NW-winden (Tramontana) en zorgt voor vorstdrainage bergafwaarts. De zuidmuur van het gebouw is het warmste microklimaat — ideaal voor seizoensverlenging en tere planten.',
+    rq2: '🍎 Waarom staan vorstgevoelige bomen op de bovenhelling?', ra2: 'Koude lucht is zwaarder dan warme lucht — het stroomt als water bergafwaarts. Het bovenste deel van de helling is 2–4°C warmer op vorstnachten dan de valleibodem. Perziken, abrikozen en amandelen (vroege bloeiers) gaan het hoogst.',
+    rq3: '💧 Waarom ligt de vijver op het hoogste punt?', ra3: 'Zwaartekracht-druppelirrigatie vereist hoogteverschil. De vijver op het hoogste punt levert ~8–10m val = 0,78 bar druk — voldoende voor druppelirrigatie zonder pompen. Dit is een permanente, energievrije oplossing.',
+    rq4: '🌊 Waarom 4 swales en niet meer?', ra4: '4 swales op ~7m verticale afstand op een helling van 10% (totaal ~100m lengte) leveren voldoende wateropvang voor de 1ha-locatie. Meer swales zouden het systeem over-engineeren; minder zou het water-spreidend voordeel missen. Elke swale vangt ~50–200L per meter.',
+    rq5: '🔥 Waarom de ZO-brandgang?', ra5: 'De Sirocco-wind uit het ZO (135°) is de belangrijkste brandrisicofactor — heet, droog en draagt gloeiende deeltjes. De brandgang + vijver aan de ZO-kant creëert een verdedigbare ruimte. De geïrrigeerde moestuin aan de zuidkant werkt als extra groene brandgang.',
+    rq6: '🌳 Waarom 13 boomgildes met 3-ringstructuur?', ra6: 'De 3-ringstructuur (binnen/midden/buiten) creëert een zelfregulerend ecosysteem rond elke boom. Binnenring: mineralenaccumulatie + plaagwerend. Middenring: stikstofbinding + bodembedekking. Buitenring: randhabitat + bestuiving. Dit vermindert onderhoud met 60–80% vs. een conventionele boomgaard.',
+    rq7: '🥬 Waarom no-dig verhoogde bedden?', ra7: 'No-dig behoudt bodemstructuur, schimmelnetwerken en regenwormpopulaties. 30cm organische toplaag is voldoende voor diepwortelende groenten. Verhoogde bedden warmen sneller op in het voorjaar, verbeteren drainage op silt-zand en bieden duidelijke paden voor onderhoud.',
+    rq8: '🐝 Waarom kippen EN bijen?', ra8: 'Kippen zorgen voor plaagbestrijding, bemesting en eierproductie. Bijen zorgen voor bestuiving (cruciaal voor 90% van de fruitbomen) en honing. Samen creëren ze een gesloten kringloop: kippen eten plagen, bijen bestuiven gewassen, mest voedt planten.',
+    rq9: '🌿 Waarom een Zone 2b bostuin?', ra9: 'De 7-laags bostuin (15 soorten) maximaliseert verticale ruimte op de helling en creëert diverse microklimaten. De ZO-brandgang-overgangszone dient tevens als productieve rand. 4 swales op contour voorzien het hele systeem van water zonder irrigatie.',
+    rq10: '📐 Waarom Toscaanse erfgoedrassen?', ra10: 'Toscaanse cultivars (Frantoio, Leccino, Moraiolo, Pendolino voor olijven; Brogiotto Nero voor vijgen; Cavolo Nero voor kool) zijn bewezen door eeuwen van lokale aanpassing. Ze hebben betere ziekteresistentie, droogtetolerantie en smaak dan geïmporteerde rassen.',
+    y1li1: '<strong>💧 Water:</strong> Plaats regenwatertanks (3× 5.000L) met eerste-spoeling-afscheiders. Graaf irrigatievijver (<span data-water="pond">200</span>m³). Plaats putpomp indien nodig.',
+    y1li2: '<strong>🌊 Swales:</strong> Graaf 4 contour-swales met bermen (~50cm diep, 1m breed).',
+    y1li3: '<strong>🥬 Moestuin:</strong> Maak 12 no-dig verhoogde bedden (30cm organische toplaag). Installeer druppelirrigatie. Plant koele-seizoensgewassen.',
+    y1li4: '<strong>🔥 Brandgang:</strong> Maak de ZO-brandgangzone vrij. Plant een brandwerende haag.',
+    y1li5: '<strong>🛤️ Toegang:</strong> Egaliseer de toegangsweg. Bouw voetpaden. Leg parkeerplaats aan.',
+    y1li6: '<strong>🏠 Infrastructuur:</strong> Gereedschapsschuur, kippenhok, 3-bakken compostsysteem. Grijswatersysteem van huis naar Zone 1.',
+    y1li7: '<strong>🌱 Bodemvoorbereiding:</strong> Groenbemesters op boomgaardgebieden. Sheet mulchen op toekomstige bedden.',
+    y2li1: '<strong>🍎 Boomgaard:</strong> Plant 116 boom/struiksoorten op hun toegewezen posities (vorst/brand/wind/zon geoptimaliseerd). Plaats boombeschermers.',
+    y2li2: '<strong>🌳 Gildes:</strong> Richt 13 boomgildes op met binnen-compagnons (smalle weegbree, bieslook, knoflook, narcissen).',
+    y2li3: '<strong>🌿 Zone 2b:</strong> Plant 15-soorten bostuin (7 lagen) met 4 swales. ZO-brandgangbeplanting.',
+    y2li4: '<strong>🫐 Bessenhagen:</strong> Plant randen-hagen (framboos, bes, braam, aronia, vlier).',
+    y2li5: '<strong>🐝 Bijen:</strong> Plaats 2–4 korven op een zuidgerichte, beschutte plek.',
+    y2li6: '<strong>🫒 Olijfgaard:</strong> Plant 25 olijfbomen (Frantoio, Leccino, Moraiolo, Pendolino). Groenbemester tussen de rijen.',
+    y2li7: '<strong>🏊 Natuurlijk zwembad:</strong> Graaf en bekleed een 15×5×1,5m natuurlijk zwembad met waterplanten.',
+    y2li8: '<strong>🌲 Zone 4:</strong> Plant windscherm (Eleagnus, Italiaanse els, valse acacia, brem). Voederbomen (eik, johannesbroodboom, moerbei).',
+    y3li1: '<strong>🌿 Rijping:</strong> Gildes rijpen — middenring-compagnons (klaver, duizendblad, oregano, aardbeien). Buitenring vult zich.',
+    y3li2: '<strong>🔄 Bodemopbouw:</strong> Sheet mulchen, chop-and-drop van smalle weegbree, groenbemester-rotaties.',
+    y3li3: '<strong>🐔 Kippenrotatie:</strong> Volledige integratie — boomgaard na oogst, wintertuin opruimen, plaagbestrijding.',
+    y3li4: '<strong>🌱 Vermeerdering:</strong> Uitbreiden met eigen zaad/stekken. Stekken van gilde-compagnons planten.',
+    y3li5: '<strong>📊 Monitoring:</strong> Volg soortensucces, pas plaatsing aan, observeer microklimaatpatronen.',
+    y3li6: '<strong>🌿 Zone 5:</strong> Richt wilde corridor in met inheemse maquis-soorten (mirte, aardbeiboom, heide).',
+    y3li7: '<strong>🔧 Fijnafstelling:</strong> Pas irrigatietiming aan, snoei voor vorm, vervang verliezen, breid productieve gebieden uit.',
+    y3li8: '<strong>🔄 Kringloop:</strong> Compostsysteem bereikt stabiele toestand. Volledige nutriëntenkringloop operationeel.'
   }
 };
 function tt(k) { return (T[LANG] && T[LANG][k] !== undefined) ? T[LANG][k] : (T.en[k] !== undefined ? T.en[k] : k); }
@@ -439,31 +647,31 @@ function applyI18nDP() {
   </div>
   <div class="section-body open">
     <h3 data-i18n="siteOverview">Site Overview</h3>
-    <p><strong>Location:</strong> <span id="dp-loc">Tuscany, Italy</span> — ~<span id="dp-alt">300</span>m altitude, hilly terrain, south-facing slope</p>
-    <p><strong>Area:</strong> <span id="dp-area">1 hectare (10,000m²)</span></p>
-    <p><strong>Climate:</strong> Csa (Hot-summer Mediterranean) — USDA Zone <span id="dp-zone">8b–9a</span></p>
-    <p><strong>Soil:</strong> <span id="dp-soil">Silty-sandy, fertile, good drainage, some clay lenses</span></p>
-    <p><strong>Rainfall:</strong> ~<span id="dp-rain">800</span>mm/year, concentrated Oct–Dec and Mar–May; summer drought (Jul ~25mm)</p>
-    <p><strong>Building:</strong> 250m² south-facing stone house — roof catchment for rainwater</p>
-    <p><strong>Frost-free period:</strong> ~180–210 days (last frost ~Apr, first frost ~Nov)</p>
+    <p><strong data-i18n="soLocation">Location:</strong> <span id="dp-loc">Tuscany, Italy</span> — ~<span id="dp-alt">300</span>m altitude, hilly terrain, south-facing slope</p>
+    <p><strong data-i18n="soArea">Area:</strong> <span id="dp-area">1 hectare (10,000m²)</span></p>
+    <p><strong data-i18n="soClimate">Climate:</strong> Csa (Hot-summer Mediterranean) — USDA Zone <span id="dp-zone">8b–9a</span></p>
+    <p><strong data-i18n="soSoil">Soil:</strong> <span id="dp-soil">Silty-sandy, fertile, good drainage, some clay lenses</span></p>
+    <p><strong data-i18n="soRainfall">Rainfall:</strong> ~<span id="dp-rain">800</span>mm/year, concentrated Oct–Dec and Mar–May; summer drought (Jul ~25mm)</p>
+    <p><strong data-i18n="soBuilding">Building:</strong> 250m² south-facing stone house — roof catchment for rainwater</p>
+    <p><strong data-i18n="soFrost">Frost-free period:</strong> ~180–210 days (last frost ~Apr, first frost ~Nov)</p>
 
     <h3 data-i18n="designGoals">Design Goals</h3>
     <ul>
-      <li><strong>Self-sufficiency:</strong> Vegetable garden for 2 people, fruit trees, berry bushes, herbs</li>
-      <li><strong>Water autonomy:</strong> Well + rainwater harvesting (15m³ tanks) + irrigation pond (200m³) + natural pool (112m³)</li>
-      <li><strong>Fire safety:</strong> SE firebreak, fire-resistant species, water access for firefighting</li>
-      <li><strong>Biodiversity:</strong> Native species, wildlife corridor, pollinator habitat, 7-layer forest garden</li>
-      <li><strong>Integration:</strong> Chickens (6 hens), bees (2–4 hives), greywater system, compost cycling</li>
-      <li><strong>Low maintenance:</strong> No-dig beds, direct sow, perennial vegetables, self-regulating guilds</li>
+      <li><strong data-i18n="dgSelf">Self-sufficiency:</strong> <span data-i18n="dgSelfTxt">Vegetable garden for 2 people, fruit trees, berry bushes, herbs</span></li>
+      <li><strong data-i18n="dgWater">Water autonomy:</strong> <span data-i18n="dgWaterTxt">Well + rainwater harvesting (15m³ tanks) + irrigation pond (200m³) + natural pool (112m³)</span></li>
+      <li><strong data-i18n="dgFire">Fire safety:</strong> <span data-i18n="dgFireTxt">SE firebreak, fire-resistant species, water access for firefighting</span></li>
+      <li><strong data-i18n="dgBio">Biodiversity:</strong> <span data-i18n="dgBioTxt">Native species, wildlife corridor, pollinator habitat, 7-layer forest garden</span></li>
+      <li><strong data-i18n="dgInt">Integration:</strong> <span data-i18n="dgIntTxt">Chickens (6 hens), bees (2–4 hives), greywater system, compost cycling</span></li>
+      <li><strong data-i18n="dgLow">Low maintenance:</strong> <span data-i18n="dgLowTxt">No-dig beds, direct sow, perennial vegetables, self-regulating guilds</span></li>
     </ul>
 
     <h3 data-i18n="corePrinciples">Core Principles</h3>
     <ul>
-      <li>Every plant must have mutual soil benefit</li>
-      <li>Vegetables: 30cm organic topsoil, Trees: 50cm</li>
-      <li>Minimal digging, direct sow preferred</li>
-      <li>Practical paths, no crop rotation</li>
-      <li>Key factors: sun, wind, height, width at maturity</li>
+      <li><span data-i18n="cp1">Every plant must have mutual soil benefit</span></li>
+      <li><span data-i18n="cp2">Vegetables: 30cm organic topsoil, Trees: 50cm</span></li>
+      <li><span data-i18n="cp3">Minimal digging, direct sow preferred</span></li>
+      <li><span data-i18n="cp4">Practical paths, no crop rotation</span></li>
+      <li><span data-i18n="cp5">Key factors: sun, wind, height, width at maturity</span></li>
     </ul>
 
     <div class="tool-links">
@@ -482,22 +690,22 @@ function applyI18nDP() {
     <span class="badge badge-complete">✅ Complete</span>
   </div>
   <div class="section-body">
-    <p>The site's <strong>south-facing slope</strong> at ~300m altitude in Tuscany creates a unique set of sector influences. 9 sectors — 6 directional and 3 topographical — define the design constraints and opportunities. The south-facing aspect is the dominant advantage: maximum solar gain, natural shelter from cold north winds, and excellent frost drainage.</p>
+    <p><span data-i18n="s2Intro">The site's <strong>south-facing slope</strong> at ~300m altitude in Tuscany creates a unique set of sector influences. 9 sectors — 6 directional and 3 topographical — define the design constraints and opportunities. The south-facing aspect is the dominant advantage: maximum solar gain, natural shelter from cold north winds, and excellent frost drainage.</span></p>
 
     <table>
-      <tr><th>Sector</th><th>Type</th><th>Direction</th><th>Design Response</th></tr>
-      <tr><td><strong>☀️ Sun</strong></td><td>Directional</td><td>SE→SW arc (summer 120°, winter 60°)</td><td>Passive solar orientation, deciduous trees for summer shade, tall crops north</td></tr>
-      <tr><td><strong>💨 SW Wind</strong></td><td>Directional</td><td>SW (225°)</td><td>Windbreak hedge on SW boundary, fruit trees use wind for pollination</td></tr>
-      <tr><td><strong>❄️ Tramontana</strong></td><td>Directional</td><td>NW (330°)</td><td>South-facing slope provides natural shelter, building as windbreak</td></tr>
-      <tr><td><strong>🔥 Sirocco</strong></td><td>Directional</td><td>SE (135°)</td><td>Pond on SE side creates humidity buffer, firebreak on SE boundary</td></tr>
-      <tr><td><strong>💧 Rain</strong></td><td>Directional + Topo</td><td>SW system, 800mm/yr</td><td>Swales capture runoff, pond for gravity irrigation, roof harvest <span data-water="roofHarvestL">170,000</span>L/yr</td></tr>
-      <tr><td><strong>❄️ Frost</strong></td><td>Topographical</td><td>Cold air drains downhill</td><td>Tender plants upper slope, porous barriers, frost-sensitive trees mid-slope</td></tr>
-      <tr><td><strong>🔥 Fire</strong></td><td>Combination</td><td>SE (Sirocco) + dry summer</td><td>Firebreak, fire-resistant species, water pond as firefighting source</td></tr>
-      <tr><td><strong>🦌 Wildlife</strong></td><td>Topographical</td><td>Forest edge (north) → downhill</td><td>Fencing, tree guards, native hedgerows, wildlife corridor on edges</td></tr>
-      <tr><td><strong>👁️ View</strong></td><td>Combination</td><td>South-facing panorama</td><td>Main windows + terrace south, partial screening for privacy</td></tr>
+      <tr><th data-i18n="dpSector">Sector</th><th data-i18n="dpType">Type</th><th data-i18n="dpDirection">Direction</th><th data-i18n="dpResponse">Design Response</th></tr>
+      <tr><td><strong>☀️ Sun</strong></td><td><span data-i18n="dpDir">Directional</span></td><td><span data-i18n="dpSunDir">SE→SW arc (summer 120°, winter 60°)</span></td><td><span data-i18n="dpSunRes">Passive solar orientation, deciduous trees for summer shade, tall crops north</span></td></tr>
+      <tr><td><strong>💨 SW Wind</strong></td><td><span data-i18n="dpDir">Directional</span></td><td>SW (225°)</td><td><span data-i18n="dpSWRes">Windbreak hedge on SW boundary, fruit trees use wind for pollination</span></td></tr>
+      <tr><td><strong>❄️ Tramontana</strong></td><td><span data-i18n="dpDir">Directional</span></td><td>NW (330°)</td><td><span data-i18n="dpTramRes">South-facing slope provides natural shelter, building as windbreak</span></td></tr>
+      <tr><td><strong>🔥 Sirocco</strong></td><td><span data-i18n="dpDir">Directional</span></td><td>SE (135°)</td><td><span data-i18n="dpSiroccoRes">Pond on SE side creates humidity buffer, firebreak on SE boundary</span></td></tr>
+      <tr><td><strong>💧 Rain</strong></td><td><span data-i18n="dpDirTopo">Directional + Topo</span></td><td>SW system, 800mm/yr</td><td><span data-i18n="dpRainRes">Swales capture runoff, pond for gravity irrigation, roof harvest <span data-water="roofHarvestL">170,000</span>L/yr</span></td></tr>
+      <tr><td><strong>❄️ Frost</strong></td><td><span data-i18n="dpTopo">Topographical</span></td><td><span data-i18n="dpFrostDir">Cold air drains downhill</span></td><td><span data-i18n="dpFrostRes">Tender plants upper slope, porous barriers, frost-sensitive trees mid-slope</span></td></tr>
+      <tr><td><strong>🔥 Fire</strong></td><td><span data-i18n="dpComb">Combination</span></td><td>SE (Sirocco) + dry summer</td><td><span data-i18n="dpFireRes">Firebreak, fire-resistant species, water pond as firefighting source</span></td></tr>
+      <tr><td><strong>🦌 Wildlife</strong></td><td><span data-i18n="dpTopo">Topographical</span></td><td><span data-i18n="dpWlDir">Forest edge (north) → downhill</span></td><td><span data-i18n="dpWlRes">Fencing, tree guards, native hedgerows, wildlife corridor on edges</span></td></tr>
+      <tr><td><strong>👁️ View</strong></td><td><span data-i18n="dpComb">Combination</span></td><td><span data-i18n="dpViewDir">South-facing panorama</span></td><td><span data-i18n="dpViewRes">Main windows + terrace south, partial screening for privacy</span></td></tr>
     </table>
 
-    <p><strong>Key takeaway:</strong> The south-facing slope is the single most important asset — it maximizes solar gain, provides natural frost drainage, and shelters the site from cold NW winds. The SE (Sirocco) wind is the primary risk vector, driving both fire danger and desiccation.</p>
+    <p><span data-i18n="s2Key"><strong>Key takeaway:</strong> The south-facing slope is the single most important asset — it maximizes solar gain, provides natural frost drainage, and shelters the site from cold NW winds. The SE (Sirocco) wind is the primary risk vector, driving both fire danger and desiccation.</span></p>
 
     <div class="tool-links">
       <a class="tool-link" href="./Tuscan Sector Analysis.html" target="_blank">🔗 Open Tool: Sector Analysis</a>
@@ -514,42 +722,42 @@ function applyI18nDP() {
     <span class="badge badge-complete">✅ Complete</span>
   </div>
   <div class="section-body">
-    <p>Zones are arranged from the building (Zone 0) outward, following the south-facing slope. The warmest, most accessible areas closest to the house host the most intensive production. Outer zones transition to managed woodland, firebreak, and wild corridors.</p>
+    <p><span data-i18n="s3Intro">Zones are arranged from the building (Zone 0) outward, following the south-facing slope. The warmest, most accessible areas closest to the house host the most intensive production. Outer zones transition to managed woodland, firebreak, and wild corridors.</span></p>
 
     <div class="mp-live" id="mp-live">
-      <h4>🗺️ Your Master Plan — actual zone assignments</h4>
-      <div id="mp-live-body" class="mp-live-body"><em>Loading…</em></div>
+      <h4 data-i18n="s3LiveH4">🗺️ Your Master Plan — actual zone assignments</h4>
+      <div id="mp-live-body" class="mp-live-body"><em data-i18n="loading">Loading…</em></div>
     </div>
 
     <div class="zone-grid">
       <div class="zone-card z0">
-        <div class="zname">🏠 Zone 0 — House (250m²)</div>
-        <div class="zdetail">South-facing stone building. Roof catchment (<span data-water="roofArea">250</span>m²) → <span data-water="tanks">3</span>× <span data-water="tankSize">5,000</span>L tanks. Greywater to Zone 1. Thermal mass. South wall for fig trees + potted citrus.</div>
+        <div class="zname" data-i18n="z0Name">🏠 Zone 0 — House (250m²)</div>
+        <div class="zdetail"><span data-i18n="z0Detail">South-facing stone building. Roof catchment (<span data-water="roofArea">250</span>m²) → <span data-water="tanks">3</span>× <span data-water="tankSize">5,000</span>L tanks. Greywater to Zone 1. Thermal mass. South wall for fig trees + potted citrus.</span></div>
       </div>
       <div class="zone-card z1">
-        <div class="zname">🥬 Zone 1 — Kitchen Garden (~500m²)</div>
-        <div class="zdetail">Immediately south of building. 12 no-dig raised beds (T,L,M,L,T,L,M,L,T,L,M,L layout). 49+ plants. Herb spiral, cold frames. Drip irrigation from rainwater tanks.</div>
+        <div class="zname" data-i18n="z1Name">🥬 Zone 1 — Kitchen Garden (~500m²)</div>
+        <div class="zdetail"><span data-i18n="z1Detail">Immediately south of building. 12 no-dig raised beds (T,L,M,L,T,L,M,L,T,L,M,L layout). 49+ plants. Herb spiral, cold frames. Drip irrigation from rainwater tanks.</span></div>
       </div>
       <div class="zone-card z2">
-        <div class="zname">🍎 Zone 2 — Orchard & Guilds (~2,000m²)</div>
-        <div class="zdetail"><span data-count="treeshrub">116</span> tree/shrub species positioned by frost/fire/wind/sun/water. 13 tree guilds (Fig, Persimmon, Grape, Peach, Plum, Apple, Pear, Hazelnut, Walnut, Lemon, Carob, Almond, Pistachio). 19 Zone 2b companions. 7-layer forest garden, 15 species.</div>
+        <div class="zname" data-i18n="z2Name">🍎 Zone 2 — Orchard & Guilds (~2,000m²)</div>
+        <div class="zdetail"><span data-i18n="z2Detail"><span data-count="treeshrub">116</span> tree/shrub species positioned by frost/fire/wind/sun/water. 13 tree guilds (Fig, Persimmon, Grape, Peach, Plum, Apple, Pear, Hazelnut, Walnut, Lemon, Carob, Almond, Pistachio). 19 Zone 2b companions. 7-layer forest garden, 15 species.</span></div>
       </div>
       <div class="zone-card z3">
-        <div class="zname">🫒 Zone 3 — Olive Grove & Field Crops (~4,000m²)</div>
-        <div class="zdetail">25 olive trees (Frantoio, Leccino, Moraiolo, Pendolino). Cover crops: vetch, clover, fava beans. Chestnuts on cooler north edge. Grain/legume rotation.</div>
+        <div class="zname" data-i18n="z3Name">🫒 Zone 3 — Olive Grove & Field Crops (~4,000m²)</div>
+        <div class="zdetail"><span data-i18n="z3Detail">25 olive trees (Frantoio, Leccino, Moraiolo, Pendolino). Cover crops: vetch, clover, fava beans. Chestnuts on cooler north edge. Grain/legume rotation.</span></div>
       </div>
       <div class="zone-card z4">
-        <div class="zname">🌲 Zone 4 — Managed Woodland (~2,500m²)</div>
-        <div class="zdetail">North/NW windbreak: Eleagnus, Italian alder, black locust, broom. Forage trees: oak, carob, mulberry. Firebreak transition. Boar-proof fence.</div>
+        <div class="zname" data-i18n="z4Name">🌲 Zone 4 — Managed Woodland (~2,500m²)</div>
+        <div class="zdetail"><span data-i18n="z4Detail">North/NW windbreak: Eleagnus, Italian alder, black locust, broom. Forage trees: oak, carob, mulberry. Firebreak transition. Boar-proof fence.</span></div>
       </div>
       <div class="zone-card z5">
-        <div class="zname">🌿 Zone 5 — Wild Corridor (~1,000m²)</div>
-        <div class="zdetail">Native Mediterranean maquis: myrtle, arbutus, heather, broom. No intervention. Wildlife corridor. Biodiversity reservoir for beneficial insects.</div>
+        <div class="zname" data-i18n="z5Name">🌿 Zone 5 — Wild Corridor (~1,000m²)</div>
+        <div class="zdetail"><span data-i18n="z5Detail">Native Mediterranean maquis: myrtle, arbutus, heather, broom. No intervention. Wildlife corridor. Biodiversity reservoir for beneficial insects.</span></div>
       </div>
     </div>
 
-    <p><strong>Chickens:</strong> 6 hens (Livorno/dual-purpose) rotated through orchard post-harvest. Stationary coop with electric netting. ~5–6 eggs/day in season.</p>
-    <p><strong>Bees:</strong> 2–4 hives in south-facing, sheltered spot with morning sun. Near orchard for pollination. 20–60 kg honey/year.</p>
+    <p><span data-i18n="zChickens"><strong>Chickens:</strong> 6 hens (Livorno/dual-purpose) rotated through orchard post-harvest. Stationary coop with electric netting. ~5–6 eggs/day in season.</span></p>
+    <p><span data-i18n="zBees"><strong>Bees:</strong> 2–4 hives in south-facing, sheltered spot with morning sun. Near orchard for pollination. 20–60 kg honey/year.</span></p>
 
     <div class="tool-links">
       <a class="tool-link" href="./SOILPEPPER Site Layout.html" target="_blank">🔗 Open Tool: Site Layout</a>
@@ -569,42 +777,42 @@ function applyI18nDP() {
     <span class="badge badge-complete">✅ Complete</span>
   </div>
   <div class="section-body">
-    <p>Four water sources provide <strong>excellent water security</strong> for the 1ha site. The system is designed around gravity-fed irrigation, with the irrigation pond at the highest point of the property. Annual rainfall on the 1ha is <span data-water="rain">8,000</span> m³ — even a fraction captured by swales makes the system robust.</p>
+    <p><span data-i18n="s4Intro">Four water sources provide <strong>excellent water security</strong> for the 1ha site. The system is designed around gravity-fed irrigation, with the irrigation pond at the highest point of the property. Annual rainfall on the 1ha is <span data-water="rain">8,000</span> m³ — even a fraction captured by swales makes the system robust.</span></p>
 
     <div class="water-grid">
       <div class="water-card">
-        <div class="wtitle">🌧️ Rainwater Harvesting</div>
-        <div class="wdetail"><span data-water="roofArea">250</span>m² roof × <span data-water="rainfall">800</span>mm × <span data-water="eff">0.85</span> = ~<span data-water="roofHarvestL">170,000</span>L/yr. <span data-water="tanks">3</span>× <span data-water="tankSize">5,000</span>L tanks (<span data-water="tankTotalM3">15</span>m³ total). Gravity-fed to Zone 1. First-flush diverter.</div>
+        <div class="wtitle" data-i18n="wRainTitle">🌧️ Rainwater Harvesting</div>
+        <div class="wdetail"><span data-i18n="wRainDetail"><span data-water="roofArea">250</span>m² roof × <span data-water="rainfall">800</span>mm × <span data-water="eff">0.85</span> = ~<span data-water="roofHarvestL">170,000</span>L/yr. <span data-water="tanks">3</span>× <span data-water="tankSize">5,000</span>L tanks (<span data-water="tankTotalM3">15</span>m³ total). Gravity-fed to Zone 1. First-flush diverter.</span></div>
       </div>
       <div class="water-card">
-        <div class="wtitle">🏞️ Irrigation Pond</div>
-        <div class="wdetail"><span data-water="pond">200</span>m³ at highest point. Gravity head ~<span data-water="head">10</span>m → <span data-water="pressure">0.98</span> bar pressure. Sealed with bentonite/liner. Doubles as firefighting reserve.</div>
+        <div class="wtitle" data-i18n="wPondTitle">🏞️ Irrigation Pond</div>
+        <div class="wdetail"><span data-i18n="wPondDetail"><span data-water="pond">200</span>m³ at highest point. Gravity head ~<span data-water="head">10</span>m → <span data-water="pressure">0.98</span> bar pressure. Sealed with bentonite/liner. Doubles as firefighting reserve.</span></div>
       </div>
       <div class="water-card">
-        <div class="wtitle">🏊 Natural Pool</div>
-        <div class="wdetail">15×5×1.5m = <span data-water="pool">112</span>m³. Swimming + thermal mass + irrigation reserve. With aquatic plants for natural filtration.</div>
+        <div class="wtitle" data-i18n="wPoolTitle">🏊 Natural Pool</div>
+        <div class="wdetail"><span data-i18n="wPoolDetail">15×5×1.5m = <span data-water="pool">112</span>m³. Swimming + thermal mass + irrigation reserve. With aquatic plants for natural filtration.</span></div>
       </div>
       <div class="water-card">
-        <div class="wtitle">⛰️ Well</div>
-        <div class="wdetail">Existing, confirmed. Primary household water. Backup irrigation during drought years. Variable output.</div>
+        <div class="wtitle" data-i18n="wWellTitle">⛰️ Well</div>
+        <div class="wdetail"><span data-i18n="wWellDetail">Existing, confirmed. Primary household water. Backup irrigation during drought years. Variable output.</span></div>
       </div>
     </div>
 
-    <h4>Swale System</h4>
-    <p><span data-water="swales">4</span> contour swales (~50cm deep, 1m wide) spaced at ~<span data-water="swaleSpacing">2.5</span>m vertical intervals across the slope. Each swale has a berm on the downhill side where trees are planted. Swales intercept surface runoff, spread it across the slope, and recharge groundwater. Total water harvesting: hundreds of thousands of liters per year.</p>
+    <h4 data-i18n="wSwaleH4">Swale System</h4>
+    <p><span data-i18n="wSwaleP"><span data-water="swales">4</span> contour swales (~50cm deep, 1m wide) spaced at ~<span data-water="swaleSpacing">2.5</span>m vertical intervals across the slope. Each swale has a berm on the downhill side where trees are planted. Swales intercept surface runoff, spread it across the slope, and recharge groundwater. Total water harvesting: hundreds of thousands of liters per year.</span></p>
 
-    <h4>Gravity Drip Irrigation</h4>
-    <p>Orchard and vegetable garden use on-line dripper lines with pressure compensation. Each fruit tree: 2–4 drippers at 4–8 L/h. Vegetable beds: 16mm drip tape with 30cm emitter spacing. Automated with timer (battery/solar). Summer irrigation is essential — only ~25mm rain in July.</p>
+    <h4 data-i18n="wDripH4">Gravity Drip Irrigation</h4>
+    <p><span data-i18n="wDripP">Orchard and vegetable garden use on-line dripper lines with pressure compensation. Each fruit tree: 2–4 drippers at 4–8 L/h. Vegetable beds: 16mm drip tape with 30cm emitter spacing. Automated with timer (battery/solar). Summer irrigation is essential — only ~25mm rain in July.</span></p>
 
-    <h4>Annual Water Budget</h4>
+    <h4 data-i18n="wBudgetH4">Annual Water Budget</h4>
     <table>
-      <tr><th>Use</th><th>Annual Need</th><th>Primary Source</th></tr>
-      <tr><td>Vegetable garden (500m²)</td><td>150,000–200,000 L</td><td>Rain + pond</td></tr>
-      <tr><td>Orchard (64 trees)</td><td>80,000–120,000 L</td><td>Pond + rain</td></tr>
-      <tr><td>Household (2 people)</td><td>80,000–100,000 L</td><td>Well</td></tr>
-      <tr><td>Chickens (6 hens)</td><td>~3,000 L</td><td>Well</td></tr>
+      <tr><th data-i18n="wUse">Use</th><th data-i18n="wNeed">Annual Need</th><th data-i18n="wSource">Primary Source</th></tr>
+      <tr><td><span data-i18n="wVeg">Vegetable garden (500m²)</span></td><td>150,000–200,000 L</td><td>Rain + pond</td></tr>
+      <tr><td><span data-i18n="wOrchard">Orchard (64 trees)</span></td><td>80,000–120,000 L</td><td>Pond + rain</td></tr>
+      <tr><td><span data-i18n="wHouse">Household (2 people)</span></td><td>80,000–100,000 L</td><td>Well</td></tr>
+      <tr><td><span data-i18n="wChickens">Chickens (6 hens)</span></td><td>~3,000 L</td><td>Well</td></tr>
       <tr><td><strong>Total</strong></td><td><strong>~313,000–423,000 L</strong></td><td></td></tr>
-      <tr><td>Roof harvest</td><td>~<span data-water="roofHarvestL">170,000</span> L</td><td>40–50% of total</td></tr>
+      <tr><td><span data-i18n="wRoof">Roof harvest</span></td><td>~<span data-water="roofHarvestL">170,000</span> L</td><td>40–50% of total</td></tr>
     </table>
 
     <div class="tool-links">
@@ -622,23 +830,23 @@ function applyI18nDP() {
     <span class="badge badge-complete">✅ Complete</span>
   </div>
   <div class="section-body">
-    <h4>Access</h4>
+    <h4 data-i18n="accH4">Access</h4>
     <ul>
-      <li><strong>Vehicle access:</strong> From the north (existing road on woodland edge). Access road wide enough for fire truck (3.5m+).</li>
-      <li><strong>Parking:</strong> North side of the building, screened from main view.</li>
-      <li><strong>Pedestrian paths:</strong> Practical paths connecting house → garden → orchard → pond. No formal paths in wild zones.</li>
-      <li><strong>Slope access:</strong> Gentle gradient paths follow contours where possible, stairs on steeper sections.</li>
+      <li><span data-i18n="accVehicle"><strong>Vehicle access:</strong> From the north (existing road on woodland edge). Access road wide enough for fire truck (3.5m+).</span></li>
+      <li><span data-i18n="accParking"><strong>Parking:</strong> North side of the building, screened from main view.</span></li>
+      <li><span data-i18n="accPaths"><strong>Pedestrian paths:</strong> Practical paths connecting house → garden → orchard → pond. No formal paths in wild zones.</span></li>
+      <li><span data-i18n="accSlope"><strong>Slope access:</strong> Gentle gradient paths follow contours where possible, stairs on steeper sections.</span></li>
     </ul>
 
-    <h4>Infrastructure</h4>
+    <h4 data-i18n="infraH4">Infrastructure</h4>
     <ul>
-      <li><strong>🧰 Toolshed:</strong> Near the Zone 1–2 boundary, easily accessible from house and garden.</li>
-      <li><strong>🐔 Chicken coop:</strong> Stationary secure coop at Zone 1–2 boundary, with movable electric netting for rotation.</li>
-      <li><strong>🐝 Beehives:</strong> 2–4 hives in south-facing, wind-sheltered spot with morning sun.</li>
-      <li><strong>🔄 Compost system:</strong> 3-bin system (1m³ each) on north side of Zone 1 (shaded, near kitchen). Second compost area at orchard edge for prunings.</li>
-      <li><strong>🧱 Cold frames:</strong> On south wall of building for season extension.</li>
-      <li><strong>🌿 Herb spiral:</strong> Adjacent to kitchen door — rosemary, thyme, sage, oregano, lavender, mint, parsley.</li>
-      <li><strong>🚧 Fencing:</strong> Boar-proof fence on woodland boundary. Deer protection for young trees (tree guards, first 3 years).</li>
+      <li><span data-i18n="infraShed"><strong>🧰 Toolshed:</strong> Near the Zone 1–2 boundary, easily accessible from house and garden.</span></li>
+      <li><span data-i18n="infraCoop"><strong>🐔 Chicken coop:</strong> Stationary secure coop at Zone 1–2 boundary, with movable electric netting for rotation.</span></li>
+      <li><span data-i18n="infraBees"><strong>🐝 Beehives:</strong> 2–4 hives in south-facing, wind-sheltered spot with morning sun.</span></li>
+      <li><span data-i18n="infraCompost"><strong>🔄 Compost system:</strong> 3-bin system (1m³ each) on north side of Zone 1 (shaded, near kitchen). Second compost area at orchard edge for prunings.</span></li>
+      <li><span data-i18n="infraFrames"><strong>🧱 Cold frames:</strong> On south wall of building for season extension.</span></li>
+      <li><span data-i18n="infraHerb"><strong>🌿 Herb spiral:</strong> Adjacent to kitchen door — rosemary, thyme, sage, oregano, lavender, mint, parsley.</span></li>
+      <li><span data-i18n="infraFence"><strong>🚧 Fencing:</strong> Boar-proof fence on woodland boundary. Deer protection for young trees (tree guards, first 3 years).</span></li>
     </ul>
 
     <div class="tool-links">
@@ -656,47 +864,47 @@ function applyI18nDP() {
     <span class="badge badge-complete">✅ Complete</span>
   </div>
   <div class="section-body">
-    <p>The species database contains <strong><span data-count="species">256</span> species</strong> with 10 filter dimensions (soil type, category, sun, water, function, season, perennial, N-fixer, fire-resistant, native). 31 species were formally assessed for suitability. Key selections by function:</p>
+    <p><span data-i18n="s6Intro">The species database contains <strong><span data-count="species">256</span> species</strong> with 10 filter dimensions (soil type, category, sun, water, function, season, perennial, N-fixer, fire-resistant, native). 31 species were formally assessed for suitability. Key selections by function:</span></p>
 
     <div class="species-grid">
       <div class="species-card">
-        <div class="scat">🍎 Fruit Trees</div>
+        <div class="scat" data-i18n="scFruit">🍎 Fruit Trees</div>
         <div class="slist">Apple (multiple vars), Pear, Plum, Peach, Apricot, Fig, Persimmon, Pomegranate, Cherry, Lemon, Carob, Almond, Pistachio, Mulberry</div>
       </div>
       <div class="species-card">
-        <div class="scat">🫒 Olives & Nuts</div>
+        <div class="scat" data-i18n="scOlives">🫒 Olives & Nuts</div>
         <div class="slist">Frantoio, Leccino, Moraiolo, Pendolino (olives), Hazelnut, Walnut, Chestnut, Almond</div>
       </div>
       <div class="species-card">
-        <div class="scat">🫐 Berries & Vines</div>
+        <div class="scat" data-i18n="scBerries">🫐 Berries & Vines</div>
         <div class="slist">Grape, Raspberry, Blackberry, Currant, Jostaberry, Aronia, Elderberry, Goji Berry, Sea Buckthorn</div>
       </div>
       <div class="species-card">
-        <div class="scat">🥬 Vegetable Garden</div>
+        <div class="scat" data-i18n="scVeg">🥬 Vegetable Garden</div>
         <div class="slist">Tomato, Pepper, Eggplant, Zucchini, Cavolo Nero, Fava Bean, Garlic, Onion, Carrot, Beetroot, Lettuce, Chard, Kale, Beans, Peas, Radish, Parsnip, Broccoli, Cauliflower, Artichoke, Asparagus</div>
       </div>
       <div class="species-card">
-        <div class="scat">🌿 N-Fixers</div>
+        <div class="scat" data-i18n="scNfix">🌿 N-Fixers</div>
         <div class="slist">Italian Alder, Black Locust, Eleagnus, Broom, Sea Buckthorn, White Clover, Vetch, Fava Bean, Lupin</div>
       </div>
       <div class="species-card">
-        <div class="scat">🌸 Pollinators</div>
+        <div class="scat" data-i18n="scPoll">🌸 Pollinators</div>
         <div class="slist">Lavender, Rosemary, Sage, Thyme, Oregano, Borage, Marjoram, Fennel, Coriander, Buckwheat, Native wildflowers</div>
       </div>
       <div class="species-card">
-        <div class="scat">🔥 Fire-Resistant</div>
+        <div class="scat" data-i18n="scFire">🔥 Fire-Resistant</div>
         <div class="slist">Olive, Fig, Mulberry, Citrus, Aloe, Lavender, Rosemary, Sage, Iceplant, Pomegranate, Strawberry Tree</div>
       </div>
       <div class="species-card">
-        <div class="scat">🌲 Windbreak & Forage</div>
+        <div class="scat" data-i18n="scWind">🌲 Windbreak & Forage</div>
         <div class="slist">Eleagnus × ebbingei, Italian Alder, Black Locust, Spanish Broom, Oak, Carob, Mulberry</div>
       </div>
       <div class="species-card">
-        <div class="scat">🌿 Native Maquis</div>
+        <div class="scat" data-i18n="scMaquis">🌿 Native Maquis</div>
         <div class="slist">Myrtle, Arbutus (Corbezzolo), Heather, Broom, Mediterranean shrubs</div>
       </div>
       <div class="species-card">
-        <div class="scat">💧 Water-Loving</div>
+        <div class="scat" data-i18n="scWater">💧 Water-Loving</div>
         <div class="slist">Alder, Willow, Poplar, Elderberry, Mint, Watercress, Iris</div>
       </div>
     </div>
@@ -719,30 +927,30 @@ function applyI18nDP() {
     <span class="badge badge-complete">✅ Complete</span>
   </div>
   <div class="section-body">
-    <p><strong>13 tree guilds</strong> form the backbone of the orchard, each with a 3-ring structure: inner (support/companion), mid (guild-specific), and outer (canopy/edge). The guild system creates self-regulating, low-maintenance ecosystems around each tree.</p>
+    <p><span data-i18n="s7Intro"><strong>13 tree guilds</strong> form the backbone of the orchard, each with a 3-ring structure: inner (support/companion), mid (guild-specific), and outer (canopy/edge). The guild system creates self-regulating, low-maintenance ecosystems around each tree.</span></p>
 
-    <h4>3-Ring Guild Structure</h4>
+    <h4 data-i18n="s7RingH4">3-Ring Guild Structure</h4>
     <div class="guild-ring">
       <div class="guild-ring-card">
         <div class="ring-icon">🟤</div>
-        <div class="ring-title">Inner Ring (0.5–1m)</div>
+        <div class="ring-title" data-i18n="ringInner">Inner Ring (0.5–1m)</div>
         <div class="ring-examples">Comfrey (mineral accumulator), Chives, Garlic (pest repellent), Daffodils (rodent repellent), Mulch</div>
       </div>
       <div class="guild-ring-card">
         <div class="ring-icon">🟢</div>
-        <div class="ring-title">Mid Ring (1–2m)</div>
+        <div class="ring-title" data-i18n="ringMid">Mid Ring (1–2m)</div>
         <div class="ring-examples">White Clover (N-fixer), Yarrow (dynamic accumulator), Oregano (ground cover), Strawberries</div>
       </div>
       <div class="guild-ring-card">
         <div class="ring-icon">🔵</div>
-        <div class="ring-title">Outer Ring (2–4m+)</div>
+        <div class="ring-title" data-i18n="ringOuter">Outer Ring (2–4m+)</div>
         <div class="ring-examples">Berry hedgerows, N-fixing shrubs (Eleagnus, Sea Buckthorn), Pollinator strips, Windbreak species</div>
       </div>
     </div>
 
-    <h4>Guild Inventory</h4>
+    <h4 data-i18n="s7InvH4">Guild Inventory</h4>
     <table>
-      <tr><th>Tree Guild</th><th>Inner Companions</th><th>Mid Companions</th><th>Notes</th></tr>
+      <tr><th data-i18n="gTree">Tree Guild</th><th data-i18n="gInner">Inner Companions</th><th data-i18n="gMid">Mid Companions</th><th data-i18n="gNotes">Notes</th></tr>
       <tr><td>Fig</td><td>Comfrey, Garlic, Rosemary</td><td>Clover, Oregano, Lavender</td><td>South wall, warmest spot</td></tr>
       <tr><td>Persimmon</td><td>Comfrey, Chives, Daffodil</td><td>Clover, Yarrow, Strawberry</td><td>High frost tolerance</td></tr>
       <tr><td>Grape</td><td>Garlic, Chives, Thyme</td><td>Clover, Borage, Marjoram</td><td>Arbour on south side</td></tr>
@@ -758,8 +966,8 @@ function applyI18nDP() {
       <tr><td>Pistachio</td><td>Comfrey, Chives, Oregano</td><td>Clover, Thyme, Sage</td><td>Drought-tolerant, warm slope</td></tr>
     </table>
 
-    <h4>Zone 2b Forest Garden</h4>
-    <p>15 species across 7 layers (canopy, sub-canopy, shrub, herb, ground cover, climber, root) with 4 swales on contour. SE firebreak creates a transition zone. The 7-layer design maximizes vertical space and creates diverse microclimates.</p>
+    <h4 data-i18n="s7FgH4">Zone 2b Forest Garden</h4>
+    <p><span data-i18n="s7FgP">15 species across 7 layers (canopy, sub-canopy, shrub, herb, ground cover, climber, root) with 4 swales on contour. SE firebreak creates a transition zone. The 7-layer design maximizes vertical space and creates diverse microclimates.</span></p>
 
     <div class="tool-links">
       <a class="tool-link" href="./Tuscan Guild Diagrams.html" target="_blank">🔗 Open Tool: Guild Diagrams</a>
@@ -777,38 +985,38 @@ function applyI18nDP() {
     <span class="badge badge-complete">✅ Complete</span>
   </div>
   <div class="section-body">
-    <p><strong>Wildfire risk is REAL in Tuscany.</strong> The combination of hot, dry summers (Jul–Sep peak), dry Mediterranean vegetation, and the Sirocco wind from the SE creates a significant fire sector. The south-facing slope also means vegetation is drier and more combustible.</p>
+    <p><span data-i18n="s8Intro"><strong>Wildfire risk is REAL in Tuscany.</strong> The combination of hot, dry summers (Jul–Sep peak), dry Mediterranean vegetation, and the Sirocco wind from the SE creates a significant fire sector. The south-facing slope also means vegetation is drier and more combustible.</span></p>
 
     <div class="fs-grid">
       <div class="fs-card">
         <div class="fs-icon">🛡️</div>
-        <div class="fs-title">SE Firebreak Zone</div>
-        <div class="fs-desc">0–10m cleared strip on the SE boundary. Deciduous trees (lower flammability) + mown green strip. Irrigated green buffer acts as firebreak.</div>
+        <div class="fs-title" data-i18n="fsSe">SE Firebreak Zone</div>
+        <div class="fs-desc"><span data-i18n="fsSeDesc">0–10m cleared strip on the SE boundary. Deciduous trees (lower flammability) + mown green strip. Irrigated green buffer acts as firebreak.</span></div>
       </div>
       <div class="fs-card">
         <div class="fs-icon">🌿</div>
-        <div class="fs-title">Fire-Resistant Species</div>
-        <div class="fs-desc">Near structures: Olive, Fig, Mulberry, Citrus, Aloe, Lavender, Rosemary, Sage, Iceplant, Pomegranate, Strawberry Tree. Avoid pines, eucalyptus, junipers, cypress.</div>
+        <div class="fs-title" data-i18n="fsSpecies">Fire-Resistant Species</div>
+        <div class="fs-desc"><span data-i18n="fsSpeciesDesc">Near structures: Olive, Fig, Mulberry, Citrus, Aloe, Lavender, Rosemary, Sage, Iceplant, Pomegranate, Strawberry Tree. Avoid pines, eucalyptus, junipers, cypress.</span></div>
       </div>
       <div class="fs-card">
         <div class="fs-icon">💧</div>
-        <div class="fs-title">Water for Firefighting</div>
-        <div class="fs-desc">Irrigation pond (200m³) on SE side serves as water source for firefighting. Natural pool (112m³) as secondary reserve. Access road wide enough for fire truck (3.5m+).</div>
+        <div class="fs-title" data-i18n="fsWater">Water for Firefighting</div>
+        <div class="fs-desc"><span data-i18n="fsWaterDesc">Irrigation pond (200m³) on SE side serves as water source for firefighting. Natural pool (112m³) as secondary reserve. Access road wide enough for fire truck (3.5m+).</span></div>
       </div>
       <div class="fs-card">
         <div class="fs-icon">🌊</div>
-        <div class="fs-title">Humidity Buffer</div>
-        <div class="fs-desc">Pond and swales on the SE side create humidity buffer against Sirocco drying. Well-watered Zone 1 (vegetable garden) on SE side of building acts as green firebreak.</div>
+        <div class="fs-title" data-i18n="fsHum">Humidity Buffer</div>
+        <div class="fs-desc"><span data-i18n="fsHumDesc">Pond and swales on the SE side create humidity buffer against Sirocco drying. Well-watered Zone 1 (vegetable garden) on SE side of building acts as green firebreak.</span></div>
       </div>
       <div class="fs-card">
         <div class="fs-icon">🔥</div>
-        <div class="fs-title">Fuel Load Management</div>
-        <div class="fs-desc">Zone 4 managed woodland — keep fuel load low. Compost pile shaded and moist in summer. No flammable debris near structures. Regular pruning and clearance.</div>
+        <div class="fs-title" data-i18n="fsFuel">Fuel Load Management</div>
+        <div class="fs-desc"><span data-i18n="fsFuelDesc">Zone 4 managed woodland — keep fuel load low. Compost pile shaded and moist in summer. No flammable debris near structures. Regular pruning and clearance.</span></div>
       </div>
       <div class="fs-card">
         <div class="fs-icon">🏠</div>
-        <div class="fs-title">Building Protection</div>
-        <div class="fs-desc">Stone construction (non-combustible). Defensible space of 10m around building. Ember-resistant vents. Fire-resistant roof materials.</div>
+        <div class="fs-title" data-i18n="fsBuild">Building Protection</div>
+        <div class="fs-desc"><span data-i18n="fsBuildDesc">Stone construction (non-combustible). Defensible space of 10m around building. Ember-resistant vents. Fire-resistant roof materials.</span></div>
       </div>
     </div>
 
@@ -828,53 +1036,53 @@ function applyI18nDP() {
     <span class="badge badge-complete">✅ Complete</span>
   </div>
   <div class="section-body">
-    <p>Three-year phased implementation prioritising infrastructure first (water, access, fire safety), then production systems (orchard, guilds), then maturation and fine-tuning.</p>
+    <p><span data-i18n="s9Intro">Three-year phased implementation prioritising infrastructure first (water, access, fire safety), then production systems (orchard, guilds), then maturation and fine-tuning.</span></p>
 
     <div class="timeline">
       <div class="phase y1">
         <div class="dot"></div>
-        <div class="phead">Year 1 — Infrastructure & Foundation</div>
+        <div class="phead" data-i18n="y1">Year 1 — Infrastructure & Foundation</div>
         <div class="pbody">
           <ul>
-            <li><strong>💧 Water:</strong> Install rainwater tanks (3× 5,000L) with first-flush diverters. Dig irrigation pond (<span data-water="pond">200</span>m³). Install well pump if needed.</li>
-            <li><strong>🌊 Swales:</strong> Dig 4 contour swales with berms (~50cm deep, 1m wide).</li>
-            <li><strong>🥬 Vegetable garden:</strong> Establish 12 no-dig raised beds (30cm organic topsoil). Install drip irrigation. Plant cool-season crops.</li>
-            <li><strong>🔥 Firebreak:</strong> Clear SE firebreak zone. Plant fire-resistant hedge.</li>
-            <li><strong>🛤️ Access:</strong> Grade access road. Build pedestrian paths. Install parking area.</li>
-            <li><strong>🏠 Infrastructure:</strong> Toolshed, chicken coop, 3-bin compost system. Greywater system from house to Zone 1.</li>
-            <li><strong>🌱 Soil prep:</strong> Green manure cover crops on orchard areas. Sheet mulching on future beds.</li>
+            <li><span data-i18n="y1li1"><strong>💧 Water:</strong> Install rainwater tanks (3× 5,000L) with first-flush diverters. Dig irrigation pond (<span data-water="pond">200</span>m³). Install well pump if needed.</span></li>
+            <li><span data-i18n="y1li2"><strong>🌊 Swales:</strong> Dig 4 contour swales with berms (~50cm deep, 1m wide).</span></li>
+            <li><span data-i18n="y1li3"><strong>🥬 Vegetable garden:</strong> Establish 12 no-dig raised beds (30cm organic topsoil). Install drip irrigation. Plant cool-season crops.</span></li>
+            <li><span data-i18n="y1li4"><strong>🔥 Firebreak:</strong> Clear SE firebreak zone. Plant fire-resistant hedge.</span></li>
+            <li><span data-i18n="y1li5"><strong>🛤️ Access:</strong> Grade access road. Build pedestrian paths. Install parking area.</span></li>
+            <li><span data-i18n="y1li6"><strong>🏠 Infrastructure:</strong> Toolshed, chicken coop, 3-bin compost system. Greywater system from house to Zone 1.</span></li>
+            <li><span data-i18n="y1li7"><strong>🌱 Soil prep:</strong> Green manure cover crops on orchard areas. Sheet mulching on future beds.</span></li>
           </ul>
         </div>
       </div>
       <div class="phase y2">
         <div class="dot"></div>
-        <div class="phead">Year 2 — Orchard, Guilds & Forest Garden</div>
+        <div class="phead" data-i18n="y2">Year 2 — Orchard, Guilds & Forest Garden</div>
         <div class="pbody">
           <ul>
-            <li><strong>🍎 Orchard:</strong> Plant 116 tree/shrub species in their assigned positions (frost/fire/wind/sun optimised). Install tree guards.</li>
-            <li><strong>🌳 Guilds:</strong> Establish 13 tree guilds with inner companions (comfrey, chives, garlic, daffodils).</li>
-            <li><strong>🌿 Zone 2b:</strong> Plant 15-species forest garden (7 layers) with 4 swales. SE firebreak planting.</li>
-            <li><strong>🫐 Berry hedgerows:</strong> Plant perimeter hedgerows (raspberry, currant, blackberry, aronia, elderberry).</li>
-            <li><strong>🐝 Bees:</strong> Install 2–4 hives in south-facing, sheltered spot.</li>
-            <li><strong>🫒 Olive grove:</strong> Plant 25 olive trees (Frantoio, Leccino, Moraiolo, Pendolino). Cover crop between rows.</li>
-            <li><strong>🏊 Natural pool:</strong> Excavate and line 15×5×1.5m natural pool with aquatic plants.</li>
-            <li><strong>🌲 Zone 4:</strong> Plant windbreak (Eleagnus, Italian alder, black locust, broom). Forage trees (oak, carob, mulberry).</li>
+            <li><span data-i18n="y2li1"><strong>🍎 Orchard:</strong> Plant 116 tree/shrub species in their assigned positions (frost/fire/wind/sun optimised). Install tree guards.</span></li>
+            <li><span data-i18n="y2li2"><strong>🌳 Guilds:</strong> Establish 13 tree guilds with inner companions (comfrey, chives, garlic, daffodils).</span></li>
+            <li><span data-i18n="y2li3"><strong>🌿 Zone 2b:</strong> Plant 15-species forest garden (7 layers) with 4 swales. SE firebreak planting.</span></li>
+            <li><span data-i18n="y2li4"><strong>🫐 Berry hedgerows:</strong> Plant perimeter hedgerows (raspberry, currant, blackberry, aronia, elderberry).</span></li>
+            <li><span data-i18n="y2li5"><strong>🐝 Bees:</strong> Install 2–4 hives in south-facing, sheltered spot.</span></li>
+            <li><span data-i18n="y2li6"><strong>🫒 Olive grove:</strong> Plant 25 olive trees (Frantoio, Leccino, Moraiolo, Pendolino). Cover crop between rows.</span></li>
+            <li><span data-i18n="y2li7"><strong>🏊 Natural pool:</strong> Excavate and line 15×5×1.5m natural pool with aquatic plants.</span></li>
+            <li><span data-i18n="y2li8"><strong>🌲 Zone 4:</strong> Plant windbreak (Eleagnus, Italian alder, black locust, broom). Forage trees (oak, carob, mulberry).</span></li>
           </ul>
         </div>
       </div>
       <div class="phase y3">
         <div class="dot"></div>
-        <div class="phead">Year 3+ — Maturation & Fine-Tuning</div>
+        <div class="phead" data-i18n="y3">Year 3+ — Maturation & Fine-Tuning</div>
         <div class="pbody">
           <ul>
-            <li><strong>🌿 Maturation:</strong> Guilds mature — mid-ring companions (clover, yarrow, oregano, strawberries). Outer ring fills in.</li>
-            <li><strong>🔄 Soil building:</strong> Sheet mulching, chop-and-drop from comfrey, green manure rotations.</li>
-            <li><strong>🐔 Chicken rotation:</strong> Full integration — orchard post-harvest, winter garden clearing, pest control.</li>
-            <li><strong>🌱 Propagation:</strong> Expand from own seed/divisions. Plant cuttings from guild companions.</li>
-            <li><strong>📊 Monitoring:</strong> Track species success, adjust siting, observe microclimate patterns.</li>
-            <li><strong>🌿 Zone 5:</strong> Establish wild corridor with native maquis species (myrtle, arbutus, heather).</li>
-            <li><strong>🔧 Fine-tuning:</strong> Adjust irrigation timing, prune for shape, replace any losses, expand productive areas.</li>
-            <li><strong>🔄 Cycling:</strong> Compost system reaches steady state. Full nutrient cycling operational.</li>
+            <li><span data-i18n="y3li1"><strong>🌿 Maturation:</strong> Guilds mature — mid-ring companions (clover, yarrow, oregano, strawberries). Outer ring fills in.</span></li>
+            <li><span data-i18n="y3li2"><strong>🔄 Soil building:</strong> Sheet mulching, chop-and-drop from comfrey, green manure rotations.</span></li>
+            <li><span data-i18n="y3li3"><strong>🐔 Chicken rotation:</strong> Full integration — orchard post-harvest, winter garden clearing, pest control.</span></li>
+            <li><span data-i18n="y3li4"><strong>🌱 Propagation:</strong> Expand from own seed/divisions. Plant cuttings from guild companions.</span></li>
+            <li><span data-i18n="y3li5"><strong>📊 Monitoring:</strong> Track species success, adjust siting, observe microclimate patterns.</span></li>
+            <li><span data-i18n="y3li6"><strong>🌿 Zone 5:</strong> Establish wild corridor with native maquis species (myrtle, arbutus, heather).</span></li>
+            <li><span data-i18n="y3li7"><strong>🔧 Fine-tuning:</strong> Adjust irrigation timing, prune for shape, replace any losses, expand productive areas.</span></li>
+            <li><span data-i18n="y3li8"><strong>🔄 Cycling:</strong> Compost system reaches steady state. Full nutrient cycling operational.</span></li>
           </ul>
         </div>
       </div>
@@ -896,48 +1104,48 @@ function applyI18nDP() {
     <span class="badge badge-complete">✅ Complete</span>
   </div>
   <div class="section-body">
-    <p>Key design decisions and the reasoning behind them. Each choice is rooted in the site's specific conditions: climate, topography, soil, and the client's goals for self-sufficiency and resilience.</p>
+    <p><span data-i18n="s10Intro">Key design decisions and the reasoning behind them. Each choice is rooted in the site's specific conditions: climate, topography, soil, and the client's goals for self-sufficiency and resilience.</span></p>
 
     <div class="rationale-grid">
       <div class="rationale-card">
-        <div class="rq">🏠 Why is the building south-facing?</div>
-        <div class="ra">The south-facing slope maximises passive solar gain (~30% more radiation than flat land), provides natural shelter from cold NW winds (Tramontana), and allows frost drainage downhill. The building's south wall is the warmest microclimate — ideal for season extension and tender plants.</div>
+        <div class="rq" data-i18n="rq1">🏠 Why is the building south-facing?</div>
+        <div class="ra"><span data-i18n="ra1">The south-facing slope maximises passive solar gain (~30% more radiation than flat land), provides natural shelter from cold NW winds (Tramontana), and allows frost drainage downhill. The building's south wall is the warmest microclimate — ideal for season extension and tender plants.</span></div>
       </div>
       <div class="rationale-card">
-        <div class="rq">🍎 Why are frost-sensitive trees on the upper slope?</div>
-        <div class="ra">Cold air is heavier than warm air — it flows downhill like water. The upper part of the slope is 2–4°C warmer on frost nights than the valley bottom. Peaches, apricots, and almonds (early bloomers) go highest.</div>
+        <div class="rq" data-i18n="rq2">🍎 Why are frost-sensitive trees on the upper slope?</div>
+        <div class="ra"><span data-i18n="ra2">Cold air is heavier than warm air — it flows downhill like water. The upper part of the slope is 2–4°C warmer on frost nights than the valley bottom. Peaches, apricots, and almonds (early bloomers) go highest.</span></div>
       </div>
       <div class="rationale-card">
-        <div class="rq">💧 Why is the pond at the highest point?</div>
-        <div class="ra">Gravity-fed drip irrigation requires elevation head. The pond at the highest point provides ~8–10m head = 0.78 bar pressure — sufficient for drip irrigation without pumps. This is a permanent energy-free solution.</div>
+        <div class="rq" data-i18n="rq3">💧 Why is the pond at the highest point?</div>
+        <div class="ra"><span data-i18n="ra3">Gravity-fed drip irrigation requires elevation head. The pond at the highest point provides ~8–10m head = 0.78 bar pressure — sufficient for drip irrigation without pumps. This is a permanent energy-free solution.</span></div>
       </div>
       <div class="rationale-card">
-        <div class="rq">🌊 Why 4 swales, not more?</div>
-        <div class="ra">4 swales at ~7m vertical intervals on a 10% slope (total ~100m length) provide adequate water harvesting for the 1ha site. More swales would over-engineer the system; fewer would miss the water-spreading benefit. Each swale captures ~50–200L per meter.</div>
+        <div class="rq" data-i18n="rq4">🌊 Why 4 swales, not more?</div>
+        <div class="ra"><span data-i18n="ra4">4 swales at ~7m vertical intervals on a 10% slope (total ~100m length) provide adequate water harvesting for the 1ha site. More swales would over-engineer the system; fewer would miss the water-spreading benefit. Each swale captures ~50–200L per meter.</span></div>
       </div>
       <div class="rationale-card">
-        <div class="rq">🔥 Why the SE firebreak?</div>
-        <div class="ra">The Sirocco wind from the SE (135°) is the primary fire risk vector — hot, dry, and carries embers. The firebreak + pond on the SE side creates a defensible space. The irrigated vegetable garden on the south side acts as an additional green firebreak.</div>
+        <div class="rq" data-i18n="rq5">🔥 Why the SE firebreak?</div>
+        <div class="ra"><span data-i18n="ra5">The Sirocco wind from the SE (135°) is the primary fire risk vector — hot, dry, and carries embers. The firebreak + pond on the SE side creates a defensible space. The irrigated vegetable garden on the south side acts as an additional green firebreak.</span></div>
       </div>
       <div class="rationale-card">
-        <div class="rq">🌳 Why 13 tree guilds with 3-ring structure?</div>
-        <div class="ra">The 3-ring structure (inner/mid/outer) creates a self-regulating ecosystem around each tree. Inner ring: mineral accumulation + pest repellent. Mid ring: N-fixation + ground cover. Outer ring: edge habitat + pollination. This reduces maintenance by 60–80% vs. conventional orchard.</div>
+        <div class="rq" data-i18n="rq6">🌳 Why 13 tree guilds with 3-ring structure?</div>
+        <div class="ra"><span data-i18n="ra6">The 3-ring structure (inner/mid/outer) creates a self-regulating ecosystem around each tree. Inner ring: mineral accumulation + pest repellent. Mid ring: N-fixation + ground cover. Outer ring: edge habitat + pollination. This reduces maintenance by 60–80% vs. conventional orchard.</span></div>
       </div>
       <div class="rationale-card">
-        <div class="rq">🥬 Why no-dig raised beds?</div>
-        <div class="ra">No-dig preserves soil structure, fungal networks, and earthworm populations. 30cm of organic topsoil is sufficient for deep-rooted vegetables. Raised beds warm faster in spring, improve drainage on silty-sand, and provide clear paths for maintenance.</div>
+        <div class="rq" data-i18n="rq7">🥬 Why no-dig raised beds?</div>
+        <div class="ra"><span data-i18n="ra7">No-dig preserves soil structure, fungal networks, and earthworm populations. 30cm of organic topsoil is sufficient for deep-rooted vegetables. Raised beds warm faster in spring, improve drainage on silty-sand, and provide clear paths for maintenance.</span></div>
       </div>
       <div class="rationale-card">
-        <div class="rq">🐝 Why chickens AND bees?</div>
-        <div class="ra">Chickens provide pest control, fertilization, and egg production. Bees provide pollination (critical for 90% of fruit trees) and honey. Together they create a closed-loop system: chickens eat pests, bees pollinate crops, manure feeds plants.</div>
+        <div class="rq" data-i18n="rq8">🐝 Why chickens AND bees?</div>
+        <div class="ra"><span data-i18n="ra8">Chickens provide pest control, fertilization, and egg production. Bees provide pollination (critical for 90% of fruit trees) and honey. Together they create a closed-loop system: chickens eat pests, bees pollinate crops, manure feeds plants.</span></div>
       </div>
       <div class="rationale-card">
-        <div class="rq">🌿 Why Zone 2b forest garden?</div>
-        <div class="ra">The 7-layer forest garden (15 species) maximises vertical space on the slope, creating diverse microclimates. The SE firebreak transition zone doubles as a productive edge. 4 swales on contour provide water to the entire system without irrigation.</div>
+        <div class="rq" data-i18n="rq9">🌿 Why Zone 2b forest garden?</div>
+        <div class="ra"><span data-i18n="ra9">The 7-layer forest garden (15 species) maximises vertical space on the slope, creating diverse microclimates. The SE firebreak transition zone doubles as a productive edge. 4 swales on contour provide water to the entire system without irrigation.</span></div>
       </div>
       <div class="rationale-card">
-        <div class="rq">📐 Why Tuscan heritage varieties?</div>
-        <div class="ra">Tuscan cultivars (Frantoio, Leccino, Moraiolo, Pendolino for olives; Brogiotto Nero for figs; Cavolo Nero for kale) are proven over centuries of local adaptation. They have better disease resistance, drought tolerance, and flavour than imported varieties.</div>
+        <div class="rq" data-i18n="rq10">📐 Why Tuscan heritage varieties?</div>
+        <div class="ra"><span data-i18n="ra10">Tuscan cultivars (Frantoio, Leccino, Moraiolo, Pendolino for olives; Brogiotto Nero for figs; Cavolo Nero for kale) are proven over centuries of local adaptation. They have better disease resistance, drought tolerance, and flavour than imported varieties.</span></div>
       </div>
     </div>
 
