@@ -354,52 +354,91 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:3px;font-size:1.7em;}
 
 
 
-<h1>🌿 SOILPEPPER — Design Proposal</h1>
+<script>
+/* ===== I18N (2026-08-07) ===== */
+var PQ = new URLSearchParams(window.location.search);
+var REGION = (PQ.get('region') === 'netherlands' || PQ.get('region') === 'tuscany') ? PQ.get('region') : 'tuscany';
+var LANG = REGION === 'netherlands' ? 'nl' : 'en';
+var T = {
+  en: {
+    title: '🌿 Design Proposal',
+    completion: '🏗️ Design Completion', complete: '10/10 Sections — Complete',
+    pDesignBrief: 'Design Brief', pSector: 'Sector Analysis', pZone: 'Zone Plan', pWater: 'Water Strategy',
+    pAccess: 'Access', pSpecies: 'Species', pGuilds: 'Guilds', pFire: 'Fire Safety', pPhasing: 'Phasing', pRationale: 'Rationale',
+    cardArea: 'Site Area', cardSectors: 'Sectors', cardSpecies: 'Species', cardGuilds: 'Tree Guilds',
+    cardWater: 'Water Sources', cardSwales: 'Swales', cardVeg: 'Veg Beds', cardTreeShrub: 'Tree / Shrub Species',
+    s1: '📋 Design Brief', s2: '🌍 Sector Analysis Summary', s3: '🏡 Zone Plan', s4: '💧 Water Strategy',
+    s5: '🛤️ Access & Infrastructure', s6: '🌿 Species Selection', s7: '🌳 Guild Integration', s8: '🔥 Fire Safety',
+    s9: '📅 Implementation Phasing', s10: '🧠 Design Rationale',
+    badgeComplete: '✅ Complete', siteOverview: 'Site Overview', designGoals: 'Design Goals', corePrinciples: 'Core Principles'
+  },
+  nl: {
+    title: '🌿 Ontwerpvoorstel',
+    completion: '🏗️ Ontwerpvoltooiing', complete: '10/10 secties — compleet',
+    pDesignBrief: 'Ontwerpbrief', pSector: 'Sectoranalyse', pZone: 'Zonenplan', pWater: 'Waterstrategie',
+    pAccess: 'Toegang', pSpecies: 'Soorten', pGuilds: 'Gildes', pFire: 'Brandveiligheid', pPhasing: 'Fasering', pRationale: 'Onderbouwing',
+    cardArea: 'Oppervlakte', cardSectors: 'Sectoren', cardSpecies: 'Soorten', cardGuilds: 'Boomgildes',
+    cardWater: 'Waterbronnen', cardSwales: 'Swales', cardVeg: 'Groentebedden', cardTreeShrub: 'Boom/struiksoorten',
+    s1: '📋 Ontwerpbrief', s2: '🌍 Sectoranalyse-samenvatting', s3: '🏡 Zonenplan', s4: '💧 Waterstrategie',
+    s5: '🛤️ Toegang & Infrastructuur', s6: '🌿 Soortenselectie', s7: '🌳 Gilde-integratie', s8: '🔥 Brandveiligheid',
+    s9: '📅 Implementatiefasering', s10: '🧠 Ontwerp-onderbouwing',
+    badgeComplete: '✅ Compleet', siteOverview: 'Locatieoverzicht', designGoals: 'Ontwerpdoelen', corePrinciples: 'Kernprincipes'
+  }
+};
+function tt(k) { return (T[LANG] && T[LANG][k] !== undefined) ? T[LANG][k] : (T.en[k] !== undefined ? T.en[k] : k); }
+function applyI18nDP() {
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    var key = el.getAttribute('data-i18n');
+    if (T[LANG][key] !== undefined) el.innerHTML = T[LANG][key];
+  });
+}
+</script>
+<h1 data-i18n="title">🌿 SOILPEPPER — Design Proposal</h1>
 <p class="subtitle">Aranya Step 6 · <span id="sub-area">1ha Hillside</span> · ~<span id="sub-alt">300</span>m · USDA Zone <span id="sub-zone">8b–9a</span> · <span id="sub-loc">Tuscany, Italy</span></p>
 <p class="meta">📅 July 2026 · 14 Interactive Tools · <span data-count="species">256</span> Species · 13 Tree Guilds · 4 Water Sources</p>
 
 <!-- PROGRESS BAR -->
 <div class="progress-wrap">
   <div class="progress-hdr">
-    <span>🏗️ Design Completion</span>
-    <span>10/10 Sections — Complete</span>
+    <span data-i18n="completion">🏗️ Design Completion</span>
+    <span data-i18n="complete">10/10 Sections — Complete</span>
   </div>
   <div class="progress-bar"><div class="progress-fill"></div></div>
   <div class="progress-labels">
-    <span>Design Brief</span>
-    <span>Sector Analysis</span>
-    <span>Zone Plan</span>
-    <span>Water Strategy</span>
-    <span>Access</span>
-    <span>Species</span>
-    <span>Guilds</span>
-    <span>Fire Safety</span>
-    <span>Phasing</span>
-    <span>Rationale</span>
+    <span data-i18n="pDesignBrief">Design Brief</span>
+    <span data-i18n="pSector">Sector Analysis</span>
+    <span data-i18n="pZone">Zone Plan</span>
+    <span data-i18n="pWater">Water Strategy</span>
+    <span data-i18n="pAccess">Access</span>
+    <span data-i18n="pSpecies">Species</span>
+    <span data-i18n="pGuilds">Guilds</span>
+    <span data-i18n="pFire">Fire Safety</span>
+    <span data-i18n="pPhasing">Phasing</span>
+    <span data-i18n="pRationale">Rationale</span>
   </div>
 </div>
 
 <!-- SUMMARY CARDS -->
 <div class="cards">
-  <div class="card"><div class="icon">📐</div><div class="num" id="card-area">1 ha</div><div class="lbl">Site Area</div></div>
-  <div class="card"><div class="icon">🌍</div><div class="num">9</div><div class="lbl">Sectors</div></div>
-  <div class="card"><div class="icon">🌿</div><div class="num" data-count="species">256</div><div class="lbl">Species</div></div>
-  <div class="card"><div class="icon">🌳</div><div class="num">13</div><div class="lbl">Tree Guilds</div></div>
-  <div class="card"><div class="icon">💧</div><div class="num">4</div><div class="lbl">Water Sources</div></div>
-  <div class="card"><div class="icon">🌊</div><div class="num" id="card-swales">4</div><div class="lbl">Swales</div></div>
-  <div class="card"><div class="icon">🥬</div><div class="num">12</div><div class="lbl">Veg Beds</div></div>
-  <div class="card"><div class="icon">🍎</div><div class="num" data-count="treeshrub">116</div><div class="lbl">Tree / Shrub Species</div></div>
+  <div class="card"><div class="icon">📐</div><div class="num" id="card-area">1 ha</div><div class="lbl" data-i18n="cardArea">Site Area</div></div>
+  <div class="card"><div class="icon">🌍</div><div class="num">9</div><div class="lbl" data-i18n="cardSectors">Sectors</div></div>
+  <div class="card"><div class="icon">🌿</div><div class="num" data-count="species">256</div><div class="lbl" data-i18n="cardSpecies">Species</div></div>
+  <div class="card"><div class="icon">🌳</div><div class="num">13</div><div class="lbl" data-i18n="cardGuilds">Tree Guilds</div></div>
+  <div class="card"><div class="icon">💧</div><div class="num">4</div><div class="lbl" data-i18n="cardWater">Water Sources</div></div>
+  <div class="card"><div class="icon">🌊</div><div class="num" id="card-swales">4</div><div class="lbl" data-i18n="cardSwales">Swales</div></div>
+  <div class="card"><div class="icon">🥬</div><div class="num">12</div><div class="lbl" data-i18n="cardVeg">Veg Beds</div></div>
+  <div class="card"><div class="icon">🍎</div><div class="num" data-count="treeshrub">116</div><div class="lbl" data-i18n="cardTreeShrub">Tree / Shrub Species</div></div>
 </div>
 
 <!-- ========== SECTION 1: DESIGN BRIEF ========== -->
 <div class="section">
   <div class="section-header open" onclick="toggleSection(this)">
     <span class="arrow">▶</span>
-    <span class="title">📋 Design Brief</span>
+    <span class="title" data-i18n="s1">📋 Design Brief</span>
     <span class="badge badge-complete">✅ Complete</span>
   </div>
   <div class="section-body open">
-    <h3>Site Overview</h3>
+    <h3 data-i18n="siteOverview">Site Overview</h3>
     <p><strong>Location:</strong> <span id="dp-loc">Tuscany, Italy</span> — ~<span id="dp-alt">300</span>m altitude, hilly terrain, south-facing slope</p>
     <p><strong>Area:</strong> <span id="dp-area">1 hectare (10,000m²)</span></p>
     <p><strong>Climate:</strong> Csa (Hot-summer Mediterranean) — USDA Zone <span id="dp-zone">8b–9a</span></p>
@@ -408,7 +447,7 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:3px;font-size:1.7em;}
     <p><strong>Building:</strong> 250m² south-facing stone house — roof catchment for rainwater</p>
     <p><strong>Frost-free period:</strong> ~180–210 days (last frost ~Apr, first frost ~Nov)</p>
 
-    <h3>Design Goals</h3>
+    <h3 data-i18n="designGoals">Design Goals</h3>
     <ul>
       <li><strong>Self-sufficiency:</strong> Vegetable garden for 2 people, fruit trees, berry bushes, herbs</li>
       <li><strong>Water autonomy:</strong> Well + rainwater harvesting (15m³ tanks) + irrigation pond (200m³) + natural pool (112m³)</li>
@@ -418,7 +457,7 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:3px;font-size:1.7em;}
       <li><strong>Low maintenance:</strong> No-dig beds, direct sow, perennial vegetables, self-regulating guilds</li>
     </ul>
 
-    <h3>Core Principles</h3>
+    <h3 data-i18n="corePrinciples">Core Principles</h3>
     <ul>
       <li>Every plant must have mutual soil benefit</li>
       <li>Vegetables: 30cm organic topsoil, Trees: 50cm</li>
@@ -439,7 +478,7 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:3px;font-size:1.7em;}
 <div class="section">
   <div class="section-header" onclick="toggleSection(this)">
     <span class="arrow">▶</span>
-    <span class="title">🌍 Sector Analysis Summary</span>
+    <span class="title" data-i18n="s2">🌍 Sector Analysis Summary</span>
     <span class="badge badge-complete">✅ Complete</span>
   </div>
   <div class="section-body">
@@ -471,7 +510,7 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:3px;font-size:1.7em;}
 <div class="section">
   <div class="section-header" onclick="toggleSection(this)">
     <span class="arrow">▶</span>
-    <span class="title">🏡 Zone Plan</span>
+    <span class="title" data-i18n="s3">🏡 Zone Plan</span>
     <span class="badge badge-complete">✅ Complete</span>
   </div>
   <div class="section-body">
@@ -526,7 +565,7 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:3px;font-size:1.7em;}
 <div class="section">
   <div class="section-header" onclick="toggleSection(this)">
     <span class="arrow">▶</span>
-    <span class="title">💧 Water Strategy</span>
+    <span class="title" data-i18n="s4">💧 Water Strategy</span>
     <span class="badge badge-complete">✅ Complete</span>
   </div>
   <div class="section-body">
@@ -579,7 +618,7 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:3px;font-size:1.7em;}
 <div class="section">
   <div class="section-header" onclick="toggleSection(this)">
     <span class="arrow">▶</span>
-    <span class="title">🛤️ Access & Infrastructure</span>
+    <span class="title" data-i18n="s5">🛤️ Access & Infrastructure</span>
     <span class="badge badge-complete">✅ Complete</span>
   </div>
   <div class="section-body">
@@ -613,7 +652,7 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:3px;font-size:1.7em;}
 <div class="section">
   <div class="section-header" onclick="toggleSection(this)">
     <span class="arrow">▶</span>
-    <span class="title">🌿 Species Selection</span>
+    <span class="title" data-i18n="s6">🌿 Species Selection</span>
     <span class="badge badge-complete">✅ Complete</span>
   </div>
   <div class="section-body">
@@ -676,7 +715,7 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:3px;font-size:1.7em;}
 <div class="section">
   <div class="section-header" onclick="toggleSection(this)">
     <span class="arrow">▶</span>
-    <span class="title">🌳 Guild Integration</span>
+    <span class="title" data-i18n="s7">🌳 Guild Integration</span>
     <span class="badge badge-complete">✅ Complete</span>
   </div>
   <div class="section-body">
@@ -734,7 +773,7 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:3px;font-size:1.7em;}
 <div class="section">
   <div class="section-header" onclick="toggleSection(this)">
     <span class="arrow">▶</span>
-    <span class="title">🔥 Fire Safety</span>
+    <span class="title" data-i18n="s8">🔥 Fire Safety</span>
     <span class="badge badge-complete">✅ Complete</span>
   </div>
   <div class="section-body">
@@ -785,7 +824,7 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:3px;font-size:1.7em;}
 <div class="section">
   <div class="section-header" onclick="toggleSection(this)">
     <span class="arrow">▶</span>
-    <span class="title">📅 Implementation Phasing</span>
+    <span class="title" data-i18n="s9">📅 Implementation Phasing</span>
     <span class="badge badge-complete">✅ Complete</span>
   </div>
   <div class="section-body">
@@ -853,7 +892,7 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:3px;font-size:1.7em;}
 <div class="section">
   <div class="section-header" onclick="toggleSection(this)">
     <span class="arrow">▶</span>
-    <span class="title">🧠 Design Rationale</span>
+    <span class="title" data-i18n="s10">🧠 Design Rationale</span>
     <span class="badge badge-complete">✅ Complete</span>
   </div>
   <div class="section-body">
@@ -1018,13 +1057,14 @@ document.addEventListener('DOMContentLoaded', function() {
     2: { label: 'Z2 · Orchard', icon: '🍎' }, 3: { label: 'Z3 · Field', icon: '🫒' },
     4: { label: 'Z4 · Woodland', icon: '🌲' }, 5: { label: 'Z5 · Wild', icon: '🌿' }
   };
+  var ZONE_META_NL = ['Z0 · Huis', 'Z1 · Keuken', 'Z2 · Boomgaard', 'Z3 · Veld', 'Z4 · Bos', 'Z5 · Wild'];
   function render() {
     var body = document.getElementById('mp-live-body');
     if (!body) return;
     var plan = null;
     try { plan = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) {}
     if (!plan || !plan.cells || !plan.cols || !plan.rows) {
-      body.innerHTML = '<span class="mp-note">No Master Plan saved yet — create one in <a href="master-plan.html" style="color:#81a85a;">Master Plan</a> first.</span>';
+      body.innerHTML = (LANG === 'nl' ? 'Nog geen Masterplan opgeslagen — maak er eerst een in <a href="master-plan.html" style="color:#81a85a;">Masterplan</a>.' : 'No Master Plan saved yet — create one in <a href="master-plan.html" style="color:#81a85a;">Master Plan</a> first.');
       return;
     }
     var zoneCount = {}; var funcCount = {}; var assigned = 0; var total = plan.cols * plan.rows;
@@ -1039,19 +1079,20 @@ document.addEventListener('DOMContentLoaded', function() {
     [0, 1, 2, 3, 4, 5].forEach(function (z) {
       var n = zoneCount[z] || 0;
       var cellM2 = plan.cellSize ? plan.cellSize * plan.cellSize : 100;
-      html += '<span class="mp-chip"><span>' + ZONE_META[z].icon + ' ' + ZONE_META[z].label + '</span><b>' + n + '</b> cell' + (n === 1 ? '' : 's') + ' · ~' + (n * cellM2).toLocaleString('en-US') + ' m²</span>';
+      html += '<span class="mp-chip"><span>' + ZONE_META[z].icon + ' ' + (LANG === 'nl' && ZONE_META_NL[z] ? ZONE_META_NL[z] : ZONE_META[z].label) + '</span><b>' + n + '</b> ' + (LANG === 'nl' ? (n === 1 ? 'cel' : 'cellen') : 'cell' + (n === 1 ? '' : 's')) + ' · ~' + (n * cellM2).toLocaleString(LANG === 'nl' ? 'nl-NL' : 'en-US') + ' m²</span>';
     });
-    html += '<span class="mp-chip">📦 Assigned <b>' + assigned + '/' + total + '</b> cells</span>';
-    html += '<span class="mp-chip">🌿 Unassigned <b>' + (total - assigned) + '</b></span>';
+    html += '<span class="mp-chip">📦 ' + (LANG === 'nl' ? 'Toegewezen <b>' + assigned + '/' + total + '</b> cellen' : 'Assigned <b>' + assigned + '/' + total + '</b> cells') + '</span>';
+    html += '<span class="mp-chip">🌿 ' + (LANG === 'nl' ? 'Niet toegewezen <b>' + (total - assigned) + '</b>' : 'Unassigned <b>' + (total - assigned) + '</b>') + '</span>';
     body.innerHTML = html;
     var note = document.createElement('div');
     note.className = 'mp-note';
-    note.innerHTML = 'Live from your Master Plan (' + plan.cols + '×' + plan.rows + ' grid, ' + (plan.cellSize || 10) + 'm cells) — edit in <a href="master-plan.html" style="color:#81a85a;">Master Plan</a>.';
+    note.innerHTML = LANG === 'nl' ? ('Live uit je Masterplan (' + plan.cols + '×' + plan.rows + ' raster, ' + (plan.cellSize || 10) + 'm cellen) — bewerk in <a href="master-plan.html" style="color:#81a85a;">Masterplan</a>.') : ('Live from your Master Plan (' + plan.cols + '×' + plan.rows + ' grid, ' + (plan.cellSize || 10) + 'm cells) — edit in <a href="master-plan.html" style="color:#81a85a;">Master Plan</a>.');
     body.appendChild(note);
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', render);
-  } else { render(); }
+    document.addEventListener('DOMContentLoaded', applyI18nDP);
+  } else { render(); applyI18nDP(); }
 })();
 </script>
 </body>
