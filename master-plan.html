@@ -202,27 +202,27 @@ h1{font-family:var(--font-head);color:var(--accent-emerald);text-align:center;
 </head>
 <body>
 
-<h1>🗺️ Master Plan Grid</h1>
+<h1 data-i18n="title">🗺️ Master Plan Grid</h1>
 <p class="subtitle">Divide the plot into cells and assign a function to each — the whole design on one map.</p>
 
 <!-- TOP BAR -->
 <div class="topbar">
   <span class="plot-info" id="plot-info">Plot: —</span>
-  <button class="btn" onclick="openSetup()">⚙️ Plot Setup</button>
-  <button class="btn" onclick="openWaterSetup()">💧 Water Setup</button>
-  <button class="btn" onclick="exportPlan()">📤 Export</button>
-  <button class="btn" onclick="document.getElementById('import-file').click()">📥 Import</button>
+  <button class="btn" onclick="openSetup()"><span data-i18n="plotSetup">⚙️ Plot Setup</span></button>
+  <button class="btn" onclick="openWaterSetup()"><span data-i18n="waterSetup">💧 Water Setup</span></button>
+  <button class="btn" onclick="exportPlan()"><span data-i18n="export">📤 Export</span></button>
+  <button class="btn" onclick="document.getElementById('import-file').click()"><span data-i18n="import">📥 Import</span></button>
   <input type="file" id="import-file" accept=".json,application/json" style="display:none" onchange="importPlan(event)">
 </div>
 
 <!-- VIEW SWITCHER -->
 <div class="topbar" id="viewbar">
-  <button class="btn view-btn active" id="view-function" onclick="setView('function')">🎨 Functions</button>
-  <button class="btn view-btn" id="view-zone" onclick="setView('zone')">🧭 Zones</button>
-  <button class="btn view-btn" id="view-soil" onclick="setView('soil')">🪨 Soil</button>
-  <button class="btn view-btn" id="view-sectors" onclick="setView('sectors')">🌪️ Sectors</button>
-  <button class="btn" onclick="suggestZones()" title="Auto-assign Z0-Z5 rings around your house as a starting point">✨ Suggest Zones</button>
-  <button class="btn" onclick="undo()" title="Undo last change (Ctrl+Z)">↩️ Undo</button>
+  <button class="btn view-btn active" id="view-function" onclick="setView('function')"><span data-i18n="viewFunctions">🎨 Functions</span></button>
+  <button class="btn view-btn" id="view-zone" onclick="setView('zone')"><span data-i18n="viewZones">🧭 Zones</span></button>
+  <button class="btn view-btn" id="view-soil" onclick="setView('soil')"><span data-i18n="viewSoil">🪨 Soil</span></button>
+  <button class="btn view-btn" id="view-sectors" onclick="setView('sectors')"><span data-i18n="viewSectors">🌪️ Sectors</span></button>
+  <button class="btn" onclick="suggestZones()" title="Auto-assign Z0-Z5 rings around your house as a starting point"><span data-i18n="suggestZones">✨ Suggest Zones</span></button>
+  <button class="btn" onclick="undo()" title="Undo last change (Ctrl+Z)"><span data-i18n="undo">↩️ Undo</span></button>
   <button class="btn danger" onclick="clearLayer()" id="clear-layer-btn" title="Clear zones or soil (keep functions)" style="display:none">🧹 Clear layer</button>
 </div>
 <div class="paintbar" id="paintbar" style="display:none"></div>
@@ -263,13 +263,13 @@ h1{font-family:var(--font-head);color:var(--accent-emerald);text-align:center;
 <!-- SIDE PANEL -->
 <div class="side-panel" id="side-panel">
   <div class="panel-head">
-    <h3>Cell Assignment</h3>
+    <h3 data-i18n="cellAssignment">Cell Assignment</h3>
     <span class="close-btn" onclick="closePanel()">✕</span>
   </div>
   <div class="panel-body">
     <span class="coord-badge" id="panel-coord">—</span>
     <div class="field">
-      <label>Function</label>
+      <label data-i18n="function">Function</label>
       <select id="func-select" onchange="onFuncChange()">
         <option value="open">🌿 Open / Unassigned</option>
         <option value="guild">🌳 Guild</option>
@@ -280,7 +280,7 @@ h1{font-family:var(--font-head);color:var(--accent-emerald);text-align:center;
       </select>
     </div>
     <div class="field">
-      <label>Zone</label>
+      <label data-i18n="zone">Zone</label>
       <select id="zone-select" onchange="onZoneChange()">
         <option value="">— not set —</option>
         <option value="0">Z0 · House & immediate</option>
@@ -290,10 +290,10 @@ h1{font-family:var(--font-head);color:var(--accent-emerald);text-align:center;
         <option value="4">Z4 · Semi-managed</option>
         <option value="5">Z5 · Wild</option>
       </select>
-      <div class="hint">Permaculture zones by use intensity — 0 closest to the house, 5 wildest.</div>
+      <div class="hint" data-i18n="zoneHint">Permaculture zones by use intensity — 0 closest to the house, 5 wildest.</div>
     </div>
     <div class="field">
-      <label>Soil type</label>
+      <label data-i18n="soilType">Soil type</label>
       <select id="soil-select" onchange="onSoilChange()">
         <option value="">— not set —</option>
         <option value="sandy">Sandy</option>
@@ -306,11 +306,11 @@ h1{font-family:var(--font-head);color:var(--accent-emerald);text-align:center;
       <div class="hint" id="soil-match-hint"></div>
     </div>
     <div class="field" id="label-field" style="display:none">
-      <label>Label (optional)</label>
+      <label data-i18n="label">Label (optional)</label>
       <input type="text" id="label-input" placeholder="e.g. Pond, Shed, Main path" oninput="onLabelInput()">
     </div>
     <div class="field" id="tree-field" style="display:none">
-      <label>Guild Tree</label>
+      <label data-i18n="guildTree">Guild Tree</label>
       <select id="tree-select" onchange="onTreeChange()"></select>
       <div class="hint">Select the central tree. Open the full guild diagram to design companions.</div>
       <div class="guild-preview" id="guild-preview">
@@ -319,61 +319,61 @@ h1{font-family:var(--font-head);color:var(--accent-emerald);text-align:center;
         <div class="gp-name" id="gp-name">—</div>
         <div class="gp-rings" id="gp-rings"></div>
       </div>
-      <button class="btn btn-full" id="open-guild-btn" onclick="openGuildDiagram()">📂 Open Guild Diagram →</button>
+      <button class="btn btn-full" id="open-guild-btn" onclick="openGuildDiagram()"><span data-i18n="openGuild">📂 Open Guild Diagram →</span></button>
     </div>
     <div class="field" id="veg-field" style="display:none">
-      <label>🥕 Vegetable Garden</label>
+      <label data-i18n="vegGarden">🥕 Vegetable Garden</label>
       <div class="hint">This cell is a vegetable garden. Open the planner to design the beds (modules, 10m slots, join toggles) and assign plants.</div>
-      <button class="btn btn-full" id="open-veg-btn" onclick="openVegPlanner()">🥕 Open Vegetable Garden Planner →</button>
+      <button class="btn btn-full" id="open-veg-btn" onclick="openVegPlanner()"><span data-i18n="openVeg">🥕 Open Vegetable Garden Planner →</span></button>
     </div>
     <div class="removed-note" id="removed-note" style="display:none"></div>
   </div>
   <div class="panel-actions">
-    <button class="btn btn-block danger" onclick="removeAssignment()">🗑️ Clear this cell</button>
+    <button class="btn btn-block danger" onclick="removeAssignment()"><span data-i18n="clearCell">🗑️ Clear this cell</span></button>
   </div>
 </div>
 
 <!-- SETUP MODAL -->
 <div class="modal-bg" id="setup-modal">
   <div class="modal">
-    <h2>⚙️ Plot Setup</h2>
-    <p>Define your plot. Cells are created automatically at a fixed size. Defaults match this 1ha Tuscan site.</p>
+    <h2 data-i18n="setupTitle">⚙️ Plot Setup</h2>
+    <p data-i18n="setupDesc">Define your plot. Cells are created automatically at a fixed size. Defaults match this 1ha Tuscan site.</p>
     <div class="presets">
-      <span class="preset" onclick="applyPreset(100,100,10)">1 ha · 100×100m · 10m cells</span>
-      <span class="preset" onclick="applyPreset(50,50,10)">0.25 ha · 50×50m · 10m cells</span>
-      <span class="preset" onclick="applyPreset(20,40,10)">800 m² · 20×40m · 10m cells</span>
+      <span class="preset" onclick="applyPreset(100,100,10)">1 ha · 100×100m · 10m cellen</span>
+      <span class="preset" onclick="applyPreset(50,50,10)">0.25 ha · 50×50m · 10m cellen</span>
+      <span class="preset" onclick="applyPreset(20,40,10)">800 m² · 20×40m · 10m cellen</span>
     </div>
     <div class="field">
-      <label>Site title (design brief)</label>
+      <label data-i18n="lblSiteTitle">Site title (design brief)</label>
       <input type="text" id="setup-title" placeholder="e.g. Tuscan hillside" value="Tuscan hillside">
     </div>
     <div class="field-row">
       <div class="field">
-        <label>Width (m)</label>
+        <label data-i18n="lblWidth">Width (m)</label>
         <input type="number" id="setup-w" min="1" value="100">
       </div>
       <div class="field">
-        <label>Height (m)</label>
+        <label data-i18n="lblHeight">Height (m)</label>
         <input type="number" id="setup-h" min="1" value="100">
       </div>
       <div class="field">
-        <label>Cell size (m)</label>
+        <label data-i18n="lblCell">Cell size (m)</label>
         <input type="number" id="setup-cell" min="1" value="10">
       </div>
     </div>
     <div class="field-row">
       <div class="field">
-        <label>Altitude (m)</label>
+        <label data-i18n="lblAlt">Altitude (m)</label>
         <input type="number" id="setup-alt" min="0" value="300">
       </div>
       <div class="field">
-        <label>Climate zone</label>
+        <label data-i18n="lblClimate">Climate zone</label>
         <input type="text" id="setup-climate" placeholder="e.g. 8b–9a" value="8b-9a">
       </div>
     </div>
     <div class="field-row">
       <div class="field">
-        <label>Aspect (slope direction)</label>
+        <label data-i18n="lblAspect">Aspect (slope direction)</label>
         <select id="setup-aspect">
           <option value="South (180°)">South (180°)</option>
           <option value="SE (135°)">SE (135°)</option>
@@ -384,7 +384,7 @@ h1{font-family:var(--font-head);color:var(--accent-emerald);text-align:center;
         </select>
       </div>
       <div class="field">
-        <label>Slope</label>
+        <label data-i18n="lblSlope">Slope</label>
         <select id="setup-slope">
           <option value="~5% gentle">~5% gentle</option>
           <option value="~10% moderate" selected>~10% moderate</option>
@@ -393,11 +393,11 @@ h1{font-family:var(--font-head);color:var(--accent-emerald);text-align:center;
       </div>
     </div>
     <div class="field">
-      <label>Resulting grid</label>
+      <label data-i18n="lblGrid">Resulting grid</label>
       <div class="hint" id="setup-result">—</div>
     </div>
     <div class="field">
-      <label>Default soil type (design brief)</label>
+      <label data-i18n="lblDefSoil">Default soil type (design brief)</label>
       <select id="setup-soil">
         <option value="sandy">Sandy</option>
         <option value="silty" selected>Silty (silty-sand)</option>
@@ -406,79 +406,206 @@ h1{font-family:var(--font-head);color:var(--accent-emerald);text-align:center;
         <option value="chalky">Chalky</option>
         <option value="peaty">Peaty</option>
       </select>
-      <div class="hint">Base soil for the whole plot — paint patches per cell later. Brief for Tuscany: silty-sand.</div>
+      <div class="hint" data-i18n="setupSoilHint">Base soil for the whole plot — paint patches per cell later. Brief for Tuscany: silty-sand.</div>
     </div>
-    <button class="btn btn-full primary" onclick="applySetup()">Apply</button>
-    <button class="btn btn-full" onclick="closeSetup()" style="margin-top:8px">Cancel</button>
+    <button class="btn btn-full primary" onclick="applySetup()"><span data-i18n="apply">Apply</span></button>
+    <button class="btn btn-full" onclick="closeSetup()" style="margin-top:8px"><span data-i18n="cancel">Cancel</span></button>
   </div>
 </div>
 
 <!-- WATER SETUP MODAL -->
 <div class="modal-bg" id="water-modal">
   <div class="modal">
-    <h2>💧 Water System Setup</h2>
-    <p>Define the water infrastructure for this site. Saved to <code>tuscan-water-v1</code> — read by the Water Management page, Site Layout and Design Proposal.</p>
+    <h2 data-i18n="waterTitle">💧 Water System Setup</h2>
+    <p data-i18n="waterDesc">Define the water infrastructure for this site. Saved to <code>tuscan-water-v1</code> — read by the Water Management page, Site Layout and Design Proposal.</p>
     <div class="field-row">
       <div class="field">
-        <label>Roof area (m²)</label>
+        <label data-i18n="lblRoof">Roof area (m²)</label>
         <input type="number" id="water-roof" min="0" value="250">
       </div>
       <div class="field">
-        <label>Rainfall (mm/yr)</label>
+        <label data-i18n="lblRain">Rainfall (mm/yr)</label>
         <input type="number" id="water-rain" min="0" value="800">
       </div>
       <div class="field">
-        <label>Roof efficiency</label>
+        <label data-i18n="lblEff">Roof efficiency</label>
         <input type="number" id="water-eff" min="0" max="1" step="0.05" value="0.85">
       </div>
     </div>
     <div class="field-row">
       <div class="field">
-        <label>Irrigation pond (m³)</label>
+        <label data-i18n="lblPond">Irrigation pond (m³)</label>
         <input type="number" id="water-pond" min="0" value="200">
       </div>
       <div class="field">
-        <label>Natural pool (m³)</label>
+        <label data-i18n="lblPool">Natural pool (m³)</label>
         <input type="number" id="water-pool" min="0" value="112">
       </div>
       <div class="field">
-        <label>Annual demand (m³)</label>
+        <label data-i18n="lblDemand">Annual demand (m³)</label>
         <input type="number" id="water-demand" min="0" value="958">
       </div>
     </div>
     <div class="field-row">
       <div class="field">
-        <label>Rainwater tanks</label>
+        <label data-i18n="lblTanks">Rainwater tanks</label>
         <input type="number" id="water-tanks" min="0" value="3">
       </div>
       <div class="field">
-        <label>Tank size (L each)</label>
+        <label data-i18n="lblTankSize">Tank size (L each)</label>
         <input type="number" id="water-tank-size" min="0" value="5000">
       </div>
       <div class="field">
-        <label>Swales</label>
+        <label data-i18n="lblSwales">Swales</label>
         <input type="number" id="water-swales" min="0" value="4">
       </div>
     </div>
     <div class="field">
-      <label>Gravity head (m)</label>
+      <label data-i18n="lblHead">Gravity head (m)</label>
       <input type="number" id="water-head" min="0" value="10">
-      <div class="hint">Vertical drop from pond to garden — determines drip pressure.</div>
+      <div class="hint" data-i18n="headHint">Vertical drop from pond to garden — determines drip pressure.</div>
     </div>
     <div class="field">
-      <label>Resulting roof harvest</label>
+      <label data-i18n="lblHarvest">Resulting roof harvest</label>
       <div class="hint" id="water-result">—</div>
     </div>
-    <button class="btn btn-full primary" onclick="applyWaterSetup()">Save Water Setup</button>
+    <button class="btn btn-full primary" onclick="applyWaterSetup()"><span data-i18n="saveWater">Save Water Setup</span></button>
     <button class="btn btn-full" onclick="closeWaterSetup()" style="margin-top:8px">Cancel</button>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
-<div class="footer">Master Plan Grid · Juniper Ridge theme · auto-saves to this browser</div>
+<div class="footer" data-i18n="footer">Master Plan Grid · Juniper Ridge theme · auto-saves to this browser</div>
 
 <script>
+/* ===== I18N (2026-08-07) ===== */
+var MP = new URLSearchParams(window.location.search);
+var REGION = (MP.get('region') === 'netherlands' || MP.get('region') === 'tuscany') ? MP.get('region') : 'tuscany';
+var LANG = REGION === 'netherlands' ? 'nl' : 'en';
+var T = {
+  en: {
+    title: '🗺️ Master Plan Grid', plotSetup: '⚙️ Plot Setup', waterSetup: '💧 Water Setup',
+    export: '📤 Export', import: '📥 Import', viewFunctions: '🎨 Functions', viewZones: '🧭 Zones',
+    viewSoil: '🪨 Soil', viewSectors: '🌪️ Sectors', suggestZones: '✨ Suggest Zones', undo: '↩️ Undo',
+    cellAssignment: 'Cell Assignment', function: 'Function', zone: 'Zone', soilType: 'Soil type',
+    label: 'Label (optional)', guildTree: 'Guild Tree', openGuild: '📂 Open Guild Diagram →',
+    vegGarden: '🥕 Vegetable Garden', openVeg: '🥕 Open Vegetable Garden Planner →',
+    vegHint: 'This cell is a vegetable garden. Open the planner to design the beds (modules, 10m slots, join toggles) and assign plants.',
+    clearCell: '🗑️ Clear this cell', setupTitle: '⚙️ Plot Setup', cancel: 'Cancel', apply: 'Apply',
+    waterTitle: '💧 Water System Setup', saveWater: 'Save Water Setup',
+    notSet: '— not set —', zoneOpts: {0:'Z0 · House & immediate',1:'Z1 · Kitchen garden',2:'Z2 · Orchard / coop',3:'Z3 · Field crops',4:'Z4 · Semi-managed',5:'Z5 · Wild'},
+    funcOpts: {open:'🌿 Open / Unassigned',guild:'🌳 Guild',vegetable:'🥕 Vegetable Garden',water:'💧 Water',road:'🛣️ Road / Access',construction:'🏠 Construction'},
+    soilOpts: {sandy:'Sandy',silty:'Silty',loam:'Loam',clay:'Clay',chalky:'Chalky',peaty:'Peaty'},
+    undoNothing: 'Nothing to undo', undone: '↩️ Undone', restoreFail: '⚠️ Could not restore',
+    cleared: '🧹 Cleared all ', zones: 'zones', soilTypes: 'soil types',
+    plotTooSmall: '⚠️ Plot must be at least one cell', newPlot: '✅ New plot created · default soil: ',
+    zonesSuggested: '✨ Zones suggested — ', cellsZoned: ' cells zoned (tap to adjust)',
+    selectTreeFirst: '⚠️ Select a tree first', cellCleared: 'Cell cleared.',
+    assigned: 'assigned', scale: 'Scale: 1 cell = ', cols: 'cols', rows: 'rows',
+    cellSoil: 'Cell soil: ', siteDefault: ' (site default)',
+    zoneHint: 'Permaculture zones by use intensity — 0 closest to the house, 5 wildest.',
+    setupDesc: 'Define your plot. Cells are created automatically at a fixed size. Defaults match this 1ha Tuscan site.',
+    waterDesc: 'Define the water infrastructure for this site. Saved to <code>tuscan-water-v1</code> — read by the Water Management page, Site Layout and Design Proposal.',
+    setupSoilHint: 'Base soil for the whole plot — paint patches per cell later. Brief for Tuscany: silty-sand.',
+    headHint: 'Vertical drop from pond to garden — determines drip pressure.',
+    lblSiteTitle: 'Site title (design brief)', lblWidth: 'Width (m)', lblHeight: 'Height (m)', lblCell: 'Cell size (m)',
+    lblAlt: 'Altitude (m)', lblClimate: 'Climate zone', lblAspect: 'Aspect (slope direction)', lblSlope: 'Slope',
+    lblGrid: 'Resulting grid', lblDefSoil: 'Default soil type (design brief)',
+    lblRoof: 'Roof area (m²)', lblRain: 'Rainfall (mm/yr)', lblEff: 'Roof efficiency', lblPond: 'Irrigation pond (m³)',
+    lblPool: 'Natural pool (m³)', lblDemand: 'Annual demand (m³)', lblTanks: 'Rainwater tanks',
+    lblTankSize: 'Tank size (L each)', lblSwales: 'Swales', lblHead: 'Gravity head (m)', lblHarvest: 'Resulting roof harvest',
+    lblSiteTitle: 'Site title (design brief)', lblWidth: 'Width (m)', lblHeight: 'Height (m)', lblCell: 'Cell size (m)',
+    lblAlt: 'Altitude (m)', lblClimate: 'Climate zone', lblAspect: 'Aspect (slope direction)', lblSlope: 'Slope',
+    lblGrid: 'Resulting grid', lblDefSoil: 'Default soil type (design brief)',
+    lblRoof: 'Roof area (m²)', lblRain: 'Rainfall (mm/yr)', lblEff: 'Roof efficiency', lblPond: 'Irrigation pond (m³)',
+    lblPool: 'Natural pool (m³)', lblDemand: 'Annual demand (m³)', lblTanks: 'Rainwater tanks',
+    lblTankSize: 'Tank size (L each)', lblSwales: 'Swales', lblHead: 'Gravity head (m)', lblHarvest: 'Resulting roof harvest',
+    footer: 'Master Plan Grid · Juniper Ridge theme · auto-saves to this browser'
+  },
+  nl: {
+    title: '🗺️ Masterplan-raster', plotSetup: '⚙️ Perceel instellen', waterSetup: '💧 Water instellen',
+    export: '📤 Exporteren', import: '📥 Importeren', viewFunctions: '🎨 Functies', viewZones: '🧭 Zones',
+    viewSoil: '🪨 Grond', viewSectors: '🌪️ Sectoren', suggestZones: '✨ Stel zones voor', undo: '↩️ Ongedaan maken',
+    cellAssignment: 'Celtoewijzing', function: 'Functie', zone: 'Zone', soilType: 'Grondsoort',
+    label: 'Label (optioneel)', guildTree: 'Gilde-boom', openGuild: '📂 Open Gilde-diagram →',
+    vegGarden: '🥕 Groententuin', openVeg: '🥕 Open Groententuinplanner →',
+    vegHint: 'Deze cel is een groententuin. Open de planner om de bedden te ontwerpen (modules, 10m-percelen, koppel-schakelaars) en planten toe te wijzen.',
+    clearCell: '🗑️ Wis deze cel', setupTitle: '⚙️ Perceel instellen', cancel: 'Annuleren', apply: 'Toepassen',
+    waterTitle: '💧 Watersysteem instellen', saveWater: 'Water instellingen opslaan',
+    notSet: '— niet ingesteld —', zoneOpts: {0:'Z0 · Huis & directe omgeving',1:'Z1 · Moestuin',2:'Z2 · Boomgaard / kippen',3:'Z3 · Veldgewassen',4:'Z4 · Half-onderhouden',5:'Z5 · Wild'},
+    funcOpts: {open:'🌿 Open / Niet toegewezen',guild:'🌳 Gilde',vegetable:'🥕 Groententuin',water:'💧 Water',road:'🛣️ Weg / Toegang',construction:'🏠 Bouw'},
+    soilOpts: {sandy:'Zandgrond',silty:'Silt',loam:'Leem',clay:'Klei',chalky:'Kalkrijk',peaty:'Veen'},
+    undoNothing: 'Niets om ongedaan te maken', undone: '↩️ Ongedaan gemaakt', restoreFail: '⚠️ Kon niet herstellen',
+    cleared: '🧹 Alle ', zones: 'zones gewist', soilTypes: 'grondsoorten gewist',
+    plotTooSmall: '⚠️ Perceel moet minimaal één cel zijn', newPlot: '✅ Nieuw perceel aangemaakt · standaardgrond: ',
+    zonesSuggested: '✨ Zones voorgesteld — ', cellsZoned: ' cellen gezoneerd (tik om aan te passen)',
+    selectTreeFirst: '⚠️ Kies eerst een boom', cellCleared: 'Cel gewist.',
+    assigned: 'toegewezen', scale: 'Schaal: 1 cel = ', cols: 'kolommen', rows: 'rijen',
+    cellSoil: 'Celgrond: ', siteDefault: ' (standaard)',
+    zoneHint: 'Permacultuurzones op basis van gebruik — 0 dichtst bij huis, 5 wildst.',
+    setupDesc: 'Definieer je perceel. Cellen worden automatisch op vaste grootte aangemaakt. Standaarden passen bij deze 1ha-locatie.',
+    waterDesc: 'Definieer de waterinfrastructuur voor deze locatie. Opgeslagen in <code>tuscan-water-v1</code> — gelezen door de Waterbeheer-pagina, Plattegrond en Ontwerpvoorstel.',
+    setupSoilHint: 'Basisgrond voor het hele perceel — schilder later per cel. Brief voor Toscane: silt-zand.',
+    headHint: 'Verticale val van vijver naar tuin — bepaalt de druppeldruk.',
+    lblSiteTitle: 'Locatienaam (ontwerpbrief)', lblWidth: 'Breedte (m)', lblHeight: 'Hoogte (m)', lblCell: 'Celgrootte (m)',
+    lblAlt: 'Hoogte (m)', lblClimate: 'Klimaatzone', lblAspect: 'Aspect (hellingsrichting)', lblSlope: 'Helling',
+    lblGrid: 'Resulterend raster', lblDefSoil: 'Standaardgrondsoort (ontwerpbrief)',
+    lblRoof: 'Dakoppervlak (m²)', lblRain: 'Neerslag (mm/jaar)', lblEff: 'Dakefficiëntie', lblPond: 'Irrigatievijver (m³)',
+    lblPool: 'Natuurlijk zwembad (m³)', lblDemand: 'Jaarlijkse vraag (m³)', lblTanks: 'Regenwatertanks',
+    lblTankSize: 'Tankinhoud (L elk)', lblSwales: 'Swales', lblHead: 'Zwaartekrachtval (m)', lblHarvest: 'Resulterende dakopvang',
+    lblSiteTitle: 'Locatienaam (ontwerpbrief)', lblWidth: 'Breedte (m)', lblHeight: 'Hoogte (m)', lblCell: 'Celgrootte (m)',
+    lblAlt: 'Hoogte (m)', lblClimate: 'Klimaatzone', lblAspect: 'Aspect (hellingsrichting)', lblSlope: 'Helling',
+    lblGrid: 'Resulterend raster', lblDefSoil: 'Standaardgrondsoort (ontwerpbrief)',
+    lblRoof: 'Dakoppervlak (m²)', lblRain: 'Neerslag (mm/jaar)', lblEff: 'Dakefficiëntie', lblPond: 'Irrigatievijver (m³)',
+    lblPool: 'Natuurlijk zwembad (m³)', lblDemand: 'Jaarlijkse vraag (m³)', lblTanks: 'Regenwatertanks',
+    lblTankSize: 'Tankinhoud (L elk)', lblSwales: 'Swales', lblHead: 'Zwaartekrachtval (m)', lblHarvest: 'Resulterende dakopvang',
+    footer: 'Masterplan-raster · Juniper Ridge thema · slaat automatisch op in deze browser'
+  }
+};
+function tt(k) { return (T[LANG] && T[LANG][k] !== undefined) ? T[LANG][k] : (T.en[k] !== undefined ? T.en[k] : k); }
+function tgroup(g, k) { return (T[LANG] && T[LANG][g] && T[LANG][g][k] !== undefined) ? T[LANG][g][k] : (T.en[g][k] !== undefined ? T.en[g][k] : k); }
+function applyI18nMP() {
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    var key = el.getAttribute('data-i18n');
+    if (T[LANG][key] !== undefined) el.innerHTML = T[LANG][key];
+  });
+  // localize static select options
+  var fsel = document.getElementById('func-select');
+  if (fsel) Array.prototype.forEach.call(fsel.options, function(o) {
+    if (T[LANG].funcOpts[o.value]) o.textContent = T[LANG].funcOpts[o.value];
+  });
+  var zsel = document.getElementById('zone-select');
+  if (zsel) Array.prototype.forEach.call(zsel.options, function(o) {
+    if (o.value === '') o.textContent = T[LANG].notSet;
+    else if (T[LANG].zoneOpts[o.value]) o.textContent = T[LANG].zoneOpts[o.value];
+  });
+  var ssel = document.getElementById('soil-select');
+  if (ssel) Array.prototype.forEach.call(ssel.options, function(o) {
+    if (o.value === '') o.textContent = T[LANG].notSet;
+    else if (T[LANG].soilOpts[o.value]) o.textContent = T[LANG].soilOpts[o.value];
+  });
+  var ssel2 = document.getElementById('setup-soil');
+  if (ssel2) Array.prototype.forEach.call(ssel2.options, function(o) {
+    if (T[LANG].soilOpts[o.value]) o.textContent = T[LANG].soilOpts[o.value];
+  });
+  // placeholders
+  var t1 = document.getElementById('setup-title');
+  if (t1 && LANG === 'nl') t1.placeholder = 'bijv. Mijn perceel';
+  var t2 = document.getElementById('setup-climate');
+  if (t2 && LANG === 'nl') t2.placeholder = 'bijv. 7b–8a';
+  // aspect + slope options
+  var asp = document.getElementById('setup-aspect');
+  if (asp) Array.prototype.forEach.call(asp.options, function(o) {
+    var m = { 'South (180°)': 'Zuid (180°)', 'SE (135°)': 'ZO (135°)', 'SW (225°)': 'ZW (225°)', 'East (90°)': 'Oost (90°)', 'West (270°)': 'West (270°)', 'North (0°)': 'Noord (0°)' }[o.value];
+    if (LANG === 'nl' && m) o.textContent = m;
+  });
+  var slp = document.getElementById('setup-slope');
+  if (slp) Array.prototype.forEach.call(slp.options, function(o) {
+    var m = { '~5% gentle': '~5% flauw', '~10% moderate': '~10% matig', '~20% steep': '~20% steil' }[o.value];
+    if (LANG === 'nl' && m) o.textContent = m;
+  });
+}
 /* ============ STATE ============ */
 const STORAGE_KEY = 'masterplan-v1';
 const BRIEF_KEY = 'tuscan-brief-v1';   // shared design brief — read by all tools
@@ -705,7 +832,7 @@ function applyWaterSetup() {
   };
   saveWater(w);
   closeWaterSetup();
-  showToast('💧 Water setup saved · roof harvest ' + roofHarvest(w) + ' m³/yr');
+  showToast(LANG === 'nl' ? '💧 Waterinstellingen opgeslagen · dakopvang ' + roofHarvest(w) + ' m³/jaar' : '💧 Water setup saved · roof harvest ' + roofHarvest(w) + ' m³/yr');
 }
 /* ============ HISTORY (UNDO) ============ */
 let history = [];
@@ -716,13 +843,13 @@ function snapshot() {
   if (history.length > HISTORY_MAX) history.shift();
 }
 function undo() {
-  if (!history.length) { showToast('Nothing to undo'); return; }
+  if (!history.length) { showToast(tt('undoNothing')); return; }
   const prev = history.pop();
   try {
     plan = JSON.parse(prev);
     save(); renderAll();
-    showToast('↩️ Undone');
-  } catch(e) { showToast('⚠️ Could not restore'); }
+    showToast(tt('undone'));
+  } catch(e) { showToast(tt('restoreFail')); }
 }
 function clearLayer() {
   if (!plan || view === 'function') return;
@@ -742,7 +869,7 @@ function clearLayer() {
     n++;
   });
   save(); renderAll();
-  showToast('🧹 Cleared all ' + (key === 'zone' ? 'zones' : 'soil types'));
+  showToast(tt('cleared') + (key === 'zone' ? tt('zones') : tt('soilTypes')));
 }
 function showToast(msg) {
   const t = document.getElementById('toast');
@@ -766,14 +893,14 @@ function updateSetupResult() {
   const cols = Math.max(1, Math.ceil(w / c));
   const rows = Math.max(1, Math.ceil(h / c));
   document.getElementById('setup-result').textContent =
-    `${cols} × ${rows} cells (${cols * rows} total) · each ${c}×${c}m`;
+    (LANG === 'nl' ? `${cols} × ${rows} cellen (${cols * rows} totaal) · elk ${c}×${c}m` : `${cols} × ${rows} cells (${cols * rows} total) · each ${c}×${c}m`);
 }
 function applySetup() {
   const w = parseInt(document.getElementById('setup-w').value) || 100;
   const h = parseInt(document.getElementById('setup-h').value) || 100;
   const c = parseInt(document.getElementById('setup-cell').value) || 10;
   const soil = document.getElementById('setup-soil').value || 'silty';
-  if (w < c || h < c) { showToast('⚠️ Plot must be at least one cell'); return; }
+  if (w < c || h < c) { showToast(tt('plotTooSmall')); return; }
   const cols = Math.ceil(w / c);
   const rows = Math.ceil(h / c);
   snapshot();
@@ -781,7 +908,7 @@ function applySetup() {
   saveBrief(briefFromPlan(plan));
   save(); renderAll();
   closeSetup();
-  showToast('✅ New plot created · default soil: ' + (SOIL_META[soil] ? SOIL_META[soil].label : soil));
+  showToast(tt('newPlot') + (LANG === 'nl' ? ({sandy:'Zandgrond',silty:'Silt',loam:'Leem',clay:'Klei',chalky:'Kalkrijk',peaty:'Veen'}[soil] || soil) : (SOIL_META[soil] ? SOIL_META[soil].label : soil)));
 }
 function openSetup() {
   const brief = loadBrief();
@@ -969,7 +1096,7 @@ function suggestZones() {
     plan.cells[k] = Object.assign({}, prev, { function: 'construction', zone: '0' });
   });
   save(); renderAll();
-  showToast('✨ Zones suggested — ' + assigned + ' cells zoned (tap to adjust)');
+  showToast(tt('zonesSuggested') + assigned + tt('cellsZoned'));
 }
 function updateLegend() {
   const legend = document.getElementById('legend');
@@ -1153,13 +1280,13 @@ function renderStats() {
 function renderMeta() {
   const brief = loadBrief();
   document.getElementById('plot-info').innerHTML =
-    `<strong>${plan.width}×${plan.height}m</strong> · ${plan.cols}×${plan.rows} cells · ${plan.cellSize}m each` +
+    `<strong>${plan.width}×${plan.height}m</strong> · ${plan.cols}×${plan.rows} ${LANG === 'nl' ? 'cellen' : 'cells'} · ${plan.cellSize}m ${LANG === 'nl' ? 'elk' : 'each'}` +
     (brief.title ? ` · 📋 ${brief.title}` : '');
   document.getElementById('axis-label').textContent =
-    `Scale: 1 cell = ${plan.cellSize}×${plan.cellSize}m · ${plan.cols} cols × ${plan.rows} rows`;
+    (LANG === 'nl' ? `Schaal: 1 cel = ${plan.cellSize}×${plan.cellSize}m · ${plan.cols} ${tt('cols')} × ${plan.rows} ${tt('rows')}` : `Scale: 1 cell = ${plan.cellSize}×${plan.cellSize}m · ${plan.cols} cols × ${plan.rows} rows`);
   const assigned = Object.keys(plan.cells).length;
   document.getElementById('assigned-count').textContent =
-    `${assigned} / ${plan.cols * plan.rows} assigned`;
+    (LANG === 'nl' ? `${assigned} / ${plan.cols * plan.rows} toegewezen` : `${assigned} / ${plan.cols * plan.rows} assigned`);
 }
 
 /* ============ SELECTION & PANEL ============ */
@@ -1180,7 +1307,7 @@ function syncPanel() {
   const r = parseInt(parts[0]), c = parseInt(parts[1]);
   const cellNumber = r * plan.cols + c + 1;
   const cell = getCell(r, c);
-  document.getElementById('panel-coord').textContent = `#${cellNumber} — Cell (${r},${c}) · ${r*plan.cellSize}-${(r+1)*plan.cellSize}m V × ${c*plan.cellSize}-${(c+1)*plan.cellSize}m H`;
+  document.getElementById('panel-coord').textContent = (LANG === 'nl' ? `#${cellNumber} — Cel (${r},${c}) · ${r*plan.cellSize}-${(r+1)*plan.cellSize}m V × ${c*plan.cellSize}-${(c+1)*plan.cellSize}m H` : `#${cellNumber} — Cell (${r},${c}) · ${r*plan.cellSize}-${(r+1)*plan.cellSize}m V × ${c*plan.cellSize}-${(c+1)*plan.cellSize}m H`);
   const sel = document.getElementById('func-select');
   sel.value = cell ? cell.function : 'open';
   // zone + soil selects
@@ -1265,7 +1392,7 @@ function updateSoilHint(cell) {
       ? '✅ ' + sp.name + ' likes this ' + soilLabel.toLowerCase() + ' soil' + (isDefault ? ' (site default).' : '.')
       : '⚠️ ' + sp.name + ' prefers: ' + (prefs.length ? prefs.join(', ') : 'unknown') + ' — this cell is ' + soilLabel.toLowerCase() + (isDefault ? ' (site default).' : '.');
   } else {
-    hint.textContent = 'Cell soil: ' + soilLabel + (isDefault ? ' (site default)' : '') + '.';
+    hint.textContent = (LANG === 'nl' ? 'Celgrond: ' + soilLabel + (isDefault ? ' (standaard)' : '') + '.' : 'Cell soil: ' + soilLabel + (isDefault ? ' (site default)' : '') + '.');
   }
 }
 function onLabelInput() {
@@ -1304,7 +1431,7 @@ function removeAssignment() {
   const ss = document.getElementById('soil-select'); if (ss) ss.value = '';
   const hint = document.getElementById('soil-match-hint'); if (hint) hint.textContent = '';
   const note = document.getElementById('removed-note');
-  note.textContent = 'Cell cleared.';
+  note.textContent = tt('cellCleared');
   note.style.display = 'block';
 }
 
@@ -1333,7 +1460,7 @@ function updateGuildPreview() {
 }
 function openGuildDiagram() {
   const treeKey = document.getElementById('tree-select').value;
-  if (!treeKey) { showToast('⚠️ Select a tree first'); return; }
+  if (!treeKey) { showToast(tt('selectTreeFirst')); return; }
   const region = getRegionParam();
   window.open('guild-diagrams.html?region=' + region + '&tree=' + encodeURIComponent(treeKey), '_blank');
 }
@@ -1752,6 +1879,7 @@ function boot() {
     saveBrief(b);
   }
   renderAll();
+  applyI18nMP();
 }
 </script>
 </body>
