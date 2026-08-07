@@ -1,92 +1,39 @@
-# 🌲 Tuscan Permaculture — Static Site
+# 🌶️ SOILPEPPER — Permaculture Design Toolkit
 
-A self-contained static site for the 1ha Tuscan permaculture design tools. Ready to serve via any web server.
+Free, browser-based permaculture design tools. Plan a site from blank plot to garden beds — **no account, no server, your data never leaves your device.**
 
-## Quick Start (local testing)
+👉 **Live site: https://soilpepper.js.org/** (also: https://aljezurai.github.io/soilpepper/)
 
-```bash
-cd /opt/data/www
-python3 -m http.server 8080
-```
+## What it is
 
-Open `http://localhost:8080` in your browser. All internal links work.
+A suite of self-contained HTML tools (no build step, no backend) built on **Aranya's step-by-step permaculture design method**:
 
-## Serving via Nginx Proxy Manager (Umbrel)
+| Tool | Purpose |
+|---|---|
+| 🗺️ **Master Plan Grid** | Divide any plot into a 10×10m cell grid; assign functions (guild / vegetable garden / water / road / construction), paint zones |
+| 📄 **Design Proposal** | Aranya Step 6 master document — generated live from your brief, water and plan data |
+| 🧭 **Sector Analysis** | 9-sector radial analysis (wind, sun, water, wildlife, fire, noise, viewsheds, access, frost) |
+| 🗺️ **Helicopter View** | Master overlay with layer toggles rendered from your plan |
+| 💧 **Water Management** | Catchment, pond/tank sizing, gravity pressure, grid-snapped swale placement, what-if sliders |
+| 🔗 **Guild Matrix** | Companion relationships + mutual-benefit scores across 256 species |
+| 🌿 **Guild Diagrams** | 13 tree guilds with companion rings — printable for the field |
+| 🔍 **Species Filter** | 256 species × 11 filter dimensions |
+| 🥕 **Veg Planner** | Real-world garden model: 75cm beds in 10m cells, modules, join toggles, sowing specs (pattern/spacing/depth/thinning), per-slot capacity, offline field-view export |
+| 🌳 **Orchard Placement** | Zone-based tree placement with frost/wind/sun/water scoring |
 
-### 1. Install Nginx Proxy Manager
+## Privacy
 
-From the Umbrel App Store → install **Nginx Proxy Manager**.
+Everything runs client-side. Site plans, water calculations and garden layouts live in **your browser's localStorage** — nothing is uploaded anywhere. Use the **Export Field View / Export** buttons to produce standalone HTML/JSON you can carry to the garden, phone or printer.
 
-### 2. Serve the files
+## Region presets
 
-The files are at `/opt/data/www/` inside the Hermes container. NPM runs in its own container, so you have **two options**:
+- 🇮🇹 **Tuscany** — Mediterranean (Zone 8b–9a, silty-sand, ~800mm rain)
+- 🇳🇱 **Netherlands** — Temperate maritime (Zone 7b–8a)
 
-**Option A: Sync files to a volume NPM can read**
+Switch with `?region=tuscany|netherlands` on any tool.
 
-Use `docker cp` or set up a shared volume between containers. The cleanest approach:
+## Development
 
-```bash
-# Copy the www directory to a location NPM can reach
-docker cp hermes:/opt/data/www /path/on/host
-```
+The suite is maintained as a private repo (design vault) and exported to this public repo. Tools are single-file HTML + `plants.json` (the species truth database). No build step — open in any browser, works offline via `file://`.
 
-Then configure NPM to serve that directory as a static site.
-
-**Option B: Use the included Python HTTP server**
-
-A lightweight server already runs on port 8888 inside the Hermes container. Configure NPM to reverse-proxy to:
-
-```
-http://hermes:8888
-```
-
-(Replace `hermes` with the actual container name or host IP.)
-
-### 3. Configure NPM
-
-1. Open the NPM admin interface (port 81 by default)
-2. Add a **Proxy Host** or **Static Site**
-3. Set domain/subdomain (e.g. `permaculture.umbrel.local` or a real domain)
-4. Point to the server serving these files
-5. Enable SSL via Let's Encrypt if using a public domain
-
-### 4. (Optional) Public access via Cloudflare Tunnel
-
-1. Install **Cloudflare Tunnel** from the Umbrel App Store
-2. Configure it to route your domain to NPM
-3. No port forwarding needed — Cloudflare handles external access
-
-## File Structure
-
-```
-/opt/data/www/
-├── index.html              ← Entry point (Juniper Ridge dashboard)
-├── design-proposal.html    ← Aranya Step 6 master document
-├── sector-analysis.html    ← 9-sector radial analysis
-├── helicopter-view.html    ← Master overlay with toggles
-├── orchard-placement.html  ← 24 species positioned
-├── guild-diagrams.html     ← 13 tree guilds + 19 companions
-├── veg-planner.html        ← 12-bed drag-and-drop garden planner
-├── veg-design.html         ← Vegetable garden design view
-├── zone-2b.html            ← 15 species × 7 layers
-├── water-management.html   ← 4 sources, 4 swales
-├── species-filter.html     ← 110 species filter tool
-├── site-layout.html        ← Base map with zones
-├── plants.json             ← Shared species database (110 species)
-├── design-report.md        ← Full design report
-├── species-catalogue.md    ← Italian cultivar database
-└── suitability-assessment.md ← Plant suitability assessment
-```
-
-## Updating
-
-The source of truth is the Obsidian vault at:
-`/opt/data/obsidian-vault/Captures/`
-
-When tools are updated there, re-run the export:
-
-```bash
-/opt/data/scripts/export-www.sh
-```
-
-This script will be created once the export process is finalized.
+Built with the Aranya method — [*Permaculture Design: A Step-by-Step Guide*](https://www.permaculture.co.uk/books/permaculture-design-step-step-guide).
