@@ -2,7 +2,7 @@
 
 Free, browser-based permaculture design tools. Plan a site from blank plot to garden beds — **no account, no server, your data never leaves your device.**
 
-👉 **Live site: https://soilpepper.js.org/** (also: https://aljezurai.github.io/soilpepper/)
+👉 **Live site: https://soilpepper.com/** (also: https://aljezurai.github.io/soilpepper/)
 
 ## What it is
 
