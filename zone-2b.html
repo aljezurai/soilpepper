@@ -98,23 +98,96 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:8px;font-size:1.4em;}
 </head>
 <body>
 
-<h1>🌿 Zone 2b — Berries, Canopy & N-Fixers</h1>
-<div class="subtitle">East side · 40m × 22m · Adjacent to pond · SE firebreak · South-facing slope</div>
+<script>
+/* ===== I18N (2026-08-07) ===== */
+var ZQ = new URLSearchParams(window.location.search);
+var REGION = (ZQ.get('region') === 'netherlands' || ZQ.get('region') === 'tuscany') ? ZQ.get('region') : 'tuscany';
+var LANG = REGION === 'netherlands' ? 'nl' : 'en';
+var PLANT_NL = {"pomegranate": "Granaatappel", "jujube": "Jujube", "goji": "Gojibes", "elderberry": "Vlier", "blackberry": "Braam", "raspberry": "Framboos", "red-currant": "Rode bes", "sea-buckthorn": "Duindoorn", "goumi": "Goumi", "comfrey": "Smeerwortel", "yarrow": "Duizendblad", "borage": "Bernagie", "thyme": "Tijm", "white-clover": "Witte klaver", "grape": "Druif (wijngaard)", "grape-climb": "Druif klimt ↑"};
+var T = {
+  en: {
+    title: '🌿 Zone 2b — Berries, Canopy & N-Fixers', subtitle: 'East side · 40m × 22m · Adjacent to pond · SE firebreak · South-facing slope',
+    btnAll: '🔄 All', btnCanopy: '🌳 Canopy', btnSub: '🌿 Sub-canopy', btnBerries: '🫐 Berries', btnNfix: '🔷 N-fixers',
+    btnHerbs: '🌻 Herbs', btnGround: '🌱 Ground', btnClimber: '🌿 Climber', btnFrost: '❄️ Frost', btnFire: '🔥 Fire',
+    btnWind: '💨 Wind', btnSun: '☀️ Sun', btnWater: '💧 Water',
+    firebreak: '🔥 Firebreak', tempLbl: 'Zone 8b-9a · ~300m', tempRange: '🌡️ Upper -5°C → Pocket -12°C',
+    infoHint: '🌿 Click any plant for details', infoText: 'This map shows the detailed design of Zone 2b — 15 species in a 7-layer forest garden stack. Toggle layers above to see each level, or click a plant for its full profile.',
+    sideH3: '🌿 Zone 2b — East Side', stArea: 'Area', stAreaV: '~40m × 22m = 880m²', stPos: 'Position', stPosV: 'East side, adjacent to pond',
+    stSwales: 'Swales', stSwalesV: '4 swales cross this zone', stRoles: 'Primary roles', stRolesV: 'Berries, Canopy, N-fixers',
+    stFire: 'Fire risk', stFireV: 'SE boundary — firebreak with herbs', stWater: 'Water source', stWaterV: 'Pond adjacent (humidity buffer)',
+    stPrinc: 'Design principle', stPrincV: '7-layer forest garden stacking',
+    stackH3: '📐 7-Layer Stack', l7: '7. Canopy', l6: '6. Sub-canopy', l5: '5. Shrub', lN: 'N-fixers', l4: '4. Herb', l3: '3. Ground', l1: '1. Climber',
+    l7V: 'Pomegranate, Jujube', l6V: 'Goji, Elderberry', l5V: 'Black/Rasp/Currant', lNV: 'Sea buckthorn, Goumi', l4V: 'Comfrey, Yarrow, Borage', l3V: 'Thyme, White clover', l1V: 'Grape (table) ↑',
+    legendH3: '🎨 Legend', lgCanopy: 'Canopy', lgSub: 'Sub-canopy', lgBerries: 'Berries', lgNfix: 'N-fixers', lgHerbs: 'Herbs', lgGround: 'Ground cover', lgClimber: 'Climber', lgMarginal: '⚠️ Marginal',
+    toggleTable: '📋 Toggle Summary Table', thPlant: 'Plant', thLayer: 'Layer', thFunc: 'Functions', thWater: 'Water', thFire: 'Fire', thStatus: 'Status',
+    wLow: '💧 Low', wMod: '💧💧 Mod', wHigh: '💧💧💧 High', fGood: '🔥 Good', fMod: 'Mod', fLow: 'Low', fNone: '—',
+    stThrives: '✅ Thrives', stMarginal: '⚠️ Marginal', grapeClimb: 'Grape climbing ↑', grapeTable: 'Grape (table)',
+    swale: 'Swale', allOff: '🔄 All Off', allPartial: '🔄 Partial',
+    layerCanopy: 'Canopy', layerSub: 'Sub-canopy', layerShrub: 'Shrub', layerNfixer: 'N-fixer', layerHerb: 'Herb', layerGround: 'Ground cover', layerClimber: 'Climber',
+    stYield: '🍎 Yield', stFireRes: '🔥 Fire-resist', stPoll: '🐝 Pollinator', stNfix: '🔄 N-fixer', stAcc: '⛏️ Accumulator', stMulch: '🌿 Mulcher', stPest: '🚫 Pest repel', stGround: '🌱 Ground', stEdible: '🍎 Edible', stWind: '🚫 Windbreak',
+    soilBenefit: 'Soil benefit:', varieties: 'Varieties:', spacing: 'Spacing:', water: 'Water:', frost: 'Frost:', fire: '🔥 Fire:',
+    spacingM: 'apart', spacingGrid: 'm × m', marginalsite: '⚠️ <strong>Marginal at this site:</strong>',
+    layerPomegranate: 'Canopy', layerJujube: 'Canopy', layerGoji: 'Sub-canopy', layerElderberry: 'Sub-canopy', layerBlackberry: 'Shrub', layerRaspberry: 'Shrub', layerCurrant: 'Shrub', layerSeabuckthorn: 'N-fixer', layerGoumi: 'N-fixer', layerComfrey: 'Herb', layerYarrow: 'Herb', layerBorage: 'Herb', layerThyme: 'Ground cover', layerClover: 'Ground cover', layerGrape: 'Climber',
+    layerPomegranate: 'Canopy', layerJujube: 'Canopy', layerGoji: 'Sub-canopy', layerElderberry: 'Sub-canopy', layerBlackberry: 'Shrub', layerRaspberry: 'Shrub', layerCurrant: 'Shrub', layerSeabuckthorn: 'N-fixer', layerGoumi: 'N-fixer', layerComfrey: 'Herb', layerYarrow: 'Herb', layerBorage: 'Herb', layerThyme: 'Ground cover', layerClover: 'Ground cover', layerGrape: 'Climber'
+  },
+  nl: {
+    title: '🌿 Zone 2b — Bessen, Kroon & stikstofbinders', subtitle: 'Oostkant · 40m × 22m · Naast de vijver · ZO-brandgang · Op het zuiden gerichte helling',
+    btnAll: '🔄 Alles', btnCanopy: '🌳 Kroon', btnSub: '🌿 Onderkroon', btnBerries: '🫐 Bessen', btnNfix: '🔷 Stikstofbinders',
+    btnHerbs: '🌻 Kruiden', btnGround: '🌱 Bodem', btnClimber: '🌿 Klimmer', btnFrost: '❄️ Vorst', btnFire: '🔥 Vuur',
+    btnWind: '💨 Wind', btnSun: '☀️ Zon', btnWater: '💧 Water',
+    firebreak: '🔥 Brandgang', tempLbl: 'Zone 8b-9a · ~300m', tempRange: '🌡️ Boven -5°C → Kuil -12°C',
+    infoHint: '🌿 Klik op een plant voor details', infoText: 'Deze kaart toont het gedetailleerde ontwerp van Zone 2b — 15 soorten in een 7-laagse bostuin-stapeling. Schakel lagen hierboven om elk niveau te zien, of klik op een plant voor zijn volledige profiel.',
+    sideH3: '🌿 Zone 2b — Oostkant', stArea: 'Oppervlakte', stAreaV: '~40m × 22m = 880m²', stPos: 'Positie', stPosV: 'Oostkant, naast de vijver',
+    stSwales: 'Swales', stSwalesV: '4 swales kruisen deze zone', stRoles: 'Belangrijkste rollen', stRolesV: 'Bessen, Kroon, stikstofbinders',
+    stFire: 'Brandrisico', stFireV: 'ZO-grens — brandgang met kruiden', stWater: 'Waterbron', stWaterV: 'Vijver naastgelegen (vochtbuffer)',
+    stPrinc: 'Ontwerpprincipe', stPrincV: '7-laagse bostuin-stapeling',
+    stackH3: '📐 7-laags stapeling', l7: '7. Kroon', l6: '6. Onderkroon', l5: '5. Struik', lN: 'Stikstofbinders', l4: '4. Kruid', l3: '3. Bodem', l1: '1. Klimmer',
+    l7V: 'Granaatappel, Jujube', l6V: 'Gojibes, Vlier', l5V: 'Braam/Framboos/Bes', lNV: 'Duindoorn, Goumi', l4V: 'Smeerwortel, Duizendblad, Bernagie', l3V: 'Tijm, Witte klaver', l1V: 'Druif (tafel) ↑',
+    legendH3: '🎨 Legenda', lgCanopy: 'Kroon', lgSub: 'Onderkroon', lgBerries: 'Bessen', lgNfix: 'Stikstofbinders', lgHerbs: 'Kruiden', lgGround: 'Bodembedekker', lgClimber: 'Klimmer', lgMarginal: '⚠️ Marginaal',
+    toggleTable: '📋 Toon samenvattingstabel', thPlant: 'Plant', thLayer: 'Laag', thFunc: 'Functies', thWater: 'Water', thFire: 'Vuur', thStatus: 'Status',
+    wLow: '💧 Laag', wMod: '💧💧 Matig', wHigh: '💧💧💧 Hoog', fGood: '🔥 Goed', fMod: 'Matig', fLow: 'Laag', fNone: '—',
+    stThrives: '✅ Gedijt', stMarginal: '⚠️ Marginaal', grapeClimb: 'Druif klimt ↑', grapeTable: 'Druif (tafel)',
+    swale: 'Swale', allOff: '🔄 Alles uit', allPartial: '🔄 Gedeeltelijk',
+    layerCanopy: 'Kroon', layerSub: 'Onderkroon', layerShrub: 'Struik', layerNfixer: 'Stikstofbinder', layerHerb: 'Kruid', layerGround: 'Bodembedekker', layerClimber: 'Klimmer',
+    stYield: '🍎 Opbrengst', stFireRes: '🔥 Brandwerend', stPoll: '🐝 Bestuiver', stNfix: '🔄 Stikstofbinder', stAcc: '⛏️ Accumulator', stMulch: '🌿 Mulcher', stPest: '🚫 Plaagwerend', stGround: '🌱 Bodem', stEdible: '🍎 Eetbaar', stWind: '🚫 Windscherm',
+    soilBenefit: 'Bodemvoordeel:', varieties: 'Rassen:', spacing: 'Afstand:', water: 'Water:', frost: 'Vorst:', fire: '🔥 Vuur:',
+    spacingM: 'uit elkaar', spacingGrid: 'm × m', marginalsite: '⚠️ <strong>Marginaal op deze locatie:</strong>',
+    layerPomegranate: 'Kroon', layerJujube: 'Kroon', layerGoji: 'Onderkroon', layerElderberry: 'Onderkroon', layerBlackberry: 'Struik', layerRaspberry: 'Struik', layerCurrant: 'Struik', layerSeabuckthorn: 'Stikstofbinder', layerGoumi: 'Stikstofbinder', layerComfrey: 'Kruid', layerYarrow: 'Kruid', layerBorage: 'Kruid', layerThyme: 'Bodembedekker', layerClover: 'Bodembedekker', layerGrape: 'Klimmer',
+    layerPomegranate: 'Kroon', layerJujube: 'Kroon', layerGoji: 'Onderkroon', layerElderberry: 'Onderkroon', layerBlackberry: 'Struik', layerRaspberry: 'Struik', layerCurrant: 'Struik', layerSeabuckthorn: 'Stikstofbinder', layerGoumi: 'Stikstofbinder', layerComfrey: 'Kruid', layerYarrow: 'Kruid', layerBorage: 'Kruid', layerThyme: 'Bodembedekker', layerClover: 'Bodembedekker', layerGrape: 'Klimmer'
+  }
+};
+function tt(k) { return (T[LANG] && T[LANG][k] !== undefined) ? T[LANG][k] : (T.en[k] !== undefined ? T.en[k] : k); }
+function pl(key) { return (LANG === 'nl' && PLANT_NL[key]) ? PLANT_NL[key] : null; }
+function applyI18nZ2() {
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    var key = el.getAttribute('data-i18n');
+    if (T[LANG][key] !== undefined) el.innerHTML = T[LANG][key];
+  });
+  document.querySelectorAll('[data-pl]').forEach(function(el) {
+    var k = el.getAttribute('data-pl');
+    var n = pl(k);
+    if (n) el.textContent = n;
+  });
+}
+document.addEventListener('DOMContentLoaded', applyI18nZ2);
+</script>
+<h1 data-i18n="title">🌿 Zone 2b — Berries, Canopy & N-Fixers</h1>
+<div class="subtitle" data-i18n="subtitle">East side · 40m × 22m · Adjacent to pond · SE firebreak · South-facing slope</div>
 
 <div class="controls">
-  <button class="btn-toggle active" onclick="toggleLayer('all')">🔄 All</button>
-  <button class="btn-toggle active" onclick="toggleLayer('canopy')">🌳 Canopy</button>
-  <button class="btn-toggle active" onclick="toggleLayer('subcanopy')">🌿 Sub-canopy</button>
-  <button class="btn-toggle active" onclick="toggleLayer('shrub')">🫐 Berries</button>
-  <button class="btn-toggle active" onclick="toggleLayer('nfixer')">🔷 N-fixers</button>
-  <button class="btn-toggle active" onclick="toggleLayer('herb')">🌻 Herbs</button>
-  <button class="btn-toggle active" onclick="toggleLayer('ground')">🌱 Ground</button>
-  <button class="btn-toggle active" onclick="toggleLayer('climber')">🌿 Climber</button>
-  <button class="btn-toggle" onclick="toggleOverlay('frost')">❄️ Frost</button>
-  <button class="btn-toggle" onclick="toggleOverlay('fire-se')">🔥 Fire</button>
-  <button class="btn-toggle" onclick="toggleOverlay('wind')">💨 Wind</button>
-  <button class="btn-toggle" onclick="toggleOverlay('sun')">☀️ Sun</button>
-  <button class="btn-toggle" onclick="toggleOverlay('water')">💧 Water</button>
+  <button class="btn-toggle active" onclick="toggleLayer('all')" id="btn-all" data-i18n="btnAll">🔄 All</button>
+  <button class="btn-toggle active" onclick="toggleLayer('canopy')" data-i18n="btnCanopy">🌳 Canopy</button>
+  <button class="btn-toggle active" onclick="toggleLayer('subcanopy')" data-i18n="btnSub">🌿 Sub-canopy</button>
+  <button class="btn-toggle active" onclick="toggleLayer('shrub')" data-i18n="btnBerries">🫐 Berries</button>
+  <button class="btn-toggle active" onclick="toggleLayer('nfixer')" data-i18n="btnNfix">🔷 N-fixers</button>
+  <button class="btn-toggle active" onclick="toggleLayer('herb')" data-i18n="btnHerbs">🌻 Herbs</button>
+  <button class="btn-toggle active" onclick="toggleLayer('ground')" data-i18n="btnGround">🌱 Ground</button>
+  <button class="btn-toggle active" onclick="toggleLayer('climber')" data-i18n="btnClimber">🌿 Climber</button>
+  <button class="btn-toggle" onclick="toggleOverlay('frost')" data-i18n="btnFrost">❄️ Frost</button>
+  <button class="btn-toggle" onclick="toggleOverlay('fire-se')" data-i18n="btnFire">🔥 Fire</button>
+  <button class="btn-toggle" onclick="toggleOverlay('wind')" data-i18n="btnWind">💨 Wind</button>
+  <button class="btn-toggle" onclick="toggleOverlay('sun')" data-i18n="btnSun">☀️ Sun</button>
+  <button class="btn-toggle" onclick="toggleOverlay('water')" data-i18n="btnWater">💧 Water</button>
 </div>
 
 <div class="main-layout">
@@ -148,28 +221,28 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:8px;font-size:1.4em;}
       <div style="position:absolute;top:5%;left:3%;width:94%;height:90%;border:2px dashed rgba(129,199,132,0.3);border-radius:6px;z-index:1;pointer-events:none;"></div>
 
       <!-- Swale lines (2.5 swales cross Zone 2b at ~22%, 40%, 58%, 72% top) -->
-      <div class="swale" style="top:22%;"><div class="swale-label">Swale 1</div></div>
-      <div class="swale" style="top:40%;"><div class="swale-label">Swale 2</div></div>
-      <div class="swale" style="top:58%;"><div class="swale-label">Swale 3</div></div>
-      <div class="swale" style="top:72%;"><div class="swale-label">Swale 4</div></div>
+      <div class="swale" style="top:22%;"><div class="swale-label"><span data-i18n="swale">Swale</span> 1</div></div>
+      <div class="swale" style="top:40%;"><div class="swale-label"><span data-i18n="swale">Swale</span> 2</div></div>
+      <div class="swale" style="top:58%;"><div class="swale-label"><span data-i18n="swale">Swale</span> 3</div></div>
+      <div class="swale" style="top:72%;"><div class="swale-label"><span data-i18n="swale">Swale</span> 4</div></div>
 
       <!-- Firebreak strip (SE edge) -->
       <div style="position:absolute;top:70%;right:0;width:12%;height:28%;background:rgba(244,67,54,0.08);border-left:2px dashed rgba(244,67,54,0.3);z-index:2;pointer-events:none;"></div>
-      <div style="position:absolute;bottom:5%;right:1%;font-size:0.4em;color:rgba(244,67,54,0.4);z-index:3;pointer-events:none;">🔥 Firebreak</div>
+      <div style="position:absolute;bottom:5%;right:1%;font-size:0.4em;color:rgba(244,67,54,0.4);z-index:3;pointer-events:none;" data-i18n="firebreak">🔥 Firebreak</div>
 
       <!-- N ↑ -->
       <div style="position:absolute;top:2%;left:3%;font-size:0.45em;color:rgba(255,255,255,0.3);z-index:8;pointer-events:none;">N ↑</div>
 
       <!-- Temperature gradient -->
-      <div style="position:absolute;bottom:2%;left:3%;font-size:0.35em;color:rgba(255,255,255,0.2);z-index:8;pointer-events:none;">Zone 8b-9a · ~300m</div>
-      <div style="position:absolute;top:3%;right:3%;font-size:0.35em;color:rgba(255,255,255,0.2);z-index:8;pointer-events:none;">🌡️ Upper -5°C → Pocket -12°C</div>
+      <div style="position:absolute;bottom:2%;left:3%;font-size:0.35em;color:rgba(255,255,255,0.2);z-index:8;pointer-events:none;" data-i18n="tempLbl">Zone 8b-9a · ~300m</div>
+      <div style="position:absolute;top:3%;right:3%;font-size:0.35em;color:rgba(255,255,255,0.2);z-index:8;pointer-events:none;" data-i18n="tempRange">🌡️ Upper -5°C → Pocket -12°C</div>
 
       <!-- ============ ALL 15 PLANTS ============ -->
 
       <!-- CANOPY — Pomegranate (swale berm 1, east side) -->
       <div class="plant layer-canopy" style="top:16%;left:60%;" data-layer="canopy" onclick="showInfo('pomegranate')">
         <div class="plant-icon">🍎</div>
-        <div class="plant-label">Pomegranate</div>
+        <div class="plant-label" data-pl="pomegranate">Pomegranate</div>
         <div class="water-drops">💧</div>
         <div class="roles">🐝🚫🔥</div>
       </div>
@@ -177,7 +250,7 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:8px;font-size:1.4em;}
       <!-- CANOPY — Pomegranate 2 (swale berm 1, further east) -->
       <div class="plant layer-canopy" style="top:14%;left:78%;" data-layer="canopy" onclick="showInfo('pomegranate')">
         <div class="plant-icon">🍎</div>
-        <div class="plant-label">Pomegranate</div>
+        <div class="plant-label" data-pl="pomegranate">Pomegranate</div>
         <div class="water-drops">💧</div>
         <div class="roles">🐝🚫🔥</div>
       </div>
@@ -185,7 +258,7 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:8px;font-size:1.4em;}
       <!-- CANOPY — Jujube (swale berm 2, east side, firebreak zone) -->
       <div class="plant layer-canopy" style="top:33%;left:82%;" data-layer="canopy" onclick="showInfo('jujube')">
         <div class="plant-icon">🍒</div>
-        <div class="plant-label">Jujube</div>
+        <div class="plant-label" data-pl="jujube">Jujube</div>
         <div class="water-drops">💧</div>
         <div class="roles">🐝🍎🔥</div>
       </div>
@@ -193,7 +266,7 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:8px;font-size:1.4em;}
       <!-- CANOPY — Jujube 2 (swale berm 2, central) -->
       <div class="plant layer-canopy" style="top:35%;left:62%;" data-layer="canopy" onclick="showInfo('jujube')">
         <div class="plant-icon">🍒</div>
-        <div class="plant-label">Jujube</div>
+        <div class="plant-label" data-pl="jujube">Jujube</div>
         <div class="water-drops">💧</div>
         <div class="roles">🐝🍎🔥</div>
       </div>
@@ -201,7 +274,7 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:8px;font-size:1.4em;}
       <!-- SUB-CANOPY — Goji berry -->
       <div class="plant layer-subcanopy" style="top:22%;left:52%;" data-layer="subcanopy" onclick="showInfo('goji')">
         <div class="plant-icon">🫐</div>
-        <div class="plant-label">Goji berry</div>
+        <div class="plant-label" data-pl="goji">Goji berry</div>
         <div class="water-drops">💧💧</div>
         <div class="roles">🐝🍎</div>
       </div>
@@ -209,7 +282,7 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:8px;font-size:1.4em;}
       <!-- SUB-CANOPY — Elderberry -->
       <div class="plant layer-subcanopy" style="top:27%;left:72%;" data-layer="subcanopy" onclick="showInfo('elderberry')">
         <div class="plant-icon">🫐</div>
-        <div class="plant-label">Elderberry</div>
+        <div class="plant-label" data-pl="elderberry">Elderberry</div>
         <div class="water-drops">💧💧</div>
         <div class="roles">🐝🍎🌿</div>
       </div>
@@ -217,7 +290,7 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:8px;font-size:1.4em;}
       <!-- SHRUB — Blackberry -->
       <div class="plant layer-shrub" style="top:44%;left:55%;" data-layer="shrub" onclick="showInfo('blackberry')">
         <div class="plant-icon">🫐</div>
-        <div class="plant-label">Blackberry</div>
+        <div class="plant-label" data-pl="blackberry">Blackberry</div>
         <div class="water-drops">💧💧</div>
         <div class="roles">🐝🍎🚫</div>
       </div>
@@ -225,7 +298,7 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:8px;font-size:1.4em;}
       <!-- SHRUB MARGINAL — Raspberry ⚠️ -->
       <div class="plant layer-shrub marginal" style="top:48%;left:78%;" data-layer="shrub" onclick="showInfo('raspberry')">
         <div class="plant-icon">🫐</div>
-        <div class="plant-label">Raspberry ⚠️</div>
+        <div class="plant-label" data-pl="raspberry">Raspberry ⚠️</div>
         <div class="water-drops">💧💧💧</div>
         <div class="roles">🐝🍎🌱</div>
       </div>
@@ -233,7 +306,7 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:8px;font-size:1.4em;}
       <!-- SHRUB MARGINAL — Red currant ⚠️ -->
       <div class="plant layer-shrub marginal" style="top:50%;left:48%;" data-layer="shrub" onclick="showInfo('currant')">
         <div class="plant-icon">🫐</div>
-        <div class="plant-label">Red currant ⚠️</div>
+        <div class="plant-label" data-pl="red-currant">Red currant ⚠️</div>
         <div class="water-drops">💧💧💧</div>
         <div class="roles">🐝🍎</div>
       </div>
@@ -241,7 +314,7 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:8px;font-size:1.4em;}
       <!-- N-FIXER — Sea buckthorn (outer edge, windbreak) -->
       <div class="plant layer-nfixer" style="top:60%;left:86%;" data-layer="nfixer" onclick="showInfo('seabuckthorn')">
         <div class="plant-icon">🔄</div>
-        <div class="plant-label">Sea buckthorn</div>
+        <div class="plant-label" data-pl="sea-buckthorn">Sea buckthorn</div>
         <div class="water-drops">💧</div>
         <div class="roles">🔄🍎🚫</div>
       </div>
@@ -249,7 +322,7 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:8px;font-size:1.4em;}
       <!-- N-FIXER — Goumi (outer edge, windbreak) -->
       <div class="plant layer-nfixer" style="top:65%;left:50%;" data-layer="nfixer" onclick="showInfo('goumi')">
         <div class="plant-icon">🔄</div>
-        <div class="plant-label">Goumi</div>
+        <div class="plant-label" data-pl="goumi">Goumi</div>
         <div class="water-drops">💧💧</div>
         <div class="roles">🔄🐝🍎</div>
       </div>
@@ -257,7 +330,7 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:8px;font-size:1.4em;}
       <!-- HERB — Comfrey -->
       <div class="plant layer-herb" style="top:30%;left:42%;" data-layer="herb" onclick="showInfo('comfrey')">
         <div class="plant-icon">🌿</div>
-        <div class="plant-label">Comfrey</div>
+        <div class="plant-label" data-pl="comfrey">Comfrey</div>
         <div class="water-drops">💧💧</div>
         <div class="roles">⛏️🌿🐝</div>
       </div>
@@ -265,7 +338,7 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:8px;font-size:1.4em;}
       <!-- HERB — Yarrow -->
       <div class="plant layer-herb" style="top:40%;left:32%;" data-layer="herb" onclick="showInfo('yarrow')">
         <div class="plant-icon">🌼</div>
-        <div class="plant-label">Yarrow</div>
+        <div class="plant-label" data-pl="yarrow">Yarrow</div>
         <div class="water-drops">💧</div>
         <div class="roles">⛏️🐝🌿</div>
       </div>
@@ -273,7 +346,7 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:8px;font-size:1.4em;}
       <!-- HERB — Borage -->
       <div class="plant layer-herb" style="top:55%;left:28%;" data-layer="herb" onclick="showInfo('borage')">
         <div class="plant-icon">🌸</div>
-        <div class="plant-label">Borage</div>
+        <div class="plant-label" data-pl="borage">Borage</div>
         <div class="water-drops">💧</div>
         <div class="roles">🐝⛏️🍎</div>
       </div>
@@ -281,7 +354,7 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:8px;font-size:1.4em;}
       <!-- GROUND — Thyme -->
       <div class="plant layer-ground" style="top:70%;left:38%;" data-layer="ground" onclick="showInfo('thyme')">
         <div class="plant-icon">🌱</div>
-        <div class="plant-label">Thyme</div>
+        <div class="plant-label" data-pl="thyme">Thyme</div>
         <div class="water-drops">💧</div>
         <div class="roles">🌱🚫🐝</div>
       </div>
@@ -289,7 +362,7 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:8px;font-size:1.4em;}
       <!-- GROUND — White clover -->
       <div class="plant layer-ground" style="top:76%;left:28%;" data-layer="ground" onclick="showInfo('clover')">
         <div class="plant-icon">🌱</div>
-        <div class="plant-label">White clover</div>
+        <div class="plant-label" data-pl="white-clover">White clover</div>
         <div class="water-drops">💧</div>
         <div class="roles">🔄🌱🐝</div>
       </div>
@@ -297,7 +370,7 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:8px;font-size:1.4em;}
       <!-- CLIMBER — Grape (climbing pomegranate) -->
       <div class="plant layer-climber" style="top:12%;left:64%;" data-layer="climber" onclick="showInfo('grape')">
         <div class="plant-icon">🍇</div>
-        <div class="plant-label">Grape climbing ↑</div>
+        <div class="plant-label" data-pl="grape-climb">Grape climbing ↑</div>
         <div class="water-drops">💧</div>
         <div class="roles">🍎🐝</div>
       </div>
@@ -305,7 +378,7 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:8px;font-size:1.4em;}
       <!-- CLIMBER — Grape (climbing jujube) -->
       <div class="plant layer-climber" style="top:30%;left:72%;" data-layer="climber" onclick="showInfo('grape')">
         <div class="plant-icon">🍇</div>
-        <div class="plant-label">Grape climbing ↑</div>
+        <div class="plant-label" data-pl="grape-climb">Grape climbing ↑</div>
         <div class="water-drops">💧</div>
         <div class="roles">🍎🐝</div>
       </div>
@@ -313,8 +386,8 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:8px;font-size:1.4em;}
       <!-- Info panel -->
       <div class="info-panel active" id="info-panel">
         <div id="info-content">
-          <h4>🌿 Click any plant for details</h4>
-          <p>This map shows the detailed design of Zone 2b — 15 species in a 7-layer forest garden stack. Toggle layers above to see each level, or click a plant for its full profile.</p>
+          <h4 data-i18n="infoHint">🌿 Click any plant for details</h4>
+          <p data-i18n="infoText">This map shows the detailed design of Zone 2b — 15 species in a 7-layer forest garden stack. Toggle layers above to see each level, or click a plant for its full profile.</p>
         </div>
       </div>
 
@@ -324,77 +397,77 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:8px;font-size:1.4em;}
   <div class="info-side">
     <!-- Zone 2b info card -->
     <div class="side-card">
-      <h3>🌿 Zone 2b — East Side</h3>
-      <div class="stat-row"><span class="stat-label">Area</span><span class="stat-val">~40m × 22m = 880m²</span></div>
-      <div class="stat-row"><span class="stat-label">Position</span><span class="stat-val">East side, adjacent to pond</span></div>
-      <div class="stat-row"><span class="stat-label">Swales</span><span class="stat-val">4 swales cross this zone</span></div>
-      <div class="stat-row"><span class="stat-label">Primary roles</span><span class="stat-val">Berries, Canopy, N-fixers</span></div>
-      <div class="stat-row"><span class="stat-label">Fire risk</span><span class="stat-val">SE boundary — firebreak with herbs</span></div>
-      <div class="stat-row"><span class="stat-label">Water source</span><span class="stat-val">Pond adjacent (humidity buffer)</span></div>
-      <div class="stat-row"><span class="stat-label">Design principle</span><span class="stat-val">7-layer forest garden stacking</span></div>
+      <h3 data-i18n="sideH3">🌿 Zone 2b — East Side</h3>
+      <div class="stat-row"><span class="stat-label" data-i18n="stArea">Area</span><span class="stat-val" data-i18n="stAreaV">~40m × 22m = 880m²</span></div>
+      <div class="stat-row"><span class="stat-label" data-i18n="stPos">Position</span><span class="stat-val" data-i18n="stPosV">East side, adjacent to pond</span></div>
+      <div class="stat-row"><span class="stat-label" data-i18n="stSwales">Swales</span><span class="stat-val" data-i18n="stSwalesV">4 swales cross this zone</span></div>
+      <div class="stat-row"><span class="stat-label" data-i18n="stRoles">Primary roles</span><span class="stat-val" data-i18n="stRolesV">Berries, Canopy, N-fixers</span></div>
+      <div class="stat-row"><span class="stat-label" data-i18n="stFire">Fire risk</span><span class="stat-val" data-i18n="stFireV">SE boundary — firebreak with herbs</span></div>
+      <div class="stat-row"><span class="stat-label" data-i18n="stWater">Water source</span><span class="stat-val" data-i18n="stWaterV">Pond adjacent (humidity buffer)</span></div>
+      <div class="stat-row"><span class="stat-label" data-i18n="stPrinc">Design principle</span><span class="stat-val" data-i18n="stPrincV">7-layer forest garden stacking</span></div>
     </div>
 
     <!-- Vertical layers bar -->
     <div class="side-card">
-      <h3>📐 7-Layer Stack</h3>
+      <h3 data-i18n="stackH3">📐 7-Layer Stack</h3>
       <div class="layer-bar">
         <div class="layer-row">
           <span class="color-dot" style="background:#1b5e20;"></span>
-          <span class="layer-name">7. Canopy</span>
+          <span class="layer-name" data-i18n="l7">7. Canopy</span>
           <div class="layer-fill"><div class="layer-fill-bar" style="width:100%;background:#1b5e20;opacity:0.6;"></div></div>
-          <span style="font-size:0.55em;color:rgba(255,255,255,0.5);white-space:nowrap;">Pomegranate, Jujube</span>
+          <span style="font-size:0.55em;color:rgba(255,255,255,0.5);white-space:nowrap;" data-i18n="l7V">Pomegranate, Jujube</span>
         </div>
         <div class="layer-row">
           <span class="color-dot" style="background:#2e7d32;"></span>
-          <span class="layer-name">6. Sub-canopy</span>
+          <span class="layer-name" data-i18n="l6">6. Sub-canopy</span>
           <div class="layer-fill"><div class="layer-fill-bar" style="width:75%;background:#2e7d32;opacity:0.5;"></div></div>
-          <span style="font-size:0.55em;color:rgba(255,255,255,0.5);white-space:nowrap;">Goji, Elderberry</span>
+          <span style="font-size:0.55em;color:rgba(255,255,255,0.5);white-space:nowrap;" data-i18n="l6V">Goji, Elderberry</span>
         </div>
         <div class="layer-row">
           <span class="color-dot" style="background:#4caf50;"></span>
-          <span class="layer-name">5. Shrub</span>
+          <span class="layer-name" data-i18n="l5">5. Shrub</span>
           <div class="layer-fill"><div class="layer-fill-bar" style="width:60%;background:#4caf50;opacity:0.5;"></div></div>
-          <span style="font-size:0.55em;color:rgba(255,255,255,0.5);white-space:nowrap;">Black/Rasp/Currant</span>
+          <span style="font-size:0.55em;color:rgba(255,255,255,0.5);white-space:nowrap;" data-i18n="l5V">Black/Rasp/Currant</span>
         </div>
         <div class="layer-row">
           <span class="color-dot" style="background:#009688;"></span>
-          <span class="layer-name">N-fixers</span>
+          <span class="layer-name" data-i18n="lN">N-fixers</span>
           <div class="layer-fill"><div class="layer-fill-bar" style="width:50%;background:#009688;opacity:0.5;"></div></div>
-          <span style="font-size:0.55em;color:rgba(255,255,255,0.5);white-space:nowrap;">Sea buckthorn, Goumi</span>
+          <span style="font-size:0.55em;color:rgba(255,255,255,0.5);white-space:nowrap;" data-i18n="lNV">Sea buckthorn, Goumi</span>
         </div>
         <div class="layer-row">
           <span class="color-dot" style="background:#8bc34a;"></span>
-          <span class="layer-name">4. Herb</span>
+          <span class="layer-name" data-i18n="l4">4. Herb</span>
           <div class="layer-fill"><div class="layer-fill-bar" style="width:40%;background:#8bc34a;opacity:0.5;"></div></div>
-          <span style="font-size:0.55em;color:rgba(255,255,255,0.5);white-space:nowrap;">Comfrey, Yarrow, Borage</span>
+          <span style="font-size:0.55em;color:rgba(255,255,255,0.5);white-space:nowrap;" data-i18n="l4V">Comfrey, Yarrow, Borage</span>
         </div>
         <div class="layer-row">
           <span class="color-dot" style="background:#9ebb61;"></span>
-          <span class="layer-name">3. Ground</span>
+          <span class="layer-name" data-i18n="l3">3. Ground</span>
           <div class="layer-fill"><div class="layer-fill-bar" style="width:30%;background:#9ebb61;opacity:0.5;"></div></div>
-          <span style="font-size:0.55em;color:rgba(255,255,255,0.5);white-space:nowrap;">Thyme, White clover</span>
+          <span style="font-size:0.55em;color:rgba(255,255,255,0.5);white-space:nowrap;" data-i18n="l3V">Thyme, White clover</span>
         </div>
         <div class="layer-row">
           <span class="color-dot" style="background:#8b4513;"></span>
-          <span class="layer-name">1. Climber</span>
+          <span class="layer-name" data-i18n="l1">1. Climber</span>
           <div class="layer-fill"><div class="layer-fill-bar" style="width:70%;background:#8b4513;opacity:0.5;"></div></div>
-          <span style="font-size:0.55em;color:rgba(255,255,255,0.5);white-space:nowrap;">Grape (table) ↑</span>
+          <span style="font-size:0.55em;color:rgba(255,255,255,0.5);white-space:nowrap;" data-i18n="l1V">Grape (table) ↑</span>
         </div>
       </div>
     </div>
 
     <!-- Legend -->
     <div class="side-card">
-      <h3>🎨 Legend</h3>
+      <h3 data-i18n="legendH3">🎨 Legend</h3>
       <div class="legend">
-        <div class="legend-item"><span class="legend-swatch" style="background:#1b5e20;"></span>Canopy</div>
-        <div class="legend-item"><span class="legend-swatch" style="background:#2e7d32;"></span>Sub-canopy</div>
-        <div class="legend-item"><span class="legend-swatch" style="background:#4caf50;"></span>Berries</div>
-        <div class="legend-item"><span class="legend-swatch" style="background:#009688;"></span>N-fixers</div>
-        <div class="legend-item"><span class="legend-swatch" style="background:#8bc34a;"></span>Herbs</div>
-        <div class="legend-item"><span class="legend-swatch" style="background:#9ebb61;"></span>Ground cover</div>
-        <div class="legend-item"><span class="legend-swatch" style="background:#8b4513;"></span>Climber</div>
-        <div class="legend-item"><span class="legend-swatch" style="background:transparent;border:2px dashed #ff9800;"></span>⚠️ Marginal</div>
+        <div class="legend-item"><span class="legend-swatch" style="background:#1b5e20;"></span><span data-i18n="lgCanopy">Canopy</span></div>
+        <div class="legend-item"><span class="legend-swatch" style="background:#2e7d32;"></span><span data-i18n="lgSub">Sub-canopy</span></div>
+        <div class="legend-item"><span class="legend-swatch" style="background:#4caf50;"></span><span data-i18n="lgBerries">Berries</span></div>
+        <div class="legend-item"><span class="legend-swatch" style="background:#009688;"></span><span data-i18n="lgNfix">N-fixers</span></div>
+        <div class="legend-item"><span class="legend-swatch" style="background:#8bc34a;"></span><span data-i18n="lgHerbs">Herbs</span></div>
+        <div class="legend-item"><span class="legend-swatch" style="background:#9ebb61;"></span><span data-i18n="lgGround">Ground cover</span></div>
+        <div class="legend-item"><span class="legend-swatch" style="background:#8b4513;"></span><span data-i18n="lgClimber">Climber</span></div>
+        <div class="legend-item"><span class="legend-swatch" style="background:transparent;border:2px dashed #ff9800;"></span><span data-i18n="lgMarginal">⚠️ Marginal</span></div>
       </div>
     </div>
   </div>
@@ -402,57 +475,57 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:8px;font-size:1.4em;}
 
 <!-- Summary table -->
 <div style="margin-top:8px;">
-  <button class="btn-toggle active" onclick="toggleTable()">📋 Toggle Summary Table</button>
+  <button class="btn-toggle active" onclick="toggleTable()" data-i18n="toggleTable">📋 Toggle Summary Table</button>
 </div>
 <div id="summary-section">
   <table class="summary-table">
     <tr>
-      <th>Plant</th><th>Layer</th><th>Functions</th><th>Water</th><th>Fire</th><th>Status</th>
+      <th data-i18n="thPlant">Plant</th><th data-i18n="thLayer">Layer</th><th data-i18n="thFunc">Functions</th><th data-i18n="thWater">Water</th><th data-i18n="thFire">Fire</th><th data-i18n="thStatus">Status</th>
     </tr>
     <tr class="clickable" onclick="showInfo('pomegranate')">
-      <td>🍎 Pomegranate</td><td>Canopy</td><td>🐝🚫🔥</td><td>💧 Low</td><td>🔥 Good</td><td><span class="badge badge-thrive">✅ Thrives</span></td>
+      <td data-pl="pomegranate">🍎 Pomegranate</td><td data-i18n="layerPomegranate">Canopy</td><td>🐝🚫🔥</td><td data-i18n="wLow">💧 Low</td><td data-i18n="fGood">🔥 Good</td><td><span class="badge badge-thrive" data-i18n="stThrives">✅ Thrives</span></td>
     </tr>
     <tr class="clickable" onclick="showInfo('jujube')">
-      <td>🍒 Jujube</td><td>Canopy</td><td>🐝🍎🔥</td><td>💧 Low</td><td>🔥 Good</td><td><span class="badge badge-thrive">✅ Thrives</span></td>
+      <td data-pl="jujube">🍒 Jujube</td><td data-i18n="layerJujube">Canopy</td><td>🐝🍎🔥</td><td data-i18n="wLow">💧 Low</td><td data-i18n="fGood">🔥 Good</td><td><span class="badge badge-thrive" data-i18n="stThrives">✅ Thrives</span></td>
     </tr>
     <tr class="clickable" onclick="showInfo('goji')">
-      <td>🫐 Goji berry</td><td>Sub-canopy</td><td>🐝🍎</td><td>💧💧 Mod</td><td>—</td><td><span class="badge badge-thrive">✅ Thrives</span></td>
+      <td data-pl="goji">🫐 Goji berry</td><td data-i18n="layerGoji">Sub-canopy</td><td>🐝🍎</td><td data-i18n="wMod">💧💧 Mod</td><td data-i18n="fNone">—</td><td><span class="badge badge-thrive" data-i18n="stThrives">✅ Thrives</span></td>
     </tr>
     <tr class="clickable" onclick="showInfo('elderberry')">
-      <td>🫐 Elderberry</td><td>Sub-canopy</td><td>🐝🍎🌿</td><td>💧💧 Mod</td><td>—</td><td><span class="badge badge-thrive">✅ Thrives</span></td>
+      <td data-pl="elderberry">🫐 Elderberry</td><td data-i18n="layerElderberry">Sub-canopy</td><td>🐝🍎🌿</td><td data-i18n="wMod">💧💧 Mod</td><td data-i18n="fNone">—</td><td><span class="badge badge-thrive" data-i18n="stThrives">✅ Thrives</span></td>
     </tr>
     <tr class="clickable" onclick="showInfo('blackberry')">
-      <td>🫐 Blackberry</td><td>Shrub</td><td>🐝🍎🚫</td><td>💧💧 Mod</td><td>Low</td><td><span class="badge badge-thrive">✅ Thrives</span></td>
+      <td data-pl="blackberry">🫐 Blackberry</td><td data-i18n="layerBlackberry">Shrub</td><td>🐝🍎🚫</td><td data-i18n="wMod">💧💧 Mod</td><td data-i18n="fLow">Low</td><td><span class="badge badge-thrive" data-i18n="stThrives">✅ Thrives</span></td>
     </tr>
     <tr class="clickable" onclick="showInfo('raspberry')">
-      <td>🫐 Raspberry ⚠️</td><td>Shrub</td><td>🐝🍎🌱</td><td>💧💧💧 High</td><td>Low</td><td><span class="badge badge-marginal">⚠️ Marginal</span></td>
+      <td data-pl="raspberry">🫐 Raspberry ⚠️</td><td data-i18n="layerRaspberry">Shrub</td><td>🐝🍎🌱</td><td data-i18n="wHigh">💧💧💧 High</td><td data-i18n="fLow">Low</td><td><span class="badge badge-marginal" data-i18n="stMarginal">⚠️ Marginal</span></td>
     </tr>
     <tr class="clickable" onclick="showInfo('currant')">
-      <td>🫐 Red currant ⚠️</td><td>Shrub</td><td>🐝🍎</td><td>💧💧💧 High</td><td>Low</td><td><span class="badge badge-marginal">⚠️ Marginal</span></td>
+      <td data-pl="red-currant">🫐 Red currant ⚠️</td><td data-i18n="layerCurrant">Shrub</td><td>🐝🍎</td><td data-i18n="wHigh">💧💧💧 High</td><td data-i18n="fLow">Low</td><td><span class="badge badge-marginal" data-i18n="stMarginal">⚠️ Marginal</span></td>
     </tr>
     <tr class="clickable" onclick="showInfo('seabuckthorn')">
-      <td>🔄 Sea buckthorn</td><td>N-fixer</td><td>🔄🍎🚫</td><td>💧 Low</td><td>Mod</td><td><span class="badge badge-thrive">✅ Thrives</span></td>
+      <td data-pl="sea-buckthorn">🔄 Sea buckthorn</td><td data-i18n="layerSeabuckthorn">N-fixer</td><td>🔄🍎🚫</td><td data-i18n="wLow">💧 Low</td><td data-i18n="fMod">Mod</td><td><span class="badge badge-thrive" data-i18n="stThrives">✅ Thrives</span></td>
     </tr>
     <tr class="clickable" onclick="showInfo('goumi')">
-      <td>🔄 Goumi</td><td>N-fixer</td><td>🔄🐝🍎</td><td>💧💧 Mod</td><td>Mod</td><td><span class="badge badge-thrive">✅ Thrives</span></td>
+      <td data-pl="goumi">🔄 Goumi</td><td data-i18n="layerGoumi">N-fixer</td><td>🔄🐝🍎</td><td data-i18n="wMod">💧💧 Mod</td><td data-i18n="fMod">Mod</td><td><span class="badge badge-thrive" data-i18n="stThrives">✅ Thrives</span></td>
     </tr>
     <tr class="clickable" onclick="showInfo('comfrey')">
-      <td>🌿 Comfrey</td><td>Herb</td><td>⛏️🌿🐝</td><td>💧💧 Mod</td><td>—</td><td><span class="badge badge-thrive">✅ Thrives</span></td>
+      <td data-pl="comfrey">🌿 Comfrey</td><td data-i18n="layerComfrey">Herb</td><td>⛏️🌿🐝</td><td data-i18n="wMod">💧💧 Mod</td><td data-i18n="fNone">—</td><td><span class="badge badge-thrive" data-i18n="stThrives">✅ Thrives</span></td>
     </tr>
     <tr class="clickable" onclick="showInfo('yarrow')">
-      <td>🌼 Yarrow</td><td>Herb</td><td>⛏️🐝🌿</td><td>💧 Low</td><td>—</td><td><span class="badge badge-thrive">✅ Thrives</span></td>
+      <td data-pl="yarrow">🌼 Yarrow</td><td data-i18n="layerYarrow">Herb</td><td>⛏️🐝🌿</td><td data-i18n="wLow">💧 Low</td><td data-i18n="fNone">—</td><td><span class="badge badge-thrive" data-i18n="stThrives">✅ Thrives</span></td>
     </tr>
     <tr class="clickable" onclick="showInfo('borage')">
-      <td>🌸 Borage</td><td>Herb</td><td>🐝⛏️🍎</td><td>💧 Low</td><td>—</td><td><span class="badge badge-thrive">✅ Thrives</span></td>
+      <td data-pl="borage">🌸 Borage</td><td data-i18n="layerBorage">Herb</td><td>🐝⛏️🍎</td><td data-i18n="wLow">💧 Low</td><td data-i18n="fNone">—</td><td><span class="badge badge-thrive" data-i18n="stThrives">✅ Thrives</span></td>
     </tr>
     <tr class="clickable" onclick="showInfo('thyme')">
-      <td>🌱 Thyme</td><td>Ground cover</td><td>🌱🚫🐝</td><td>💧 Low</td><td>🔥 Good</td><td><span class="badge badge-thrive">✅ Thrives</span></td>
+      <td data-pl="thyme">🌱 Thyme</td><td data-i18n="layerThyme">Ground cover</td><td>🌱🚫🐝</td><td data-i18n="wLow">💧 Low</td><td data-i18n="fGood">🔥 Good</td><td><span class="badge badge-thrive" data-i18n="stThrives">✅ Thrives</span></td>
     </tr>
     <tr class="clickable" onclick="showInfo('clover')">
-      <td>🌱 White clover</td><td>Ground cover</td><td>🔄🌱🐝</td><td>💧 Low</td><td>—</td><td><span class="badge badge-thrive">✅ Thrives</span></td>
+      <td data-pl="white-clover">🌱 White clover</td><td data-i18n="layerClover">Ground cover</td><td>🔄🌱🐝</td><td data-i18n="wLow">💧 Low</td><td data-i18n="fNone">—</td><td><span class="badge badge-thrive" data-i18n="stThrives">✅ Thrives</span></td>
     </tr>
     <tr class="clickable" onclick="showInfo('grape')">
-      <td>🍇 Grape (table)</td><td>Climber</td><td>🍎🐝</td><td>💧 Low</td><td>Mod</td><td><span class="badge badge-thrive">✅ Thrives</span></td>
+      <td data-pl="grape">🍇 Grape (table)</td><td data-i18n="layerGrape">Climber</td><td>🍎🐝</td><td data-i18n="wLow">💧 Low</td><td data-i18n="fMod">Mod</td><td><span class="badge badge-thrive" data-i18n="stThrives">✅ Thrives</span></td>
     </tr>
   </table>
 </div>
@@ -494,7 +567,7 @@ function toggleLayer(layer){
     document.querySelectorAll('[onclick*="toggleLayer"]').forEach(b=>{
       if(b.textContent==='🔄 All'){
         b.classList.toggle('active',!allActive);
-        b.textContent = allActive?'🔄 All Off':'🔄 All';
+        b.textContent = allActive ? tt('allOff') : tt('btnAll');
       }
     });
     return;
@@ -509,7 +582,7 @@ function toggleLayer(layer){
   const allBtn = document.querySelector('[onclick*="toggleLayer"][onclick*="all"]')||document.querySelector('[onclick*="toggleLayer(&#39;all&#39;"]');
   if(allBtn){
     const allActive = layers.every(l => (document.querySelector(`[onclick*="toggleLayer('${l}'"]`)||document.querySelector(`[onclick*="toggleLayer(&#39;${l}&#39;"]`))?.classList.contains('active'));
-    allBtn.textContent = allActive ? '🔄 All' : '🔄 Partial';
+    allBtn.textContent = allActive ? tt('btnAll') : tt('allPartial');
   }
 }
 
@@ -522,12 +595,29 @@ function toggleOverlay(name){
 }
 
 // Info panel
+var DETAIL_NL = {
+  'pomegranate': '<h4>🍎 Granaatappel — Punica granatum</h4><p><span class="stat">🍎 Opbrengst</span><span class="stat">🔥 Brandwerend</span><span class="stat">🐝 Bestuiver</span></p><p><strong>Bodemvoordeel:</strong> Diepe wortels stabiliseren de helling. Matige bladval. Verdraagt arme grond. Brandwerend hout — uitstekend voor de ZO-brandgangzone.</p><p><strong>Rassen:</strong> \'Dente di Cavallo\' (Italiaans), \'Wonderful\', \'Salavatski\'. <strong>Afstand:</strong> 4m × 4m. <strong>Water:</strong> 💧 Laag — droogtegeteeld na J2. <strong>Vorst:</strong> Winterhard tot -10°C. <strong>🔥 Vuur:</strong> Vochthoudend fruit + hout = goede brandwerendheid.</p>',
+  'jujube': '<h4>🍒 Jujube — Ziziphus jujuba</h4><p><span class="stat">🍎 Opbrengst</span><span class="stat">🐝 Bestuiver</span><span class="stat">🔥 Brandwerend</span></p><p><strong>Bodemvoordeel:</strong> Diepe penwortel breekt ondergrond. Droogte-aangepast — minimale concurrentie. Stabiliseert hellingen. Produceert overvloedige bladval.</p><p><strong>Rassen:</strong> \'Tibetan\', \'Li\', \'Lang\'. <strong>Afstand:</strong> 4m × 4m. <strong>Water:</strong> 💧 Laag — extreem droogtetolerant. <strong>Vorst:</strong> Winterhard tot -15°C. <strong>🔥 Vuur:</strong> Vochthoudend hout. Uitstekend voor de brandgangzone.</p>',
+  'goji': '<h4>🫐 Gojibes — Lycium barbarum</h4><p><span class="stat">🍎 Opbrengst</span><span class="stat">🐝 Bestuiver</span></p><p><strong>Bodemvoordeel:</strong> Diepe wortels. Verdraagt arme, alkalische grond. Matige bladval. Lage concurrentie — goed onder kronen.</p><p><strong>Rassen:</strong> \'Sweet Lifeberry\', \'Crimson Star\'. <strong>Afstand:</strong> 2m uit elkaar. <strong>Water:</strong> 💧💧 Matig — enige irrigatie voor vruchtvorming. <strong>Vorst:</strong> Winterhard tot -15°C.</p>',
+  'elderberry': '<h4>🫐 Vlier — Sambucus nigra</h4><p><span class="stat">🍎 Opbrengst</span><span class="stat">🐝 Bestuiver</span><span class="stat">🌿 Mulcher</span></p><p><strong>Bodemvoordeel:</strong> Snelgroeiende biomassaproducent. Chop-and-drop mulch. Trekt vogels + bestuivers aan. Ondiepe wortels — goed voor swale-randen.</p><p><strong>Rassen:</strong> \'Sambu\', \'Haschberg\'. <strong>Afstand:</strong> 2,5m uit elkaar. <strong>Water:</strong> 💧💧 Matig — heeft wat zomerwater nodig. <strong>Vorst:</strong> Winterhard tot -20°C.</p>',
+  'blackberry': '<h4>🫐 Braam — Rubus spp.</h4><p><span class="stat">🍎 Opbrengst</span><span class="stat">🐝 Bestuiver</span><span class="stat">🚫 Plaagwerend</span></p><p><strong>Bodemvoordeel:</strong> Dicht wortelstelsel stabiliseert de bodem. Tweejarige stengels voegen organische stof toe. Goed voor hellingranden. Trekt vogels en nuttige insecten aan.</p><p><strong>Rassen:</strong> \'Loch Ness\' (doornloos), \'Chester\' (doornloos). <strong>Afstand:</strong> 2m uit elkaar. <strong>Water:</strong> 💧💧 Matig — meer met zomerbewatering. <strong>Vorst:</strong> Winterhard tot -15°C. Sterk geschikt voor Toscane.</p>',
+  'raspberry': '<h4>🫐 Framboos ⚠️ — Rubus idaeus</h4><p><span class="stat">🍎 Opbrengst</span><span class="stat">🐝 Bestuiver</span><span class="stat">🌱 Bodem</span></p><p><strong>Bodemvoordeel:</strong> Dicht wortelstelsel. Matige biomassa. Heeft zware mulch nodig. ⚠️ <strong>Marginaal op deze locatie:</strong> heeft namiddag-schaduw + constante druppelirrigatie nodig.</p><p><strong>Rassen:</strong> \'Heritage\', \'Autumn Bliss\' (primocane = fruit op nieuw hout, minder vorstrisico). <strong>Afstand:</strong> 1m uit elkaar, 6-12 stengels. <strong>Water:</strong> 💧💧💧 Hoog — druppel niet onderhandelbaar. <strong>Vorst:</strong> Stengels winterhard tot -25°C.</p>',
+  'currant': '<h4>🫐 Rode bes ⚠️ — Ribes rubrum</h4><p><span class="stat">🍎 Opbrengst</span><span class="stat">🐝 Bestuiver</span></p><p><strong>Bodemvoordeel:</strong> Lage biomassa. Heeft jaarlijkse compost nodig. ⚠️ <strong>Marginaal:</strong> worstelt in mediterrane hitte. Heeft namiddag-schaduw + druppel nodig.</p><p><strong>Rassen:</strong> \'Jonkheer van Tets\', \'Rovada\'. <strong>Afstand:</strong> 1,5m uit elkaar, slechts 2-3 struiken. <strong>Water:</strong> 💧💧💧 Hoog — constante vochtigheid essentieel. <strong>Vorst:</strong> Winterhard tot -30°C.</p>',
+  'seabuckthorn': '<h4>🔄 Duindoorn — Hippophae rhamnoides</h4><p><span class="stat">🔄 Stikstofbinder</span><span class="stat">🍎 Opbrengst</span><span class="stat">🚫 Windscherm</span></p><p><strong>Bodemvoordeel:</strong> Stikstofbinder — verrijkt de bodem voor omringende planten. Diep wortelstelsel stabiliseert hellingen. Uitstekend windscherm. Eetbare bessen rijk aan vitamine C. Doornen = natuurlijke barrière.</p><p><strong>Afstand:</strong> 2m uit elkaar in haag. <strong>Water:</strong> 💧 Laag — extreem droogtetolerant. <strong>Vorst:</strong> Winterhard tot -25°C. Mannelijke + vrouwelijke planten nodig voor fruit.</p>',
+  'goumi': '<h4>🔄 Goumi — Elaeagnus multiflora</h4><p><span class="stat">🔄 Stikstofbinder</span><span class="stat">🐝 Bestuiver</span><span class="stat">🍎 Opbrengst</span></p><p><strong>Bodemvoordeel:</strong> Stikstofbinder — wortelknobbels verrijken de bodem. Eetbare bessen. Trekt bestuivers aan. Dichte struikvorm. Niet-invasief. Verdraagt droge omstandigheden.</p><p><strong>Afstand:</strong> 2m uit elkaar. <strong>Water:</strong> 💧💧 Matig — enige irrigatie voor vruchtvorming. <strong>Vorst:</strong> Winterhard tot -15°C. Uitstekende compagnon voor Zone 2b-randen.</p>',
+  'comfrey': '<h4>🌿 Smeerwortel — Symphytum officinale</h4><p><span class="stat">⛏️ Accumulator</span><span class="stat">🌿 Mulcher</span><span class="stat">🐝 Bestuiver</span></p><p><strong>Bodemvoordeel:</strong> SLEUTELPLANT. Diepe penwortel wint mineralen uit de ondergrond. Chop-and-drop 3-5x/jaar = groenbemester. Bladeren = kaliumrijke mulch. Accumulator van K, P, Ca, Mg. Trekt bijen aan (paarse bloemen).</p><p><strong>Rassen:</strong> Bocking 14 (steriel — zaait zichzelf niet uit). <strong>Afstand:</strong> 1m uit elkaar. <strong>Water:</strong> 💧💧 Matig — heeft wat zomerwater nodig voor beste groei. <strong>Vorst:</strong> Sterft terug in de winter, groeit opnieuw. Winterhard tot -20°C.</p>',
+  'yarrow': '<h4>🌼 Duizendblad — Achillea millefolium</h4><p><span class="stat">⛏️ Accumulator</span><span class="stat">🐝 Bestuiver</span><span class="stat">🌿 Mulcher</span></p><p><strong>Bodemvoordeel:</strong> Diepe penwortel wint K, Ca, P, Cu. Verhoogt etherische-oliegehalte in naburige kruiden (compagnoneffect). Uitstekende bestuiverstrekker. Medicinaal. Droogtetolerant.</p><p><strong>Afstand:</strong> 0,5m uit elkaar, zaait zichzelf uit. <strong>Water:</strong> 💧 Laag — droogtetolerant. <strong>Vorst:</strong> Winterhard tot -25°C.</p>',
+  'borage': '<h4>🌸 Bernagie — Borago officinalis</h4><p><span class="stat">🐝 Bestuiver</span><span class="stat">⛏️ Accumulator</span><span class="stat">🍎 Eetbaar</span></p><p><strong>Bodemvoordeel:</strong> Diepe penwortel wint mineralen. Uitstekend bijenvoedsel (blauwe bloemen = bijenmagneet). Zaait zichzelf uit (permanente plek). Eetbare bloemen en bladeren. Weert tomatenhoornworm. Goede chop-and-drop biomassa.</p><p><strong>Afstand:</strong> 0,4m uit elkaar. <strong>Water:</strong> 💧 Laag — zaait zichzelf uit en blijft. <strong>Vorst:</strong> Eenjarig — zaait zichzelf betrouwbaar uit.</p>',
+  'thyme': '<h4>🌱 Tijm — Thymus vulgaris</h4><p><span class="stat">🌱 Bodembedekker</span><span class="stat">🚫 Plaagwerend</span><span class="stat">🐝 Bestuiver</span></p><p><strong>Bodemvoordeel:</strong> Uitstekende bodembedekker — voorkomt erosie. Laaggroeiend tapijt onderdrukt onkruid. Verspreidt geur bij betreding. Trekt bijen aan. Plaagwerend. Droogtetolerant.</p><p><strong>Rassen:</strong> Kruiptijm voor paden, opgaande tijm voor de keuken. <strong>Afstand:</strong> 0,3m uit elkaar voor volledige bedekking. <strong>Water:</strong> 💧 Laag — nooit irrigeren na vestiging. <strong>🔥 Vuur:</strong> Goed — laag brandstofvolume.</p>',
+  'clover': '<h4>🌱 Witte klaver — Trifolium repens</h4><p><span class="stat">🔄 Stikstofbinder</span><span class="stat">🌱 Bodembedekker</span><span class="stat">🐝 Bestuiver</span></p><p><strong>Bodemvoordeel:</strong> Stikstofbinder — zet atmosferische N om in plant-beschikbare vorm. Levende mulch — onderdrukt onkruid, houdt vocht vast. Bijenvoedsel. Kippenvoer. Verdraagt betreding.</p><p><strong>Rassen:</strong> \'Ladino\', \'Hollandse witte\'. <strong>Afstand:</strong> Zaad strooien. <strong>Water:</strong> 💧 Laag — zaait zichzelf uit in mediterraan klimaat. <strong>Vorst:</strong> Winterhard tot -20°C.</p>',
+  'grape': '<h4>🍇 Druif (tafel) — Vitis vinifera</h4><p><span class="stat">🍎 Opbrengst</span><span class="stat">🐝 Bestuiver</span></p><p><strong>Bodemvoordeel:</strong> Diep wortelstelsel (3m+) breekt ondergrond. Lage nutriëntconcurrentie met ondiepwortelende planten. Mycorrhiza. Klimt in kronen = verticale stapeling.</p><p><strong>Rassen:</strong> \'Italia\' (tafel), \'Moscato\' (tafel/wijn). <strong>Afstand:</strong> Eén wijnstok per kronenboom, klimt stam + takken. <strong>Water:</strong> 💧 Laag — droogtegeteeld na J1. <strong>Vorst:</strong> In rust tot -15°C.</p>'
+};
 function showInfo(name){
   const source = document.getElementById(name+'-h');
   if(!source) return;
   const panel = document.getElementById('info-panel');
   const content = document.getElementById('info-content');
-  content.innerHTML = source.innerHTML;
+  content.innerHTML = (LANG === 'nl' && DETAIL_NL[name]) ? DETAIL_NL[name] : source.innerHTML;
   panel.classList.add('active');
 }
 
@@ -542,7 +632,7 @@ document.addEventListener('click', function(e){
   const panel = document.getElementById('info-panel');
   const content = document.getElementById('info-content');
   if(!e.target.closest('.info-panel')){
-    content.innerHTML = '<h4>🌿 Click any plant for details</h4><p>This map shows the detailed design of Zone 2b — 15 species in a 7-layer forest garden stack. Toggle layers above to see each level, or click a plant for its full profile.</p>';
+    content.innerHTML = '<h4>' + tt('infoHint') + '</h4><p>' + tt('infoText') + '</p>';
   }
 });
 </script>
