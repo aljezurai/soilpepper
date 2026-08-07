@@ -393,6 +393,7 @@ var T = {
     dpFireRes: 'Firebreak, fire-resistant species, water pond as firefighting source',
     dpWlDir: 'Forest edge (north) → downhill', dpWlRes: 'Fencing, tree guards, native hedgerows, wildlife corridor on edges',
     dpViewDir: 'South-facing panorama', dpViewRes: 'Main windows + terrace south, partial screening for privacy',
+    dpSiroccoLbl: '🔥 Sirocco', dpSiroccoDir: 'SE (135°)', dpFireDir: 'SE (Sirocco) + dry summer',
     s2Key: '<strong>Key takeaway:</strong> The south-facing slope is the single most important asset — it maximizes solar gain, provides natural frost drainage, and shelters the site from cold NW winds. The SE (Sirocco) wind is the primary risk vector, driving both fire danger and desiccation.',
     s3Intro: 'Zones are arranged from the building (Zone 0) outward, following the south-facing slope. The warmest, most accessible areas closest to the house host the most intensive production. Outer zones transition to managed woodland, firebreak, and wild corridors.',
     s3LiveH4: '🗺️ Your Master Plan — actual zone assignments', loading: 'Loading…',
@@ -509,6 +510,7 @@ var T = {
     dpFireRes: 'Brandgang, brandwerende soorten, watervijver als brandblusbron',
     dpWlDir: 'Bosrand (noord) → bergafwaarts', dpWlRes: 'Afrastering, boombeschermers, inheemse hagen, natuurcorridor aan randen',
     dpViewDir: 'Panorama op het zuiden', dpViewRes: 'Hoofdramen + terras zuid, gedeeltelijke afscherming voor privacy',
+    dpSiroccoLbl: '🌪️ Storm (ZW)', dpSiroccoDir: 'ZW (225°) — herfst/winter', dpFireDir: 'Laag risico — gematigd zeeklimaat',
     s2Key: '<strong>Belangrijkste conclusie:</strong> De zuidelijke helling is het belangrijkste bezit — hij maximaliseert zonnewinst, zorgt voor natuurlijke vorstdrainage en beschut de locatie tegen koude NW-winden. De ZO-wind (Sirocco) is de belangrijkste risicofactor, die zowel brandgevaar als uitdroging veroorzaakt.',
     s3Intro: 'Zones zijn gerangschikt vanuit het gebouw (Zone 0) naar buiten, langs de zuidelijke helling. De warmste, meest toegankelijke gebieden dicht bij het huis herbergen de meest intensieve productie. Buitenste zones gaan over in beheerd bos, brandgang en wilde corridors.',
     s3LiveH4: '🗺️ Jouw Masterplan — actuele zonetoewijzingen', loading: 'Laden…',
@@ -595,6 +597,30 @@ var T = {
   }
 };
 function tt(k) { return (T[LANG] && T[LANG][k] !== undefined) ? T[LANG][k] : (T.en[k] !== undefined ? T.en[k] : k); }
+var DP_NL_LOGIC = {
+  s2Intro: 'De <strong>vlakke Nederlandse locatie</strong> op ~12m hoogte creëert een unieke set sectorinvloeden. 9 sectoren — 6 richtings- en 3 topografische — bepalen de ontwerpbeperkingen en -kansen. Het gematigde zeeklimaat is het grootste voordeel: regen het hele jaar, geen extreme droogte, en een laag brandrisico. De uitdagingen zijn stormwind (ZW), vorst op vlak land en een hoge grondwaterstand.',
+  dpSunDir: 'Lage zonneboog (52°N)<br>Zomer ~61° · winter ~14° middag',
+  dpSunRes: 'Passieve zonne-oriëntatie, loofbomen voor zomerschaduw, zuidramen voor winterzon',
+  dpSWRes: 'Windschermhaag op ZW-grens essentieel, fruitbomen gebruiken wind voor bestuiving',
+  dpTramRes: 'Gebouw + hagen als windbreker, koude bakken voor seizoensverlenging',
+  dpSiroccoRes: 'Stormwind (ZW) — stevige windschermen, bomen goed verankeren',
+  dpRainRes: 'Greppels/wadi\'s bergen piekbuien, vijver als bufferbekken, dakopvang <span data-water="roofHarvestL">170.000</span>L/jaar',
+  dpFrostDir: 'Koude lucht blijft liggen — vorst overal',
+  dpFrostRes: 'Tere planten binnen starten, na IJsheiligen planten, doorlatende hagen',
+  dpFireRes: 'Laag risico — basisvoorzorg: compost vochtig, geen open vuur bij droogte',
+  dpWlDir: 'Sloten, houtwallen, bosranden',
+  dpWlRes: 'Konijnenwerend gaas, boombeschermers, inheemse hagen, natuurcorridor',
+  dpViewDir: 'Vlak, rondom gelijk',
+  dpViewRes: 'Hagen voor privacy + wind, terras op zuiden',
+  s2Key: '<strong>Belangrijkste conclusie:</strong> Het gematigde zeeklimaat is het belangrijkste bezit — regen het hele jaar en een laag brandrisico. De ZW-stormwind is de belangrijkste risicofactor, samen met vorst op vlak land en een hoge grondwaterstand. Windschermen en drainage zijn de kern van het ontwerp.'
+};
+function applyNLDPLogic() {
+  if (LANG !== 'nl') return;
+  Object.keys(DP_NL_LOGIC).forEach(function(k) {
+    var el = document.querySelector('[data-i18n="' + k + '"]');
+    if (el) el.innerHTML = DP_NL_LOGIC[k];
+  });
+}
 function applyI18nDP() {
   document.querySelectorAll('[data-i18n]').forEach(function(el) {
     var key = el.getAttribute('data-i18n');
@@ -698,10 +724,10 @@ function applyI18nDP() {
       <tr><td><strong>☀️ Sun</strong></td><td><span data-i18n="dpDir">Directional</span></td><td><span data-i18n="dpSunDir">SE→SW arc (summer 120°, winter 60°)</span></td><td><span data-i18n="dpSunRes">Passive solar orientation, deciduous trees for summer shade, tall crops north</span></td></tr>
       <tr><td><strong>💨 SW Wind</strong></td><td><span data-i18n="dpDir">Directional</span></td><td>SW (225°)</td><td><span data-i18n="dpSWRes">Windbreak hedge on SW boundary, fruit trees use wind for pollination</span></td></tr>
       <tr><td><strong>❄️ Tramontana</strong></td><td><span data-i18n="dpDir">Directional</span></td><td>NW (330°)</td><td><span data-i18n="dpTramRes">South-facing slope provides natural shelter, building as windbreak</span></td></tr>
-      <tr><td><strong>🔥 Sirocco</strong></td><td><span data-i18n="dpDir">Directional</span></td><td>SE (135°)</td><td><span data-i18n="dpSiroccoRes">Pond on SE side creates humidity buffer, firebreak on SE boundary</span></td></tr>
+      <tr><td><strong data-i18n="dpSiroccoLbl">🔥 Sirocco</strong></td><td><span data-i18n="dpDir">Directional</span></td><td><span data-i18n="dpSiroccoDir">SE (135°)</span></td><td><span data-i18n="dpSiroccoRes">Pond on SE side creates humidity buffer, firebreak on SE boundary</span></td></tr>
       <tr><td><strong>💧 Rain</strong></td><td><span data-i18n="dpDirTopo">Directional + Topo</span></td><td>SW system, 800mm/yr</td><td><span data-i18n="dpRainRes">Swales capture runoff, pond for gravity irrigation, roof harvest <span data-water="roofHarvestL">170,000</span>L/yr</span></td></tr>
       <tr><td><strong>❄️ Frost</strong></td><td><span data-i18n="dpTopo">Topographical</span></td><td><span data-i18n="dpFrostDir">Cold air drains downhill</span></td><td><span data-i18n="dpFrostRes">Tender plants upper slope, porous barriers, frost-sensitive trees mid-slope</span></td></tr>
-      <tr><td><strong>🔥 Fire</strong></td><td><span data-i18n="dpComb">Combination</span></td><td>SE (Sirocco) + dry summer</td><td><span data-i18n="dpFireRes">Firebreak, fire-resistant species, water pond as firefighting source</span></td></tr>
+      <tr><td><strong>🔥 Fire</strong></td><td><span data-i18n="dpComb">Combination</span></td><td data-i18n="dpFireDir">SE (Sirocco) + dry summer</td><td><span data-i18n="dpFireRes">Firebreak, fire-resistant species, water pond as firefighting source</span></td></tr>
       <tr><td><strong>🦌 Wildlife</strong></td><td><span data-i18n="dpTopo">Topographical</span></td><td><span data-i18n="dpWlDir">Forest edge (north) → downhill</span></td><td><span data-i18n="dpWlRes">Fencing, tree guards, native hedgerows, wildlife corridor on edges</span></td></tr>
       <tr><td><strong>👁️ View</strong></td><td><span data-i18n="dpComb">Combination</span></td><td><span data-i18n="dpViewDir">South-facing panorama</span></td><td><span data-i18n="dpViewRes">Main windows + terrace south, partial screening for privacy</span></td></tr>
     </table>
@@ -1300,8 +1326,8 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', render);
-    document.addEventListener('DOMContentLoaded', applyI18nDP);
-  } else { render(); applyI18nDP(); }
+    document.addEventListener('DOMContentLoaded', function() { applyI18nDP(); applyNLDPLogic(); });
+  } else { render(); applyI18nDP(); applyNLDPLogic(); }
 })();
 </script>
 </body>
