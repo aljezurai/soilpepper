@@ -98,7 +98,16 @@
   "seedSpacing": 40,
   "rowSpacing": 60,
   "seedDepth": 1,
-  "thinTo": 50
+  "thinTo": 50,
+  "sowMonthsNL": [
+   4,
+   5
+  ],
+  "harvestMonthsNL": [
+   8,
+   9
+  ],
+  "nameNL": "Tomaat"
  },
  "pole-beans": {
   "key": "pole-beans",
@@ -191,7 +200,15 @@
   "rowSpacing": 60,
   "seedDepth": 3,
   "seedsPerHole": 4,
-  "thinTo": 20
+  "thinTo": 20,
+  "sowMonthsNL": [
+   5
+  ],
+  "harvestMonthsNL": [
+   8,
+   9
+  ],
+  "nameNL": "Stokbonen"
  },
  "corn": {
   "key": "corn",
@@ -277,7 +294,14 @@
   "seedSpacing": 20,
   "rowSpacing": 30,
   "seedDepth": 3,
-  "thinTo": 25
+  "thinTo": 25,
+  "sowMonthsNL": [
+   5
+  ],
+  "harvestMonthsNL": [
+   9
+  ],
+  "nameNL": "Suikermaïs"
  },
  "sunflower": {
   "key": "sunflower",
@@ -365,7 +389,15 @@
   "seedSpacing": 20,
   "rowSpacing": 60,
   "seedDepth": 2.5,
-  "thinTo": 50
+  "thinTo": 50,
+  "sowMonthsNL": [
+   5
+  ],
+  "harvestMonthsNL": [
+   9,
+   10
+  ],
+  "nameNL": "Zonnebloem"
  },
  "climbing-cucumber": {
   "key": "climbing-cucumber",
@@ -450,7 +482,15 @@
   "rowSpacing": 60,
   "seedDepth": 2,
   "seedsPerHole": 2,
-  "thinTo": 40
+  "thinTo": 40,
+  "sowMonthsNL": [
+   5
+  ],
+  "harvestMonthsNL": [
+   8,
+   9
+  ],
+  "nameNL": "Klimkomkommer"
  },
  "grape-veg": {
   "key": "grape-veg",
@@ -542,7 +582,16 @@
   "sowPattern": "square",
   "seedSpacing": 200,
   "rowSpacing": 120,
-  "seedDepth": 0
+  "seedDepth": 0,
+  "sowMonthsNL": [
+   3,
+   4
+  ],
+  "harvestMonthsNL": [
+   9,
+   10
+  ],
+  "nameNL": "Druif (tafel)"
  },
  "peas": {
   "key": "peas",
@@ -629,7 +678,16 @@
   "seedSpacing": 5,
   "rowSpacing": 30,
   "seedDepth": 3,
-  "thinTo": 5
+  "thinTo": 5,
+  "sowMonthsNL": [
+   3,
+   4
+  ],
+  "harvestMonthsNL": [
+   6,
+   7
+  ],
+  "nameNL": "Erwt"
  },
  "cavolo-nero": {
   "key": "cavolo-nero",
@@ -723,7 +781,19 @@
   "seedSpacing": 30,
   "rowSpacing": 40,
   "seedDepth": 1,
-  "thinTo": 35
+  "thinTo": 35,
+  "sowMonthsNL": [
+   7,
+   8
+  ],
+  "harvestMonthsNL": [
+   11,
+   12,
+   1,
+   2,
+   3
+  ],
+  "nameNL": "Zwarte kool"
  },
  "fennel": {
   "key": "fennel",
@@ -816,7 +886,16 @@
   "seedSpacing": 15,
   "rowSpacing": 30,
   "seedDepth": 1,
-  "thinTo": 25
+  "thinTo": 25,
+  "sowMonthsNL": [
+   6,
+   7
+  ],
+  "harvestMonthsNL": [
+   9,
+   10
+  ],
+  "nameNL": "Venkel"
  },
  "peppers": {
   "key": "peppers",
@@ -908,7 +987,17 @@
   "seedSpacing": 30,
   "rowSpacing": 40,
   "seedDepth": 1,
-  "thinTo": 40
+  "thinTo": 40,
+  "sowMonthsNL": [
+   4,
+   5
+  ],
+  "harvestMonthsNL": [
+   8,
+   9,
+   10
+  ],
+  "nameNL": "Paprika"
  },
  "eggplant": {
   "key": "eggplant",
@@ -994,7 +1083,16 @@
   "seedSpacing": 30,
   "rowSpacing": 40,
   "seedDepth": 1,
-  "thinTo": 40
+  "thinTo": 40,
+  "sowMonthsNL": [
+   4,
+   5
+  ],
+  "harvestMonthsNL": [
+   8,
+   9
+  ],
+  "nameNL": "Aubergine"
  },
  "kale": {
   "key": "kale",
@@ -1090,7 +1188,20 @@
   "seedSpacing": 30,
   "rowSpacing": 45,
   "seedDepth": 1,
-  "thinTo": 40
+  "thinTo": 40,
+  "sowMonthsNL": [
+   6,
+   7,
+   8
+  ],
+  "harvestMonthsNL": [
+   11,
+   12,
+   1,
+   2,
+   3
+  ],
+  "nameNL": "Boerenkool"
  },
  "swiss-chard": {
   "key": "swiss-chard",
@@ -1177,7 +1288,21 @@
   "seedSpacing": 5,
   "rowSpacing": 30,
   "seedDepth": 2,
-  "thinTo": 20
+  "thinTo": 20,
+  "sowMonthsNL": [
+   4,
+   5,
+   6
+  ],
+  "harvestMonthsNL": [
+   6,
+   7,
+   8,
+   9,
+   10,
+   11
+  ],
+  "nameNL": "Snijbiet"
  },
  "broccoli": {
   "key": "broccoli",
@@ -1269,7 +1394,19 @@
   "seedSpacing": 30,
   "rowSpacing": 45,
   "seedDepth": 1,
-  "thinTo": 40
+  "thinTo": 40,
+  "sowMonthsNL": [
+   7,
+   8
+  ],
+  "harvestMonthsNL": [
+   11,
+   12,
+   1,
+   2,
+   3
+  ],
+  "nameNL": "Broccoli"
  },
  "artichoke": {
   "key": "artichoke",
@@ -1442,7 +1579,17 @@
   "seedSpacing": 30,
   "rowSpacing": 30,
   "seedDepth": 1,
-  "thinTo": 30
+  "thinTo": 30,
+  "sowMonthsNL": [
+   4,
+   5
+  ],
+  "harvestMonthsNL": [
+   8,
+   9,
+   10
+  ],
+  "nameNL": "Peperoncini"
  },
  "cauliflower": {
   "key": "cauliflower",
@@ -1532,7 +1679,17 @@
   "seedSpacing": 40,
   "rowSpacing": 50,
   "seedDepth": 1,
-  "thinTo": 45
+  "thinTo": 45,
+  "sowMonthsNL": [
+   6,
+   7
+  ],
+  "harvestMonthsNL": [
+   10,
+   11,
+   12
+  ],
+  "nameNL": "Bloemkool"
  },
  "potatoes": {
   "key": "potatoes",
@@ -1627,7 +1784,17 @@
   "seedSpacing": 30,
   "rowSpacing": 60,
   "seedDepth": 10,
-  "thinTo": 30
+  "thinTo": 30,
+  "sowMonthsNL": [
+   4,
+   5
+  ],
+  "harvestMonthsNL": [
+   8,
+   9,
+   10
+  ],
+  "nameNL": "Aardappel"
  },
  "lettuce": {
   "key": "lettuce",
@@ -1715,7 +1882,22 @@
   "seedSpacing": 3,
   "rowSpacing": 25,
   "seedDepth": 0.5,
-  "thinTo": 25
+  "thinTo": 25,
+  "sowMonthsNL": [
+   3,
+   4,
+   5,
+   8
+  ],
+  "harvestMonthsNL": [
+   5,
+   6,
+   7,
+   9,
+   10,
+   11
+  ],
+  "nameNL": "Sla"
  },
  "spinach": {
   "key": "spinach",
@@ -1803,7 +1985,20 @@
   "seedSpacing": 3,
   "rowSpacing": 20,
   "seedDepth": 1.5,
-  "thinTo": 10
+  "thinTo": 10,
+  "sowMonthsNL": [
+   3,
+   4,
+   8,
+   9
+  ],
+  "harvestMonthsNL": [
+   5,
+   6,
+   10,
+   11
+  ],
+  "nameNL": "Spinazie"
  },
  "basil": {
   "key": "basil",
@@ -1892,7 +2087,17 @@
   "seedSpacing": 20,
   "rowSpacing": 30,
   "seedDepth": 1,
-  "thinTo": 25
+  "thinTo": 25,
+  "sowMonthsNL": [
+   5,
+   6
+  ],
+  "harvestMonthsNL": [
+   7,
+   8,
+   9
+  ],
+  "nameNL": "Basilicum"
  },
  "cilantro": {
   "key": "cilantro",
@@ -1978,7 +2183,20 @@
   "seedSpacing": 5,
   "rowSpacing": 20,
   "seedDepth": 1,
-  "thinTo": 10
+  "thinTo": 10,
+  "sowMonthsNL": [
+   4,
+   5,
+   9
+  ],
+  "harvestMonthsNL": [
+   6,
+   7,
+   8,
+   10,
+   11
+  ],
+  "nameNL": "Koriander"
  },
  "parsley": {
   "key": "parsley",
@@ -2072,7 +2290,22 @@
   "seedSpacing": 5,
   "rowSpacing": 20,
   "seedDepth": 0.5,
-  "thinTo": 15
+  "thinTo": 15,
+  "sowMonthsNL": [
+   4,
+   5,
+   6,
+   8
+  ],
+  "harvestMonthsNL": [
+   6,
+   7,
+   8,
+   9,
+   10,
+   11
+  ],
+  "nameNL": "Peterselie"
  },
  "chives-veg": {
   "key": "chives-veg",
@@ -2162,7 +2395,19 @@
   "seedSpacing": 15,
   "rowSpacing": 20,
   "seedDepth": 1,
-  "thinTo": 15
+  "thinTo": 15,
+  "sowMonthsNL": [
+   4,
+   5
+  ],
+  "harvestMonthsNL": [
+   5,
+   6,
+   7,
+   8,
+   9
+  ],
+  "nameNL": "Bieslook"
  },
  "strawberry-veg": {
   "key": "strawberry-veg",
@@ -2255,7 +2500,18 @@
   "seedSpacing": 30,
   "rowSpacing": 30,
   "seedDepth": 0,
-  "thinTo": 25
+  "thinTo": 25,
+  "sowMonthsNL": [
+   4,
+   5
+  ],
+  "harvestMonthsNL": [
+   6,
+   7,
+   8,
+   9
+  ],
+  "nameNL": "Aardbei"
  },
  "carrots": {
   "key": "carrots",
@@ -2348,7 +2604,23 @@
   "seedSpacing": 3,
   "rowSpacing": 20,
   "seedDepth": 1,
-  "thinTo": 8
+  "thinTo": 8,
+  "sowMonthsNL": [
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "harvestMonthsNL": [
+   6,
+   7,
+   8,
+   9,
+   10,
+   11
+  ],
+  "nameNL": "Wortel"
  },
  "onions": {
   "key": "onions",
@@ -2429,7 +2701,17 @@
   "seedSpacing": 10,
   "rowSpacing": 25,
   "seedDepth": 2,
-  "thinTo": 10
+  "thinTo": 10,
+  "sowMonthsNL": [
+   3,
+   4
+  ],
+  "harvestMonthsNL": [
+   7,
+   8,
+   9
+  ],
+  "nameNL": "Ui"
  },
  "garlic-veg": {
   "key": "garlic-veg",
@@ -2511,7 +2793,16 @@
   "seedSpacing": 10,
   "rowSpacing": 25,
   "seedDepth": 5,
-  "thinTo": 10
+  "thinTo": 10,
+  "sowMonthsNL": [
+   10,
+   11
+  ],
+  "harvestMonthsNL": [
+   7,
+   8
+  ],
+  "nameNL": "Knoflook"
  },
  "radicchio": {
   "key": "radicchio",
@@ -2592,7 +2883,17 @@
   "seedSpacing": 10,
   "rowSpacing": 30,
   "seedDepth": 1,
-  "thinTo": 25
+  "thinTo": 25,
+  "sowMonthsNL": [
+   6,
+   7
+  ],
+  "harvestMonthsNL": [
+   10,
+   11,
+   12
+  ],
+  "nameNL": "Radicchio"
  },
  "beets": {
   "key": "beets",
@@ -2683,7 +2984,21 @@
   "seedSpacing": 5,
   "rowSpacing": 30,
   "seedDepth": 2,
-  "thinTo": 10
+  "thinTo": 10,
+  "sowMonthsNL": [
+   4,
+   5,
+   6,
+   8
+  ],
+  "harvestMonthsNL": [
+   6,
+   7,
+   8,
+   10,
+   11
+  ],
+  "nameNL": "Biet"
  },
  "radish": {
   "key": "radish",
@@ -2774,7 +3089,23 @@
   "seedSpacing": 2,
   "rowSpacing": 15,
   "seedDepth": 1,
-  "thinTo": 3
+  "thinTo": 3,
+  "sowMonthsNL": [
+   4,
+   5,
+   6,
+   8,
+   9
+  ],
+  "harvestMonthsNL": [
+   5,
+   6,
+   7,
+   9,
+   10,
+   11
+  ],
+  "nameNL": "Radijs"
  },
  "leek": {
   "key": "leek",
@@ -2864,7 +3195,20 @@
   "seedSpacing": 10,
   "rowSpacing": 30,
   "seedDepth": 1,
-  "thinTo": 15
+  "thinTo": 15,
+  "sowMonthsNL": [
+   3,
+   4,
+   5
+  ],
+  "harvestMonthsNL": [
+   7,
+   8,
+   11,
+   12,
+   1
+  ],
+  "nameNL": "Prei"
  },
  "shallot": {
   "key": "shallot",
@@ -2950,7 +3294,18 @@
   "seedSpacing": 15,
   "rowSpacing": 30,
   "seedDepth": 3,
-  "thinTo": 15
+  "thinTo": 15,
+  "sowMonthsNL": [
+   3,
+   4,
+   10,
+   11
+  ],
+  "harvestMonthsNL": [
+   7,
+   8
+  ],
+  "nameNL": "Sjalot"
  },
  "turnip": {
   "key": "turnip",
@@ -3034,7 +3389,19 @@
   "seedSpacing": 5,
   "rowSpacing": 20,
   "seedDepth": 1,
-  "thinTo": 10
+  "thinTo": 10,
+  "sowMonthsNL": [
+   4,
+   5,
+   8
+  ],
+  "harvestMonthsNL": [
+   6,
+   7,
+   10,
+   11
+  ],
+  "nameNL": "Raap"
  },
  "celery": {
   "key": "celery",
@@ -3122,7 +3489,17 @@
   "seedSpacing": 10,
   "rowSpacing": 30,
   "seedDepth": 1,
-  "thinTo": 25
+  "thinTo": 25,
+  "sowMonthsNL": [
+   4,
+   5
+  ],
+  "harvestMonthsNL": [
+   8,
+   9,
+   10
+  ],
+  "nameNL": "Selderij"
  },
  "melon": {
   "key": "melon",
@@ -3207,7 +3584,15 @@
   "rowSpacing": 60,
   "seedDepth": 2,
   "seedsPerHole": 2,
-  "thinTo": 50
+  "thinTo": 50,
+  "sowMonthsNL": [
+   5
+  ],
+  "harvestMonthsNL": [
+   8,
+   9
+  ],
+  "nameNL": "Meloen"
  },
  "squash": {
   "key": "squash",
@@ -3296,7 +3681,17 @@
   "rowSpacing": 60,
   "seedDepth": 2.5,
   "seedsPerHole": 2,
-  "thinTo": 50
+  "thinTo": 50,
+  "sowMonthsNL": [
+   5
+  ],
+  "harvestMonthsNL": [
+   7,
+   8,
+   9,
+   10
+  ],
+  "nameNL": "Courgette"
  },
  "kohlrabi": {
   "key": "kohlrabi",
@@ -3381,7 +3776,21 @@
   "seedSpacing": 20,
   "rowSpacing": 30,
   "seedDepth": 1,
-  "thinTo": 25
+  "thinTo": 25,
+  "sowMonthsNL": [
+   4,
+   5,
+   7,
+   8
+  ],
+  "harvestMonthsNL": [
+   6,
+   7,
+   9,
+   10,
+   11
+  ],
+  "nameNL": "Koolrabi"
  },
  "cime-rapa": {
   "key": "cime-rapa",
@@ -3465,7 +3874,20 @@
   "seedSpacing": 8,
   "rowSpacing": 30,
   "seedDepth": 1,
-  "thinTo": 15
+  "thinTo": 15,
+  "sowMonthsNL": [
+   3,
+   4,
+   8,
+   9
+  ],
+  "harvestMonthsNL": [
+   5,
+   6,
+   10,
+   11
+  ],
+  "nameNL": "Rapenstelen"
  },
  "asparagus": {
   "key": "asparagus",
@@ -3553,7 +3975,16 @@
   "seedSpacing": 30,
   "rowSpacing": 40,
   "seedDepth": 15,
-  "thinTo": 30
+  "thinTo": 30,
+  "sowMonthsNL": [
+   4,
+   5
+  ],
+  "harvestMonthsNL": [
+   4,
+   5
+  ],
+  "nameNL": "Asperge"
  },
  "white-clover": {
   "key": "white-clover",
@@ -3641,7 +4072,19 @@
   "regions": [
    "tuscany",
    "netherlands"
-  ]
+  ],
+  "sowMonthsNL": [
+   4,
+   5,
+   9
+  ],
+  "harvestMonthsNL": [
+   6,
+   7,
+   9,
+   10
+  ],
+  "nameNL": "Witte klaver"
  },
  "berseem-clover": {
   "key": "berseem-clover",
@@ -3725,7 +4168,19 @@
   "regions": [
    "tuscany",
    "netherlands"
-  ]
+  ],
+  "sowMonthsNL": [
+   4,
+   5,
+   9
+  ],
+  "harvestMonthsNL": [
+   6,
+   7,
+   10,
+   11
+  ],
+  "nameNL": "Alexandrijnse klaver"
  },
  "sub-clover": {
   "key": "sub-clover",
@@ -3806,7 +4261,19 @@
   "regions": [
    "tuscany",
    "netherlands"
-  ]
+  ],
+  "sowMonthsNL": [
+   4,
+   5,
+   9
+  ],
+  "harvestMonthsNL": [
+   6,
+   7,
+   10,
+   11
+  ],
+  "nameNL": "Onderaardse klaver"
  },
  "vetch": {
   "key": "vetch",
@@ -3891,7 +4358,20 @@
   "regions": [
    "tuscany",
    "netherlands"
-  ]
+  ],
+  "sowMonthsNL": [
+   3,
+   4,
+   10,
+   11
+  ],
+  "harvestMonthsNL": [
+   5,
+   6,
+   10,
+   11
+  ],
+  "nameNL": "Voederwikke"
  },
  "field-bean-cover": {
   "key": "field-bean-cover",
@@ -3979,7 +4459,18 @@
   "regions": [
    "tuscany",
    "netherlands"
-  ]
+  ],
+  "sowMonthsNL": [
+   10,
+   11,
+   2,
+   3
+  ],
+  "harvestMonthsNL": [
+   5,
+   6
+  ],
+  "nameNL": "Veldboon"
  },
  "sulla": {
   "key": "sulla",
@@ -4062,7 +4553,19 @@
   "regions": [
    "tuscany",
    "netherlands"
-  ]
+  ],
+  "sowMonthsNL": [
+   4,
+   5,
+   9
+  ],
+  "harvestMonthsNL": [
+   6,
+   7,
+   10,
+   11
+  ],
+  "nameNL": "Sulla"
  },
  "trefoil": {
   "key": "trefoil",
@@ -4144,7 +4647,19 @@
   "regions": [
    "tuscany",
    "netherlands"
-  ]
+  ],
+  "sowMonthsNL": [
+   4,
+   5,
+   9
+  ],
+  "harvestMonthsNL": [
+   6,
+   7,
+   9,
+   10
+  ],
+  "nameNL": "Gewone rolklaver"
  },
  "phacelia": {
   "key": "phacelia",
@@ -4234,7 +4749,20 @@
   "regions": [
    "tuscany",
    "netherlands"
-  ]
+  ],
+  "sowMonthsNL": [
+   4,
+   5,
+   8,
+   9
+  ],
+  "harvestMonthsNL": [
+   6,
+   7,
+   10,
+   11
+  ],
+  "nameNL": "Phacelia"
  },
  "fig": {
   "key": "fig",
@@ -4331,7 +4859,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🍇"
+  "icon": "🍇",
+  "nameNL": "Vijg"
  },
  "persimmon": {
   "key": "persimmon",
@@ -4423,7 +4952,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🍊"
+  "icon": "🍊",
+  "nameNL": "Kaki"
  },
  "grape": {
   "key": "grape",
@@ -4498,7 +5028,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🍇"
+  "icon": "🍇",
+  "nameNL": "Druif (wijngaard)"
  },
  "peach": {
   "key": "peach",
@@ -4572,7 +5103,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🍑"
+  "icon": "🍑",
+  "nameNL": "Perzik"
  },
  "plum": {
   "key": "plum",
@@ -4649,7 +5181,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🍓"
+  "icon": "🍓",
+  "nameNL": "Pruim"
  },
  "apple": {
   "key": "apple",
@@ -4727,7 +5260,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🍏"
+  "icon": "🍏",
+  "nameNL": "Appel"
  },
  "pear": {
   "key": "pear",
@@ -4803,7 +5337,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🍐"
+  "icon": "🍐",
+  "nameNL": "Peer"
  },
  "hazelnut": {
   "key": "hazelnut",
@@ -4879,7 +5414,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🌰"
+  "icon": "🌰",
+  "nameNL": "Hazelnoot"
  },
  "walnut": {
   "key": "walnut",
@@ -4986,7 +5522,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🥜"
+  "icon": "🥜",
+  "nameNL": "Walnoot"
  },
  "lemon": {
   "key": "lemon",
@@ -5249,7 +5786,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🌾"
+  "icon": "🌾",
+  "nameNL": "Amandel"
  },
  "pistachio": {
   "key": "pistachio",
@@ -5414,7 +5952,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🍓"
+  "icon": "🍓",
+  "nameNL": "Granaatappel"
  },
  "jujube": {
   "key": "jujube",
@@ -5489,7 +6028,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🍒"
+  "icon": "🍒",
+  "nameNL": "Jujube"
  },
  "goji": {
   "key": "goji",
@@ -5569,7 +6109,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🍓"
+  "icon": "🍓",
+  "nameNL": "Gojibes"
  },
  "elderberry": {
   "key": "elderberry",
@@ -5657,7 +6198,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🍓"
+  "icon": "🍓",
+  "nameNL": "Vlier"
  },
  "blackberry": {
   "key": "blackberry",
@@ -5739,7 +6281,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🍓"
+  "icon": "🍓",
+  "nameNL": "Braam"
  },
  "raspberry": {
   "key": "raspberry",
@@ -5824,7 +6367,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🍓"
+  "icon": "🍓",
+  "nameNL": "Framboos"
  },
  "red-currant": {
   "key": "red-currant",
@@ -5906,7 +6450,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🍓"
+  "icon": "🍓",
+  "nameNL": "Rode bes"
  },
  "sea-buckthorn": {
   "key": "sea-buckthorn",
@@ -5992,7 +6537,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🍂"
+  "icon": "🍂",
+  "nameNL": "Duindoorn"
  },
  "goumi": {
   "key": "goumi",
@@ -6085,7 +6631,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🌿"
+  "icon": "🌿",
+  "nameNL": "Goumi"
  },
  "italian-alder": {
   "key": "italian-alder",
@@ -6156,7 +6703,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🌲"
+  "icon": "🌲",
+  "nameNL": "Italiaanse els"
  },
  "common-alder": {
   "key": "common-alder",
@@ -6230,7 +6778,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🌲"
+  "icon": "🌲",
+  "nameNL": "Zwarte els"
  },
  "grey-alder": {
   "key": "grey-alder",
@@ -6300,7 +6849,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🌲"
+  "icon": "🌲",
+  "nameNL": "Witte els"
  },
  "scotch-broom": {
   "key": "scotch-broom",
@@ -6387,7 +6937,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🌿"
+  "icon": "🌿",
+  "nameNL": "Brem"
  },
  "etna-broom": {
   "key": "etna-broom",
@@ -6471,7 +7022,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🌿"
+  "icon": "🌿",
+  "nameNL": "Etna-brem"
  },
  "spanish-broom": {
   "key": "spanish-broom",
@@ -6559,7 +7111,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🌿"
+  "icon": "🌿",
+  "nameNL": "Spaanse brem"
  },
  "stinking-bean-trefoil": {
   "key": "stinking-bean-trefoil",
@@ -6647,7 +7200,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🌿"
+  "icon": "🌿",
+  "nameNL": "Stinkende erwt"
  },
  "rosemary": {
   "key": "rosemary",
@@ -6720,7 +7274,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🌿"
+  "icon": "🌿",
+  "nameNL": "Rozemarijn"
  },
  "lavender": {
   "key": "lavender",
@@ -6791,7 +7346,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🌿"
+  "icon": "🌿",
+  "nameNL": "Lavendel"
  },
  "sage": {
   "key": "sage",
@@ -6863,7 +7419,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🌿"
+  "icon": "🌿",
+  "nameNL": "Salie"
  },
  "thyme": {
   "key": "thyme",
@@ -6933,7 +7490,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🌿"
+  "icon": "🌿",
+  "nameNL": "Tijm"
  },
  "oregano": {
   "key": "oregano",
@@ -7004,7 +7562,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🌿"
+  "icon": "🌿",
+  "nameNL": "Oregano"
  },
  "marjoram": {
   "key": "marjoram",
@@ -7083,7 +7642,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🌿"
+  "icon": "🌿",
+  "nameNL": "Marjolein"
  },
  "nasturtium": {
   "key": "nasturtium",
@@ -7150,7 +7710,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🌻"
+  "icon": "🌻",
+  "nameNL": "Oost-Indische kers"
  },
  "calendula": {
   "key": "calendula",
@@ -7219,7 +7780,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🌻"
+  "icon": "🌻",
+  "nameNL": "Goudsbloem"
  },
  "yarrow": {
   "key": "yarrow",
@@ -7301,7 +7863,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🌻"
+  "icon": "🌻",
+  "nameNL": "Duizendblad"
  },
  "comfrey": {
   "key": "comfrey",
@@ -7388,7 +7951,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🌿"
+  "icon": "🌿",
+  "nameNL": "Smeerwortel"
  },
  "borage": {
   "key": "borage",
@@ -7464,7 +8028,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🌻"
+  "icon": "🌻",
+  "nameNL": "Bernagie"
  },
  "chicory": {
   "key": "chicory",
@@ -7539,7 +8104,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🥬"
+  "icon": "🥬",
+  "nameNL": "Cichorei"
  },
  "dandelion": {
   "key": "dandelion",
@@ -7613,7 +8179,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🌻"
+  "icon": "🌻",
+  "nameNL": "Paardenbloem"
  },
  "chives": {
   "key": "chives",
@@ -7682,7 +8249,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🌿"
+  "icon": "🌿",
+  "nameNL": "Bieslook"
  },
  "daffodil": {
   "key": "daffodil",
@@ -7746,7 +8314,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🌻"
+  "icon": "🌻",
+  "nameNL": "Tazettanarcis"
  },
  "crocus": {
   "key": "crocus",
@@ -7799,7 +8368,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🌻"
+  "icon": "🌻",
+  "nameNL": "Saffraankrokus"
  },
  "garlic-flower": {
   "key": "garlic-flower",
@@ -7871,7 +8441,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🌻"
+  "icon": "🌻",
+  "nameNL": "Driekantig look"
  },
  "fava-beans": {
   "key": "fava-beans",
@@ -7959,7 +8530,18 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🌾"
+  "icon": "🌾",
+  "sowMonthsNL": [
+   10,
+   11,
+   2,
+   3
+  ],
+  "harvestMonthsNL": [
+   5,
+   6
+  ],
+  "nameNL": "Tuinderwt / veldboon"
  },
  "strawberry-wild": {
   "key": "strawberry-wild",
@@ -8029,7 +8611,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🌻"
+  "icon": "🌻",
+  "nameNL": "Bosaardbei"
  },
  "olive": {
   "key": "olive",
@@ -8191,7 +8774,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🍒"
+  "icon": "🍒",
+  "nameNL": "Zoete kers"
  },
  "apricot": {
   "key": "apricot",
@@ -8266,7 +8850,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🍑"
+  "icon": "🍑",
+  "nameNL": "Abrikoos"
  },
  "chestnut": {
   "key": "chestnut",
@@ -8361,7 +8946,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🌰"
+  "icon": "🌰",
+  "nameNL": "Tamme kastanje"
  },
  "quince": {
   "key": "quince",
@@ -8432,7 +9018,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🍐"
+  "icon": "🍐",
+  "nameNL": "Kweepeer"
  },
  "medlar": {
   "key": "medlar",
@@ -8513,7 +9100,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🍐"
+  "icon": "🍐",
+  "nameNL": "Mispel"
  },
  "rose": {
   "key": "rose",
@@ -8604,7 +9192,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🌹"
+  "icon": "🌹",
+  "nameNL": "Hondsroos"
  },
  "iris": {
   "key": "iris",
@@ -8664,7 +9253,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🌻"
+  "icon": "🌻",
+  "nameNL": "Iris"
  },
  "lavender-cotton": {
   "key": "lavender-cotton",
@@ -8724,7 +9314,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🌿"
+  "icon": "🌿",
+  "nameNL": "Heiligenbloem"
  },
  "alfalfa": {
   "key": "alfalfa",
@@ -8800,7 +9391,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🌾"
+  "icon": "🌾",
+  "nameNL": "Luzerne"
  },
  "crimson-clover": {
   "key": "crimson-clover",
@@ -8869,7 +9461,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🌾"
+  "icon": "🌾",
+  "nameNL": "Incarnaatklaver"
  },
  "white-lupin": {
   "key": "white-lupin",
@@ -8931,7 +9524,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🌾"
+  "icon": "🌾",
+  "nameNL": "Witte lupine"
  },
  "tree-medic": {
   "key": "tree-medic",
@@ -9021,7 +9615,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🌿"
+  "icon": "🌿",
+  "nameNL": "Boomluzerne"
  },
  "bladder-senna": {
   "key": "bladder-senna",
@@ -9112,7 +9707,8 @@
    "tuscany",
    "netherlands"
   ],
-  "icon": "🌿"
+  "icon": "🌿",
+  "nameNL": "Blazenstruik"
  },
  "cardoon": {
   "key": "cardoon",
@@ -9177,7 +9773,8 @@
   "seedSpacing": 50,
   "rowSpacing": 90,
   "seedDepth": 2,
-  "thinTo": 60
+  "thinTo": 60,
+  "nameNL": "Kardoen"
  },
  "endive": {
   "key": "endive",
@@ -9238,7 +9835,8 @@
   "seedSpacing": 10,
   "rowSpacing": 30,
   "seedDepth": 1,
-  "thinTo": 25
+  "thinTo": 25,
+  "nameNL": "Andijvie"
  },
  "catalogna-chicory": {
   "key": "catalogna-chicory",
@@ -9300,7 +9898,8 @@
   "seedSpacing": 10,
   "rowSpacing": 30,
   "seedDepth": 1,
-  "thinTo": 20
+  "thinTo": 20,
+  "nameNL": "Catalaanse andijvie"
  },
  "jerusalem-artichoke": {
   "key": "jerusalem-artichoke",
@@ -9368,7 +9967,8 @@
   "seedSpacing": 30,
   "rowSpacing": 50,
   "seedDepth": 8,
-  "thinTo": 30
+  "thinTo": 30,
+  "nameNL": "Aardpeer"
  },
  "black-salsify": {
   "key": "black-salsify",
@@ -9438,7 +10038,8 @@
   "seedSpacing": 5,
   "rowSpacing": 30,
   "seedDepth": 2,
-  "thinTo": 8
+  "thinTo": 8,
+  "nameNL": "Zwarte schorseneer"
  },
  "parsnip": {
   "key": "parsnip",
@@ -9503,7 +10104,8 @@
   "seedSpacing": 5,
   "rowSpacing": 25,
   "seedDepth": 1.5,
-  "thinTo": 10
+  "thinTo": 10,
+  "nameNL": "Pastinaak"
  },
  "chamomile": {
   "name": "Chamomile",
@@ -9572,7 +10174,8 @@
   "regions": [
    "tuscany",
    "netherlands"
-  ]
+  ],
+  "nameNL": "Echte kamille"
  },
  "dill": {
   "name": "Dill",
@@ -9637,7 +10240,8 @@
   "regions": [
    "tuscany",
    "netherlands"
-  ]
+  ],
+  "nameNL": "Dille"
  },
  "echinacea": {
   "name": "Echinacea",
@@ -9705,7 +10309,8 @@
   "regions": [
    "tuscany",
    "netherlands"
-  ]
+  ],
+  "nameNL": "Zonnehoed"
  },
  "hyssop": {
   "name": "Hyssop",
@@ -9768,7 +10373,8 @@
   "regions": [
    "tuscany",
    "netherlands"
-  ]
+  ],
+  "nameNL": "Hysop"
  },
  "lovage": {
   "name": "Lovage",
@@ -9833,7 +10439,8 @@
   "regions": [
    "tuscany",
    "netherlands"
-  ]
+  ],
+  "nameNL": "Lavas"
  },
  "mint": {
   "name": "Mint",
@@ -9902,7 +10509,8 @@
   "regions": [
    "tuscany",
    "netherlands"
-  ]
+  ],
+  "nameNL": "Munt"
  },
  "stevia": {
   "name": "Stevia",
@@ -9961,7 +10569,8 @@
   "regions": [
    "tuscany",
    "netherlands"
-  ]
+  ],
+  "nameNL": "Stevia"
  },
  "valerian": {
   "name": "Valerian",
@@ -10029,7 +10638,8 @@
   "regions": [
    "tuscany",
    "netherlands"
-  ]
+  ],
+  "nameNL": "Echte valeriaan"
  },
  "zucchini": {
   "name": "Zucchini",
@@ -10112,7 +10722,17 @@
   "rowSpacing": 50,
   "seedDepth": 2.5,
   "seedsPerHole": 2,
-  "thinTo": 50
+  "thinTo": 50,
+  "sowMonthsNL": [
+   5
+  ],
+  "harvestMonthsNL": [
+   7,
+   8,
+   9,
+   10
+  ],
+  "nameNL": "Courgette"
  },
  "cucumber": {
   "name": "Cucumber",
@@ -10195,7 +10815,15 @@
   "rowSpacing": 60,
   "seedDepth": 2,
   "seedsPerHole": 2,
-  "thinTo": 40
+  "thinTo": 40,
+  "sowMonthsNL": [
+   5
+  ],
+  "harvestMonthsNL": [
+   8,
+   9
+  ],
+  "nameNL": "Komkommer"
  },
  "watermelon": {
   "name": "Watermelon",
@@ -10272,7 +10900,14 @@
   "rowSpacing": 120,
   "seedDepth": 2.5,
   "seedsPerHole": 3,
-  "thinTo": 100
+  "thinTo": 100,
+  "sowMonthsNL": [
+   5
+  ],
+  "harvestMonthsNL": [
+   9
+  ],
+  "nameNL": "Watermeloen"
  },
  "pumpkin": {
   "name": "Pumpkin",
@@ -10352,7 +10987,15 @@
   "rowSpacing": 120,
   "seedDepth": 2.5,
   "seedsPerHole": 3,
-  "thinTo": 100
+  "thinTo": 100,
+  "sowMonthsNL": [
+   5
+  ],
+  "harvestMonthsNL": [
+   9,
+   10
+  ],
+  "nameNL": "Pompoen"
  },
  "daikon": {
   "name": "Daikon",
@@ -10441,7 +11084,19 @@
   "seedSpacing": 5,
   "rowSpacing": 30,
   "seedDepth": 1.5,
-  "thinTo": 15
+  "thinTo": 15,
+  "sowMonthsNL": [
+   4,
+   5,
+   8
+  ],
+  "harvestMonthsNL": [
+   6,
+   7,
+   10,
+   11
+  ],
+  "nameNL": "Daikon"
  },
  "sweet-potato": {
   "name": "Sweet potato",
@@ -10524,7 +11179,15 @@
   "seedSpacing": 30,
   "rowSpacing": 75,
   "seedDepth": 0,
-  "thinTo": 30
+  "thinTo": 30,
+  "sowMonthsNL": [
+   5
+  ],
+  "harvestMonthsNL": [
+   9,
+   10
+  ],
+  "nameNL": "Zoete aardappel"
  },
  "rhubarb": {
   "name": "Rhubarb",
@@ -10601,7 +11264,8 @@
   "seedSpacing": 60,
   "rowSpacing": 90,
   "seedDepth": 3,
-  "thinTo": 80
+  "thinTo": 80,
+  "nameNL": "Rabarber"
  },
  "sorrel": {
   "name": "Sorrel",
@@ -10676,7 +11340,8 @@
   "seedSpacing": 20,
   "rowSpacing": 30,
   "seedDepth": 0.5,
-  "thinTo": 25
+  "thinTo": 25,
+  "nameNL": "Veldzuring"
  },
  "buckwheat": {
   "name": "Buckwheat",
@@ -10764,7 +11429,18 @@
   "regions": [
    "tuscany",
    "netherlands"
-  ]
+  ],
+  "sowMonthsNL": [
+   5,
+   6,
+   7
+  ],
+  "harvestMonthsNL": [
+   7,
+   8,
+   9
+  ],
+  "nameNL": "Boekweit"
  },
  "mustard": {
   "name": "Mustard",
@@ -10847,7 +11523,20 @@
   "regions": [
    "tuscany",
    "netherlands"
-  ]
+  ],
+  "sowMonthsNL": [
+   4,
+   5,
+   8,
+   9
+  ],
+  "harvestMonthsNL": [
+   6,
+   7,
+   10,
+   11
+  ],
+  "nameNL": "Mosterd"
  },
  "rye": {
   "name": "Rye",
@@ -10915,7 +11604,16 @@
   "regions": [
    "tuscany",
    "netherlands"
-  ]
+  ],
+  "sowMonthsNL": [
+   9,
+   10
+  ],
+  "harvestMonthsNL": [
+   6,
+   7
+  ],
+  "nameNL": "Rogge"
  },
  "oats": {
   "name": "Oats",
@@ -10982,7 +11680,17 @@
   "regions": [
    "tuscany",
    "netherlands"
-  ]
+  ],
+  "sowMonthsNL": [
+   3,
+   4,
+   9
+  ],
+  "harvestMonthsNL": [
+   7,
+   8
+  ],
+  "nameNL": "Haver"
  },
  "barley": {
   "name": "Barley",
@@ -11049,7 +11757,17 @@
   "regions": [
    "tuscany",
    "netherlands"
-  ]
+  ],
+  "sowMonthsNL": [
+   3,
+   4,
+   9
+  ],
+  "harvestMonthsNL": [
+   7,
+   8
+  ],
+  "nameNL": "Gerst"
  },
  "wheat": {
   "name": "Wheat",
@@ -11116,7 +11834,16 @@
   "regions": [
    "tuscany",
    "netherlands"
-  ]
+  ],
+  "sowMonthsNL": [
+   10,
+   11
+  ],
+  "harvestMonthsNL": [
+   7,
+   8
+  ],
+  "nameNL": "Tarwe"
  },
  "flowering-maple": {
   "key": "flowering-maple",
@@ -11163,7 +11890,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Bloeiende esdoorn"
  },
  "saskatoon": {
   "key": "saskatoon",
@@ -11210,7 +11938,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Elzenbes"
  },
  "monkey-puzzle": {
   "key": "monkey-puzzle",
@@ -11257,7 +11986,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Chileense apenboom"
  },
  "strawberry-tree": {
   "key": "strawberry-tree",
@@ -11304,7 +12034,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Aardbeiboom"
  },
  "pawpaw": {
   "key": "pawpaw",
@@ -11352,7 +12083,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Pawpaw"
  },
  "common-barberry": {
   "key": "common-barberry",
@@ -11400,7 +12132,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Zuurbes"
  },
  "paper-mulberry": {
   "key": "paper-mulberry",
@@ -11446,7 +12179,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Papier moerbei"
  },
  "carolina-allspice": {
   "key": "carolina-allspice",
@@ -11493,7 +12227,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Carolinische specerijstruik"
  },
  "siberian-pea-tree": {
   "key": "siberian-pea-tree",
@@ -11543,7 +12278,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Siberische erwtenboom"
  },
  "allegheny-chinkapin": {
   "key": "allegheny-chinkapin",
@@ -11590,7 +12326,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Dwergkastanje"
  },
  "new-jersey-tea": {
   "key": "new-jersey-tea",
@@ -11640,7 +12377,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Nederlandse theeplant"
  },
  "japanese-plum-yew": {
   "key": "japanese-plum-yew",
@@ -11687,7 +12425,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Japanese pruimtaxus"
  },
  "judas-tree": {
   "key": "judas-tree",
@@ -11738,7 +12477,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Judasboom"
  },
  "japanese-quince": {
   "key": "japanese-quince",
@@ -11785,7 +12525,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Sierkwee"
  },
  "cornelian-cherry": {
   "key": "cornelian-cherry",
@@ -11832,7 +12573,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Kornoelje"
  },
  "azerole": {
   "key": "azerole",
@@ -11880,7 +12622,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Azarolmeidoorn"
  },
  "dead-mans-fingers": {
   "key": "dead-mans-fingers",
@@ -11927,7 +12670,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Dode mans vingers"
  },
  "date-plum": {
   "key": "date-plum",
@@ -11975,7 +12719,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Lotusboom"
  },
  "american-persimmon": {
   "key": "american-persimmon",
@@ -12022,7 +12767,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Amerikaanse dadelpruim"
  },
  "beech": {
   "key": "beech",
@@ -12070,7 +12816,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Beuk"
  },
  "salal": {
   "key": "salal",
@@ -12117,7 +12864,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Salal"
  },
  "chilean-hazel": {
   "key": "chilean-hazel",
@@ -12164,7 +12912,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Chileense hazelnoot"
  },
  "ginkgo": {
   "key": "ginkgo",
@@ -12211,7 +12960,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Japanse notenboom"
  },
  "japanese-raisin-tree": {
   "key": "japanese-raisin-tree",
@@ -12258,7 +13008,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Rozijnenboom"
  },
  "black-walnut": {
   "key": "black-walnut",
@@ -12305,7 +13056,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Zwarte walnoot"
  },
  "juniper": {
   "key": "juniper",
@@ -12352,7 +13104,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Jeneverbes"
  },
  "bay-laurel": {
   "key": "bay-laurel",
@@ -12399,7 +13152,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Laurier"
  },
  "honeyberry": {
   "key": "honeyberry",
@@ -12446,7 +13200,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Honingbes"
  },
  "oregon-grape": {
   "key": "oregon-grape",
@@ -12493,7 +13248,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Mahoniestruik"
  },
  "chilean-guava": {
   "key": "chilean-guava",
@@ -12540,7 +13296,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Chileense guave"
  },
  "briancon-apricot": {
   "key": "briancon-apricot",
@@ -12586,7 +13343,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Briançon-abrikoos"
  },
  "sour-cherry": {
   "key": "sour-cherry",
@@ -12633,7 +13391,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Zure kers"
  },
  "beach-plum": {
   "key": "beach-plum",
@@ -12680,7 +13439,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Strandpruim"
  },
  "blackthorn": {
   "key": "blackthorn",
@@ -12728,7 +13488,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Sleedoorn"
  },
  "dwarf-russian-almond": {
   "key": "dwarf-russian-almond",
@@ -12774,7 +13535,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Dwergamandel"
  },
  "nanking-cherry": {
   "key": "nanking-cherry",
@@ -12820,7 +13582,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Nankingkers"
  },
  "holm-oak": {
   "key": "holm-oak",
@@ -12868,7 +13631,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Steeneik"
  },
  "stags-horn-sumach": {
   "key": "stags-horn-sumach",
@@ -12915,7 +13679,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Fluweelboom"
  },
  "blackcurrant": {
   "key": "blackcurrant",
@@ -12962,7 +13727,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Zwarte bes"
  },
  "gooseberry": {
   "key": "gooseberry",
@@ -13008,7 +13774,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Kruisbes"
  },
  "black-locust": {
   "key": "black-locust",
@@ -13058,7 +13825,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Robinia"
  },
  "rugosa-rose": {
   "key": "rugosa-rose",
@@ -13106,7 +13874,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Rimpelroos"
  },
  "wineberry": {
   "key": "wineberry",
@@ -13152,7 +13921,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Japanse wijnbes"
  },
  "goat-willow": {
   "key": "goat-willow",
@@ -13202,7 +13972,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Waterwilg"
  },
  "sassafras": {
   "key": "sassafras",
@@ -13248,7 +14019,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Sassafras"
  },
  "whitebeam": {
   "key": "whitebeam",
@@ -13295,7 +14067,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Gewone lijsterbes"
  },
  "rowan": {
   "key": "rowan",
@@ -13343,7 +14116,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Wilde lijsterbes"
  },
  "service-tree": {
   "key": "service-tree",
@@ -13390,7 +14164,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Peervormige lijsterbes"
  },
  "wild-service-tree": {
   "key": "wild-service-tree",
@@ -13437,7 +14212,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Elsbes"
  },
  "yew": {
   "key": "yew",
@@ -13484,7 +14260,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Taxus"
  },
  "small-leaved-lime": {
   "key": "small-leaved-lime",
@@ -13532,7 +14309,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Winterlinde"
  },
  "chinese-toon": {
   "key": "chinese-toon",
@@ -13580,7 +14358,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Chinese toonboom"
  },
  "chaste-tree": {
   "key": "chaste-tree",
@@ -13627,7 +14406,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Monnikspeper"
  },
  "egyptian-onion": {
   "key": "egyptian-onion",
@@ -13678,7 +14458,8 @@
   "seedSpacing": 10,
   "rowSpacing": 25,
   "seedDepth": 2,
-  "thinTo": 20
+  "thinTo": 20,
+  "nameNL": "Egyptische ui"
  },
  "ramsons": {
   "key": "ramsons",
@@ -13726,7 +14507,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Daslook"
  },
  "sea-beet": {
   "key": "sea-beet",
@@ -13777,7 +14559,8 @@
   "seedSpacing": 10,
   "rowSpacing": 30,
   "seedDepth": 2,
-  "thinTo": 20
+  "thinTo": 20,
+  "nameNL": "Zeebiet"
  },
  "turkish-rocket": {
   "key": "turkish-rocket",
@@ -13828,7 +14611,8 @@
   "seedSpacing": 30,
   "rowSpacing": 30,
   "seedDepth": 1,
-  "thinTo": 25
+  "thinTo": 25,
+  "nameNL": "Turkse rucola"
  },
  "quamash": {
   "key": "quamash",
@@ -13880,7 +14664,8 @@
   "seedSpacing": 10,
   "rowSpacing": 20,
   "seedDepth": 8,
-  "thinTo": 10
+  "thinTo": 10,
+  "nameNL": "Quamash"
  },
  "red-valerian": {
   "key": "red-valerian",
@@ -13927,7 +14712,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Rode spoorbloem"
  },
  "daylily": {
   "key": "daylily",
@@ -13975,7 +14761,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Daglelie"
  },
  "musk-mallow": {
   "key": "musk-mallow",
@@ -14022,7 +14809,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Muskuskaasjeskruid"
  },
  "mayapple": {
   "key": "mayapple",
@@ -14069,7 +14857,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Meiappel"
  },
  "solomons-seal": {
   "key": "solomons-seal",
@@ -14115,7 +14904,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Welriekende salomonszegel"
  },
  "lungwort": {
   "key": "lungwort",
@@ -14163,7 +14953,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Longkruid"
  },
  "sweet-violet": {
   "key": "sweet-violet",
@@ -14210,7 +15001,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Maarts viooltje"
  },
  "blueberry": {
   "key": "blueberry",
@@ -14257,7 +15049,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Blauwe bes"
  },
  "ground-elder": {
   "key": "ground-elder",
@@ -14303,7 +15096,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Zevenblad"
  },
  "anise-hyssop": {
   "key": "anise-hyssop",
@@ -14350,7 +15144,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Anijshysop"
  },
  "angelica": {
   "key": "angelica",
@@ -14397,7 +15192,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Grote engelwortel"
  },
  "udo": {
   "key": "udo",
@@ -14449,7 +15245,8 @@
   "seedSpacing": 50,
   "rowSpacing": 60,
   "seedDepth": 2,
-  "thinTo": 50
+  "thinTo": 50,
+  "nameNL": "Udo"
  },
  "golden-saxifrage": {
   "key": "golden-saxifrage",
@@ -14496,7 +15293,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Goudveil"
  },
  "pignut": {
   "key": "pignut",
@@ -14548,7 +15346,8 @@
   "seedSpacing": 10,
   "rowSpacing": 30,
   "seedDepth": 2,
-  "thinTo": 20
+  "thinTo": 20,
+  "nameNL": "Aardnootje"
  },
  "chinese-mallow": {
   "key": "chinese-mallow",
@@ -14599,7 +15398,8 @@
   "seedSpacing": 10,
   "rowSpacing": 30,
   "seedDepth": 1,
-  "thinTo": 20
+  "thinTo": 20,
+  "nameNL": "Chinese kaasjeskruid"
  },
  "lemon-balm": {
   "key": "lemon-balm",
@@ -14646,7 +15446,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Citroenmelisse"
  },
  "sweet-cicely": {
   "key": "sweet-cicely",
@@ -14693,7 +15494,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Roomse kervel"
  },
  "creeping-bramble": {
   "key": "creeping-bramble",
@@ -14740,7 +15542,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Kruipbraam"
  },
  "hog-peanut": {
   "key": "hog-peanut",
@@ -14795,7 +15598,8 @@
   "seedSpacing": 15,
   "rowSpacing": 30,
   "seedDepth": 2,
-  "thinTo": 20
+  "thinTo": 20,
+  "nameNL": "Hog peanut (Aardboon)"
  },
  "groundnut": {
   "key": "groundnut",
@@ -14850,7 +15654,8 @@
   "seedSpacing": 15,
   "rowSpacing": 30,
   "seedDepth": 2,
-  "thinTo": 20
+  "thinTo": 20,
+  "nameNL": "Aardnoot"
  },
  "burdock": {
   "key": "burdock",
@@ -14907,7 +15712,8 @@
   "seedSpacing": 10,
   "rowSpacing": 40,
   "seedDepth": 2,
-  "thinTo": 20
+  "thinTo": 20,
+  "nameNL": "Grote klit"
  },
  "horseradish": {
   "key": "horseradish",
@@ -14960,7 +15766,8 @@
   "seedSpacing": 30,
   "rowSpacing": 40,
   "seedDepth": 5,
-  "thinTo": 30
+  "thinTo": 30,
+  "nameNL": "Mierikswortel"
  },
  "campanula-rapunculus": {
   "key": "campanula-rapunculus",
@@ -15011,7 +15818,8 @@
   "seedSpacing": 5,
   "rowSpacing": 20,
   "seedDepth": 1,
-  "thinTo": 10
+  "thinTo": 10,
+  "nameNL": "Rapunzelklokje"
  },
  "common-liquorice": {
   "key": "common-liquorice",
@@ -15060,7 +15868,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Zoethout"
  },
  "skirret": {
   "key": "skirret",
@@ -15112,7 +15921,8 @@
   "seedSpacing": 15,
   "rowSpacing": 40,
   "seedDepth": 1,
-  "thinTo": 20
+  "thinTo": 20,
+  "nameNL": "Suikerwortel"
  },
  "ulluco": {
   "key": "ulluco",
@@ -15161,7 +15971,8 @@
   "seedSpacing": 20,
   "rowSpacing": 40,
   "seedDepth": 8,
-  "thinTo": 20
+  "thinTo": 20,
+  "nameNL": "Ulluco"
  },
  "hardy-kiwi": {
   "key": "hardy-kiwi",
@@ -15209,7 +16020,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Kiwi"
  },
  "chocolate-vine": {
   "key": "chocolate-vine",
@@ -15257,7 +16069,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Chocoladeplant"
  },
  "schisandra": {
   "key": "schisandra",
@@ -15305,7 +16118,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Schisandra"
  },
  "red-alder": {
   "key": "red-alder",
@@ -15356,7 +16170,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Rode els"
  },
  "evergreen-olive": {
   "key": "evergreen-olive",
@@ -15406,7 +16221,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Wintergroene olijfwilg"
  },
  "northern-bayberry": {
   "key": "northern-bayberry",
@@ -15455,7 +16271,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Noordelijke wasbes"
  },
  "dwarf-gunnera": {
   "key": "dwarf-gunnera",
@@ -15505,7 +16322,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Dwerggunnera"
  },
  "earthnut-pea": {
   "key": "earthnut-pea",
@@ -15554,7 +16372,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Aardaker"
  },
  "everlasting-pea": {
   "key": "everlasting-pea",
@@ -15604,7 +16423,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Brede lathyrus"
  },
  "chinese-wisteria": {
   "key": "chinese-wisteria",
@@ -15654,7 +16474,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Chinese blauweregen"
  },
  "shagbark-hickory": {
   "key": "shagbark-hickory",
@@ -15701,7 +16522,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Schorshickory"
  },
  "silver-birch": {
   "key": "silver-birch",
@@ -15752,7 +16574,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Ruwe berk"
  },
  "field-horsetail": {
   "key": "field-horsetail",
@@ -15804,7 +16627,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Heermoes"
  },
  "watercress": {
   "key": "watercress",
@@ -15861,7 +16685,8 @@
   "seedSpacing": 20,
   "rowSpacing": 20,
   "seedDepth": 0.5,
-  "thinTo": 15
+  "thinTo": 15,
+  "nameNL": "Waterkers"
  },
  "black-poplar": {
   "key": "black-poplar",
@@ -15909,7 +16734,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Zwarte populier"
  },
  "american-bird-cherry": {
   "key": "american-bird-cherry",
@@ -15956,7 +16782,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Amerikaanse vogelkers"
  },
  "turkish-hazel": {
   "key": "turkish-hazel",
@@ -16012,7 +16839,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Turkse hazelaar"
  },
  "lambert-hazel": {
   "key": "lambert-hazel",
@@ -16066,7 +16894,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Lambertsnoot"
  },
  "field-brome": {
   "key": "field-brome",
@@ -16122,7 +16951,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Beemdraaigras"
  },
  "gagel": {
   "key": "gagel",
@@ -16175,7 +17005,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Wilde gagel"
  },
  "kardinaalsmuts": {
   "key": "kardinaalsmuts",
@@ -16225,7 +17056,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Kardinaalsmuts"
  },
  "hulst": {
   "key": "hulst",
@@ -16274,7 +17106,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Hulst"
  },
  "liguster": {
   "key": "liguster",
@@ -16323,7 +17156,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Wilde liguster"
  },
  "wilde-appel": {
   "key": "wilde-appel",
@@ -16374,7 +17208,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Wilde appel"
  },
  "vogelkers": {
   "key": "vogelkers",
@@ -16423,7 +17258,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Vogelkers"
  },
  "wilg": {
   "key": "wilg",
@@ -16475,7 +17311,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Witte wilg"
  },
  "meidoorn": {
   "key": "meidoorn",
@@ -16527,7 +17364,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Meidoorn"
  },
  "es": {
   "key": "es",
@@ -16578,7 +17416,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Es"
  },
  "esdoorn": {
   "key": "esdoorn",
@@ -16629,7 +17468,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Esdoorn"
  },
  "wilde-kamperfoelie": {
   "key": "wilde-kamperfoelie",
@@ -16680,7 +17520,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Wilde kamperfoelie"
  },
  "wilde-peer": {
   "key": "wilde-peer",
@@ -16730,7 +17571,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Wilde peer"
  },
  "riet": {
   "key": "riet",
@@ -16782,7 +17624,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Riet"
  },
  "witte-waterlelie": {
   "key": "witte-waterlelie",
@@ -16834,7 +17677,8 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Witte waterlelie"
  },
  "speenkruid": {
   "key": "speenkruid",
@@ -16883,6 +17727,7 @@
    "antagonists": [],
    "rootForm": "",
    "rootZone": ""
-  }
+  },
+  "nameNL": "Speenkruid"
  }
 }
