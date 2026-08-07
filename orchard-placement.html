@@ -135,7 +135,7 @@ var T = {
     layers: 'Layers:', frost: '❄️ Frost', fire: '🔥 Fire', wind: '💨 Wind', sun: '☀️ Sun', water: '💧 Water',
     rootDepth: '🌱 Root depth', toggleAll: '🔄 Toggle All', info: '📋 Info', legend: '📖 Legend',
     exportJSON: '💾 Export JSON', title: '🌳 Orchard Placement Map', suggestLayout: '✨ Suggest Layout', clearAll: '🗑️ Clear All',
-    upSlopeMin: '🌡️ Upper slope: -5°C min', midSlopeMin: '🌡️ Mid slope: -7°C min', lowSlopeMin: '🌡️ Lower slope: -9°C min', frostPocketMin: '🌡️ Frost pocket: -12°C min',
+    upSlopeMin: '🌡️ Upper slope: -5°C min', plotSlope: '↓ South-facing slope (180°)', plotSite: '1ha · ~300m · Zone 8b-9a', midSlopeMin: '🌡️ Mid slope: -7°C min', lowSlopeMin: '🌡️ Lower slope: -9°C min', frostPocketMin: '🌡️ Frost pocket: -12°C min',
     frostPocketNote: '❄️ Frost pocket — hardy crops only', deepZone: '⏺ Deep: Walnut, Persimmon, Grape, Fig',
     shallowZone: '⏺ Shallow: Peach, Plum, Apple, Pear, Herbs', nfixZone: '⏺ N-fixing: European Plum, Hazelnut (leaf litter)',
     infoIntro: 'This interactive map shows <strong>where each tree and plant is positioned</strong> on the 1ha Tuscan hillside, with placement driven by frost drainage, fire risk, wind, sun, and water access.',
@@ -152,7 +152,7 @@ var T = {
     layers: 'Lagen:', frost: '❄️ Vorst', fire: '🔥 Vuur', wind: '💨 Wind', sun: '☀️ Zon', water: '💧 Water',
     rootDepth: '🌱 Worteldiepte', toggleAll: '🔄 Alles wisselen', info: '📋 Info', legend: '📖 Legenda',
     exportJSON: '💾 Exporteer JSON', title: '🌳 Boomgaard-plaatsingskaart', suggestLayout: '✨ Stel indeling voor', clearAll: '🗑️ Alles wissen',
-    upSlopeMin: '🌡️ Bovenhelling: min -5°C', midSlopeMin: '🌡️ Middenhelling: min -7°C', lowSlopeMin: '🌡️ Benedenhelling: min -9°C', frostPocketMin: '🌡️ Vorstkuil: min -12°C',
+    upSlopeMin: '🌡️ Zuidmuur: min -3°C', plotSlope: '↓ Vlak land (Nederland)', plotSite: '1ha · ~12m · Zone 7b-8a', midSlopeMin: '🌡️ Open terrein: min -6°C', lowSlopeMin: '🌡️ Laagtes: min -9°C', frostPocketMin: '🌡️ Vorstkuil: min -12°C',
     frostPocketNote: '❄️ Vorstkuil — alleen winterharde gewassen', deepZone: '⏺ Diep: Walnoot, Dadelpruim, Druif, Vijg',
     shallowZone: '⏺ Ondiep: Perzik, Pruim, Appel, Peer, Kruiden', nfixZone: '⏺ Stikstofbindend: Europese pruim, Hazelnoot (bladafval)',
     infoIntro: 'Deze interactieve kaart toont <strong>waar elke boom en plant geplaatst is</strong> op de 1ha Toscaanse heuvel, met plaatsing bepaald door vorstdrainage, brandrisico, wind, zon en watertoegang.',
@@ -167,6 +167,60 @@ var T = {
   }
 };
 function tt(k) { return (T[LANG] && T[LANG][k] !== undefined) ? T[LANG][k] : (T.en[k] !== undefined ? T.en[k] : k); }
+var OP_NL_LAYERS = {
+  frost: '<svg style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible;" viewBox="0 0 100 100">' +
+    '<text x="50" y="8" fill="rgba(156,39,176,0.3)" font-size="2" text-anchor="middle" font-weight="bold">❄️ Vorst op vlak land — gelijkmatig</text>' +
+    '<text x="50" y="42" fill="rgba(156,39,176,0.2)" font-size="1.5" text-anchor="middle" font-style="italic">Koude plekken in laagtes + achter hagen</text>' +
+    '</svg>' +
+    '<div style="position:absolute;top:72%;left:25%;width:50%;height:12%;background:rgba(156,39,176,0.05);border:1px dashed rgba(156,39,176,0.15);border-radius:8px;pointer-events:none;"></div>' +
+    '<div style="position:absolute;top:74%;left:30%;font-size:0.45em;color:rgba(156,39,176,0.4);pointer-events:none;">❄️ Vorstkuil — alleen winterharde gewassen · vliesdoek + koude bakken</div>' +
+    '<div style="position:absolute;top:27%;left:0%;font-size:0.4em;color:rgba(156,39,176,0.25);pointer-events:none;">Vlak land: vorst overal (laatste vorst ~mei)</div>' +
+    '<div style="position:absolute;top:45%;left:0%;font-size:0.4em;color:rgba(156,39,176,0.2);pointer-events:none;">Zuidmuur = warmste plek · koude bakken</div>',
+  fire: '<svg style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible;" viewBox="0 0 100 100">' +
+    '<path d="M 50 50 L 100 100 L 100 50 Z" fill="rgba(244,67,54,0.04)" stroke="rgba(244,67,54,0.12)" stroke-width="0.5"/>' +
+    '<text x="72" y="70" fill="rgba(244,67,54,0.3)" font-size="2.5" font-weight="bold">🔥 Brandrisico (laag)</text>' +
+    '<text x="70" y="74" fill="rgba(244,67,54,0.2)" font-size="1.8">Geen Sirocco · gematigd zeeklimaat</text>' +
+    '</svg>' +
+    '<div style="position:absolute;top:73%;left:65%;font-size:0.5em;color:rgba(244,67,54,0.4);pointer-events:none;text-shadow:0 0 3px rgba(0,0,0,0.8);">Basisvoorzorg: compost vochtig</div>',
+  wind: '<svg style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible;" viewBox="0 0 100 100">' +
+    '<defs>' +
+    '<marker id="arrowSW" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(33,150,243,0.5)"/></marker>' +
+    '<marker id="arrowNW" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(0,188,212,0.4)"/></marker>' +
+    '<marker id="arrowSE" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(244,67,54,0.4)"/></marker>' +
+    '</defs>' +
+    '<line x1="5" y1="90" x2="45" y2="45" stroke="rgba(33,150,243,0.35)" stroke-width="2.5" stroke-dasharray="4,3" marker-end="url(#arrowSW)"/>' +
+    '<line x1="15" y1="85" x2="50" y2="40" stroke="rgba(33,150,243,0.3)" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arrowSW)"/>' +
+    '<line x1="0" y1="95" x2="40" y2="50" stroke="rgba(33,150,243,0.25)" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arrowSW)"/>' +
+    '<text x="8" y="82" fill="rgba(33,150,243,0.5)" font-size="2.5" font-weight="bold">💨 ZW</text>' +
+    '<line x1="20" y1="5" x2="50" y2="35" stroke="rgba(0,188,212,0.25)" stroke-width="1.5" stroke-dasharray="3,4" marker-end="url(#arrowNW)"/>' +
+    '<text x="10" y="3" fill="rgba(0,188,212,0.45)" font-size="2" font-weight="bold">❄️ N/NO-wind (Siberisch)</text>' +
+    '<line x1="85" y1="85" x2="60" y2="50" stroke="rgba(244,67,54,0.3)" stroke-width="2" stroke-dasharray="3,4" marker-end="url(#arrowSE)"/>' +
+    '<text x="72" y="82" fill="rgba(244,67,54,0.5)" font-size="2" font-weight="bold">🌪️ Storm ZW (herfst/winter)</text>' +
+    '</svg>' +
+    '<div style="position:absolute;top:62%;left:3%;font-size:0.45em;color:rgba(33,150,243,0.5);pointer-events:none;">🌳 ZW windschermhaag (dubbel)</div>' +
+    '<div style="position:absolute;top:42%;left:0%;font-size:0.4em;color:rgba(33,150,243,0.2);pointer-events:none;">↕ Windbestendige bomen verankeren</div>'
+};
+var OP_NL_LOGIC = {
+  infoIntro: 'Deze interactieve kaart toont <strong>waar elke boom en plant geplaatst is</strong> op het vlakke Nederlandse perceel, met plaatsing bepaald door windbescherming, vorst (laatste ~mei), zon, water en bodem.',
+  upSlope: '🌡️ <strong>Zuidmuur</strong> (warmste plek op vlak land): Perzik, Vijg, Druif, Abrikoos — tegen het gebouw',
+  midSlope: '🌡️ <strong>Open terrein</strong> (gelijke vorst): Appel, Peer, Pruim, Kers — rassen voor zeeklimaat',
+  againstHouse: '🏠 <strong>Tegen het huis</strong> (zuidmuur, thermische massa): Vijg, Perzik, Druif — warmste microklimaat',
+  seBoundary: '🌳 <strong>ZW-grens</strong> (windscherm): Hazelnoot, Els, Meidoorn — dubbel rij',
+  nwEdge: '❄️ <strong>N/NO-kant</strong> (koude wind): windbestendige struiken, winterharde rassen',
+  shadedSpots: '🌤️ <strong>Schaduwplekken</strong> (achter gebouw/haag): Rode bes ⚠️, Framboos ⚠️ — hebben namiddag-schaduw',
+  infoOutro: '<strong>Schakel lagen</strong> hierboven om vorstzones, brandrisico (laag), wind, zon, water en worteldiepte-verdeling te zien. <strong>Klik op een plant</strong> voor volledige details.'
+};
+function applyNLOrch() {
+  if (LANG !== 'nl') return;
+  Object.keys(OP_NL_LOGIC).forEach(function(k) {
+    var el = document.querySelector('[data-i18n="' + k + '"]');
+    if (el) el.innerHTML = OP_NL_LOGIC[k];
+  });
+  Object.keys(OP_NL_LAYERS).forEach(function(k) {
+    var el = document.getElementById('layer-' + k);
+    if (el) el.innerHTML = OP_NL_LAYERS[k];
+  });
+}
 function applyI18nOP() {
   document.querySelectorAll('[data-i18n]').forEach(function(el) {
     var key = el.getAttribute('data-i18n');
@@ -239,8 +293,8 @@ function applyI18nOP() {
   </div>
 
   <!-- Aspect -->
-  <div style="position:absolute;bottom:1%;left:2%;font-size:0.5em;color:rgba(255,255,255,0.3);pointer-events:none;z-index:10;">↓ South-facing slope (180°)</div>
-  <div style="position:absolute;bottom:1%;right:3%;font-size:0.5em;color:rgba(255,255,255,0.3);pointer-events:none;z-index:10;">1ha · ~300m · Zone 8b-9a</div>
+  <div style="position:absolute;bottom:1%;left:2%;font-size:0.5em;color:rgba(255,255,255,0.3);pointer-events:none;z-index:10;" data-i18n="plotSlope">↓ South-facing slope (180°)</div>
+  <div style="position:absolute;bottom:1%;right:3%;font-size:0.5em;color:rgba(255,255,255,0.3);pointer-events:none;z-index:10;" data-i18n="plotSite">1ha · ~300m · Zone 8b-9a</div>
 
   <!-- ===== SECTOR OVERLAYS ===== -->
 
@@ -880,6 +934,7 @@ document.addEventListener('keydown', function(e) {
 // ============ INIT ============
 document.addEventListener('DOMContentLoaded', function() {
   applyI18nOP();
+  applyNLOrch();
   // Load or generate
   if (!loadPlot()) {
     generateSuggested();
