@@ -95,7 +95,7 @@ tr:hover{background:#0d1b2a;}
     var raw = localStorage.getItem(KEY);
     if (raw) { var p = JSON.parse(raw); for (var k in DEF) if (p[k] !== undefined) b[k] = p[k]; }
   } catch (e) {}
-  // The stored brief's own region wins if it exists (one source of truth)
+  // The stored brief\'s own region wins if it exists (one source of truth)
   if (storedRegion === 'netherlands' || storedRegion === 'tuscany') region = storedRegion;
   NL = region === 'netherlands';
 
@@ -310,7 +310,114 @@ var T = {
     matrixH2: '📊 Complete Sector Matrix', implicationsH2: '🏗️ Design Implications by Zone', modularH2: '📐 Modular Parameters',
     thSector: 'Sector', thType: 'Type', thDirection: 'Direction/Source', thImpact: 'Impact on design', thMitigation: 'Mitigation/Opportunity',
     thZone: 'Zone', thInfluences: 'Sector influences', thResponse: 'Design response',
-    thParam: 'Parameter', thValue: 'Current value', thDesc: 'Description'
+    thParam: 'Parameter', thValue: 'Current value', thDesc: 'Description',
+    stLat: 'Latitude:', stSummer: 'Summer noon:', stWinter: 'Winter noon:', stAspect: 'Aspect:',
+    sunSolarArc: '<strong>Solar arc:</strong> Summer solstice — sunrise ~60°SE, sunset ~60°SW (arc ~120°). Winter solstice — sunrise ~30°SE, sunset ~30°SW (arc ~60°). The south-facing slope means the entire plot receives sun from sunrise to sunset — no shadow from the slope itself.',
+    sunLi1: 'Tall crops go <strong>north</strong> (back of vegetable garden) — they won\'t shade shorter plants',
+    sunLi2: 'Building\'s south facade is the prime location for <strong>passive solar gain</strong> — greenhouse, sunroom, thermal mass',
+    sunLi3: '<strong>Winter sun</strong> is low (24° at noon) — shadows are 2.2× object height. The building should be positioned so it doesn\'t shade the garden in winter',
+    sunLi4: '<strong>Summer sun</strong> is high (70°) — vertical shade from deciduous trees on the south side protects the building',
+    sunLi5: 'South-facing slope gets <strong>~30% more solar radiation</strong> than flat land at the same latitude',
+    windPrevail: 'Prevailing:', windCold: 'Cold:', windHot: 'Hot:',
+    windPrevailP: '<strong>Prevailing wind (SW):</strong> Warm, moist air from the Mediterranean. This is the dominant wind in Tuscany. It brings rain in spring and autumn. On a south-facing slope, this wind hits the plot directly — some shelter may be needed for tender plants.',
+    windColdP: '<strong>Cold wind (NW — Tramontana):</strong> Cold, dry wind from the Alps. The south-facing slope provides <strong>natural shelter</strong> — the slope itself deflects this wind. The building acts as a further windbreak.',
+    windHotP: '<strong>Hot wind (SE — Sirocco):</strong> Hot, dry wind from North Africa. Carries dust and can desiccate plants. Fire risk increases during Sirocco events.',
+    windLi1: 'Windbreak/hedge on the <strong>SW boundary</strong> (prevailing wind side) protects the garden',
+    windLi2: 'North side of the building is a <strong>cold, sheltered zone</strong> — ideal for cold storage, compost, winter veg',
+    windLi3: 'Swales and ponds on the <strong>SE side</strong> help mitigate Sirocco drying effects (humidity + water bodies)',
+    windLi4: 'Fruit trees on the <strong>south of the building</strong> benefit from shelter + reflected heat',
+    windLi5: 'Chickens need a windbreak on the SW side',
+    waterRain: 'Rainfall:', waterCatch: 'Catchment:', waterRoof: 'Roof harvest:', waterDry: 'Dry season:',
+    waterPattern: '<strong>Rainfall pattern:</strong> Mediterranean — wet winters (Oct-Mar), dry summers (Jun-Aug). Most rain falls as heavy, short events. The slope creates natural runoff channels.',
+    waterFlow: '<strong>Water flow:</strong> Rain falls on the slope → surface runoff flows downhill (south) → converges in natural drainage lines → collects at the bottom of the plot. The swales (on contour) will intercept this flow and spread it across the slope.',
+    waterLi1: 'Swales (4 at ~7m vertical spacing) capture runoff, recharge groundwater',
+    waterLi2: 'Irrigation pond at ~8-10m elevation above the garden → gravity-fed drip irrigation (0.78 bar)',
+    waterLi3: 'Roof water (170,000L/yr) → 3 × 5,000L tanks → garden + house use',
+    waterLi4: 'Natural pool (15×5×1.5m) near house — swimming + thermal mass + irrigation reserve',
+    waterLi5: 'Well is backup during drought years',
+    waterLi6: 'Deep-rooted plants (comfrey, artichokes, trees) are drought-resilient — they access deep groundwater',
+    frostClimate: 'Climate:', frostLast: 'Last frost:', frostFirst: 'First frost:', frostFree: 'Frost-free:',
+    frostDyn: '<strong>Frost dynamics:</strong> Cold air is heavier than warm air — it flows downhill like water. On a south-facing slope, cold air drains naturally to the valley bottom. This means the <strong>upper part of the plot is less prone to frost</strong> than the lower part.',
+    frostPockets: '<strong>Frost pockets:</strong> Any obstruction across the slope (solid walls, dense hedges, buildings) can trap cold air on the uphill side, creating a frost pocket. The building should be designed with <strong>gaps underneath</strong> or positioned to allow cold air drainage.',
+    frostLi1: 'Tender plants (tomatoes, peppers, eggplant) go <strong>upper slope</strong> — less frost risk',
+    frostLi2: 'Hardy vegetables (cavolo nero, fava beans, garlic) can go <strong>lower slope</strong> — they handle frost',
+    frostLi3: 'Orchard trees on the <strong>upper-to-mid slope</strong> — frost-sensitive blossoms survive better',
+    frostLi4: 'Build <strong>porous barriers</strong> (hedges, not solid walls) across the slope to avoid trapping cold air',
+    frostLi5: 'The building itself should be designed so cold air can drain past it, not pool on the uphill side',
+    frostLi6: 'Natural pool at the bottom of the plot — coldest location, lowest frost risk for building',
+    panelFire2: '🔥 Fire Sector — <span style="font-weight:normal;font-size:0.85em;color:#888;">Seasonal Combination</span>',
+    fireRisk: 'Risk:', fireHotWind: 'Hot wind:', fireVeg: 'Vegetation:',
+    fireIntro: '<strong>Wildfire risk is REAL in Tuscany.</strong> The combination of hot, dry summers, dry vegetation, and the Sirocco wind from the SE creates a significant fire sector. The south-facing slope also means the vegetation is drier and more combustible.',
+    fireLi1: '<strong>Firebreak</strong> on the SE boundary — use deciduous trees (lower flammability) + a mown green strip',
+    fireLi2: '<strong>Pond/water body</strong> on the SE side serves as a water source for firefighting AND a firebreak',
+    fireLi3: 'Avoid highly flammable species near the building: pines, eucalyptus, junipers, cypress',
+    fireLi4: 'Choose <strong>high-moisture, fire-resistant species</strong> near structures: olive, fig, mulberry, citrus, aloe, lavender, rosemary, sage, iceplant',
+    fireLi5: 'Keep <strong>irrigated green buffer</strong> (vegetable garden, lawn) on the SE side — acts as a firebreak',
+    fireLi6: 'Compost pile is a fire risk in summer — keep it shaded and moist',
+    fireLi7: 'Access road must be wide enough for a fire truck (3.5m+)',
+    wDeer: 'Deer:', wBoar: 'Wild boar:', wBirds: 'Birds:', wInsects: 'Insects:',
+    wlIntro: '<strong>Wildlife corridors</strong> typically follow the contours and watercourses. The forest edge on the north/upper boundary is the main wildlife entry point. Deer and wild boar move downhill through the plot at night.',
+    wlLi1: '<strong>Fencing</strong> needed on the woodland boundary — wild boar can destroy a vegetable garden in one night',
+    wlLi2: 'Deer-prefer trees: protect young saplings with tree guards for the first 3 years',
+    wlLi3: 'Create a <strong>wildlife corridor</strong> along the edges — native hedgerows, berry patches, water access',
+    wlLi4: 'Pond attracts birds, frogs, dragonflies — natural pest control',
+    wlLi5: 'Chickens need <strong>predator-proof housing</strong> at night (foxes, martens, birds of prey)',
+    wlLi6: 'Bee-friendly flowers throughout — pollination is critical for fruit trees and vegetables',
+    panelView2: '👁️ View &amp; Access Sector — <span style="font-weight:normal;font-size:0.85em;color:#888;">Directional + Topographical</span>',
+    vBest: 'Best view:', vPrivacy: 'Privacy:', vAccess: 'Access:',
+    vViewP: '<strong>View:</strong> The south-facing slope offers a panoramic view southward over the valley. This is the prime location for the house\'s main living area, terrace, and outdoor dining.',
+    vPrivacyP: '<strong>Privacy:</strong> The woodland on the north side provides natural privacy. The south side is open to the view — plant a few strategically placed trees for partial screening without blocking the view.',
+    vLi1: 'House\'s main windows face <strong>south</strong> — view + passive solar gain',
+    vLi2: 'Terrace/outdoor dining on the <strong>south side</strong> of the building',
+    vLi3: 'Access road from the <strong>north</strong> — existing road on the woodland edge',
+    vLi4: 'Parking area on the north side of the building',
+    vLi5: 'Vegetable garden visible from the house — you can see what needs attention',
+    vLi6: 'Compost area slightly hidden (NE of the building) — practical but not in the main view',
+    mxDir: 'Directional', mxDirTopo: 'Directional + Topo', mxTopo: 'Topographical', mxComb: 'Combination',
+    mxSunDir: 'SE (summer rise) → SW (summer set)<br>Winter arc: 60° SE→SW',
+    mxSunImpact: 'South-facing slope = max solar gain<br>Winter sun low (24°) — long shadows',
+    mxSunMit: 'Passive solar building orientation<br>Deciduous trees for summer shade',
+    mxWindImpact: 'Warm, moist — brings rain<br>Directly hits the open slope',
+    mxWindMit: 'SW windbreak hedge<br>Fruit trees use wind for pollination',
+    mxColdImpact: 'Colder, dryer — but naturally deflected by south-facing slope',
+    mxColdMit: 'Slope provides shelter<br>Building as windbreak for garden',
+    mxHotImpact: 'Hot, dry Sirocco — desiccates plants, fire risk',
+    mxHotMit: 'Pond on SE side creates humidity buffer<br>Firebreak on SE boundary',
+    mxRainDir: 'SW system + orographic<br>800mm/yr, 8,000 m³ on 1ha',
+    mxRainImpact: 'Wet winter, dry summer<br>Runoff flows downhill (south)',
+    mxRainMit: 'Swales + pond harvest water<br>Gravity-fed drip irrigation',
+    mxFrostDir: 'Cold air drains downhill<br>Frost pockets at obstructions',
+    mxFrostImpact: 'Upper slope = warmer<br>Lower slope = colder',
+    mxFrostMit: 'Tender plants upper slope<br>Porous barriers, not solid walls',
+    mxFireDir: 'Sirocco (SE) + dry vegetation<br>Jul-Sep peak risk',
+    mxFireImpact: 'Major risk in Mediterranean summer',
+    mxFireMit: 'Firebreak on SE boundary<br>Water pond as firefighting source<br>Fire-resistant species near building',
+    mxWlDir: 'Forest edge (north) → downhill',
+    mxWlImpact: 'Deer, wild boar, birds, pollinators',
+    mxWlMit: 'Fencing on woodland boundary<br>Tree guards, pollinator habitat',
+    mxViewDir: 'South-facing panorama',
+    mxViewImpact: 'House orientation toward the view',
+    mxViewMit: 'Main windows + terrace south<br>Partial screening for privacy',
+    z0In: 'Sun (south), View (south), Cold wind (north), Frost (drainage)',
+    z0Res: 'South-facing main living, north side for storage/utility, elevated on slope for solar gain + frost drainage',
+    z1In: 'Sun (south-facing), Prevailing wind (SW), Frost (upper slope warmer)',
+    z1Res: 'SW windbreak, tender veg upper slope, hardy veg lower slope, row orientation north-south for even sun',
+    z2In: 'Sun (south-facing), Cold wind (deflected), Water (swales on contour), Wildlife (deer)',
+    z2Res: 'Fruit trees on swale berms, south slope for frost protection, tree guards, windbreak on SW boundary',
+    z3In: 'Fire (SE), Water (downhill), Wildlife (forest edge)',
+    z3Res: 'Fire-resistant species on SE, wildlife corridor on edges, berry patches in partial shade',
+    z4In: 'Wildlife (corridor), Cold wind (NW), Fire (fuel load)',
+    z4Res: 'Manage fuel load, maintain wildlife corridor, native species, firebreak transition',
+    z5In: 'Wildlife (habitat), Fire (SE direction)',
+    z5Res: 'Minimal intervention, monitor fire risk, biodiversity corridor',
+    modularIntro: 'This sector analysis is built with parameterised inputs. To adapt it for another plot, change the values at the top and the sectors update automatically.',
+    mpLat: 'Latitude', mpLatDesc: 'Determines sun arc angles. Change for any latitude globally',
+    mpAspect: 'Aspect', mpAspectDesc: 'Slope direction. Changes frost, sun, and wind exposure',
+    mpWind: 'Prevailing wind', mpWindDesc: 'Dominant wind direction. Change for coastal/inland sites',
+    mpCold: 'Cold wind', mpColdDesc: 'Winter wind direction. Different in continental climates',
+    mpAlt: 'Altitude', mpAltDesc: 'Affects temperature, frost dates, and growing season length',
+    mpRain: 'Rainfall', mpRainDesc: 'Annual precipitation. Changes water harvesting design',
+    mpSlope: 'Slope gradient', mpSlopeDesc: 'Steepness. Affects runoff, erosion, frost drainage'
   },
   nl: {
     title: '🌍 Sectoranalyse',
@@ -334,7 +441,114 @@ var T = {
     matrixH2: '📊 Complete sectormatrix', implicationsH2: '🏗️ Ontwerpimplicaties per zone', modularH2: '📐 Modulaire parameters',
     thSector: 'Sector', thType: 'Type', thDirection: 'Richting/Bron', thImpact: 'Impact op ontwerp', thMitigation: 'Mitigatie/Kans',
     thZone: 'Zone', thInfluences: 'Sectorinvloeden', thResponse: 'Ontwerprespons',
-    thParam: 'Parameter', thValue: 'Huidige waarde', thDesc: 'Beschrijving'
+    thParam: 'Parameter', thValue: 'Huidige waarde', thDesc: 'Beschrijving',
+    stLat: 'Breedtegraad:', stSummer: 'Zomer-middag:', stWinter: 'Winter-middag:', stAspect: 'Aspect:',
+    sunSolarArc: '<strong>Zonneboog:</strong> Zomerzonnewende — zonsopgang ~60°ZO, zonsondergang ~60°ZW (boog ~120°). Winterzonnewende — zonsopgang ~30°ZO, zonsondergang ~30°ZW (boog ~60°). De op het zuiden gerichte helling betekent dat het hele perceel zon krijgt van zonsopgang tot zonsondergang — geen schaduw van de helling zelf.',
+    sunLi1: 'Hoge gewassen naar het <strong>noorden</strong> (achterkant moestuin) — ze schaduwen lagere planten niet',
+    sunLi2: 'De zuidgevel van het gebouw is de ideale plek voor <strong>passieve zonnewinst</strong> — kas, serre, thermische massa',
+    sunLi3: '<strong>Winterzon</strong> staat laag (24° op de middag) — schaduwen zijn 2,2× de objecthoogte. Het gebouw moet zo staan dat het de tuin in de winter niet beschaduwt',
+    sunLi4: '<strong>Zomerzon</strong> staat hoog (70°) — verticale schaduw van loofbomen aan de zuidkant beschermt het gebouw',
+    sunLi5: 'Op het zuiden gerichte helling krijgt <strong>~30% meer zonnestraling</strong> dan vlak land op dezelfde breedtegraad',
+    windPrevail: 'Heersend:', windCold: 'Koud:', windHot: 'Heet:',
+    windPrevailP: '<strong>Heersende wind (ZW):</strong> Warme, vochtige lucht uit de Middellandse Zee. Dit is de dominante wind in Toscane. Hij brengt regen in voorjaar en najaar. Op een zuidelijke helling raakt deze wind het perceel direct — wat beschutting kan nodig zijn voor tere planten.',
+    windColdP: '<strong>Koude wind (NW — Tramontana):</strong> Koude, droge wind uit de Alpen. De zuidelijke helling biedt <strong>natuurlijke beschutting</strong> — de helling zelf buigt deze wind af. Het gebouw werkt als extra windscherm.',
+    windHotP: '<strong>Heite wind (ZO — Sirocco):</strong> Hete, droge wind uit Noord-Afrika. Brengt stof en kan planten uitdrogen. Brandrisico neemt toe tijdens Sirocco.',
+    windLi1: 'Windscherm/haag op de <strong>ZW-grens</strong> (heersende windkant) beschermt de tuin',
+    windLi2: 'De noordkant van het gebouw is een <strong>koude, beschutte zone</strong> — ideaal voor koude opslag, compost, wintergroenten',
+    windLi3: 'Swales en vijvers aan de <strong>ZO-kant</strong> helpen de uitdrogende effecten van de Sirocco te beperken (vocht + waterlichamen)',
+    windLi4: 'Fruitbomen ten <strong>zuiden van het gebouw</strong> profiteren van beschutting + gereflecteerde warmte',
+    windLi5: 'Kippen hebben een windscherm aan de ZW-kant nodig',
+    waterRain: 'Neerslag:', waterCatch: 'Opvang:', waterRoof: 'Dakopvang:', waterDry: 'Droog seizoen:',
+    waterPattern: '<strong>Neerslagpatroon:</strong> Mediterraan — natte winters (okt-mrt), droge zomers (jun-aug). De meeste regen valt in zware, korte buien. De helling creëert natuurlijke afvoergeulen.',
+    waterFlow: '<strong>Waterstroming:</strong> Regen valt op de helling → oppervlakte-afvoer stroomt bergafwaarts (zuid) → komt samen in natuurlijke drainage-lijnen → verzamelt zich onderaan het perceel. De swales (op contour) onderscheppen deze stroom en spreiden hem over de helling.',
+    waterLi1: 'Swales (4 op ~7m verticale afstand) vangen afvoer op, vullen grondwater aan',
+    waterLi2: 'Irrigatievijver op ~8-10m hoogte boven de tuin → zwaartekracht-druppelirrigatie (0,78 bar)',
+    waterLi3: 'Dakwater (170.000L/jaar) → 3 × 5.000L tanks → tuin + huishouden',
+    waterLi4: 'Natuurlijk zwembad (15×5×1,5m) bij het huis — zwemmen + thermische massa + irrigatiereserve',
+    waterLi5: 'Put als back-up tijdens droge jaren',
+    waterLi6: 'Diepwortelende planten (smalle weegbree, artisjok, bomen) zijn droogtebestendig — ze bereiken diep grondwater',
+    frostClimate: 'Klimaat:', frostLast: 'Laatste vorst:', frostFirst: 'Eerste vorst:', frostFree: 'Vorstvrij:',
+    frostDyn: '<strong>Vorstdynamiek:</strong> Koude lucht is zwaarder dan warme lucht — het stroomt bergafwaarts als water. Op een zuidelijke helling stroomt koude lucht vanzelf naar de valleibodem. Dit betekent dat het <strong>bovenste deel van het perceel minder vorstgevoelig is</strong> dan het onderste deel.',
+    frostPockets: '<strong>Vorstkuilen:</strong> Elke obstructie dwars op de helling (muren, dichte hagen, gebouwen) kan koude lucht aan de bovenkant vasthouden en een vorstkuil creëren. Het gebouw moet <strong>openingen onder</strong> hebben of zo staan dat koude lucht kan afstromen.',
+    frostLi1: 'Tere planten (tomaten, paprika, aubergine) naar de <strong>bovenhelling</strong> — minder vorstrisico',
+    frostLi2: 'Winterharde groenten (cavolo nero, tuinbonen, knoflook) kunnen naar de <strong>benedenhelling</strong> — ze kunnen tegen vorst',
+    frostLi3: 'Boomgaarden op de <strong>bovenste tot middelste helling</strong> — vorstgevoelige bloesem overleeft beter',
+    frostLi4: 'Bouw <strong>doorlatende barrières</strong> (hagen, geen massieve muren) dwars op de helling om koude lucht niet op te vangen',
+    frostLi5: 'Het gebouw zelf moet zo ontworpen zijn dat koude lucht erlangs kan stromen, niet ophoopt aan de bovenkant',
+    frostLi6: 'Natuurlijk zwembad onderaan het perceel — koudste plek, laagste vorstrisico voor het gebouw',
+    panelFire2: '🔥 Brandsector — <span style="font-weight:normal;font-size:0.85em;color:#888;">Seizoenscombinatie</span>',
+    fireRisk: 'Risico:', fireHotWind: 'Heite wind:', fireVeg: 'Vegetatie:',
+    fireIntro: '<strong>Natuurbrandrisico is ECHT in Toscane.</strong> De combinatie van hete, droge zomers, droge vegetatie en de Sirocco-wind uit het ZO creëert een significante brandsector. De zuidelijke helling betekent ook dat de vegetatie droger en brandbaarder is.',
+    fireLi1: '<strong>Brandgang</strong> op de ZO-grens — gebruik loofbomen (minder brandbaar) + een gemaaide groenstrook',
+    fireLi2: '<strong>Vijver/waterlichaam</strong> aan de ZO-kant dient als waterbron voor brandbestrijding ÈN als brandgang',
+    fireLi3: 'Vermijd zeer brandbare soorten bij het gebouw: dennen, eucalyptus, jeneverbes, cipres',
+    fireLi4: 'Kies <strong>vochthoudende, brandwerende soorten</strong> bij gebouwen: olijf, vijg, moerbei, citrus, aloë, lavendel, rozemarijn, salie, ijsplant',
+    fireLi5: 'Houd een <strong>geïrrigeerde groene buffer</strong> (moestuin, gazon) aan de ZO-kant — werkt als brandgang',
+    fireLi6: 'Composthoop is een brandrisico in de zomer — houd hem in de schaduw en vochtig',
+    fireLi7: 'Toegangsweg moet breed genoeg zijn voor een brandweerwagen (3,5m+)',
+    wDeer: 'Herten:', wBoar: 'Wild zwijn:', wBirds: 'Vogels:', wInsects: 'Insecten:',
+    wlIntro: '<strong>Natuurcorridors</strong> volgen meestal de contouren en waterlopen. De bosrand aan de noordelijke/bovenste grens is de belangrijkste ingang voor wild. Herten en wilde zwijnen trekken \'s nachts bergafwaarts door het perceel.',
+    wlLi1: '<strong>Afrastering</strong> nodig aan de bosrand — wilde zwijnen kunnen een moestuin in één nacht vernielen',
+    wlLi2: 'Hertenvoorkeurbomen: bescherm jonge boompjes de eerste 3 jaar met boombeschermers',
+    wlLi3: 'Creëer een <strong>natuurcorridor</strong> langs de randen — inheemse hagen, bessenstruiken, watertoegang',
+    wlLi4: 'Vijver trekt vogels, kikkers, libellen aan — natuurlijke plaagbestrijding',
+    wlLi5: 'Kippen hebben <strong>roofdierbestendig verblijf</strong> nodig \'s nachts (vossen, marters, roofvogels)',
+    wlLi6: 'Bijen-vriendelijke bloemen overal — bestuiving is cruciaal voor fruitbomen en groenten',
+    panelView2: '👁️ Uitzicht- & toegangssector — <span style="font-weight:normal;font-size:0.85em;color:#888;">Richting + topografie</span>',
+    vBest: 'Beste uitzicht:', vPrivacy: 'Privacy:', vAccess: 'Toegang:',
+    vViewP: '<strong>Uitzicht:</strong> De zuidelijke helling biedt een panoramisch uitzicht naar het zuiden over de vallei. Dit is de ideale plek voor de belangrijkste woonruimte van het huis, terras en buiteneten.',
+    vPrivacyP: '<strong>Privacy:</strong> Het bos aan de noordkant biedt natuurlijke privacy. De zuidkant is open naar het uitzicht — plant een paar strategisch geplaatste bomen voor gedeeltelijke afscherming zonder het uitzicht te blokkeren.',
+    vLi1: 'Hoofdramen van het huis op het <strong>zuiden</strong> — uitzicht + passieve zonnewinst',
+    vLi2: 'Terras/buiteneten aan de <strong>zuidkant</strong> van het gebouw',
+    vLi3: 'Toegangsweg vanaf het <strong>noorden</strong> — bestaande weg aan de bosrand',
+    vLi4: 'Parkeerplaats aan de noordkant van het gebouw',
+    vLi5: 'Moestuin zichtbaar vanuit het huis — je ziet wat aandacht nodig heeft',
+    vLi6: 'Compostplek iets verborgen (NO van het gebouw) — praktisch maar niet in het hoofd-uitzicht',
+    mxDir: 'Richting', mxDirTopo: 'Richting + topo', mxTopo: 'Topografisch', mxComb: 'Combinatie',
+    mxSunDir: 'ZO (zomeropkomst) → ZW (zomerondergang)<br>Winterboog: 60° ZO→ZW',
+    mxSunImpact: 'Zuidelijke helling = maximale zonnewinst<br>Winterzon laag (24°) — lange schaduwen',
+    mxSunMit: 'Passieve zonne-oriëntatie van gebouw<br>Loofbomen voor zomerschaduw',
+    mxWindImpact: 'Warm, vochtig — brengt regen<br>Raakt de open helling direct',
+    mxWindMit: 'ZW windschermhaag<br>Fruitbomen gebruiken wind voor bestuiving',
+    mxColdImpact: 'Kouder, droger — maar vanzelf afgebogen door de zuidelijke helling',
+    mxColdMit: 'Helling biedt beschutting<br>Gebouw als windscherm voor de tuin',
+    mxHotImpact: 'Heite, droge Sirocco — droogt planten uit, brandrisico',
+    mxHotMit: 'Vijver aan ZO-kant creëert vochtbuffer<br>Brandgang op ZO-grens',
+    mxRainDir: 'ZW-systeem + orografisch<br>800mm/jaar, 8.000 m³ op 1ha',
+    mxRainImpact: 'Natte winter, droge zomer<br>Afvoer stroomt bergafwaarts (zuid)',
+    mxRainMit: 'Swales + vijver vangen water op<br>Zwaartekracht-druppelirrigatie',
+    mxFrostDir: 'Koude lucht stroomt bergafwaarts<br>Vorstkuilen bij obstakels',
+    mxFrostImpact: 'Bovenhelling = warmer<br>Benedenhelling = kouder',
+    mxFrostMit: 'Tere planten op bovenhelling<br>Doorlatende barrières, geen massieve muren',
+    mxFireDir: 'Sirocco (ZO) + droge vegetatie<br>Jul-sep piekrisico',
+    mxFireImpact: 'Groot risico in mediterrane zomer',
+    mxFireMit: 'Brandgang op ZO-grens<br>Watervijver als brandblusbron<br>Brandwerende soorten bij het gebouw',
+    mxWlDir: 'Bosrand (noord) → bergafwaarts',
+    mxWlImpact: 'Herten, wilde zwijnen, vogels, bestuivers',
+    mxWlMit: 'Afrastering aan bosrand<br>Boombeschermers, bestuivershabitat',
+    mxViewDir: 'Panorama op het zuiden',
+    mxViewImpact: 'Huisoriëntatie naar het uitzicht',
+    mxViewMit: 'Hoofdramen + terras zuid<br>Gedeeltelijke afscherming voor privacy',
+    z0In: 'Zon (zuid), Uitzicht (zuid), Koude wind (noord), Vorst (drainage)',
+    z0Res: 'Wonen op het zuiden, noordkant voor opslag/utility, verhoogd op helling voor zonnewinst + vorstdrainage',
+    z1In: 'Zon (zuidgericht), Heersende wind (ZW), Vorst (bovenhelling warmer)',
+    z1Res: 'ZW windscherm, tere groenten bovenhelling, winterharde groenten benedenhelling, rijen noord-zuid voor gelijke zon',
+    z2In: 'Zon (zuidgericht), Koude wind (afgebogen), Water (swales op contour), Wild (herten)',
+    z2Res: 'Fruitbomen op swale-bermen, zuidelijke helling voor vorstbescherming, boombeschermers, windscherm op ZW-grens',
+    z3In: 'Vuur (ZO), Water (bergafwaarts), Wild (bosrand)',
+    z3Res: 'Brandwerende soorten op ZO, natuurcorridor aan randen, bessenplekken in halfschaduw',
+    z4In: 'Wild (corridor), Koude wind (NW), Vuur (brandstof)',
+    z4Res: 'Beheer brandstof, behoud natuurcorridor, inheemse soorten, brandgang-overgang',
+    z5In: 'Wild (habitat), Vuur (ZO-richting)',
+    z5Res: 'Minimale ingreep, brandrisico monitoren, biodiversiteitscorridor',
+    modularIntro: 'Deze sectoranalyse is gebouwd met geparametriseerde inputs. Om hem aan te passen aan een ander perceel, wijzig de waarden bovenaan en de sectoren werken automatisch bij.',
+    mpLat: 'Breedtegraad', mpLatDesc: 'Bepaalt zonnebooghoeken. Wijzig voor elke breedtegraad wereldwijd',
+    mpAspect: 'Aspect', mpAspectDesc: 'Hellingsrichting. Verandert vorst-, zon- en windblootstelling',
+    mpWind: 'Heersende wind', mpWindDesc: 'Dominante windrichting. Wijzig voor kust-/binnenlandlocaties',
+    mpCold: 'Koude wind', mpColdDesc: 'Winterwindrichting. Anders in continentale klimaten',
+    mpAlt: 'Hoogte', mpAltDesc: 'Beïnvloedt temperatuur, vorstdatums en groeiseizoenslengte',
+    mpRain: 'Neerslag', mpRainDesc: 'Jaarlijkse neerslag. Verandert het wateropvang-ontwerp',
+    mpSlope: 'Hellingsgraad', mpSlopeDesc: 'Steilheid. Beïnvloedt afvoer, erosie, vorstdrainage'
   }
 };
 function tt(k) { return (T[LANG] && T[LANG][k] !== undefined) ? T[LANG][k] : (T.en[k] !== undefined ? T.en[k] : k); }
@@ -438,110 +652,110 @@ function applyI18nSA() {
 
 <div class="info-panel" id="panel-sun">
   <h3 data-i18n="panelSun">☀️ Sun Sector — <span style="font-weight:normal;font-size:0.85em;color:#888;">Directional</span></h3>
-  <p><span class="stat">Latitude: <span id="st-lat">43°N</span></span><span class="stat">Summer noon: <span id="st-summer">70°</span></span><span class="stat">Winter noon: <span id="st-winter">24°</span></span><span class="stat">Aspect: <span id="st-aspect">South-facing</span></span></p>
-  <p><strong>Solar arc:</strong> Summer solstice — sunrise ~60°SE, sunset ~60°SW (arc ~120°). Winter solstice — sunrise ~30°SE, sunset ~30°SW (arc ~60°). The south-facing slope means the entire plot receives sun from sunrise to sunset — no shadow from the slope itself.</p>
+  <p><span class="stat"><span data-i18n="stLat">Latitude:</span> <span id="st-lat">43°N</span></span><span class="stat"><span data-i18n="stSummer">Summer noon:</span> <span id="st-summer">70°</span></span><span class="stat"><span data-i18n="stWinter">Winter noon:</span> <span id="st-winter">24°</span></span><span class="stat"><span data-i18n="stAspect">Aspect:</span> <span id="st-aspect">South-facing</span></span></p>
+  <p><span data-i18n="sunSolarArc"><strong>Solar arc:</strong> Summer solstice — sunrise ~60°SE, sunset ~60°SW (arc ~120°). Winter solstice — sunrise ~30°SE, sunset ~30°SW (arc ~60°). The south-facing slope means the entire plot receives sun from sunrise to sunset — no shadow from the slope itself.</span></p>
   <p><strong>Design implications:</strong></p>
   <ul style="margin-left:20px;line-height:1.8;">
-    <li>Tall crops go <strong>north</strong> (back of vegetable garden) — they won't shade shorter plants</li>
-    <li>Building's south facade is the prime location for <strong>passive solar gain</strong> — greenhouse, sunroom, thermal mass</li>
-    <li><strong>Winter sun</strong> is low (24° at noon) — shadows are 2.2× object height. The building should be positioned so it doesn't shade the garden in winter</li>
-    <li><strong>Summer sun</strong> is high (70°) — vertical shade from deciduous trees on the south side protects the building</li>
-    <li>South-facing slope gets <strong>~30% more solar radiation</strong> than flat land at the same latitude</li>
+    <li><span data-i18n="sunLi1">Tall crops go <strong>north</strong> (back of vegetable garden) — they won\'t shade shorter plants</span></li>
+    <li><span data-i18n="sunLi2">Building\'s south facade is the prime location for <strong>passive solar gain</strong> — greenhouse, sunroom, thermal mass</span></li>
+    <li><span data-i18n="sunLi3"><strong>Winter sun</strong> is low (24° at noon) — shadows are 2.2× object height. The building should be positioned so it doesn\'t shade the garden in winter</span></li>
+    <li><span data-i18n="sunLi4"><strong>Summer sun</strong> is high (70°) — vertical shade from deciduous trees on the south side protects the building</span></li>
+    <li><span data-i18n="sunLi5">South-facing slope gets <strong>~30% more solar radiation</strong> than flat land at the same latitude</span></li>
   </ul>
 </div>
 
 <div class="info-panel" id="panel-wind">
   <h3 data-i18n="panelWind">💨 Wind Sector — <span style="font-weight:normal;font-size:0.85em;color:#888;">Directional + Topographical</span></h3>
-  <p><span class="stat">Prevailing: SW (225°)</span><span class="stat">Cold: NW (330°) Tramontana</span><span class="stat">Hot: SE (135°) Sirocco</span></p>
-  <p><strong>Prevailing wind (SW):</strong> Warm, moist air from the Mediterranean. This is the dominant wind in Tuscany. It brings rain in spring and autumn. On a south-facing slope, this wind hits the plot directly — some shelter may be needed for tender plants.</p>
-  <p><strong>Cold wind (NW — Tramontana):</strong> Cold, dry wind from the Alps. The south-facing slope provides <strong>natural shelter</strong> — the slope itself deflects this wind. The building acts as a further windbreak.</p>
-  <p><strong>Hot wind (SE — Sirocco):</strong> Hot, dry wind from North Africa. Carries dust and can desiccate plants. Fire risk increases during Sirocco events.</p>
+  <p><span class="stat"><span data-i18n="windPrevail">Prevailing:</span> SW (225°)</span><span class="stat"><span data-i18n="windCold">Cold:</span> NW (330°) Tramontana</span><span class="stat"><span data-i18n="windHot">Hot:</span> SE (135°) Sirocco</span></p>
+  <p><span data-i18n="windPrevailP"><strong>Prevailing wind (SW):</strong> Warm, moist air from the Mediterranean. This is the dominant wind in Tuscany. It brings rain in spring and autumn. On a south-facing slope, this wind hits the plot directly — some shelter may be needed for tender plants.</span></p>
+  <p><span data-i18n="windColdP"><strong>Cold wind (NW — Tramontana):</strong> Cold, dry wind from the Alps. The south-facing slope provides <strong>natural shelter</strong> — the slope itself deflects this wind. The building acts as a further windbreak.</span></p>
+  <p><span data-i18n="windHotP"><strong>Hot wind (SE — Sirocco):</strong> Hot, dry wind from North Africa. Carries dust and can desiccate plants. Fire risk increases during Sirocco events.</span></p>
   <p><strong>Design implications:</strong></p>
   <ul style="margin-left:20px;line-height:1.8;">
-    <li>Windbreak/hedge on the <strong>SW boundary</strong> (prevailing wind side) protects the garden</li>
-    <li>North side of the building is a <strong>cold, sheltered zone</strong> — ideal for cold storage, compost, winter veg</li>
-    <li>Swales and ponds on the <strong>SE side</strong> help mitigate Sirocco drying effects (humidity + water bodies)</li>
-    <li>Fruit trees on the <strong>south of the building</strong> benefit from shelter + reflected heat</li>
-    <li>Chickens need a windbreak on the SW side</li>
+    <li><span data-i18n="windLi1">Windbreak/hedge on the <strong>SW boundary</strong> (prevailing wind side) protects the garden</span></li>
+    <li><span data-i18n="windLi2">North side of the building is a <strong>cold, sheltered zone</strong> — ideal for cold storage, compost, winter veg</span></li>
+    <li><span data-i18n="windLi3">Swales and ponds on the <strong>SE side</strong> help mitigate Sirocco drying effects (humidity + water bodies)</span></li>
+    <li><span data-i18n="windLi4">Fruit trees on the <strong>south of the building</strong> benefit from shelter + reflected heat</span></li>
+    <li><span data-i18n="windLi5">Chickens need a windbreak on the SW side</span></li>
   </ul>
 </div>
 
 <div class="info-panel" id="panel-water">
   <h3 data-i18n="panelWater">💧 Water Sector — <span style="font-weight:normal;font-size:0.85em;color:#888;">Topographical + Directional</span></h3>
-  <p><span class="stat">Rainfall: 800mm/yr</span><span class="stat">Catchment: 8,000 m³/yr</span><span class="stat">Roof harvest: 170,000L/yr</span><span class="stat">Dry season: Jun-Aug</span></p>
-  <p><strong>Rainfall pattern:</strong> Mediterranean — wet winters (Oct-Mar), dry summers (Jun-Aug). Most rain falls as heavy, short events. The slope creates natural runoff channels.</p>
-  <p><strong>Water flow:</strong> Rain falls on the slope → surface runoff flows downhill (south) → converges in natural drainage lines → collects at the bottom of the plot. The swales (on contour) will intercept this flow and spread it across the slope.</p>
+  <p><span class="stat"><span data-i18n="waterRain">Rainfall:</span> 800mm/yr</span><span class="stat"><span data-i18n="waterCatch">Catchment:</span> 8,000 m³/yr</span><span class="stat"><span data-i18n="waterRoof">Roof harvest:</span> 170,000L/yr</span><span class="stat"><span data-i18n="waterDry">Dry season:</span> Jun-Aug</span></p>
+  <p><span data-i18n="waterPattern"><strong>Rainfall pattern:</strong> Mediterranean — wet winters (Oct-Mar), dry summers (Jun-Aug). Most rain falls as heavy, short events. The slope creates natural runoff channels.</span></p>
+  <p><span data-i18n="waterFlow"><strong>Water flow:</strong> Rain falls on the slope → surface runoff flows downhill (south) → converges in natural drainage lines → collects at the bottom of the plot. The swales (on contour) will intercept this flow and spread it across the slope.</span></p>
   <p><strong>Design implications:</strong></p>
   <ul style="margin-left:20px;line-height:1.8;">
-    <li>Swales (4 at ~7m vertical spacing) capture runoff, recharge groundwater</li>
-    <li>Irrigation pond at ~8-10m elevation above the garden → gravity-fed drip irrigation (0.78 bar)</li>
-    <li>Roof water (170,000L/yr) → 3 × 5,000L tanks → garden + house use</li>
-    <li>Natural pool (15×5×1.5m) near house — swimming + thermal mass + irrigation reserve</li>
-    <li>Well is backup during drought years</li>
-    <li>Deep-rooted plants (comfrey, artichokes, trees) are drought-resilient — they access deep groundwater</li>
+    <li><span data-i18n="waterLi1">Swales (4 at ~7m vertical spacing) capture runoff, recharge groundwater</span></li>
+    <li><span data-i18n="waterLi2">Irrigation pond at ~8-10m elevation above the garden → gravity-fed drip irrigation (0.78 bar)</span></li>
+    <li><span data-i18n="waterLi3">Roof water (170,000L/yr) → 3 × 5,000L tanks → garden + house use</span></li>
+    <li><span data-i18n="waterLi4">Natural pool (15×5×1.5m) near house — swimming + thermal mass + irrigation reserve</span></li>
+    <li><span data-i18n="waterLi5">Well is backup during drought years</span></li>
+    <li><span data-i18n="waterLi6">Deep-rooted plants (comfrey, artichokes, trees) are drought-resilient — they access deep groundwater</span></li>
   </ul>
 </div>
 
 <div class="info-panel" id="panel-frost">
   <h3 data-i18n="panelFrost">❄️ Frost Sector — <span style="font-weight:normal;font-size:0.85em;color:#888;">Topographical</span></h3>
-  <p><span class="stat">Climate: 8b-9a</span><span class="stat">Last frost: ~Apr</span><span class="stat">First frost: ~Nov</span><span class="stat">Frost-free: 180-210 days</span></p>
-  <p><strong>Frost dynamics:</strong> Cold air is heavier than warm air — it flows downhill like water. On a south-facing slope, cold air drains naturally to the valley bottom. This means the <strong>upper part of the plot is less prone to frost</strong> than the lower part.</p>
-  <p><strong>Frost pockets:</strong> Any obstruction across the slope (solid walls, dense hedges, buildings) can trap cold air on the uphill side, creating a frost pocket. The building should be designed with <strong>gaps underneath</strong> or positioned to allow cold air drainage.</p>
+  <p><span class="stat"><span data-i18n="frostClimate">Climate:</span> 8b-9a</span><span class="stat"><span data-i18n="frostLast">Last frost:</span> ~Apr</span><span class="stat"><span data-i18n="frostFirst">First frost:</span> ~Nov</span><span class="stat"><span data-i18n="frostFree">Frost-free:</span> 180-210 days</span></p>
+  <p><span data-i18n="frostDyn"><strong>Frost dynamics:</strong> Cold air is heavier than warm air — it flows downhill like water. On a south-facing slope, cold air drains naturally to the valley bottom. This means the <strong>upper part of the plot is less prone to frost</strong> than the lower part.</span></p>
+  <p><span data-i18n="frostPockets"><strong>Frost pockets:</strong> Any obstruction across the slope (solid walls, dense hedges, buildings) can trap cold air on the uphill side, creating a frost pocket. The building should be designed with <strong>gaps underneath</strong> or positioned to allow cold air drainage.</span></p>
   <p><strong>Design implications:</strong></p>
   <ul style="margin-left:20px;line-height:1.8;">
-    <li>Tender plants (tomatoes, peppers, eggplant) go <strong>upper slope</strong> — less frost risk</li>
-    <li>Hardy vegetables (cavolo nero, fava beans, garlic) can go <strong>lower slope</strong> — they handle frost</li>
-    <li>Orchard trees on the <strong>upper-to-mid slope</strong> — frost-sensitive blossoms survive better</li>
-    <li>Build <strong>porous barriers</strong> (hedges, not solid walls) across the slope to avoid trapping cold air</li>
-    <li>The building itself should be designed so cold air can drain past it, not pool on the uphill side</li>
-    <li>Natural pool at the bottom of the plot — coldest location, lowest frost risk for building</li>
+    <li><span data-i18n="frostLi1">Tender plants (tomatoes, peppers, eggplant) go <strong>upper slope</strong> — less frost risk</span></li>
+    <li><span data-i18n="frostLi2">Hardy vegetables (cavolo nero, fava beans, garlic) can go <strong>lower slope</strong> — they handle frost</span></li>
+    <li><span data-i18n="frostLi3">Orchard trees on the <strong>upper-to-mid slope</strong> — frost-sensitive blossoms survive better</span></li>
+    <li><span data-i18n="frostLi4">Build <strong>porous barriers</strong> (hedges, not solid walls) across the slope to avoid trapping cold air</span></li>
+    <li><span data-i18n="frostLi5">The building itself should be designed so cold air can drain past it, not pool on the uphill side</span></li>
+    <li><span data-i18n="frostLi6">Natural pool at the bottom of the plot — coldest location, lowest frost risk for building</span></li>
   </ul>
 </div>
 
 <div class="info-panel" id="panel-fire">
-  <h3>🔥 Fire Sector — <span style="font-weight:normal;font-size:0.85em;color:#888;">Seasonal Combination</span></h3>
-  <p><span class="stat">Risk: Jul-Sep</span><span class="stat">Hot wind: SE (Sirocco)</span><span class="stat">Vegetation: dry Mediterranean</span></p>
-  <p><strong>Wildfire risk is REAL in Tuscany.</strong> The combination of hot, dry summers, dry vegetation, and the Sirocco wind from the SE creates a significant fire sector. The south-facing slope also means the vegetation is drier and more combustible.</p>
+  <h3 data-i18n="panelFire2">🔥 Fire Sector — <span style="font-weight:normal;font-size:0.85em;color:#888;">Seasonal Combination</span></h3>
+  <p><span class="stat"><span data-i18n="fireRisk">Risk:</span> Jul-Sep</span><span class="stat"><span data-i18n="fireHotWind">Hot wind:</span> SE (Sirocco)</span><span class="stat"><span data-i18n="fireVeg">Vegetation:</span> dry Mediterranean</span></p>
+  <p><span data-i18n="fireIntro"><strong>Wildfire risk is REAL in Tuscany.</strong> The combination of hot, dry summers, dry vegetation, and the Sirocco wind from the SE creates a significant fire sector. The south-facing slope also means the vegetation is drier and more combustible.</span></p>
   <p><strong>Design implications:</strong></p>
   <ul style="margin-left:20px;line-height:1.8;">
-    <li><strong>Firebreak</strong> on the SE boundary — use deciduous trees (lower flammability) + a mown green strip</li>
-    <li><strong>Pond/water body</strong> on the SE side serves as a water source for firefighting AND a firebreak</li>
-    <li>Avoid highly flammable species near the building: pines, eucalyptus, junipers, cypress</li>
-    <li>Choose <strong>high-moisture, fire-resistant species</strong> near structures: olive, fig, mulberry, citrus, aloe, lavender, rosemary, sage, iceplant</li>
-    <li>Keep <strong>irrigated green buffer</strong> (vegetable garden, lawn) on the SE side — acts as a firebreak</li>
-    <li>Compost pile is a fire risk in summer — keep it shaded and moist</li>
-    <li>Access road must be wide enough for a fire truck (3.5m+)</li>
+    <li><span data-i18n="fireLi1"><strong>Firebreak</strong> on the SE boundary — use deciduous trees (lower flammability) + a mown green strip</span></li>
+    <li><span data-i18n="fireLi2"><strong>Pond/water body</strong> on the SE side serves as a water source for firefighting AND a firebreak</span></li>
+    <li><span data-i18n="fireLi3">Avoid highly flammable species near the building: pines, eucalyptus, junipers, cypress</span></li>
+    <li><span data-i18n="fireLi4">Choose <strong>high-moisture, fire-resistant species</strong> near structures: olive, fig, mulberry, citrus, aloe, lavender, rosemary, sage, iceplant</span></li>
+    <li><span data-i18n="fireLi5">Keep <strong>irrigated green buffer</strong> (vegetable garden, lawn) on the SE side — acts as a firebreak</span></li>
+    <li><span data-i18n="fireLi6">Compost pile is a fire risk in summer — keep it shaded and moist</span></li>
+    <li><span data-i18n="fireLi7">Access road must be wide enough for a fire truck (3.5m+)</span></li>
   </ul>
 </div>
 
 <div class="info-panel" id="panel-wildlife">
   <h3 data-i18n="panelWildlife">🦌 Wildlife Sector — <span style="font-weight:normal;font-size:0.85em;color:#888;">Topographical</span></h3>
-  <p><span class="stat">Deer: woodland edges</span><span class="stat">Wild boar: cinghiale</span><span class="stat">Birds: year-round</span><span class="stat">Insects: pollinators</span></p>
-  <p><strong>Wildlife corridors</strong> typically follow the contours and watercourses. The forest edge on the north/upper boundary is the main wildlife entry point. Deer and wild boar move downhill through the plot at night.</p>
+  <p><span class="stat"><span data-i18n="wDeer">Deer:</span> woodland edges</span><span class="stat"><span data-i18n="wBoar">Wild boar:</span> cinghiale</span><span class="stat"><span data-i18n="wBirds">Birds:</span> year-round</span><span class="stat"><span data-i18n="wInsects">Insects:</span> pollinators</span></p>
+  <p><span data-i18n="wlIntro"><strong>Wildlife corridors</strong> typically follow the contours and watercourses. The forest edge on the north/upper boundary is the main wildlife entry point. Deer and wild boar move downhill through the plot at night.</span></p>
   <p><strong>Design implications:</strong></p>
   <ul style="margin-left:20px;line-height:1.8;">
-    <li><strong>Fencing</strong> needed on the woodland boundary — wild boar can destroy a vegetable garden in one night</li>
-    <li>Deer-prefer trees: protect young saplings with tree guards for the first 3 years</li>
-    <li>Create a <strong>wildlife corridor</strong> along the edges — native hedgerows, berry patches, water access</li>
-    <li>Pond attracts birds, frogs, dragonflies — natural pest control</li>
-    <li>Chickens need <strong>predator-proof housing</strong> at night (foxes, martens, birds of prey)</li>
-    <li>Bee-friendly flowers throughout — pollination is critical for fruit trees and vegetables</li>
+    <li><span data-i18n="wlLi1"><strong>Fencing</strong> needed on the woodland boundary — wild boar can destroy a vegetable garden in one night</span></li>
+    <li><span data-i18n="wlLi2">Deer-prefer trees: protect young saplings with tree guards for the first 3 years</span></li>
+    <li><span data-i18n="wlLi3">Create a <strong>wildlife corridor</strong> along the edges — native hedgerows, berry patches, water access</span></li>
+    <li><span data-i18n="wlLi4">Pond attracts birds, frogs, dragonflies — natural pest control</span></li>
+    <li><span data-i18n="wlLi5">Chickens need <strong>predator-proof housing</strong> at night (foxes, martens, birds of prey)</span></li>
+    <li><span data-i18n="wlLi6">Bee-friendly flowers throughout — pollination is critical for fruit trees and vegetables</span></li>
   </ul>
 </div>
 
 <div class="info-panel" id="panel-view">
-  <h3>👁️ View &amp; Access Sector — <span style="font-weight:normal;font-size:0.85em;color:#888;">Directional + Topographical</span></h3>
-  <p><span class="stat">Best view: South</span><span class="stat">Privacy: Woodland north</span><span class="stat">Access: From north</span></p>
-  <p><strong>View:</strong> The south-facing slope offers a panoramic view southward over the valley. This is the prime location for the house's main living area, terrace, and outdoor dining.</p>
-  <p><strong>Privacy:</strong> The woodland on the north side provides natural privacy. The south side is open to the view — plant a few strategically placed trees for partial screening without blocking the view.</p>
+  <h3 data-i18n="panelView2">👁️ View &amp; Access Sector — <span style="font-weight:normal;font-size:0.85em;color:#888;">Directional + Topographical</span></h3>
+  <p><span class="stat"><span data-i18n="vBest">Best view:</span> South</span><span class="stat"><span data-i18n="vPrivacy">Privacy:</span> Woodland north</span><span class="stat"><span data-i18n="vAccess">Access:</span> From north</span></p>
+  <p><span data-i18n="vViewP"><strong>View:</strong> The south-facing slope offers a panoramic view southward over the valley. This is the prime location for the house\'s main living area, terrace, and outdoor dining.</span></p>
+  <p><span data-i18n="vPrivacyP"><strong>Privacy:</strong> The woodland on the north side provides natural privacy. The south side is open to the view — plant a few strategically placed trees for partial screening without blocking the view.</span></p>
   <p><strong>Design implications:</strong></p>
   <ul style="margin-left:20px;line-height:1.8;">
-    <li>House's main windows face <strong>south</strong> — view + passive solar gain</li>
-    <li>Terrace/outdoor dining on the <strong>south side</strong> of the building</li>
-    <li>Access road from the <strong>north</strong> — existing road on the woodland edge</li>
-    <li>Parking area on the north side of the building</li>
-    <li>Vegetable garden visible from the house — you can see what needs attention</li>
-    <li>Compost area slightly hidden (NE of the building) — practical but not in the main view</li>
+    <li><span data-i18n="vLi1">House\'s main windows face <strong>south</strong> — view + passive solar gain</span></li>
+    <li><span data-i18n="vLi2">Terrace/outdoor dining on the <strong>south side</strong> of the building</span></li>
+    <li><span data-i18n="vLi3">Access road from the <strong>north</strong> — existing road on the woodland edge</span></li>
+    <li><span data-i18n="vLi4">Parking area on the north side of the building</span></li>
+    <li><span data-i18n="vLi5">Vegetable garden visible from the house — you can see what needs attention</span></li>
+    <li><span data-i18n="vLi6">Compost area slightly hidden (NE of the building) — practical but not in the main view</span></li>
   </ul>
 </div>
 
@@ -549,39 +763,39 @@ function applyI18nSA() {
 <h2 data-i18n="matrixH2">📊 Complete Sector Matrix</h2>
 <table>
 <tr><th data-i18n="thSector">Sector</th><th data-i18n="thType">Type</th><th data-i18n="thDirection">Direction/Source</th><th data-i18n="thImpact">Impact on design</th><th data-i18n="thMitigation">Mitigation/Opportunity</th></tr>
-<tr><td><strong>☀️ Sun</strong></td><td>Directional</td><td>SE (summer rise) → SW (summer set)<br>Winter arc: 60° SE→SW</td><td>South-facing slope = max solar gain<br>Winter sun low (24°) — long shadows</td><td>Passive solar building orientation<br>Deciduous trees for summer shade</td></tr>
-<tr><td><strong>💨 Prevailing wind</strong></td><td>Directional</td><td>SW (225°)</td><td>Warm, moist — brings rain<br>Directly hits the open slope</td><td>SW windbreak hedge<br>Fruit trees use wind for pollination</td></tr>
-<tr><td><strong>💨 Cold wind</strong></td><td>Directional</td><td>NW (330°)</td><td>Colder, dryer — but naturally deflected by south-facing slope</td><td>Slope provides shelter<br>Building as windbreak for garden</td></tr>
-<tr><td><strong>💨 Hot wind</strong></td><td>Directional</td><td>SE (135°)</td><td>Hot, dry Sirocco — desiccates plants, fire risk</td><td>Pond on SE side creates humidity buffer<br>Firebreak on SE boundary</td></tr>
-<tr><td><strong>💧 Rain</strong></td><td>Directional + Topo</td><td>SW system + orographic<br>800mm/yr, 8,000 m³ on 1ha</td><td>Wet winter, dry summer<br>Runoff flows downhill (south)</td><td>Swales + pond harvest water<br>Gravity-fed drip irrigation</td></tr>
-<tr><td><strong>❄️ Frost</strong></td><td>Topographical</td><td>Cold air drains downhill<br>Frost pockets at obstructions</td><td>Upper slope = warmer<br>Lower slope = colder</td><td>Tender plants upper slope<br>Porous barriers, not solid walls</td></tr>
-<tr><td><strong>🔥 Fire</strong></td><td>Combination</td><td>Sirocco (SE) + dry vegetation<br>Jul-Sep peak risk</td><td>Major risk in Mediterranean summer</td><td>Firebreak on SE boundary<br>Water pond as firefighting source<br>Fire-resistant species near building</td></tr>
-<tr><td><strong>🦌 Wildlife</strong></td><td>Topographical</td><td>Forest edge (north) → downhill</td><td>Deer, wild boar, birds, pollinators</td><td>Fencing on woodland boundary<br>Tree guards, pollinator habitat</td></tr>
-<tr><td><strong>👁️ View</strong></td><td>Combination</td><td>South-facing panorama</td><td>House orientation toward the view</td><td>Main windows + terrace south<br>Partial screening for privacy</td></tr>
+<tr><td><strong>☀️ Sun</strong></td><td><span data-i18n="mxDir">Directional</span></td><td><span data-i18n="mxSunDir">SE (summer rise) → SW (summer set)<br>Winter arc: 60° SE→SW</span></td><td><span data-i18n="mxSunImpact">South-facing slope = max solar gain<br>Winter sun low (24°) — long shadows</span></td><td><span data-i18n="mxSunMit">Passive solar building orientation<br>Deciduous trees for summer shade</span></td></tr>
+<tr><td><strong>💨 Prevailing wind</strong></td><td><span data-i18n="mxDir">Directional</span></td><td>SW (225°)</td><td><span data-i18n="mxWindImpact">Warm, moist — brings rain<br>Directly hits the open slope</span></td><td><span data-i18n="mxWindMit">SW windbreak hedge<br>Fruit trees use wind for pollination</span></td></tr>
+<tr><td><strong>💨 Cold wind</strong></td><td><span data-i18n="mxDir">Directional</span></td><td>NW (330°)</td><td><span data-i18n="mxColdImpact">Colder, dryer — but naturally deflected by south-facing slope</span></td><td><span data-i18n="mxColdMit">Slope provides shelter<br>Building as windbreak for garden</span></td></tr>
+<tr><td><strong>💨 Hot wind</strong></td><td><span data-i18n="mxDir">Directional</span></td><td>SE (135°)</td><td><span data-i18n="mxHotImpact">Hot, dry Sirocco — desiccates plants, fire risk</span></td><td><span data-i18n="mxHotMit">Pond on SE side creates humidity buffer<br>Firebreak on SE boundary</span></td></tr>
+<tr><td><strong>💧 Rain</strong></td><td><span data-i18n="mxDirTopo">Directional + Topo</span></td><td><span data-i18n="mxRainDir">SW system + orographic<br>800mm/yr, 8,000 m³ on 1ha</span></td><td><span data-i18n="mxRainImpact">Wet winter, dry summer<br>Runoff flows downhill (south)</span></td><td><span data-i18n="mxRainMit">Swales + pond harvest water<br>Gravity-fed drip irrigation</span></td></tr>
+<tr><td><strong>❄️ Frost</strong></td><td><span data-i18n="mxTopo">Topographical</span></td><td><span data-i18n="mxFrostDir">Cold air drains downhill<br>Frost pockets at obstructions</span></td><td><span data-i18n="mxFrostImpact">Upper slope = warmer<br>Lower slope = colder</span></td><td><span data-i18n="mxFrostMit">Tender plants upper slope<br>Porous barriers, not solid walls</span></td></tr>
+<tr><td><strong>🔥 Fire</strong></td><td><span data-i18n="mxComb">Combination</span></td><td><span data-i18n="mxFireDir">Sirocco (SE) + dry vegetation<br>Jul-Sep peak risk</span></td><td><span data-i18n="mxFireImpact">Major risk in Mediterranean summer</span></td><td><span data-i18n="mxFireMit">Firebreak on SE boundary<br>Water pond as firefighting source<br>Fire-resistant species near building</span></td></tr>
+<tr><td><strong>🦌 Wildlife</strong></td><td><span data-i18n="mxTopo">Topographical</span></td><td><span data-i18n="mxWlDir">Forest edge (north) → downhill</span></td><td><span data-i18n="mxWlImpact">Deer, wild boar, birds, pollinators</span></td><td><span data-i18n="mxWlMit">Fencing on woodland boundary<br>Tree guards, pollinator habitat</span></td></tr>
+<tr><td><strong>👁️ View</strong></td><td><span data-i18n="mxComb">Combination</span></td><td><span data-i18n="mxViewDir">South-facing panorama</span></td><td><span data-i18n="mxViewImpact">House orientation toward the view</span></td><td><span data-i18n="mxViewMit">Main windows + terrace south<br>Partial screening for privacy</span></td></tr>
 </table>
 
 <h2 data-i18n="implicationsH2">🏗️ Design Implications by Zone</h2>
 <table>
 <tr><th data-i18n="thZone">Zone</th><th data-i18n="thInfluences">Sector influences</th><th data-i18n="thResponse">Design response</th></tr>
-<tr><td><strong>Zone 0 — House</strong></td><td>Sun (south), View (south), Cold wind (north), Frost (drainage)</td><td>South-facing main living, north side for storage/utility, elevated on slope for solar gain + frost drainage</td></tr>
-<tr><td><strong>Zone 1 — Vegetable garden</strong></td><td>Sun (south-facing), Prevailing wind (SW), Frost (upper slope warmer)</td><td>SW windbreak, tender veg upper slope, hardy veg lower slope, row orientation north-south for even sun</td></tr>
-<tr><td><strong>Zone 2 — Orchard</strong></td><td>Sun (south-facing), Cold wind (deflected), Water (swales on contour), Wildlife (deer)</td><td>Fruit trees on swale berms, south slope for frost protection, tree guards, windbreak on SW boundary</td></tr>
-<tr><td><strong>Zone 3 — Berries & canopy</strong></td><td>Fire (SE), Water (downhill), Wildlife (forest edge)</td><td>Fire-resistant species on SE, wildlife corridor on edges, berry patches in partial shade</td></tr>
-<tr><td><strong>Zone 4 — Woodland edge</strong></td><td>Wildlife (corridor), Cold wind (NW), Fire (fuel load)</td><td>Manage fuel load, maintain wildlife corridor, native species, firebreak transition</td></tr>
-<tr><td><strong>Zone 5 — Wild</strong></td><td>Wildlife (habitat), Fire (SE direction)</td><td>Minimal intervention, monitor fire risk, biodiversity corridor</td></tr>
+<tr><td><strong>Zone 0 — House</strong></td><td><span data-i18n="z0In">Sun (south), View (south), Cold wind (north), Frost (drainage)</span></td><td><span data-i18n="z0Res">South-facing main living, north side for storage/utility, elevated on slope for solar gain + frost drainage</span></td></tr>
+<tr><td><strong>Zone 1 — Vegetable garden</strong></td><td><span data-i18n="z1In">Sun (south-facing), Prevailing wind (SW), Frost (upper slope warmer)</span></td><td><span data-i18n="z1Res">SW windbreak, tender veg upper slope, hardy veg lower slope, row orientation north-south for even sun</span></td></tr>
+<tr><td><strong>Zone 2 — Orchard</strong></td><td><span data-i18n="z2In">Sun (south-facing), Cold wind (deflected), Water (swales on contour), Wildlife (deer)</span></td><td><span data-i18n="z2Res">Fruit trees on swale berms, south slope for frost protection, tree guards, windbreak on SW boundary</span></td></tr>
+<tr><td><strong>Zone 3 — Berries & canopy</strong></td><td><span data-i18n="z3In">Fire (SE), Water (downhill), Wildlife (forest edge)</span></td><td><span data-i18n="z3Res">Fire-resistant species on SE, wildlife corridor on edges, berry patches in partial shade</span></td></tr>
+<tr><td><strong>Zone 4 — Woodland edge</strong></td><td><span data-i18n="z4In">Wildlife (corridor), Cold wind (NW), Fire (fuel load)</span></td><td><span data-i18n="z4Res">Manage fuel load, maintain wildlife corridor, native species, firebreak transition</span></td></tr>
+<tr><td><strong>Zone 5 — Wild</strong></td><td><span data-i18n="z5In">Wildlife (habitat), Fire (SE direction)</span></td><td><span data-i18n="z5Res">Minimal intervention, monitor fire risk, biodiversity corridor</span></td></tr>
 </table>
 
 <h2 data-i18n="modularH2">📐 Modular Parameters</h2>
-<p style="font-size:0.85em;color:#b0bca0;">This sector analysis is built with parameterised inputs. To adapt it for another plot, change the values at the top and the sectors update automatically.</p>
+<p style="font-size:0.85em;color:#b0bca0;"><span data-i18n="modularIntro">This sector analysis is built with parameterised inputs. To adapt it for another plot, change the values at the top and the sectors update automatically.</span></p>
 <table>
 <tr><th data-i18n="thParam">Parameter</th><th data-i18n="thValue">Current value</th><th data-i18n="thDesc">Description</th></tr>
-<tr><td>Latitude</td><td>43°N</td><td>Determines sun arc angles. Change for any latitude globally</td></tr>
-<tr><td>Aspect</td><td id="param-aspect">South (180°)</td><td>Slope direction. Changes frost, sun, and wind exposure</td></tr>
-<tr><td>Prevailing wind</td><td>SW (225°)</td><td>Dominant wind direction. Change for coastal/inland sites</td></tr>
-<tr><td>Cold wind</td><td>NW (330°)</td><td>Winter wind direction. Different in continental climates</td></tr>
-<tr><td>Altitude</td><td id="param-altitude">300m</td><td>Affects temperature, frost dates, and growing season length</td></tr>
-<tr><td>Rainfall</td><td>800mm/yr</td><td>Annual precipitation. Changes water harvesting design</td></tr>
-<tr><td>Slope gradient</td><td id="param-slope">10%</td><td>Steepness. Affects runoff, erosion, frost drainage</td></tr>
+<tr><td><span data-i18n="mpLat">Latitude</span></td><td>43°N</td><td><span data-i18n="mpLatDesc">Determines sun arc angles. Change for any latitude globally</span></td></tr>
+<tr><td><span data-i18n="mpAspect">Aspect</span></td><td id="param-aspect">South (180°)</td><td><span data-i18n="mpAspectDesc">Slope direction. Changes frost, sun, and wind exposure</span></td></tr>
+<tr><td><span data-i18n="mpWind">Prevailing wind</span></td><td>SW (225°)</td><td><span data-i18n="mpWindDesc">Dominant wind direction. Change for coastal/inland sites</span></td></tr>
+<tr><td><span data-i18n="mpCold">Cold wind</span></td><td>NW (330°)</td><td><span data-i18n="mpColdDesc">Winter wind direction. Different in continental climates</span></td></tr>
+<tr><td><span data-i18n="mpAlt">Altitude</span></td><td id="param-altitude">300m</td><td><span data-i18n="mpAltDesc">Affects temperature, frost dates, and growing season length</span></td></tr>
+<tr><td><span data-i18n="mpRain">Rainfall</span></td><td>800mm/yr</td><td><span data-i18n="mpRainDesc">Annual precipitation. Changes water harvesting design</span></td></tr>
+<tr><td><span data-i18n="mpSlope">Slope gradient</span></td><td id="param-slope">10%</td><td><span data-i18n="mpSlopeDesc">Steepness. Affects runoff, erosion, frost drainage</span></td></tr>
 </table>
 
 <script>
