@@ -86,23 +86,127 @@ tr:hover { background: rgba(255,255,255,0.06); }
 </head>
 <body>
 
-<h1>🥬 SOILPEPPER — Vegetable Garden Design</h1>
-<p class="subtitle">500m² · 12 beds · 0.6m wheelbarrow paths · South-facing · Direct sow · ~300m altitude</p>
+<script>
+/* ===== I18N (2026-08-07) ===== */
+var VDQ = new URLSearchParams(window.location.search);
+var REGION = (VDQ.get('region') === 'netherlands' || VDQ.get('region') === 'tuscany') ? VDQ.get('region') : 'tuscany';
+var LANG = REGION === 'netherlands' ? 'nl' : 'en';
+var T = {
+  en: {
+    title: '🥬 Vegetable Garden Design', subtitle: '500m² · 12 beds · 0.6m wheelbarrow paths · South-facing · Direct sow · ~300m altitude',
+    wWidth: 'Width (E-W)', wDepth: 'Depth (N-S)', wBed: 'Bed width', wPath: 'Path width', wBeds: 'Beds', wArea: 'Growing area',
+    p1: 'Every plant helps soil + soil helps plant', p2: 'Direct sow > transplant', p3: 'No rotation needed', p4: 'Design by sun, wind, height, width',
+    sunLbl: 'SUN →', windLbl: '⬇ WIND', bed: 'Bed', compost: 'Compost', herbsArt: '🌿 Herbs & Artichokes',
+    topsoil: '🌱 30cm organic topsoil', subsoil: 'silty-sandy subsoil', topsoil50: '🌳 50cm+ organic topsoil', topsoil40: '🌳 40cm organic topsoil',
+    vegBedsH4: '🥬 Vegetable beds', fruitH4: '🍎 Fruit trees', olivesH4: '🫒 Olives',
+    vegBuild: 'Deep compost + green manure build organic layer', fruitBuild: 'Mulched tree circles build deeper organic layer over time', oliveBuild: 'Cover crops between rows build soil naturally',
+    infoHint: '👆 Click any plant for soil-benefit details', infoText: 'Every plant in this garden has been evaluated for its relationship with the soil — what it gives and what it needs.',
+    sumH2: '🥬 Vegetable Garden — Design Summary', soilH2: '🌱 Soil-Benefit Matrix', soilSub: 'Every plant has been evaluated for this mutual relationship. Updated as more species are added.', seasonH2: '📅 Seasonal Flow',
+    thGroup: 'Group', thBeds: 'Beds', thPos: 'Position', thHeight: 'Height range', thCrops: 'Key crops',
+    thPlant: 'Plant', thHelps: '🌱 How it HELPS the soil', thSoilHelps: '🧪 How SOIL helps it',
+    thSeason: 'Season', thGrowing: 'What\'s growing', thSown: 'What\'s being sown',
+    sTall: 'Tall Sun-Lovers', sNorth: 'North (back)', sTallCrops: 'Corn, sunflowers, staked tomatoes, pole beans, fennel',
+    sMed: 'Medium Height', sMiddle: 'Middle', sMedCrops: 'Peppers, eggplant, zucchini, squash, cucumber, basil, chickpeas',
+    sLow: 'Low & Leafy', sSouth: 'South (front)', sLowCrops: 'Cavolo nero, chard, lettuce, radicchio, spinach',
+    sRoot: 'Roots & Alliums', sFront: 'Frontmost', sUnder: 'Underground', sRootCrops: 'Carrots, onions, garlic, fava beans, cucumber',
+    sHerbs: 'Herbs & Perennials', sEastStrip: 'East strip', sEastEdge: 'East edge', sHerbCrops: 'Artichokes, rosemary, sage, oregano, thyme',
+    seaSpring: 'Spring (Mar-May)', seaSpringGrow: 'Fava beans maturing; garlic/onions growing; perennial herbs', seaSpringSow: 'Corn, sunflowers, beans, squash, zucchini, cucumbers, basil, carrots, chard',
+    seaSummer: 'Summer (Jun-Aug)', seaSummerGrow: 'Tomatoes, peppers, eggplant, squash, zucchini, corn, beans, cucumbers', seaSummerSow: 'Cavolo nero, radicchio, fennel, spinach, carrots (for autumn/winter)',
+    seaAutumn: 'Autumn (Sep-Nov)', seaAutumnGrow: 'Tomatoes finishing, peppers, squash, cavolo nero, radicchio, fennel', seaAutumnSow: 'Garlic, onions (autumn planting), fava beans (winter cover), spinach',
+    seaWinter: 'Winter (Dec-Feb)', seaWinterGrow: 'Cavolo nero, radicchio, leeks, chard, fava beans growing slowly', seaWinterSow: '— (soil resting under cover crops and mulch)',
+    mCorn: 'Corn (Ottofile)', mCornH: 'Deep roots break subsoil; stalks = carbon-rich compost', mCornS: 'Needs N-rich organic soil; silty-sand drainage ideal',
+    mSun: 'Sunflower', mSunH: 'Deep taproot mines minerals; phytoremediator', mSunS: 'Tolerates poor soil; thrives in moderation',
+    mTom: 'San Marzano Tomato', mTomH: 'Deep roots; leaves = green manure', mTomS: 'Rich well-drained soil; calcium critical; silty-sand excellent',
+    mBean: 'Borlotto Beans (pole)', mBeanH: '✅ NITROGEN FIXER — roots convert N from air', mBeanS: 'Moderate fertility; too much N = leaves > beans',
+    mFennel: 'Fennel', mFennelH: 'Deep taproot; attracts beneficial insects', mFennelS: 'Well-drained, moderately fertile; rots in waterlogged soil',
+    mPepper: 'Pepper (Corno di Toro)', mPepperH: 'Light feeder; flowers attract pollinators', mPepperS: 'Warm soil (18°C+); well-drained; silty-sand warms fast',
+    mZuc: 'Zucchini (Romanesco)', mZucH: 'Living mulch — shades soil, reduces evaporation', mZucS: 'Heavy feeder; rich compost; consistent water',
+    mCuc: 'Cucumber', mCucH: 'Light feeder; quick shade cover', mCucS: 'Warm (20°C+); consistent moisture; silty-sand + compost',
+    mChick: 'Chickpea (Ceci)', mChickH: '✅ NITROGEN FIXER; dry-farmed (zero irrigation)', mChickS: 'LIGHT, well-drained soil — silty-sand PERFECT',
+    mCavolo: 'Cavolo Nero', mCavoloH: 'Deep taproot; chop-and-drop green manure', mCavoloS: 'Heavy feeder; rich N soil; frost improves flavor',
+    mChard: 'Chard (Bietola)', mChardH: 'Deep taproot; cut-and-come-again = minimal disturbance', mChardS: 'Moderate fertility; well-drained essential',
+    mCarrot: 'Carrots', mCarrotH: 'Deep taproot NATURALLY TILLS and aerates', mCarrotS: 'DEEP, LOOSE, sandy soil — silty-sand PERFECT for carrots',
+    mFava: 'Fava Beans', mFavaH: '✅ NITROGEN FIXER — 100-200 kg N/ha; winter green manure', mFavaS: 'Tolerates poor soil; THE best soil-building winter crop',
+    mGarlic: 'Garlic', mGarlicH: 'BIOFUMIGANT — allicin suppresses soil pathogens', mGarlicS: 'Loose well-drained soil; silty-sand PERFECT; rots in clay',
+    mArt: 'Artichoke (Carciofo)', mArtH: 'Deep taproot; massive leaf canopy; perennial = no disturbance', mArtS: 'Heavy feeder; 50cm+ organic layer ideal',
+    mRose: 'Rosemary', mRoseH: 'Year-round soil cover; slope stabilizer; pest repellent', mRoseS: 'Poor, well-drained soil — silty-sand PERFECT; zero irrigation',
+    dTallH: '🌽🌻🍅 Beds 1-3 — Tall Sun-Lovers', dTallP: 'Corn (Ottofile), sunflowers, San Marzano + Costoluto Fiorentino tomatoes, Borlotto pole beans, Florence fennel. These plants provide the vertical structure and create micro-shade for lower beds to their south. Pole beans fix nitrogen. Sunflowers mine subsoil minerals. Tomatoes are heavy feeders — follow with fava beans in autumn.<br><br><strong>Direct sow:</strong> Corn, beans, sunflowers, fennel — yes. Tomatoes — start indoors Feb-Mar.',
+    dMedH: '🫑🍆🥒 Beds 4-6 — Medium Height', dMedP: 'Peppers (Corno di Toro), eggplant (Violetta Lunga), zucchini (Zucchino Romanesco), squash, cucumber (Lungo Verde), basil (Genovese), chickpeas (Ceci della Toscana). Chickpeas are nitrogen fixers and dry-farmed — zero irrigation. Zucchini/squash leaves shade soil, suppress weeds. Basil repels pests for tomatoes above. <br><br><strong>Direct sow:</strong> Zucchini, squash, cucumber, basil, chickpeas — yes. Peppers, eggplant — start indoors Mar.',
+    dLowH: '🥬🌿🥗 Beds 7-9 — Low & Leafy', dLowP: 'Cavolo Nero (Tuscan black kale), chard (Bietola), lettuce (Lattuga Romana), radicchio (Treviso), spinach (Merlo Nero). These are cut-and-come-again crops — harvest outer leaves, plant regrows. Cavolo Nero is THE Tuscan winter staple — frost improves flavor. Year-round production with successional sowing.<br><br><strong>Direct sow:</strong> All — yes. Successional sowing every 3 weeks for continuous harvest.',
+    dRootH: '🥕🧅🧄 Beds 10-12 — Roots & Alliums', dRootP: 'Carrots (Nantas, Tonda di Parigi), red onion (Cipolla di Tropea), garlic (Aglio Bianco Piacentino), fava beans, cucumber. Fava beans are the powerhouse — nitrogen fixers (100-200 kg N/ha), winter green manure, spring food crop. Garlic biofumigates soil. Carrots NATURALLY TILL the soil with their taproots. <br><br><strong>Direct sow:</strong> All — yes. Carrots MUST be direct sown (transplanting always fails). Fava beans sow Oct-Nov for winter cover. Garlic plant Oct, harvest Jun. <br><br><strong>Best soil match:</strong> Silty-sand is PERFECT for carrots and garlic — loose, well-drained, no rocks. These are the soil\'s best friends.',
+    dCompH: '🔄 Compost — 3-Bin System', dCompP: '<strong>🌱 How it helps the soil:</strong> The ENGINE of soil building. Every kg of compost returns organic matter, nutrients, and microbiology to the soil. Without compost, the 30cm organic layer can\'t be maintained. Comfrey leaves (plant on berms) are the BEST compost activator — high in nitrogen and minerals.<br><strong>Bin 1:</strong> Fresh (kitchen scraps + garden waste + comfrey)<br><strong>Bin 2:</strong> Maturing (turn from bin 1)<br><strong>Bin 3:</strong> Ready to use (dark, earthy smell, 6 months old)<br><strong>Target:</strong> 10-20m³ compost/year for 500m² vegetable garden'
+  },
+  nl: {
+    title: '🥬 Moestuin-ontwerp', subtitle: '500m² · 12 bedden · 0,6m kruiwagenpaden · Op het zuiden · Direct zaaien · ~300m hoogte',
+    wWidth: 'Breedte (O-W)', wDepth: 'Diepte (N-Z)', wBed: 'Bedbreedte', wPath: 'Padbreedte', wBeds: 'Bedden', wArea: 'Teeltoppervlak',
+    p1: 'Elke plant helpt de bodem + bodem helpt plant', p2: 'Direct zaaien > verplanten', p3: 'Geen wisselteelt nodig', p4: 'Ontwerp op zon, wind, hoogte, breedte',
+    sunLbl: 'ZON →', windLbl: '⬇ WIND', bed: 'Bed', compost: 'Compost', herbsArt: '🌿 Kruiden & artisjokken',
+    topsoil: '🌱 30cm organische toplaag', subsoil: 'silt-zand ondergrond', topsoil50: '🌳 50cm+ organische toplaag', topsoil40: '🌳 40cm organische toplaag',
+    vegBedsH4: '🥬 Groentebedden', fruitH4: '🍎 Fruitbomen', olivesH4: '🫒 Olijven',
+    vegBuild: 'Diepe compost + groenbemester bouwen organische laag op', fruitBuild: 'Gemuide boomcirkels bouwen na verloop van tijd diepere organische laag op', oliveBuild: 'Groenbemesters tussen de rijen bouwen de bodem natuurlijk op',
+    infoHint: '👆 Klik op een plant voor bodemvoordeel-details', infoText: 'Elke plant in deze tuin is geëvalueerd op zijn relatie met de bodem — wat hij geeft en wat hij nodig heeft.',
+    sumH2: '🥬 Moestuin — Ontwerpsamenvatting', soilH2: '🌱 Bodemvoordeel-matrix', soilSub: 'Elke plant is geëvalueerd op deze wederzijdse relatie. Bijgewerkt naarmate meer soorten worden toegevoegd.', seasonH2: '📅 Seizoensstroom',
+    thGroup: 'Groep', thBeds: 'Bedden', thPos: 'Positie', thHeight: 'Hoogtebereik', thCrops: 'Belangrijkste gewassen',
+    thPlant: 'Plant', thHelps: '🌱 Hoe het de BODEM helpt', thSoilHelps: '🧪 Hoe de BODEM het helpt',
+    thSeason: 'Seizoen', thGrowing: 'Wat groeit', thSown: 'Wat wordt gezaaid',
+    sTall: 'Hoge zonliefhebbers', sNorth: 'Noord (achter)', sTallCrops: 'Maïs, zonnebloemen, gestokte tomaten, stokbonen, venkel',
+    sMed: 'Middelhoge gewassen', sMiddle: 'Midden', sMedCrops: 'Paprika, aubergine, courgette, pompoen, komkommer, basilicum, kikkererwten',
+    sLow: 'Laag & bladertig', sSouth: 'Zuid (voor)', sLowCrops: 'Cavolo nero, snijbiet, sla, radicchio, spinazie',
+    sRoot: 'Wortels & ui-achtigen', sFront: 'Voorste rijen', sUnder: 'Ondergronds', sRootCrops: 'Wortel, ui, knoflook, tuinbonen, komkommer',
+    sHerbs: 'Kruiden & vaste planten', sEastStrip: 'Ooststrook', sEastEdge: 'Oostrand', sHerbCrops: 'Artisjok, rozemarijn, salie, oregano, tijm',
+    seaSpring: 'Voorjaar (mrt-mei)', seaSpringGrow: 'Tuinbonen rijpen; knoflook/uien groeien; vaste kruiden', seaSpringSow: 'Maïs, zonnebloemen, bonen, pompoen, courgette, komkommers, basilicum, wortel, snijbiet',
+    seaSummer: 'Zomer (jun-aug)', seaSummerGrow: 'Tomaten, paprika, aubergine, pompoen, courgette, maïs, bonen, komkommers', seaSummerSow: 'Cavolo nero, radicchio, venkel, spinazie, wortel (voor herfst/winter)',
+    seaAutumn: 'Herfst (sep-nov)', seaAutumnGrow: 'Tomaten afrijpend, paprika, pompoen, cavolo nero, radicchio, venkel', seaAutumnSow: 'Knoflook, ui (herfstplanting), tuinbonen (winterbedekking), spinazie',
+    seaWinter: 'Winter (dec-feb)', seaWinterGrow: 'Cavolo nero, radicchio, prei, snijbiet, tuinbonen groeien langzaam', seaWinterSow: '— (bodem rust onder groenbemesters en mulch)',
+    mCorn: 'Maïs (Ottofile)', mCornH: 'Diepe wortels breken ondergrond; stengels = koolstofrijke compost', mCornS: 'Heeft N-rijke organische grond nodig; silt-zand drainage ideaal',
+    mSun: 'Zonnebloem', mSunH: 'Diepe penwortel wint mineralen; fytoremediator', mSunS: 'Verdraagt arme grond; gedijt in gematigdheid',
+    mTom: 'San Marzano tomaat', mTomH: 'Diepe wortels; bladeren = groenbemester', mTomS: 'Rijke goed gedraineerde grond; calcium cruciaal; silt-zand uitstekend',
+    mBean: 'Borlotto-bonen (stok)', mBeanH: '✅ STIKSTOFBINDER — wortels zetten N om uit de lucht', mBeanS: 'Gematigde vruchtbaarheid; te veel N = bladeren > bonen',
+    mFennel: 'Venkel', mFennelH: 'Diepe penwortel; trekt nuttige insecten aan', mFennelS: 'Goed gedraineerd, matig vruchtbaar; rot in drassige grond',
+    mPepper: 'Paprika (Corno di Toro)', mPepperH: 'Lichte eter; bloemen trekken bestuivers aan', mPepperS: 'Warme grond (18°C+); goed gedraineerd; silt-zand warmt snel',
+    mZuc: 'Courgette (Romanesco)', mZucH: 'Levende mulch — beschaduwt grond, vermindert verdamping', mZucS: 'Zware eter; rijke compost; constant water',
+    mCuc: 'Komkommer', mCucH: 'Lichte eter; snelle schaduwbedekking', mCucS: 'Warm (20°C+); constante vochtigheid; silt-zand + compost',
+    mChick: 'Kikkererwt (Ceci)', mChickH: '✅ STIKSTOFBINDER; droogtegeteeld (geen irrigatie)', mChickS: 'LICHTE, goed gedraineerde grond — silt-zand PERFECT',
+    mCavolo: 'Cavolo Nero', mCavoloH: 'Diepe penwortel; chop-and-drop groenbemester', mCavoloS: 'Zware eter; rijke N-grond; vorst verbetert de smaak',
+    mChard: 'Snijbiet (Bietola)', mChardH: 'Diepe penwortel; hergroei-oogst = minimale verstoring', mChardS: 'Gematigde vruchtbaarheid; goede drainage essentieel',
+    mCarrot: 'Wortel', mCarrotH: 'Diepe penwortel BEWERKT en belucht de grond natuurlijk', mCarrotS: 'DIEPE, LOSSE, zanderige grond — silt-zand PERFECT voor wortels',
+    mFava: 'Tuinbonen', mFavaH: '✅ STIKSTOFBINDER — 100-200 kg N/ha; wintergroenbemester', mFavaS: 'Verdraagt arme grond; DE beste bodemopbouwende winterplant',
+    mGarlic: 'Knoflook', mGarlicH: 'BIOFUMIGANT — allicine onderdrukt bodemziekten', mGarlicS: 'Losse goed gedraineerde grond; silt-zand PERFECT; rot in klei',
+    mArt: 'Artisjok (Carciofo)', mArtH: 'Diepe penwortel; enorm bladerdak; vaste plant = geen verstoring', mArtS: 'Zware eter; 50cm+ organische laag ideaal',
+    mRose: 'Rozemarijn', mRoseH: 'Jaarrond bodembedekking; hellingstabilisator; plaagwerend', mRoseS: 'Arme, goed gedraineerde grond — silt-zand PERFECT; geen irrigatie',
+    dTallH: '🌽🌻🍅 Bedden 1-3 — Hoge zonliefhebbers', dTallP: 'Maïs (Ottofile), zonnebloemen, San Marzano + Costoluto Fiorentino tomaten, Borlotto stokbonen, Florence venkel. Deze planten bieden de verticale structuur en creëren microschaduw voor lagere bedden ten zuiden ervan. Stokbonen binden stikstof. Zonnebloemen winnen ondergrondse mineralen. Tomaten zijn zware eters — volg met tuinbonen in de herfst.<br><br><strong>Direct zaaien:</strong> Maïs, bonen, zonnebloemen, venkel — ja. Tomaten — binnen starten feb-mrt.',
+    dMedH: '🫑🍆🥒 Bedden 4-6 — Middelhoge gewassen', dMedP: 'Paprika (Corno di Toro), aubergine (Violetta Lunga), courgette (Zucchino Romanesco), pompoen, komkommer (Lungo Verde), basilicum (Genovese), kikkererwten (Ceci della Toscana). Kikkererwten zijn stikstofbinders en droogtegeteeld — geen irrigatie. Courgette/pompoen bladeren beschaduwen de grond en onderdrukken onkruid. Basilicum weert plagen voor tomaten erboven. <br><br><strong>Direct zaaien:</strong> Courgette, pompoen, komkommer, basilicum, kikkererwten — ja. Paprika, aubergine — binnen starten mrt.',
+    dLowH: '🥬🌿🥗 Bedden 7-9 — Laag & bladertig', dLowP: 'Cavolo Nero (Toscaanse zwarte kool), snijbiet (Bietola), sla (Lattuga Romana), radicchio (Treviso), spinazie (Merlo Nero). Dit zijn hergroei-gewassen — oogst buitenste bladeren, plant groeit opnieuw. Cavolo Nero is DE Toscaanse winterstapel — vorst verbetert de smaak. Jaarrond productie met opeenvolgend zaaien.<br><br><strong>Direct zaaien:</strong> Allemaal — ja. Opeenvolgend zaaien elke 3 weken voor continue oogst.',
+    dRootH: '🥕🧅🧄 Bedden 10-12 — Wortels & ui-achtigen', dRootP: 'Wortel (Nantas, Tonda di Parigi), rode ui (Cipolla di Tropea), knoflook (Aglio Bianco Piacentino), tuinbonen, komkommer. Tuinbonen zijn de krachtpatsers — stikstofbinders (100-200 kg N/ha), wintergroenbemester, voorjaarsvoedselgewas. Knoflook biofumigeert de grond. Wortels BEWERKEN de grond natuurlijk met hun penwortels. <br><br><strong>Direct zaaien:</strong> Allemaal — ja. Wortels MOETEN direct gezaaid worden (verplanten faalt altijd). Tuinbonen zaaien okt-nov voor winterbedekking. Knoflook planten okt, oogsten jun. <br><br><strong>Beste bodemmatch:</strong> Silt-zand is PERFECT voor wortels en knoflook — los, goed gedraineerd, geen stenen. Dit zijn de beste vrienden van de bodem.',
+    dCompH: '🔄 Compost — 3-bakken systeem', dCompP: '<strong>🌱 Hoe het de bodem helpt:</strong> De MOTOR van bodemopbouw. Elke kg compost brengt organische stof, nutriënten en microbiologie terug in de bodem. Zonder compost kan de 30cm organische laag niet in stand worden gehouden. Smalle weegbree-bladeren (planten op bermen) zijn de BESTE compostactivator — rijk aan stikstof en mineralen.<br><strong>Bak 1:</strong> Vers (keukenresten + tuinafval + smalle weegbree)<br><strong>Bak 2:</strong> Rijpend (omzetten uit bak 1)<br><strong>Bak 3:</strong> Klaar voor gebruik (donker, aards geur, 6 maanden oud)<br><strong>Doel:</strong> 10-20m³ compost/jaar voor 500m² moestuin'
+  }
+};
+function tt(k) { return (T[LANG] && T[LANG][k] !== undefined) ? T[LANG][k] : (T.en[k] !== undefined ? T.en[k] : k); }
+function applyI18nVD() {
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    var key = el.getAttribute('data-i18n');
+    if (T[LANG][key] !== undefined) el.innerHTML = T[LANG][key];
+  });
+}
+document.addEventListener('DOMContentLoaded', applyI18nVD);
+</script>
+<h1 data-i18n="title">🥬 SOILPEPPER — Vegetable Garden Design</h1>
+<p class="subtitle" data-i18n="subtitle">500m² · 12 beds · 0.6m wheelbarrow paths · South-facing · Direct sow · ~300m altitude</p>
 
 <div class="dimension-banner">
-  <div class="db"><div class="num">22.5m</div><div class="lbl">Width (E-W)</div></div>
-  <div class="db"><div class="num">22.2m</div><div class="lbl">Depth (N-S)</div></div>
-  <div class="db"><div class="num">1.2m</div><div class="lbl">Bed width</div></div>
-  <div class="db"><div class="num">0.6m</div><div class="lbl">Path width</div></div>
-  <div class="db"><div class="num">12</div><div class="lbl">Beds</div></div>
-  <div class="db"><div class="num">324m²</div><div class="lbl">Growing area</div></div>
+  <div class="db"><div class="num">22.5m</div><div class="lbl" data-i18n="wWidth">Width (E-W)</div></div>
+  <div class="db"><div class="num">22.2m</div><div class="lbl" data-i18n="wDepth">Depth (N-S)</div></div>
+  <div class="db"><div class="num">1.2m</div><div class="lbl" data-i18n="wBed">Bed width</div></div>
+  <div class="db"><div class="num">0.6m</div><div class="lbl" data-i18n="wPath">Path width</div></div>
+  <div class="db"><div class="num">12</div><div class="lbl" data-i18n="wBeds">Beds</div></div>
+  <div class="db"><div class="num">324m²</div><div class="lbl" data-i18n="wArea">Growing area</div></div>
 </div>
 
 <div class="principles">
-  <div class="p"><strong>🌱</strong>Every plant helps soil + soil helps plant</div>
-  <div class="p"><strong>🧑‍🌾</strong>Direct sow > transplant</div>
-  <div class="p"><strong>🔄</strong>No rotation needed</div>
-  <div class="p"><strong>🌞🌬️</strong>Design by sun, wind, height, width</div>
+  <div class="p"><strong>🌱</strong><span data-i18n="p1">Every plant helps soil + soil helps plant</span></div>
+  <div class="p"><strong>🧑‍🌾</strong><span data-i18n="p2">Direct sow > transplant</span></div>
+  <div class="p"><strong>🔄</strong><span data-i18n="p3">No rotation needed</span></div>
+  <div class="p"><strong>🌞🌬️</strong><span data-i18n="p4">Design by sun, wind, height, width</span></div>
 </div>
 
 <div class="canvas">
@@ -117,63 +221,63 @@ tr:hover { background: rgba(255,255,255,0.06); }
   <!-- Sun path indicator -->
   <div style="position:absolute; top:3%; right:5%; display:flex; flex-direction:column; align-items:center; pointer-events:none;">
     <span style="font-size:1.2em; color:#fdd835;">☀️</span>
-    <span style="font-size:0.45em; color:#fdd835;">SUN →</span>
+    <span style="font-size:0.45em; color:#fdd835;" data-i18n="sunLbl">SUN →</span>
   </div>
 
   <!-- Wind indicator -->
   <div style="position:absolute; top:3%; left:12%; display:flex; align-items:center; gap:3px; pointer-events:none;">
-    <span style="font-size:0.45em; color:#81d4fa;">⬇ WIND</span>
+    <span style="font-size:0.45em; color:#81d4fa;" data-i18n="windLbl">⬇ WIND</span>
   </div>
 
   <!-- === GROUP 1: TALL (Beds 1-3, north/back) === -->
   <div class="group-box" style="top:3%; left:1%; width:96%; height:26%; border:1px dashed rgba(255,193,7,0.3); border-radius:6px;"></div>
-  <div class="group-label" style="top:1%; left:3%; color:#ffd54f;">TALL — 1.5–3m (corn, sunflowers, tomatoes, pole beans, fennel)</div>
+  <div class="group-label" style="top:1%; left:3%; color:#ffd54f;">HOOG — 1,5–3m (maïs, zonnebloemen, tomaten, stokbonen, venkel)</div>
 
   <!-- Edge path -->
   <div class="path-strip" style="top:3.5%; left:1%; width:96%; height:2.5%;"></div>
 
   <!-- BED 1 -->
   <div class="bed-row bed-tall" style="top:6%; left:1%; width:96%; height:6%;" onclick="showInfo('tall-group')">
-    <span class="row-label">Bed 1</span>
+    <span class="row-label"><span data-i18n="bed">Bed</span> 1</span>
   </div>
   <!-- Path 1 -->
   <div class="path-strip" style="top:12%; left:1%; width:96%; height:2.5%;"></div>
 
   <!-- BED 2 -->
   <div class="bed-row bed-tall" style="top:14.5%; left:1%; width:96%; height:6%;" onclick="showInfo('tall-group')">
-    <span class="row-label">Bed 2</span>
+    <span class="row-label"><span data-i18n="bed">Bed</span> 2</span>
   </div>
   <!-- Path 2 -->
   <div class="path-strip" style="top:20.5%; left:1%; width:96%; height:2.5%;"></div>
 
   <!-- BED 3 -->
   <div class="bed-row bed-tall" style="top:23%; left:1%; width:96%; height:6%;" onclick="showInfo('tall-group')">
-    <span class="row-label">Bed 3</span>
+    <span class="row-label"><span data-i18n="bed">Bed</span> 3</span>
   </div>
   <!-- Path 3 -->
   <div class="path-strip" style="top:29%; left:1%; width:96%; height:2.5%;"></div>
 
   <!-- === GROUP 2: MEDIUM (Beds 4-6, middle) === -->
   <div class="group-box" style="top:30%; left:1%; width:96%; height:26%; border:1px dashed rgba(76,175,80,0.3); border-radius:6px;"></div>
-  <div class="group-label" style="top:30.5%; left:3%; color:#81c784;">MEDIUM — 0.3–0.6m (peppers, eggplant, zucchini, squash, basil, chickpeas)</div>
+  <div class="group-label" style="top:30.5%; left:3%; color:#81c784;">MIDDEL — 0,3–0,6m (paprika, aubergine, courgette, pompoen, basilicum, kikkererwten)</div>
 
   <!-- BED 4 -->
   <div class="bed-row bed-mid" style="top:33%; left:1%; width:96%; height:6%;" onclick="showInfo('mid-group')">
-    <span class="row-label">Bed 4</span>
+    <span class="row-label"><span data-i18n="bed">Bed</span> 4</span>
   </div>
   <!-- Path 4 -->
   <div class="path-strip" style="top:39%; left:1%; width:96%; height:2.5%;"></div>
 
   <!-- BED 5 -->
   <div class="bed-row bed-mid" style="top:41.5%; left:1%; width:96%; height:6%;" onclick="showInfo('mid-group')">
-    <span class="row-label">Bed 5</span>
+    <span class="row-label"><span data-i18n="bed">Bed</span> 5</span>
   </div>
   <!-- Path 5 -->
   <div class="path-strip" style="top:47.5%; left:1%; width:96%; height:2.5%;"></div>
 
   <!-- BED 6 -->
   <div class="bed-row bed-mid" style="top:50%; left:1%; width:96%; height:6%;" onclick="showInfo('mid-group')">
-    <span class="row-label">Bed 6</span>
+    <span class="row-label"><span data-i18n="bed">Bed</span> 6</span>
   </div>
   <!-- Path 6 -->
   <div class="path-strip" style="top:56%; left:1%; width:96%; height:2.5%;"></div>
@@ -184,21 +288,21 @@ tr:hover { background: rgba(255,255,255,0.06); }
 
   <!-- BED 7 -->
   <div class="bed-row bed-low" style="top:60%; left:1%; width:96%; height:6%;" onclick="showInfo('low-group')">
-    <span class="row-label">Bed 7</span>
+    <span class="row-label"><span data-i18n="bed">Bed</span> 7</span>
   </div>
   <!-- Path 7 -->
   <div class="path-strip" style="top:66%; left:1%; width:96%; height:2.5%;"></div>
 
   <!-- BED 8 -->
   <div class="bed-row bed-low" style="top:68.5%; left:1%; width:96%; height:6%;" onclick="showInfo('low-group')">
-    <span class="row-label">Bed 8</span>
+    <span class="row-label"><span data-i18n="bed">Bed</span> 8</span>
   </div>
   <!-- Path 8 -->
   <div class="path-strip" style="top:74.5%; left:1%; width:96%; height:2.5%;"></div>
 
   <!-- BED 9 -->
   <div class="bed-row bed-low" style="top:77%; left:1%; width:96%; height:6%;" onclick="showInfo('low-group')">
-    <span class="row-label">Bed 9</span>
+    <span class="row-label"><span data-i18n="bed">Bed</span> 9</span>
   </div>
   <!-- Path 9 -->
   <div class="path-strip" style="top:83%; left:1%; width:96%; height:2.5%;"></div>
@@ -209,39 +313,39 @@ tr:hover { background: rgba(255,255,255,0.06); }
 
   <!-- BED 10 -->
   <div class="bed-row bed-root" style="top:87%; left:1%; width:96%; height:6%;" onclick="showInfo('root-group')">
-    <span class="row-label">Bed 10</span>
+    <span class="row-label"><span data-i18n="bed">Bed</span> 10</span>
   </div>
   <!-- Path 10 -->
   <div class="path-strip" style="top:93%; left:1%; width:96%; height:2.5%;"></div>
 
   <!-- BED 11 -->
   <div class="bed-row bed-root" style="top:91.5%; left:1%; width:96%; height:6%;" onclick="showInfo('root-group')">
-    <span class="row-label">Bed 11</span>
+    <span class="row-label"><span data-i18n="bed">Bed</span> 11</span>
   </div>
   <!-- Path 11 -->
   <div class="path-strip" style="top:93%; left:1%; width:96%; height:2.5%;"></div>
 
   <!-- BED 12 -->
   <div class="bed-row bed-root" style="top:95.5%; left:1%; width:96%; height:6%;" onclick="showInfo('root-group')">
-    <span class="row-label">Bed 12</span>
+    <span class="row-label"><span data-i18n="bed">Bed</span> 12</span>
   </div>
   <!-- Edge path -->
   <div class="path-strip" style="top:98%; left:1%; width:96%; height:2.5%;"></div>
 
   <!-- Herb strip (east edge) -->
   <div class="group-box" style="top:3%; left:97.5%; width:3%; height:97%; border:1px dashed rgba(76,175,80,0.2); border-radius:6px;"></div>
-  <div class="group-label" style="top:50%; left:97.5%; color:#81c784; writing-mode:vertical-lr; text-orientation:mixed;">🌿 Herbs & Artichokes</div>
+  <div class="group-label" style="top:50%; left:97.5%; color:#81c784; writing-mode:vertical-lr; text-orientation:mixed;" data-i18n="herbsArt">🌿 Herbs & Artichokes</div>
 
   <!-- Compost (NE corner) -->
   <div class="bed-row" style="top:3%; left:90%; width:7%; height:3%; background:rgba(101,67,33,0.5); border:1px solid #5d4037; border-radius:3px; cursor:pointer;" onclick="showInfo('compost2')">
     <span class="icon">🔄</span>
-    <span class="name">Compost</span>
+    <span class="name" data-i18n="compost">Compost</span>
   </div>
 
   <!-- Soil profile indicator (bottom) -->
   <div style="position:absolute; bottom:0; left:1%; width:96%; height:1.5%; display:flex; pointer-events:none;">
-    <div style="flex:1; background:rgba(74,122,58,0.15); border:1px solid rgba(74,122,58,0.1); border-radius:2px; display:flex; align-items:center; justify-content:center; font-size:0.38em; color:rgba(255,255,255,0.25);">🌱 30cm organic topsoil</div>
-    <div style="flex:3; background:rgba(107,93,75,0.1); border:1px solid rgba(107,93,75,0.08); border-radius:2px; display:flex; align-items:center; justify-content:center; font-size:0.38em; color:rgba(255,255,255,0.2);">silty-sandy subsoil</div>
+    <div style="flex:1; background:rgba(74,122,58,0.15); border:1px solid rgba(74,122,58,0.1); border-radius:2px; display:flex; align-items:center; justify-content:center; font-size:0.38em; color:rgba(255,255,255,0.25);" data-i18n="topsoil">🌱 30cm organic topsoil</div>
+    <div style="flex:3; background:rgba(107,93,75,0.1); border:1px solid rgba(107,93,75,0.08); border-radius:2px; display:flex; align-items:center; justify-content:center; font-size:0.38em; color:rgba(255,255,255,0.2);" data-i18n="subsoil">silty-sandy subsoil</div>
   </div>
 
 </div>
@@ -253,85 +357,85 @@ tr:hover { background: rgba(255,255,255,0.06); }
 <!-- Soil depth visual -->
 <div class="soil-vis">
   <div class="col">
-    <h4>🥬 Vegetable beds</h4>
+    <h4 data-i18n="vegBedsH4">🥬 Vegetable beds</h4>
     <div class="profile">
-      <div class="top" style="background:#4a7a3a;">🌱 30cm organic topsoil</div>
-      <div class="sub" style="background:#6b5d4b;">silty-sandy subsoil</div>
+      <div class="top" style="background:#4a7a3a;" data-i18n="topsoil">🌱 30cm organic topsoil</div>
+      <div class="sub" style="background:#6b5d4b;" data-i18n="subsoil">silty-sandy subsoil</div>
     </div>
-    <p style="font-size:0.7em;margin-top:6px;color:#a5d6a7;">Deep compost + green manure build organic layer</p>
+    <p style="font-size:0.7em;margin-top:6px;color:#a5d6a7;" data-i18n="vegBuild">Deep compost + green manure build organic layer</p>
   </div>
   <div class="col">
-    <h4>🍎 Fruit trees</h4>
+    <h4 data-i18n="fruitH4">🍎 Fruit trees</h4>
     <div class="profile">
-      <div class="top" style="background:#3a6a2a;">🌳 50cm+ organic topsoil</div>
-      <div class="sub" style="background:#6b5d4b;">silty-sandy subsoil</div>
+      <div class="top" style="background:#3a6a2a;" data-i18n="topsoil50">🌳 50cm+ organic topsoil</div>
+      <div class="sub" style="background:#6b5d4b;" data-i18n="subsoil">silty-sandy subsoil</div>
     </div>
-    <p style="font-size:0.7em;margin-top:6px;color:#a5d6a7;">Mulched tree circles build deeper organic layer over time</p>
+    <p style="font-size:0.7em;margin-top:6px;color:#a5d6a7;" data-i18n="fruitBuild">Mulched tree circles build deeper organic layer over time</p>
   </div>
   <div class="col">
-    <h4>🫒 Olives</h4>
+    <h4 data-i18n="olivesH4">🫒 Olives</h4>
     <div class="profile">
-      <div class="top" style="background:#2e5a1a;">🌳 40cm organic topsoil</div>
-      <div class="sub" style="background:#6b5d4b;">silty-sandy subsoil</div>
+      <div class="top" style="background:#2e5a1a;" data-i18n="topsoil40">🌳 40cm organic topsoil</div>
+      <div class="sub" style="background:#6b5d4b;" data-i18n="subsoil">silty-sandy subsoil</div>
     </div>
-    <p style="font-size:0.7em;margin-top:6px;color:#a5d6a7;">Cover crops between rows build soil naturally</p>
+    <p style="font-size:0.7em;margin-top:6px;color:#a5d6a7;" data-i18n="oliveBuild">Cover crops between rows build soil naturally</p>
   </div>
 </div>
 
 <div class="info" id="infoPanel">
-  <h3>👆 Click any plant for soil-benefit details</h3>
-  <p>Every plant in this garden has been evaluated for its relationship with the soil — what it gives and what it needs.</p>
+  <h3 data-i18n="infoHint">👆 Click any plant for soil-benefit details</h3>
+  <p data-i18n="infoText">Every plant in this garden has been evaluated for its relationship with the soil — what it gives and what it needs.</p>
 
-  <div class="detail-panel" id="info-tall-group"><h3>🌽🌻🍅 Beds 1-3 — Tall Sun-Lovers</h3><p><span class="stat">3 beds × 27m² = 81m²</span><span class="stat">Height: 1.5–3m</span><span class="stat">Back (north) row</span><span class="stat">Full sun</span><br><br>Corn (Ottofile), sunflowers, San Marzano + Costoluto Fiorentino tomatoes, Borlotto pole beans, Florence fennel. These plants provide the vertical structure and create micro-shade for lower beds to their south. Pole beans fix nitrogen. Sunflowers mine subsoil minerals. Tomatoes are heavy feeders — follow with fava beans in autumn.<br><br><strong>Direct sow:</strong> Corn, beans, sunflowers, fennel — yes. Tomatoes — start indoors Feb-Mar.</p></div>
-  <div class="detail-panel" id="info-mid-group"><h3>🫑🍆🥒 Beds 4-6 — Medium Height</h3><p><span class="stat">3 beds × 27m² = 81m²</span><span class="stat">Height: 0.3–0.6m</span><span class="stat">Middle rows</span><span class="stat">Full sun</span><br><br>Peppers (Corno di Toro), eggplant (Violetta Lunga), zucchini (Zucchino Romanesco), squash, cucumber (Lungo Verde), basil (Genovese), chickpeas (Ceci della Toscana). Chickpeas are nitrogen fixers and dry-farmed — zero irrigation. Zucchini/squash leaves shade soil, suppress weeds. Basil repels pests for tomatoes above. <br><br><strong>Direct sow:</strong> Zucchini, squash, cucumber, basil, chickpeas — yes. Peppers, eggplant — start indoors Mar.</p></div>
-  <div class="detail-panel" id="info-low-group"><h3>🥬🌿🥗 Beds 7-9 — Low & Leafy</h3><p><span class="stat">3 beds × 27m² = 81m²</span><span class="stat">Height: 0.2–0.6m</span><span class="stat">Front rows (south side)</span><span class="stat">Full to partial sun</span><br><br>Cavolo Nero (Tuscan black kale), chard (Bietola), lettuce (Lattuga Romana), radicchio (Treviso), spinach (Merlo Nero). These are cut-and-come-again crops — harvest outer leaves, plant regrows. Cavolo Nero is THE Tuscan winter staple — frost improves flavor. Year-round production with successional sowing.<br><br><strong>Direct sow:</strong> All — yes. Successional sowing every 3 weeks for continuous harvest.</p></div>
-  <div class="detail-panel" id="info-root-group"><h3>🥕🧅🧄 Beds 10-12 — Roots & Alliums</h3><p><span class="stat">3 beds × 27m² = 81m²</span><span class="stat">Underground yield</span><span class="stat">Frontmost (south)</span><span class="stat">Full sun</span><br><br>Carrots (Nantas, Tonda di Parigi), red onion (Cipolla di Tropea), garlic (Aglio Bianco Piacentino), fava beans, cucumber. Fava beans are the powerhouse — nitrogen fixers (100-200 kg N/ha), winter green manure, spring food crop. Garlic biofumigates soil. Carrots NATURALLY TILL the soil with their taproots. <br><br><strong>Direct sow:</strong> All — yes. Carrots MUST be direct sown (transplanting always fails). Fava beans sow Oct-Nov for winter cover. Garlic plant Oct, harvest Jun. <br><br><strong>Best soil match:</strong> Silty-sand is PERFECT for carrots and garlic — loose, well-drained, no rocks. These are the soil's best friends.</p></div>
-  <div class="detail-panel" id="info-compost2"><h3>🔄 Compost — 3-Bin System</h3><p><span class="stat">Location: NE corner of garden</span><span class="stat">Shaded from summer sun</span><span class="stat">Accessible from kitchen + garden</span><br><br><strong>🌱 How it helps the soil:</strong> The ENGINE of soil building. Every kg of compost returns organic matter, nutrients, and microbiology to the soil. Without compost, the 30cm organic layer can't be maintained. Comfrey leaves (plant on berms) are the BEST compost activator — high in nitrogen and minerals.<br><strong>Bin 1:</strong> Fresh (kitchen scraps + garden waste + comfrey)<br><strong>Bin 2:</strong> Maturing (turn from bin 1)<br><strong>Bin 3:</strong> Ready to use (dark, earthy smell, 6 months old)<br><strong>Target:</strong> 10-20m³ compost/year for 500m² vegetable garden</p></div>
+  <div class="detail-panel" id="info-tall-group"><h3 data-i18n="dTallH">🌽🌻🍅 Beds 1-3 — Tall Sun-Lovers</h3><p><span data-i18n="dTallP">Corn (Ottofile), sunflowers, San Marzano + Costoluto Fiorentino tomatoes, Borlotto pole beans, Florence fennel. These plants provide the vertical structure and create micro-shade for lower beds to their south. Pole beans fix nitrogen. Sunflowers mine subsoil minerals. Tomatoes are heavy feeders — follow with fava beans in autumn.<br><br><strong>Direct sow:</strong> Corn, beans, sunflowers, fennel — yes. Tomatoes — start indoors Feb-Mar.</span></p></div>
+  <div class="detail-panel" id="info-mid-group"><h3 data-i18n="dMedH">🫑🍆🥒 Beds 4-6 — Medium Height</h3><p><span data-i18n="dMedP">Peppers (Corno di Toro), eggplant (Violetta Lunga), zucchini (Zucchino Romanesco), squash, cucumber (Lungo Verde), basil (Genovese), chickpeas (Ceci della Toscana). Chickpeas are nitrogen fixers and dry-farmed — zero irrigation. Zucchini/squash leaves shade soil, suppress weeds. Basil repels pests for tomatoes above. <br><br><strong>Direct sow:</strong> Zucchini, squash, cucumber, basil, chickpeas — yes. Peppers, eggplant — start indoors Mar.</span></p></div>
+  <div class="detail-panel" id="info-low-group"><h3 data-i18n="dLowH">🥬🌿🥗 Beds 7-9 — Low & Leafy</h3><p><span data-i18n="dLowP">Cavolo Nero (Tuscan black kale), chard (Bietola), lettuce (Lattuga Romana), radicchio (Treviso), spinach (Merlo Nero). These are cut-and-come-again crops — harvest outer leaves, plant regrows. Cavolo Nero is THE Tuscan winter staple — frost improves flavor. Year-round production with successional sowing.<br><br><strong>Direct sow:</strong> All — yes. Successional sowing every 3 weeks for continuous harvest.</span></p></div>
+  <div class="detail-panel" id="info-root-group"><h3 data-i18n="dRootH">🥕🧅🧄 Beds 10-12 — Roots & Alliums</h3><p><span data-i18n="dRootP">Carrots (Nantas, Tonda di Parigi), red onion (Cipolla di Tropea), garlic (Aglio Bianco Piacentino), fava beans, cucumber. Fava beans are the powerhouse — nitrogen fixers (100-200 kg N/ha), winter green manure, spring food crop. Garlic biofumigates soil. Carrots NATURALLY TILL the soil with their taproots. <br><br><strong>Direct sow:</strong> All — yes. Carrots MUST be direct sown (transplanting always fails). Fava beans sow Oct-Nov for winter cover. Garlic plant Oct, harvest Jun. <br><br><strong>Best soil match:</strong> Silty-sand is PERFECT for carrots and garlic — loose, well-drained, no rocks. These are the soil's best friends.</span></p></div>
+  <div class="detail-panel" id="info-compost2"><h3 data-i18n="dCompH">🔄 Compost — 3-Bin System</h3><p><span data-i18n="dCompP"><strong>🌱 How it helps the soil:</strong> The ENGINE of soil building. Every kg of compost returns organic matter, nutrients, and microbiology to the soil. Without compost, the 30cm organic layer can't be maintained. Comfrey leaves (plant on berms) are the BEST compost activator — high in nitrogen and minerals.<br><strong>Bin 1:</strong> Fresh (kitchen scraps + garden waste + comfrey)<br><strong>Bin 2:</strong> Maturing (turn from bin 1)<br><strong>Bin 3:</strong> Ready to use (dark, earthy smell, 6 months old)<br><strong>Target:</strong> 10-20m³ compost/year for 500m² vegetable garden</span></p></div>
 </div>
 
 <div style="max-width:900px;margin:20px auto;">
 
-<h2>🥬 Vegetable Garden — Design Summary</h2>
+<h2 data-i18n="sumH2">🥬 Vegetable Garden — Design Summary</h2>
 
 <table>
-<tr><th>Group</th><th>Beds</th><th>Position</th><th>Height range</th><th>Key crops</th></tr>
-<tr><td><strong>Tall Sun-Lovers</strong></td><td>1–3</td><td>North (back)</td><td>1.5–3m</td><td>Corn, sunflowers, staked tomatoes, pole beans, fennel</td></tr>
-<tr><td><strong>Medium Height</strong></td><td>4–6</td><td>Middle</td><td>0.3–0.6m</td><td>Peppers, eggplant, zucchini, squash, cucumber, basil, chickpeas</td></tr>
-<tr><td><strong>Low & Leafy</strong></td><td>7–9</td><td>South (front)</td><td>0.2–0.6m</td><td>Cavolo nero, chard, lettuce, radicchio, spinach</td></tr>
-<tr><td><strong>Roots & Alliums</strong></td><td>10–12</td><td>Frontmost</td><td>Underground</td><td>Carrots, onions, garlic, fava beans, cucumber</td></tr>
-<tr><td><strong>Herbs & Perennials</strong></td><td>East strip</td><td>East edge</td><td>0.2–1.2m</td><td>Artichokes, rosemary, sage, oregano, thyme</td></tr>
+<tr><th data-i18n="thGroup">Group</th><th data-i18n="thBeds">Beds</th><th data-i18n="thPos">Position</th><th data-i18n="thHeight">Height range</th><th data-i18n="thCrops">Key crops</th></tr>
+<tr><td><strong data-i18n="sTall">Tall Sun-Lovers</strong></td><td>1–3</td><td><span data-i18n="sNorth">North (back)</span></td><td>1.5–3m</td><td><span data-i18n="sTallCrops">Corn, sunflowers, staked tomatoes, pole beans, fennel</span></td></tr>
+<tr><td><strong data-i18n="sMed">Medium Height</strong></td><td>4–6</td><td><span data-i18n="sMiddle">Middle</span></td><td>0.3–0.6m</td><td><span data-i18n="sMedCrops">Peppers, eggplant, zucchini, squash, cucumber, basil, chickpeas</span></td></tr>
+<tr><td><strong data-i18n="sLow">Low & Leafy</strong></td><td>7–9</td><td><span data-i18n="sSouth">South (front)</span></td><td>0.2–0.6m</td><td><span data-i18n="sLowCrops">Cavolo nero, chard, lettuce, radicchio, spinach</span></td></tr>
+<tr><td><strong data-i18n="sRoot">Roots & Alliums</strong></td><td>10–12</td><td><span data-i18n="sFront">Frontmost</span></td><td><span data-i18n="sUnder">Underground</span></td><td><span data-i18n="sRootCrops">Carrots, onions, garlic, fava beans, cucumber</span></td></tr>
+<tr><td><strong data-i18n="sHerbs">Herbs & Perennials</strong></td><td><span data-i18n="sEastStrip">East strip</span></td><td><span data-i18n="sEastEdge">East edge</span></td><td>0.2–1.2m</td><td><span data-i18n="sHerbCrops">Artichokes, rosemary, sage, oregano, thyme</span></td></tr>
 </table>
 
-<h2>🌱 Soil-Benefit Matrix</h2>
-<p style="font-size:0.85em;color:#b0bca0;margin-bottom:10px;">Every plant has been evaluated for this mutual relationship. Updated as more species are added.</p>
+<h2 data-i18n="soilH2">🌱 Soil-Benefit Matrix</h2>
+<p style="font-size:0.85em;color:#b0bca0;margin-bottom:10px;" data-i18n="soilSub">Every plant has been evaluated for this mutual relationship. Updated as more species are added.</p>
 
 <table>
-<tr><th>Plant</th><th>🌱 How it HELPS the soil</th><th>🧪 How SOIL helps it</th></tr>
-<tr><td><strong>Corn (Ottofile)</strong></td><td>Deep roots break subsoil; stalks = carbon-rich compost</td><td>Needs N-rich organic soil; silty-sand drainage ideal</td></tr>
-<tr><td><strong>Sunflower</strong></td><td>Deep taproot mines minerals; phytoremediator</td><td>Tolerates poor soil; thrives in moderation</td></tr>
-<tr><td><strong>San Marzano Tomato</strong></td><td>Deep roots; leaves = green manure</td><td>Rich well-drained soil; calcium critical; silty-sand excellent</td></tr>
-<tr><td><strong>Borlotto Beans (pole)</strong></td><td>✅ NITROGEN FIXER — roots convert N from air</td><td>Moderate fertility; too much N = leaves > beans</td></tr>
-<tr><td><strong>Fennel</strong></td><td>Deep taproot; attracts beneficial insects</td><td>Well-drained, moderately fertile; rots in waterlogged soil</td></tr>
-<tr><td><strong>Pepper (Corno di Toro)</strong></td><td>Light feeder; flowers attract pollinators</td><td>Warm soil (18°C+); well-drained; silty-sand warms fast</td></tr>
-<tr><td><strong>Zucchini (Romanesco)</strong></td><td>Living mulch — shades soil, reduces evaporation</td><td>Heavy feeder; rich compost; consistent water</td></tr>
-<tr><td><strong>Cucumber</strong></td><td>Light feeder; quick shade cover</td><td>Warm (20°C+); consistent moisture; silty-sand + compost</td></tr>
-<tr><td><strong>Chickpea (Ceci)</strong></td><td>✅ NITROGEN FIXER; dry-farmed (zero irrigation)</td><td>LIGHT, well-drained soil — silty-sand PERFECT</td></tr>
-<tr><td><strong>Cavolo Nero</strong></td><td>Deep taproot; chop-and-drop green manure</td><td>Heavy feeder; rich N soil; frost improves flavor</td></tr>
-<tr><td><strong>Chard (Bietola)</strong></td><td>Deep taproot; cut-and-come-again = minimal disturbance</td><td>Moderate fertility; well-drained essential</td></tr>
-<tr><td><strong>Carrots</strong></td><td>Deep taproot NATURALLY TILLS and aerates</td><td>DEEP, LOOSE, sandy soil — silty-sand PERFECT for carrots</td></tr>
-<tr><td><strong>Fava Beans</strong></td><td>✅ NITROGEN FIXER — 100-200 kg N/ha; winter green manure</td><td>Tolerates poor soil; THE best soil-building winter crop</td></tr>
-<tr><td><strong>Garlic</strong></td><td>BIOFUMIGANT — allicin suppresses soil pathogens</td><td>Loose well-drained soil; silty-sand PERFECT; rots in clay</td></tr>
-<tr><td><strong>Artichoke (Carciofo)</strong></td><td>Deep taproot; massive leaf canopy; perennial = no disturbance</td><td>Heavy feeder; 50cm+ organic layer ideal</td></tr>
-<tr><td><strong>Rosemary</strong></td><td>Year-round soil cover; slope stabilizer; pest repellent</td><td>Poor, well-drained soil — silty-sand PERFECT; zero irrigation</td></tr>
+<tr><th data-i18n="thPlant">Plant</th><th data-i18n="thHelps">🌱 How it HELPS the soil</th><th data-i18n="thSoilHelps">🧪 How SOIL helps it</th></tr>
+<tr><td><strong data-i18n="mCorn">Corn (Ottofile)</strong></td><td><span data-i18n="mCornH">Deep roots break subsoil; stalks = carbon-rich compost</span></td><td><span data-i18n="mCornS">Needs N-rich organic soil; silty-sand drainage ideal</span></td></tr>
+<tr><td><strong data-i18n="mSun">Sunflower</strong></td><td><span data-i18n="mSunH">Deep taproot mines minerals; phytoremediator</span></td><td><span data-i18n="mSunS">Tolerates poor soil; thrives in moderation</span></td></tr>
+<tr><td><strong data-i18n="mTom">San Marzano Tomato</strong></td><td><span data-i18n="mTomH">Deep roots; leaves = green manure</span></td><td><span data-i18n="mTomS">Rich well-drained soil; calcium critical; silty-sand excellent</span></td></tr>
+<tr><td><strong data-i18n="mBean">Borlotto Beans (pole)</strong></td><td><span data-i18n="mBeanH">✅ NITROGEN FIXER — roots convert N from air</span></td><td><span data-i18n="mBeanS">Moderate fertility; too much N = leaves > beans</span></td></tr>
+<tr><td><strong data-i18n="mFennel">Fennel</strong></td><td><span data-i18n="mFennelH">Deep taproot; attracts beneficial insects</span></td><td><span data-i18n="mFennelS">Well-drained, moderately fertile; rots in waterlogged soil</span></td></tr>
+<tr><td><strong data-i18n="mPepper">Pepper (Corno di Toro)</strong></td><td><span data-i18n="mPepperH">Light feeder; flowers attract pollinators</span></td><td><span data-i18n="mPepperS">Warm soil (18°C+); well-drained; silty-sand warms fast</span></td></tr>
+<tr><td><strong data-i18n="mZuc">Zucchini (Romanesco)</strong></td><td><span data-i18n="mZucH">Living mulch — shades soil, reduces evaporation</span></td><td><span data-i18n="mZucS">Heavy feeder; rich compost; consistent water</span></td></tr>
+<tr><td><strong data-i18n="mCuc">Cucumber</strong></td><td><span data-i18n="mCucH">Light feeder; quick shade cover</span></td><td><span data-i18n="mCucS">Warm (20°C+); consistent moisture; silty-sand + compost</span></td></tr>
+<tr><td><strong data-i18n="mChick">Chickpea (Ceci)</strong></td><td><span data-i18n="mChickH">✅ NITROGEN FIXER; dry-farmed (zero irrigation)</span></td><td><span data-i18n="mChickS">LIGHT, well-drained soil — silty-sand PERFECT</span></td></tr>
+<tr><td><strong data-i18n="mCavolo">Cavolo Nero</strong></td><td><span data-i18n="mCavoloH">Deep taproot; chop-and-drop green manure</span></td><td><span data-i18n="mCavoloS">Heavy feeder; rich N soil; frost improves flavor</span></td></tr>
+<tr><td><strong data-i18n="mChard">Chard (Bietola)</strong></td><td><span data-i18n="mChardH">Deep taproot; cut-and-come-again = minimal disturbance</span></td><td><span data-i18n="mChardS">Moderate fertility; well-drained essential</span></td></tr>
+<tr><td><strong data-i18n="mCarrot">Carrots</strong></td><td><span data-i18n="mCarrotH">Deep taproot NATURALLY TILLS and aerates</span></td><td><span data-i18n="mCarrotS">DEEP, LOOSE, sandy soil — silty-sand PERFECT for carrots</span></td></tr>
+<tr><td><strong data-i18n="mFava">Fava Beans</strong></td><td><span data-i18n="mFavaH">✅ NITROGEN FIXER — 100-200 kg N/ha; winter green manure</span></td><td><span data-i18n="mFavaS">Tolerates poor soil; THE best soil-building winter crop</span></td></tr>
+<tr><td><strong data-i18n="mGarlic">Garlic</strong></td><td><span data-i18n="mGarlicH">BIOFUMIGANT — allicin suppresses soil pathogens</span></td><td><span data-i18n="mGarlicS">Loose well-drained soil; silty-sand PERFECT; rots in clay</span></td></tr>
+<tr><td><strong data-i18n="mArt">Artichoke (Carciofo)</strong></td><td><span data-i18n="mArtH">Deep taproot; massive leaf canopy; perennial = no disturbance</span></td><td><span data-i18n="mArtS">Heavy feeder; 50cm+ organic layer ideal</span></td></tr>
+<tr><td><strong data-i18n="mRose">Rosemary</strong></td><td><span data-i18n="mRoseH">Year-round soil cover; slope stabilizer; pest repellent</span></td><td><span data-i18n="mRoseS">Poor, well-drained soil — silty-sand PERFECT; zero irrigation</span></td></tr>
 </table>
 
-<h2>📅 Seasonal Flow</h2>
+<h2 data-i18n="seasonH2">📅 Seasonal Flow</h2>
 <table>
-<tr><th>Season</th><th>What's growing</th><th>What's being sown</th></tr>
-<tr><td><strong>Spring (Mar-May)</strong></td><td>Fava beans maturing; garlic/onions growing; perennial herbs</td><td>Corn, sunflowers, beans, squash, zucchini, cucumbers, basil, carrots, chard</td></tr>
-<tr><td><strong>Summer (Jun-Aug)</strong></td><td>Tomatoes, peppers, eggplant, squash, zucchini, corn, beans, cucumbers</td><td>Cavolo nero, radicchio, fennel, spinach, carrots (for autumn/winter)</td></tr>
-<tr><td><strong>Autumn (Sep-Nov)</strong></td><td>Tomatoes finishing, peppers, squash, cavolo nero, radicchio, fennel</td><td>Garlic, onions (autumn planting), fava beans (winter cover), spinach</td></tr>
-<tr><td><strong>Winter (Dec-Feb)</strong></td><td>Cavolo nero, radicchio, leeks, chard, fava beans growing slowly</td><td>— (soil resting under cover crops and mulch)</td></tr>
+<tr><th data-i18n="thSeason">Season</th><th data-i18n="thGrowing">What's growing</th><th data-i18n="thSown">What's being sown</th></tr>
+<tr><td><strong data-i18n="seaSpring">Spring (Mar-May)</strong></td><td><span data-i18n="seaSpringGrow">Fava beans maturing; garlic/onions growing; perennial herbs</span></td><td><span data-i18n="seaSpringSow">Corn, sunflowers, beans, squash, zucchini, cucumbers, basil, carrots, chard</span></td></tr>
+<tr><td><strong data-i18n="seaSummer">Summer (Jun-Aug)</strong></td><td><span data-i18n="seaSummerGrow">Tomatoes, peppers, eggplant, squash, zucchini, corn, beans, cucumbers</span></td><td><span data-i18n="seaSummerSow">Cavolo nero, radicchio, fennel, spinach, carrots (for autumn/winter)</span></td></tr>
+<tr><td><strong data-i18n="seaAutumn">Autumn (Sep-Nov)</strong></td><td><span data-i18n="seaAutumnGrow">Tomatoes finishing, peppers, squash, cavolo nero, radicchio, fennel</span></td><td><span data-i18n="seaAutumnSow">Garlic, onions (autumn planting), fava beans (winter cover), spinach</span></td></tr>
+<tr><td><strong data-i18n="seaWinter">Winter (Dec-Feb)</strong></td><td><span data-i18n="seaWinterGrow">Cavolo nero, radicchio, leeks, chard, fava beans growing slowly</span></td><td><span data-i18n="seaWinterSow">— (soil resting under cover crops and mulch)</span></td></tr>
 </table>
 
 </div>
