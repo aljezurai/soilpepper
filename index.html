@@ -98,7 +98,7 @@ var REGION = (IQ.get('region') === 'netherlands' || IQ.get('region') === 'tuscan
 var LANG = REGION === 'netherlands' ? 'nl' : 'en';
 var T = {
   en: {
-    brandSmall: 'Permaculture Design Toolkit',
+    brandSmall: 'Permaculture Design Toolkit', h1Sub: 'Permaculture Design Toolkit', nav0: 'Master Plan', nav1: 'Design Proposal', nav2: 'Sector Analysis', nav3: 'Helicopter View', nav4: 'Water Management', nav5: 'Guild Matrix', nav6: 'Guild Diagrams', nav7: 'Species Filter', nav8: 'Veg Planner'
     navDashboard: 'Dashboard', navOverview: '📊 Overview', navDesignSuite: '🖥️ Design Suite', navFieldTools: '📱 Field Tools',
     navDesignH: 'Design Suite (Desktop)', navFieldH: 'Field Tools (Mobile)',
     footOpen: '🌍 open-source toolkit', footPrivacy: '🔒 data stays on-device', footOffline: '📱 works offline',
@@ -143,7 +143,7 @@ var T = {
     footCopy: 'SOILPEPPER · open-source permaculture toolkit · built on the Aranya method'
   },
   nl: {
-    brandSmall: 'Permacultuur-ontwerpgereedschap',
+    brandSmall: 'Permacultuur-ontwerpgereedschap', h1Sub: 'Permacultuur-ontwerpgereedschap', nav0: 'Masterplan-raster', nav1: 'Ontwerpvoorstel', nav2: 'Sectoranalyse', nav3: 'Vogelperspectief', nav4: 'Waterbeheer', nav5: 'Gilde-matrix', nav6: 'Boomgilde-diagrammen', nav7: 'Soortendatabase', nav8: 'Groententuin-planner'
     navDashboard: 'Dashboard', navOverview: '📊 Overzicht', navDesignSuite: '🖥️ Ontwerpsuite', navFieldTools: '📱 Veldgereedschap',
     navDesignH: 'Ontwerpsuite (desktop)', navFieldH: 'Veldgereedschap (mobiel)',
     footOpen: '🌍 open-source toolkit', footPrivacy: '🔒 data blijft op je apparaat', footOffline: '📱 werkt offline',
@@ -208,16 +208,16 @@ function applyI18nLanding() {
     <a href="#design-suite" data-i18n="navDesignSuite">🖥️ Design Suite</a>
     <a href="#field-tools" data-i18n="navFieldTools">📱 Field Tools</a>
     <div class="sidebar-section" data-i18n="navDesignH">Design Suite (Desktop)</div>
-    <a href="master-plan.html?region=tuscany" target="_blank">🗺️ Master Plan</a>
-    <a href="design-proposal.html?region=tuscany" target="_blank">📄 Design Proposal</a>
-    <a href="sector-analysis.html?region=tuscany" target="_blank">🧭 Sector Analysis</a>
-    <a href="helicopter-view.html?region=tuscany" target="_blank">🗺️ Helicopter View</a>
-    <a href="water-management.html?region=tuscany" target="_blank">💧 Water Management</a>
+    <a href="master-plan.html?region=tuscany" target="_blank" data-i18n="nav0">🗺️ Master Plan</a>
+    <a href="design-proposal.html?region=tuscany" target="_blank" data-i18n="nav1">📄 Design Proposal</a>
+    <a href="sector-analysis.html?region=tuscany" target="_blank" data-i18n="nav2">🧭 Sector Analysis</a>
+    <a href="helicopter-view.html?region=tuscany" target="_blank" data-i18n="nav3">🗺️ Helicopter View</a>
+    <a href="water-management.html?region=tuscany" target="_blank" data-i18n="nav4">💧 Water Management</a>
     <div class="sidebar-section" data-i18n="navFieldH">Field Tools (Mobile)</div>
-    <a href="guild-matrix.html?region=tuscany" target="_blank">🌳 Guild Matrix</a>
-    <a href="guild-diagrams.html?region=tuscany" target="_blank">🌿 Guild Diagrams</a>
-    <a href="species-filter.html?region=tuscany" target="_blank">🔍 Species Filter</a>
-    <a href="veg-planner.html?region=tuscany" target="_blank">🥬 Veg Planner</a>
+    <a href="guild-matrix.html?region=tuscany" target="_blank" data-i18n="nav5">🌳 Guild Matrix</a>
+    <a href="guild-diagrams.html?region=tuscany" target="_blank" data-i18n="nav6">🌿 Guild Diagrams</a>
+    <a href="species-filter.html?region=tuscany" target="_blank" data-i18n="nav7">🔍 Species Filter</a>
+    <a href="veg-planner.html?region=tuscany" target="_blank" data-i18n="nav8">🥬 Veg Planner</a>
   </nav>
   <div class="sidebar-footer">
     <span data-i18n="footOpen">🌍 open-source toolkit</span>
@@ -231,7 +231,7 @@ function applyI18nLanding() {
 
   <!-- HERO -->
   <div class="hero" id="hero">
-    <h1>🌶️ SOILPEPPER — Permaculture Design Toolkit</h1>
+    <h1>🌶️ SOILPEPPER — <span data-i18n="h1Sub">Permaculture Design Toolkit</span></h1>
     <p id="hero-desc">Plan a permaculture site from blank plot to garden beds — <strong>no account, no server, no data leaving your device.</strong> Desktop tools for designing, mobile tools for the field. <strong><span data-count="species">256</span> species</strong> with guild profiles, companion scoring and sowing specs. Built on <strong>Aranya's step-by-step method</strong>.</p>
     <div class="region-bar">
       <span class="region-label" data-i18n="regionLabel">Region preset:</span>
