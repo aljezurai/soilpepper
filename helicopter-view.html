@@ -345,6 +345,7 @@ var T = {
     infoTitle: '🌍 Helicopter View — Your Plan with Sector Energies',
     infoIntro: 'This is your <strong>Master Plan from above</strong> — every cell rendered read-only (zones, functions, placements), with the sector layers (sun, wind, fire, frost, water, wildlife) overlaid and toggleable. <strong>Tap any cell</strong> for its details. Changes are made in the Master Plan; this view always reflects them.',
     keyResponses: '<strong>Key sector responses baked into the layout:</strong>',
+    irSun: '☀️ Sun', irSunM: 'South-facing orientation, deciduous trees for summer shade', irSunL: 'Whole plot', irWind: '💨 SW wind', irWindM: 'Windbreak hedge (deciduous + evergreen mix)', irWindL: 'SW boundary', irFire: '🔥 SE fire (Sirocco)', irFireM: 'Firebreak + irrigated green buffer', irFireL: 'SE boundary', irCold: '❄️ NW cold wind (Tramontana)', irColdM: 'Naturally deflected by south-facing slope', irColdL: '—', irFrost: '❄️ Frost drainage', irFrostM: 'Swales + porous barriers allow cold air flow', irFrostL: 'Upper slope', irRain: '💧 Rain/runoff', irRainM: 'Swales (4) + pond + tanks harvest water', irRainL: 'On contour', irWild: '🦌 Wildlife', irWildM: 'Fence on woodland boundary + tree guards', irWildL: 'North edge', plotSlope: '↓ South-facing slope (180°)',
     thSector: 'Sector', thMitigation: 'Mitigation', thLocation: 'Location'
   },
   nl: {
@@ -355,10 +356,65 @@ var T = {
     infoTitle: '🌍 Vogelperspectief — jouw plan met sector-energieën',
     infoIntro: 'Dit is je <strong>Masterplan van bovenaf</strong> — elke cel alleen-lezen weergegeven (zones, functies, plaatsingen), met de sectorlagen (zon, wind, vuur, vorst, water, wild) eroverheen en schakelbaar. <strong>Tik op een cel</strong> voor details. Wijzigingen worden in het Masterplan gemaakt; deze weergave volgt altijd.',
     keyResponses: '<strong>Belangrijkste sectorrespons in de indeling:</strong>',
+    irSun: '☀️ Zon', irSunM: 'Zuidelijke oriëntatie, loofbomen voor zomerschaduw', irSunL: 'Hele perceel', irWind: '💨 ZW-wind', irWindM: 'Windschermhaag (loof + wintergroen mix)', irWindL: 'ZW-grens', irFire: '🔥 Brand (laag risico)', irFireM: 'Basisvoorzorg: compost vochtig, geen open vuur bij droogte', irFireL: '—', irCold: '❄️ N/NO-wind (Siberisch)', irColdM: 'Gebouw + hagen als windbreker', irColdL: '—', irFrost: '❄️ Vorst (vlak land)', irFrostM: 'Vliesdoek + koude bakken, doorlatende hagen', irFrostL: 'Laagtes', irRain: '💧 Regen/afvoer', irRainM: 'Greppels/wadi\'s + vijver bergen piekbuien', irRainL: 'Vlak land', irWild: '🦌 Wild', irWildM: 'Konijnenwerend gaas + boombeschermers', irWildL: 'Randen', plotSlope: '↓ Vlak land (Nederland)',
     thSector: 'Sector', thMitigation: 'Mitigatie', thLocation: 'Locatie'
   }
 };
 function tt(k) { return (T[LANG] && T[LANG][k] !== undefined) ? T[LANG][k] : (T.en[k] !== undefined ? T.en[k] : k); }
+var NL_LAYERS = {
+  sun: '<svg style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible;" viewBox="0 0 100 100">' +
+    '<text x="8" y="30" fill="rgba(255,193,7,0.35)" font-size="2.5">☀️ 52°N — lage winterzon</text>' +
+    '<text x="8" y="36" fill="rgba(255,193,7,0.25)" font-size="1.8">Winter ~14° middag · zomer ~61°</text>' +
+    '</svg>' +
+    '<div style="position:absolute;bottom:2%;right:3%;font-size:0.45em;color:rgba(255,193,7,0.35);pointer-events:none;">Passieve zonne-oriëntatie op zuiden</div>' +
+    '<div style="position:absolute;bottom:2%;left:3%;font-size:0.45em;color:rgba(255,193,7,0.35);pointer-events:none;">Loofbomen voor zomerschaduw</div>',
+  wind: '<svg style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible;" viewBox="0 0 100 100">' +
+    '<defs>' +
+    '<marker id="arrowSW" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(33,150,243,0.5)"/></marker>' +
+    '<marker id="arrowNW" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(0,188,212,0.4)"/></marker>' +
+    '<marker id="arrowSE" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(244,67,54,0.4)"/></marker>' +
+    '</defs>' +
+    '<line x1="5" y1="90" x2="45" y2="45" stroke="rgba(33,150,243,0.35)" stroke-width="2.5" stroke-dasharray="4,3" marker-end="url(#arrowSW)"/>' +
+    '<line x1="15" y1="85" x2="50" y2="40" stroke="rgba(33,150,243,0.3)" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arrowSW)"/>' +
+    '<line x1="0" y1="95" x2="40" y2="50" stroke="rgba(33,150,243,0.25)" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arrowSW)"/>' +
+    '<text x="8" y="82" fill="rgba(33,150,243,0.5)" font-size="2.5" font-weight="bold">💨 ZW</text>' +
+    '<text x="18" y="28" fill="rgba(33,150,243,0.4)" font-size="2" font-weight="bold">Heersende wind ZW (Atlantisch)</text>' +
+    '<line x1="20" y1="5" x2="50" y2="35" stroke="rgba(0,188,212,0.25)" stroke-width="1.5" stroke-dasharray="3,4" marker-end="url(#arrowNW)"/>' +
+    '<text x="10" y="3" fill="rgba(0,188,212,0.45)" font-size="2" font-weight="bold">❄️ N/NO-wind (Siberisch)</text>' +
+    '<line x1="85" y1="85" x2="60" y2="50" stroke="rgba(244,67,54,0.3)" stroke-width="2" stroke-dasharray="3,4" marker-end="url(#arrowSE)"/>' +
+    '<text x="72" y="82" fill="rgba(244,67,54,0.5)" font-size="2" font-weight="bold">🌪️ Storm ZW (herfst/winter)</text>' +
+    '</svg>',
+  fire: '<svg style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible;" viewBox="0 0 100 100">' +
+    '<path d="M 50 50 L 100 100 L 100 50 Z" fill="rgba(244,67,54,0.04)" stroke="rgba(244,67,54,0.12)" stroke-width="0.5"/>' +
+    '<text x="74" y="70" fill="rgba(244,67,54,0.3)" font-size="2.5" font-weight="bold">🔥 Brandrisico (laag)</text>' +
+    '<text x="70" y="74" fill="rgba(244,67,54,0.2)" font-size="1.8">Geen Sirocco · gematigd zeeklimaat</text>' +
+    '</svg>' +
+    '<div style="position:absolute;top:73%;left:65%;font-size:0.5em;color:rgba(244,67,54,0.4);pointer-events:none;text-shadow:0 0 3px rgba(0,0,0,0.8);">Basisvoorzorg: compost vochtig</div>',
+  frost: '<svg style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible;" viewBox="0 0 100 100">' +
+    '<text x="50" y="8" fill="rgba(156,39,176,0.3)" font-size="2" text-anchor="middle" font-weight="bold">❄️ Vorst op vlak land — geen drainage</text>' +
+    '<text x="50" y="42" fill="rgba(156,39,176,0.2)" font-size="1.5" text-anchor="middle" font-style="italic">Koude plekken in laagtes + achter hagen</text>' +
+    '</svg>' +
+    '<div style="position:absolute;top:72%;left:25%;width:50%;height:12%;background:rgba(156,39,176,0.05);border:1px dashed rgba(156,39,176,0.15);border-radius:8px;pointer-events:none;"></div>' +
+    '<div style="position:absolute;top:74%;left:30%;font-size:0.45em;color:rgba(156,39,176,0.4);pointer-events:none;">❄️ Vorstkuil — alleen winterharde gewassen · vliesdoek + koude bakken</div>',
+  water: '<svg style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible;" viewBox="0 0 100 100">' +
+    '<text x="5" y="50" fill="rgba(0,188,212,0.3)" font-size="2.5">🌧️ 850mm/jaar</text>' +
+    '<text x="5" y="55" fill="rgba(0,188,212,0.2)" font-size="1.8">8.500 m³ op 1ha — regen het hele jaar</text>' +
+    '<text x="50" y="48" fill="rgba(0,188,212,0.25)" font-size="1.8" text-anchor="middle">Greppels/wadi\'s bergen piekbuien → hoge grondwaterstand</text>' +
+    '</svg>',
+  wildlife: '<svg style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible;" viewBox="0 0 100 100">' +
+    '<rect x="0" y="0" width="100" height="8" fill="rgba(139,195,74,0.08)" stroke="rgba(139,195,74,0.2)" stroke-width="0.5" stroke-dasharray="2,2" rx="2"/>' +
+    '<text x="50" y="5" fill="rgba(139,195,74,0.35)" font-size="2" text-anchor="middle" font-weight="bold">🦌 Natuurcorridor (sloten + houtwallen)</text>' +
+    '<text x="50" y="32" fill="rgba(139,195,74,0.2)" font-size="1.5" text-anchor="middle">Reeën, konijnen, vossen, vogels</text>' +
+    '</svg>' +
+    '<div style="position:absolute;top:6%;left:2%;font-size:0.45em;color:rgba(139,195,74,0.5);pointer-events:none;">⛔ Konijnenwerend gaas + boombeschermers</div>'
+};
+function applyNLLayers() {
+  if (LANG !== 'nl') return;
+  Object.keys(NL_LAYERS).forEach(function(k) {
+    var el = document.getElementById('layer-' + k);
+    if (el) el.innerHTML = NL_LAYERS[k];
+  });
+}
 function applyI18nHV() {
   document.querySelectorAll('[data-i18n]').forEach(function(el) {
     var key = el.getAttribute('data-i18n');
@@ -548,8 +604,8 @@ function applyI18nHV() {
   </div>
 
   <!-- Aspect label -->
-  <div class="plot-label" style="bottom:1%;left:1%;">↓ South-facing slope (180°)</div>
-  <div class="plot-label" id="plot-sitedata" style="bottom:1%;right:2%;">1ha · ~300m · 🌡️ 8b-9a</div>
+  <div class="plot-label" style="bottom:1%;left:1%;" data-i18n="plotSlope">↓ South-facing slope (180°)</div>
+  <div class="plot-label" id="plot-sitedata" style="bottom:1%;right:2%;">1ha · ~<span id="plot-alt">300</span>m · 🌡️ <span id="plot-zone">8b-9a</span></div>
 
   <!-- No-plan banner (shown when no plan exists yet) -->
   <div class="noplan-banner" id="noplan" style="display:none;">
@@ -582,13 +638,13 @@ function applyI18nHV() {
   <p><span data-i18n="keyResponses"><strong>Key sector responses baked into the layout:</strong></span></p>
   <table>
     <tr><th data-i18n="thSector">Sector</th><th data-i18n="thMitigation">Mitigation</th><th data-i18n="thLocation">Location</th></tr>
-    <tr><td>☀️ Sun</td><td>South-facing orientation, deciduous trees for summer shade</td><td>Whole plot</td></tr>
-    <tr><td>💨 SW wind</td><td>Windbreak hedge (deciduous + evergreen mix)</td><td>SW boundary</td></tr>
-    <tr><td>🔥 SE fire (Sirocco)</td><td>Firebreak + irrigated green buffer</td><td>SE boundary</td></tr>
-    <tr><td>❄️ NW cold wind (Tramontana)</td><td>Naturally deflected by south-facing slope</td><td>—</td></tr>
-    <tr><td>❄️ Frost drainage</td><td>Swales + porous barriers allow cold air flow</td><td>Upper slope</td></tr>
-    <tr><td>💧 Rain/runoff</td><td>Swales (4) + pond + tanks harvest water</td><td>On contour</td></tr>
-    <tr><td>🦌 Wildlife</td><td>Fence on woodland boundary + tree guards</td><td>North edge</td></tr>
+    <tr><td data-i18n="irSun">☀️ Sun</td><td data-i18n="irSunM">…</td><td data-i18n="irSunL">…</td></tr>
+    <tr><td data-i18n="irWind">☀️ Sun</td><td data-i18n="irWindM">…</td><td data-i18n="irWindL">…</td></tr>
+    <tr><td data-i18n="irFire">☀️ Sun</td><td data-i18n="irFireM">…</td><td data-i18n="irFireL">…</td></tr>
+    <tr><td data-i18n="irCold">☀️ Sun</td><td data-i18n="irColdM">…</td><td data-i18n="irColdL">…</td></tr>
+    <tr><td data-i18n="irFrost">☀️ Sun</td><td data-i18n="irFrostM">…</td><td data-i18n="irFrostL">…</td></tr>
+    <tr><td data-i18n="irRain">☀️ Sun</td><td data-i18n="irRainM">…</td><td data-i18n="irRainL">…</td></tr>
+    <tr><td data-i18n="irWild">☀️ Sun</td><td data-i18n="irWildM">…</td><td data-i18n="irWildL">…</td></tr>
   </table>
 </div>
 
@@ -808,6 +864,7 @@ function showInfo(id) {
 loadBrief();
 loadPlan();
 applyI18nHV();
+applyNLLayers();
 // species fetch (best-effort — needed only for guild names)
 try {
   fetch('plants.json').then(function(r) { return r.json(); }).then(function(db) {
