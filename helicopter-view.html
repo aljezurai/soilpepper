@@ -75,8 +75,10 @@ h1{text-align:center;color:#e8dcc0;margin-bottom:3px;font-size:1.6em;letter-spac
 /* Sector overlay layers */
 .sector-layer{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:2;}
 
-/* Water features (from plan) */
-.water{position:absolute;background:rgba(30,100,180,0.55);border:2px solid #3a8ad4;z-index:6;display:flex;align-items:center;justify-content:center;}
+/* Water features (from plan) — NOTE: class renamed .water→.water-feat to avoid
+   colliding with the toggle button (.toggle.water) which matched this rule
+   (position:absolute) and broke the button's layout. 2026-08-08 */
+.water-feat{position:absolute;background:rgba(30,100,180,0.55);border:2px solid #3a8ad4;z-index:6;display:flex;align-items:center;justify-content:center;}
 .swale{background:transparent;border-bottom:2px dashed rgba(60,160,220,0.4);position:absolute;z-index:4;pointer-events:none;}
 
 /* Legend */
