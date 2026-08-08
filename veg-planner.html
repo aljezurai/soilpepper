@@ -150,6 +150,7 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:4px;font-size:1.4em;}
 
 /* Plant in bed */
 .plant-in-bed{display:inline-flex;align-items:center;gap:3px;padding:3px 6px;border-radius:4px;font-size:0.55em;border:1px solid rgba(255,255,255,0.15);cursor:grab;transition:all .2s;position:relative;}
+.plant-wrap{width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:1px;}
 .plant-in-bed:active{cursor:grabbing;}
 .plant-in-bed:hover{transform:scale(1.08);z-index:2;}
 .plant-in-bed .qty{font-size:0.7em;color:rgba(255,255,255,0.4);margin-left:1px;}
@@ -976,7 +977,12 @@ function makePlantEl(r, s, j, obj) {
         bar.appendChild(seg);
       }
     }
-    el.appendChild(bar);
+    // Full-width wrapper: plant chip on top (left-aligned), bar runs below it
+    const wrap = document.createElement('div');
+    wrap.className = 'plant-wrap';
+    wrap.appendChild(el);
+    wrap.appendChild(bar);
+    return wrap;
   }
   return el;
 }
