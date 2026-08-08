@@ -374,7 +374,7 @@ var T = {
   en: {
     title: '💧 Water Management System', subtitle: '4 water sources · Gravity-fed drip · ',
     params: '⚙️ Water Parameters', balance: '⚖️ Water Balance', updateDiagram: '🔄 Update diagram',
-    saveDefaults: '💾 Save as defaults', resetDefaults: '↩️ Reset to defaults',
+    saveDefaults: '💾 Save as defaults', resetDefaults: '↩️ Reset to defaults', backupAll: '💾 Backup alles', restoreAll: '📥 Herstel alles', backupDone: '💾 Backup downloaded — keep it safe',
     roofArea: 'Roof area (m²)', rainfall: 'Rainfall (mm/yr)', efficiency: 'Efficiency',
     pond: 'Pond (m³)', pool: 'Pool (m³)', demand: 'Demand (m³/yr)', tanks: 'Tanks',
     tankSize: 'Tank size (L)', swales: 'Swales', gravityHead: 'Gravity head (m)',
@@ -410,7 +410,7 @@ var T = {
   nl: {
     title: '💧 Waterbeheer', subtitle: '4 waterbronnen · Zwaartekracht-druppelirrigatie · ',
     params: '⚙️ Waterparameters', balance: '⚖️ Waterbalans', updateDiagram: '🔄 Diagram bijwerken',
-    saveDefaults: '💾 Opslaan als standaard', resetDefaults: '↩️ Terug naar standaard',
+    saveDefaults: '💾 Opslaan als standaard', resetDefaults: '↩️ Terug naar standaard', backupAll: '💾 Backup alles', restoreAll: '📥 Herstel alles', backupDone: '💾 Backup gedownload — bewaar hem goed',
     roofArea: 'Dakoppervlak (m²)', rainfall: 'Neerslag (mm/jaar)', efficiency: 'Efficiëntie',
     pond: 'Vijver (m³)', pool: 'Zwembad (m³)', demand: 'Vraag (m³/jaar)', tanks: 'Tanks',
     tankSize: 'Tankinhoud (L)', swales: 'Swales', gravityHead: 'Zwaartekrachtval (m)',
@@ -445,6 +445,54 @@ var T = {
   }
 };
 function tt(k) { return (T[LANG] && T[LANG][k] !== undefined) ? T[LANG][k] : (T.en[k] !== undefined ? T.en[k] : k); }
+/* ============ UNIFIED BACKUP / RESTORE (2026-08-08) ============
+   Same file format as Master Plan's Backup alles — one JSON with
+   all soilpepper localStorage keys. Interchangeable between tools. */
+function wmBackup() {
+  var keys = [];
+  ['tuscan-brief-v1', 'tuscan-water-v1', 'masterplan-v1', 'tuscanVegGarden'].forEach(function(k) {
+    try { if (localStorage.getItem(k) !== null) keys.push(k); } catch(e) {}
+  });
+  try {
+    for (var i = 0; i < localStorage.length; i++) {
+      var k = localStorage.key(i);
+      if (k && k.indexOf('gd-') === 0) keys.push(k);
+    }
+  } catch(e) {}
+  var data = { app: 'soilpepper', version: 1, exportedAt: new Date().toISOString(), keys: {} };
+  keys.forEach(function(k) { try { data.keys[k] = localStorage.getItem(k); } catch(e) {} });
+  var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'soilpepper-backup-' + new Date().toISOString().slice(0, 10) + '.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  var r = document.getElementById('wp-result');
+  if (r) r.innerHTML = tt('backupDone');
+}
+function wmRestore(event) {
+  var file = event.target.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      var data = JSON.parse(e.target.result);
+      if (!data || !data.keys || typeof data.keys !== 'object') throw new Error('bad format');
+      var count = 0;
+      Object.keys(data.keys).forEach(function(k) {
+        try { localStorage.setItem(k, data.keys[k]); count++; } catch(e) {}
+      });
+      var r = document.getElementById('wp-result');
+      if (r) r.innerHTML = '📥 Restored ' + count + ' item(s) — reloading…';
+      setTimeout(function() { location.reload(); }, 900);
+    } catch(err) {
+      var r2 = document.getElementById('wp-result');
+      if (r2) r2.innerHTML = '⚠️ Invalid backup file';
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
 function applyI18nWM() {
   document.querySelectorAll('[data-i18n]').forEach(function(el) {
     var key = el.getAttribute('data-i18n');
@@ -475,6 +523,9 @@ function applyI18nWM() {
     <button class="p-btn primary" onclick="applyWaterParams()"><span data-i18n="updateDiagram">🔄 Update diagram</span></button>
     <button class="p-btn" onclick="saveWaterDefaults()"><span data-i18n="saveDefaults">💾 Save as defaults</span></button>
     <button class="p-btn" onclick="resetWaterParams()"><span data-i18n="resetDefaults">↩️ Reset to defaults</span></button>
+    <button class="p-btn" onclick="wmBackup()"><span data-i18n="backupAll">💾 Backup alles</span></button>
+    <button class="p-btn" onclick="document.getElementById('wm-restore').click()"><span data-i18n="restoreAll">📥 Herstel alles</span></button>
+    <input type="file" id="wm-restore" accept=".json,application/json" style="display:none" onchange="wmRestore(event)">
   </div>
   <div class="p-result" id="wp-result"></div>
 </div>

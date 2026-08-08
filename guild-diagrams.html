@@ -285,7 +285,7 @@ var T = {
   en: {
     title: '🌳 Tree Guild Diagrams', subtitle: 'Interactive Guild Builder · 256 species',
     selectTree: '🌿 Select Tree:', regAll: '🌍 All', regTus: '🇮🇹 Tuscany', regNl: '🇳🇱 Netherlands',
-    reset: '↺ Reset to suggestion', legInner: 'Inner (trunk zone)', legMid: 'Mid (drip line)', legOuter: 'Outer (canopy edge)',
+    reset: '↺ Reset to suggestion', backupAll: '💾 Backup alles', restoreAll: '📥 Herstel alles', backupDone: '💾 Backup downloaded — keep it safe', legInner: 'Inner (trunk zone)', legMid: 'Mid (drip line)', legOuter: 'Outer (canopy edge)',
     legNfix: '🔄 N-fixer', legAcc: '⛏️ Accumulator', legMulch: '🌿 Mulcher', legPoll: '🐝 Pollinator',
     legPest: '🚫 Pest repellent', legGround: '🌱 Ground cover', legYield: '🍎 Yield', legWater: '💧 Water need',
     gridScale: 'GRID SCALE', guildTitle: 'Guild', keyCompanions: 'Key Companions', guildDesc: 'A Mediterranean-adapted guild for warm, dry conditions.',
@@ -315,7 +315,7 @@ var T = {
   nl: {
     title: '🌳 Boomgilde-diagrammen', subtitle: 'Interactieve Gilde-bouwer · 256 soorten',
     selectTree: '🌿 Kies boom:', regAll: '🌍 Alles', regTus: '🇮🇹 Toscane', regNl: '🇳🇱 Nederland',
-    reset: '↺ Reset naar suggestie', legInner: 'Binnen (stamzone)', legMid: 'Midden (druppellijn)', legOuter: 'Buiten (kroonrand)',
+    reset: '↺ Reset naar suggestie', backupAll: '💾 Backup alles', restoreAll: '📥 Herstel alles', backupDone: '💾 Backup gedownload — bewaar hem goed', legInner: 'Binnen (stamzone)', legMid: 'Midden (druppellijn)', legOuter: 'Buiten (kroonrand)',
     legNfix: '🔄 Stikstofbinder', legAcc: '⛏️ Accumulator', legMulch: '🌿 Mulcher', legPoll: '🐝 Bestuiver',
     legPest: '🚫 Plaagwerend', legGround: '🌱 Bodembedekker', legYield: '🍎 Opbrengst', legWater: '💧 Waterbehoefte',
     gridScale: 'ROOSTER SCHAAL', guildTitle: 'Gilde', keyCompanions: 'Belangrijkste compagnons', guildDesc: 'Een aan het Middellandse-Zeegebied aangepast gilde voor warme, droge omstandigheden.',
@@ -347,6 +347,49 @@ function tt(k) { return (T[LANG] && T[LANG][k] !== undefined) ? T[LANG][k] : (T.
 function spName(s) { return (LANG === 'nl' && s.nameNL) ? s.nameNL : (s.name || s.key); }
 function roleLbl(r) { var m = { 'n-fixer':'roleNfixer','minerals-accumulator':'roleAccum','biomass':'roleBiomass','mulch':'roleMulch','light-shade':'roleLightShade','deep-shade':'roleDeepShade','windbreak':'roleWindbreak','root-aeration':'roleRootAer','ground-cover':'roleGround','weed-suppression':'roleWeedSup','pollinator-attractor':'rolePoll','beneficial-habitat':'roleHabitat','pest-repellent':'rolePestRep','support':'roleSupport','trap-crop':'roleTrap','mycorrhizal-host':'roleMyco','erosion-control':'roleErosion','evergreen-shelter':'roleEvergreen' }[r]; return m ? tt(m) : r; }
 function needLbl(n) { var m = { 'nitrogen':'needN','potassium':'needK','deep-soil-prep':'needPrep','shade-as-seedling':'needShade','wind-protection':'needWind','support':'needSupport','ground-cover':'needGround','pollination':'needPoll','mycorrhizal-inoculation':'needMyco','rich-soil':'needRich','moisture-retention':'needMoist' }[n]; return m ? tt(m) : n; }
+/* ============ UNIFIED BACKUP / RESTORE (2026-08-08) ============ */
+function gdBackup() {
+  var keys = [];
+  ['tuscan-brief-v1', 'tuscan-water-v1', 'masterplan-v1', 'tuscanVegGarden'].forEach(function(k) {
+    try { if (localStorage.getItem(k) !== null) keys.push(k); } catch(e) {}
+  });
+  try {
+    for (var i = 0; i < localStorage.length; i++) {
+      var k = localStorage.key(i);
+      if (k && k.indexOf('gd-') === 0) keys.push(k);
+    }
+  } catch(e) {}
+  var data = { app: 'soilpepper', version: 1, exportedAt: new Date().toISOString(), keys: {} };
+  keys.forEach(function(k) { try { data.keys[k] = localStorage.getItem(k); } catch(e) {} });
+  var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'soilpepper-backup-' + new Date().toISOString().slice(0, 10) + '.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  alert(tt('backupDone'));
+}
+function gdRestore(event) {
+  var file = event.target.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      var data = JSON.parse(e.target.result);
+      if (!data || !data.keys || typeof data.keys !== 'object') throw new Error('bad format');
+      var count = 0;
+      Object.keys(data.keys).forEach(function(k) {
+        try { localStorage.setItem(k, data.keys[k]); count++; } catch(e) {}
+      });
+      alert('📥 Restored ' + count + ' item(s) — reloading…');
+      setTimeout(function() { location.reload(); }, 900);
+    } catch(err) {
+      alert('⚠️ Invalid backup file');
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
 function applyI18nGD() {
   document.querySelectorAll('[data-i18n]').forEach(function(el) {
     var key = el.getAttribute('data-i18n');
@@ -371,6 +414,9 @@ function applyI18nGD() {
   <div class="tree-info" id="tree-info"></div>
   <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
     <button id="reset-btn" style="padding:4px 12px;border-radius:6px;border:1px solid #2a3a2a;background:#0d1b2a;color:#c8d8c0;cursor:pointer;font-size:0.75em"><span data-i18n="reset">↺ Reset to suggestion</span></button>
+    <button id="backup-btn" style="padding:4px 12px;border-radius:6px;border:1px solid #2a3a2a;background:#0d1b2a;color:#c8d8c0;cursor:pointer;font-size:0.75em" onclick="gdBackup()"><span data-i18n="backupAll">💾 Backup alles</span></button>
+    <button id="restore-btn" style="padding:4px 12px;border-radius:6px;border:1px solid #2a3a2a;background:#0d1b2a;color:#c8d8c0;cursor:pointer;font-size:0.75em" onclick="document.getElementById('gd-restore').click()"><span data-i18n="restoreAll">📥 Herstel alles</span></button>
+    <input type="file" id="gd-restore" accept=".json,application/json" style="display:none" onchange="gdRestore(event)">
   </div>
 </div>
 
