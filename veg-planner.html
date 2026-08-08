@@ -603,7 +603,10 @@ function buildPlants(regionFilter) {
       rowSpacing: s.rowSpacing || s.spacing || 30,
       seedDepth: s.seedDepth || 1,
       seedsPerHole: s.seedsPerHole || null,
-      thinTo: s.thinTo || null
+      thinTo: s.thinTo || null,
+      // Guild data (2026-08-08) — companion warnings
+      companions: s.companions || [],
+      antagonists: s.antagonists || []
     };
   });
 }
