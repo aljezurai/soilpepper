@@ -182,10 +182,13 @@ h1{text-align:center;color:#e8dcc0;margin-bottom:3px;font-size:1.6em;letter-spac
   // Mobile compact line:  title · region · toggle-btn (right)
   var compact = document.createElement('div');
   compact.style.cssText = 'display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 12px;cursor:pointer;';
+  var editWrap = document.createElement('span');
+  editWrap.innerHTML = editHtml;
   compact.innerHTML = '<span style="display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center;">' + titleTxt +
-    '<span style="opacity:0.4">·</span>' + regionTxt + '</span>' + editHtml;
+    '<span style="opacity:0.4">·</span>' + regionTxt + '</span>';
+  compact.appendChild(editWrap);
   compact.addEventListener('click', function (ev) {
-    if (ev.target && ev.target.tagName === 'A') return; // don't toggle when tapping the edit link
+    if (ev.target && ev.target.closest && ev.target.closest('a')) return; // don't toggle when tapping the edit link
     var open = strip.getAttribute('data-open') !== '1';
     strip.setAttribute('data-open', open ? '1' : '0');
     details.style.display = open ? 'flex' : 'none';
@@ -194,7 +197,7 @@ h1{text-align:center;color:#e8dcc0;margin-bottom:3px;font-size:1.6em;letter-spac
   var toggleBtn = document.createElement('span');
   toggleBtn.style.cssText = 'font-size:0.8rem;color:#5a8a4a;padding:2px 6px;';
   toggleBtn.textContent = '▾';
-  compact.insertBefore(toggleBtn, editHtml);
+  compact.insertBefore(toggleBtn, editWrap);
   // Details row (hidden on mobile, always visible on desktop via media query)
   var details = document.createElement('div');
   details.style.cssText = 'display:none;flex-wrap:wrap;gap:4px 14px;justify-content:center;align-items:center;' +
@@ -336,6 +339,8 @@ h1{text-align:center;color:#e8dcc0;margin-bottom:3px;font-size:1.6em;letter-spac
   }
 })();
 </script>
+
+
 
 
 
