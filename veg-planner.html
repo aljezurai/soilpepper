@@ -151,6 +151,7 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:4px;font-size:1.4em;}
 /* Plant in bed */
 .plant-in-bed{display:inline-flex;align-items:center;gap:3px;padding:3px 6px;border-radius:4px;font-size:0.55em;border:1px solid rgba(255,255,255,0.15);cursor:grab;transition:all .2s;position:relative;}
 .plant-wrap{width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:1px;}
+.conflict-badge{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:rgba(244,67,54,0.85);font-size:0.6em;line-height:1;margin-left:4px;cursor:help;flex-shrink:0;}
 .plant-in-bed:active{cursor:grabbing;}
 .plant-in-bed:hover{transform:scale(1.08);z-index:2;}
 .plant-in-bed .qty{font-size:0.7em;color:rgba(255,255,255,0.4);margin-left:1px;}
@@ -877,6 +878,7 @@ function render() {
     document.getElementById('beds-container').style.display = '';
     document.getElementById('calendar-container').classList.remove('active');
   }
+  addConflictWarnings();
 }
 
 function renderSowMonthPanel() {
