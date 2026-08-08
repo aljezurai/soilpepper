@@ -898,9 +898,11 @@ function renderSowMonthPanel() {
 }
 
 function plantConflicts(key, r, s) {
-  // antagonistic plants already placed in the same bed (both slots when joined)
+  // antagonistic plants already placed in the same bed (both slots when joined).
+  // Checks BOTH directions: key's antagonists AND each neighbor's antagonists,
+  // because guild data is not always symmetric (e.g. tomato↔corn).
   const p = PLANTS[key];
-  if (!p || !p.antagonists || p.antagonists.length === 0) return [];
+  if (!p) return [];
   const bedPlants = [];
   if (r !== undefined && r !== null) {
     const row = rows[r];
@@ -914,7 +916,13 @@ function plantConflicts(key, r, s) {
       }
     }
   }
-  return p.antagonists.filter(a => bedPlants.includes(a));
+  const conflicts = [];
+  (p.antagonists || []).forEach(a => { if (bedPlants.includes(a) && !conflicts.includes(a)) conflicts.push(a); });
+  bedPlants.forEach(k2 => {
+    const p2 = PLANTS[k2];
+    if (p2 && (p2.antagonists || []).includes(key) && !conflicts.includes(k2)) conflicts.push(k2);
+  });
+  return conflicts;
 }
 
 function addConflictWarnings() {
