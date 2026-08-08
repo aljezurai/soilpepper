@@ -161,7 +161,7 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:4px;font-size:1.4em;}
 .days-badge{font-size:0.7em;padding:1px 5px;border-radius:8px;cursor:pointer;font-weight:600;display:inline-block;line-height:1.4;}
 
 /* Sow/harvest bar in bed view */
-.sow-harvest-bar{width:100%;height:4px;border-radius:2px;margin-top:2px;display:flex;overflow:hidden;border-left:1px solid rgba(255,255,255,0.05);}
+.sow-harvest-bar{width:100%;height:6px;border-radius:2px;margin-top:2px;display:flex;overflow:hidden;border-left:1px solid rgba(255,255,255,0.05);}
 .sow-harvest-bar .sh-seg{flex:1;border-right:1px solid rgba(255,255,255,0.05);}
 .sow-harvest-header{width:100%;display:flex;margin-bottom:1px;border-left:1px solid rgba(255,255,255,0.05);}
 .sow-harvest-header .sh-month-label{flex:1;text-align:center;font-size:0.35em;color:rgba(255,255,255,0.25);border-right:1px solid rgba(255,255,255,0.05);line-height:1;padding:1px 0;}
@@ -916,6 +916,20 @@ function renderPalette() {
   }
 }
 
+function makeSowHarvestHeader() {
+  const header = document.createElement('div');
+  header.className = 'sow-harvest-header';
+  const currentMonth = new Date().getMonth() + 1;
+  for (let m = 1; m <= 12; m++) {
+    const label = document.createElement('div');
+    label.className = 'sh-month-label' + (m === currentMonth ? ' current' : '');
+    label.textContent = MONTHS_SHORT[m - 1];
+    label.title = MONTHS_NAMES[m - 1];
+    header.appendChild(label);
+  }
+  return header;
+}
+
 function makePlantEl(r, s, j, obj) {
   const key = typeof obj === 'string' ? obj : obj.key;
   const plantedDate = typeof obj === 'string' ? todayStr() : (obj.plantedDate || todayStr());
@@ -1046,6 +1060,7 @@ function renderBeds() {
       bed.appendChild(spacer);
       setupDropTarget(bed, r, 0);
       const plants = (rows[r].slots[0] || []).concat(rows[r].slots[1] || []);
+      if (showSowHarvest && plants.length > 0) bed.appendChild(makeSowHarvestHeader());
       for (let j = 0; j < plants.length; j++) {
         const el = makePlantEl(r, j < rows[r].slots[0].length ? 0 : 1, j < rows[r].slots[0].length ? j : j - rows[r].slots[0].length, plants[j]);
         if (el) bed.appendChild(el);
@@ -1076,6 +1091,7 @@ function renderBeds() {
         bed.appendChild(spacer);
         setupDropTarget(bed, r, s);
         const plants = rows[r].slots[s] || [];
+        if (showSowHarvest && plants.length > 0) bed.appendChild(makeSowHarvestHeader());
         for (let j = 0; j < plants.length; j++) {
           const el = makePlantEl(r, s, j, plants[j]);
           if (el) bed.appendChild(el);
