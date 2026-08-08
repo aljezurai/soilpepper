@@ -96,7 +96,7 @@ tr:hover{background:#0d1b2a;}
     var raw = localStorage.getItem(KEY);
     if (raw) { var p = JSON.parse(raw); for (var k in DEF) if (p[k] !== undefined) b[k] = p[k]; }
   } catch (e) {}
-  // The stored brief\'s own region wins if it exists (one source of truth)
+  // The stored brief's own region wins if it exists (one source of truth)
   if (storedRegion === 'netherlands' || storedRegion === 'tuscany') region = storedRegion;
   NL = region === 'netherlands';
 
@@ -107,34 +107,60 @@ tr:hover{background:#0d1b2a;}
   var cellsTxt = NL ? 'cellen' : 'cells';
   var editTxt = NL ? 'Bewerken in Master Plan' : 'Edit in Master Plan';
 
-  // Build the strip
+  // Build the strip — collapsible on mobile (compact line + tap to expand),
+  // full details on desktop. 2026-08-08.
   var strip = document.createElement('div');
-  strip.style.cssText = 'display:flex;flex-wrap:wrap;gap:4px 14px;justify-content:center;align-items:center;' +
-    'background:#142114;border:1px solid #1a301a;border-radius:6px;padding:6px 12px;margin:0 auto 12px;' +
+  strip.style.cssText = 'background:#142114;border:1px solid #1a301a;border-radius:6px;padding:0;margin:0 auto 12px;' +
     'max-width:900px;font-size:0.72rem;color:#a8b8a0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;';
-  var parts = [
-    '<span style="color:#c4a040;font-weight:600">' + (b.title || 'Design') + '</span>',
-    '<span>' + regionLbl + '</span>',
+  var titleTxt = '<span style="color:#c4a040;font-weight:600">' + (b.title || 'Design') + '</span>';
+  var regionTxt = '<span>' + regionLbl + '</span>';
+  var editHtml = '<a href="master-plan.html?region=' + region + '" style="color:#5a8a4a;text-decoration:none;font-weight:600">⚙️ ' + editTxt + '</a>';
+  var detailParts = [
     '<span>' + b.plotW + '×' + b.plotH + 'm · ' + b.cellSize + 'm ' + cellsTxt + '</span>',
     '<span>' + soilTxt + '</span>',
     '<span>~' + b.altitude + 'm</span>',
     '<span>Zone ' + b.climateZone + '</span>',
     '<span>' + b.aspect + '</span>',
-    '<span>' + b.slope + '</span>',
-    '<a href="master-plan.html?region=' + region + '" style="color:#5a8a4a;text-decoration:none;font-weight:600">⚙️ ' + editTxt + '</a>'
+    '<span>' + b.slope + '</span>'
   ];
-  strip.innerHTML = parts.join('<span style="opacity:0.4">·</span>');
+  // Mobile compact line:  title · region · toggle-btn (right)
+  var compact = document.createElement('div');
+  compact.style.cssText = 'display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 12px;cursor:pointer;';
+  compact.innerHTML = '<span style="display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center;">' + titleTxt +
+    '<span style="opacity:0.4">·</span>' + regionTxt + '</span>' + editHtml;
+  compact.addEventListener('click', function (ev) {
+    if (ev.target && ev.target.tagName === 'A') return; // don't toggle when tapping the edit link
+    var open = strip.getAttribute('data-open') !== '1';
+    strip.setAttribute('data-open', open ? '1' : '0');
+    details.style.display = open ? 'flex' : 'none';
+    toggleBtn.textContent = open ? '▴' : '▾';
+  });
+  var toggleBtn = document.createElement('span');
+  toggleBtn.style.cssText = 'font-size:0.8rem;color:#5a8a4a;padding:2px 6px;';
+  toggleBtn.textContent = '▾';
+  compact.insertBefore(toggleBtn, editHtml);
+  // Details row (hidden on mobile, always visible on desktop via media query)
+  var details = document.createElement('div');
+  details.style.cssText = 'display:none;flex-wrap:wrap;gap:4px 14px;justify-content:center;align-items:center;' +
+    'padding:4px 12px 8px;border-top:1px solid #1a301a;font-size:0.72rem;color:#a8b8a0;';
+  details.innerHTML = detailParts.join('<span style="opacity:0.4">·</span>');
+  strip.appendChild(compact);
+  strip.appendChild(details);
+  // Desktop: show details, hide toggle. Mobile: compact + toggle (default closed).
+  // Small injected style block scoped to the strip (no conflicts with tool CSS).
+  var styleEl = document.createElement('style');
+  styleEl.textContent =
+    '@media (min-width:769px){ .bstrip-details{display:flex !important;} .bstrip-toggle{display:none !important;} }';
+  compact.className = 'bstrip-compact';
+  toggleBtn.className = 'bstrip-toggle';
+  details.className = 'bstrip-details';
+  strip.appendChild(styleEl);
   var body = document.body;
   body.insertBefore(strip, body.firstChild);
 
   // Sector Analysis: prefill params from the brief once the page is ready
   // (one-way: brief is the source of truth; user can still override locally)
   function prefillSectorParams() {
-    // Latitude: NL default 52, Tuscany 43 (only if user hasn't set one)
-    var latEl = document.getElementById('lat');
-    if (latEl && !latEl.dataset.userSet) {
-      latEl.value = NL ? 52 : 43;
-    }
     // Aspect: match degrees (e.g. "South (180°)" → 180) to the select options
     var aspEl = document.getElementById('aspect');
     if (aspEl && b.aspect) {
@@ -254,6 +280,8 @@ tr:hover{background:#0d1b2a;}
   }
 })();
 </script>
+
+
 
 
 
