@@ -37,3 +37,4 @@ Switch with `?region=tuscany|netherlands` on any tool.
 The suite is maintained as a private repo (design vault) and exported to this public repo. Tools are single-file HTML + `plants.json` (the species truth database). No build step — open in any browser, works offline via `file://`.
 
 Built with the Aranya method — [*Permaculture Design: A Step-by-Step Guide*](https://www.permaculture.co.uk/books/permaculture-design-step-step-guide).
+
