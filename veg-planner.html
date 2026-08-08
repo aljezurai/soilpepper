@@ -980,13 +980,24 @@ function renderPalette() {
         for (let r = 0; r < rows.length; r++) {
           if (rowType(r) === type) {
             rows[r].slots[0].push({key: key, plantedDate: todayStr()});
+            const conflicts = plantConflicts(key, r, 0);
             render();
-            showInfo(LANG === 'nl' ? `Toegevoegd ${PLANTS[key].name} aan rij ${rowName(r)}` : `Added ${PLANTS[key].name} to row ${rowName(r)}`);
+            if (conflicts.length > 0) {
+              const names = conflicts.map(k2 => PLANTS[k2] ? (LANG === 'nl' ? (PLANTS[k2].nameNL || PLANTS[k2].name) : PLANTS[k2].name) : k2);
+              showInfo('⚠️ ' + tt('conflictLbl') + ' ' + names.join(', ') + ' (' + rowName(r) + ')');
+            } else {
+              showInfo(LANG === 'nl' ? `Toegevoegd ${PLANTS[key].name} aan rij ${rowName(r)}` : `Added ${PLANTS[key].name} to row ${rowName(r)}`);
+            }
             return;
           }
         }
         rows[0].slots[0].push({key: key, plantedDate: todayStr()});
+        const conflicts2 = plantConflicts(key, 0, 0);
         render();
+        if (conflicts2.length > 0) {
+          const names2 = conflicts2.map(k2 => PLANTS[k2] ? (LANG === 'nl' ? (PLANTS[k2].nameNL || PLANTS[k2].name) : PLANTS[k2].name) : k2);
+          showInfo('⚠️ ' + tt('conflictLbl') + ' ' + names2.join(', '));
+        }
       };
       group.appendChild(el);
     }
