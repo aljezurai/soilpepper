@@ -583,6 +583,23 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
 /* ── Zone minimap — old design, hidden (2026-08-09) ── */
 .zone-minimap { display: none !important; }
 
+/* ── Sow/harvest legend — bigger text (2026-08-09) ──────── */
+.sow-harvest-legend {
+  font-size: 0.78rem !important;      /* was 0.35em — unreadably small; 0.62rem still too small per user */
+  color: var(--sf-ink) !important;
+  font-weight: 700 !important;
+  gap: 14px !important;
+  margin-top: 8px !important;
+  align-items: center;
+}
+.sow-harvest-legend .legend-dot {
+  width: 12px !important;
+  height: 12px !important;
+  border-radius: 2px !important;
+  margin-right: 5px !important;
+  vertical-align: middle;
+}
+
 /* ── Sow-month chip buttons (2026-08-09) ────────────────── */
 .sow-chips {
   display: flex !important;
