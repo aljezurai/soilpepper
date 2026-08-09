@@ -1929,6 +1929,13 @@ fetch('plants.json').then(function (r) { return r.json(); }).then(function (db) 
     var s = db[k];
     if (PLANT_CATEGORIES.indexOf(s.category) < 0) return;
     if (regionFilter !== 'all' && (!s.regions || s.regions.indexOf(regionFilter) < 0)) return;
+    // Normalize: plants.json stores companions/antagonists nested under guild;
+    // the embedded snapshot + buildPlants use top-level fields (2026-08-09 fix)
+    var g = s.guild || {};
+    if (typeof g === 'object' && !Array.isArray(g)) {
+      if (s.antagonists === undefined && g.antagonists) s = Object.assign({}, s, {antagonists: g.antagonists});
+      if (s.companions === undefined && g.companions) s = Object.assign({}, s, {companions: g.companions});
+    }
     live[k] = s;
   });
   // Only swap if the live DB actually differs (new species, changed fields)
