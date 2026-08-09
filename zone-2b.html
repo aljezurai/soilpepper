@@ -387,23 +387,79 @@ div[style*="142114"] span[style*="c4a040"], div[style*="20, 33, 20"] span[style*
   margin: 6px 0 2px !important;
 }
 .bed-row {
-  display: flex !important;
-  flex-direction: column !important;
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;   /* A | B side by side */
+  gap: 8px !important;
   align-items: stretch !important;
-  gap: 6px !important;
   background: var(--sf-card) !important;
   border: 2px solid var(--sf-border-strong) !important;
   border-radius: 14px !important;
   padding: 10px !important;
   box-shadow: var(--sf-shadow) !important;
 }
-.bed-label {
+.bed-row > .bed-label {
+  grid-column: 1 / -1 !important;   /* label spans full width on top */
   width: auto !important;
   text-align: left !important;
   font-size: 0.7rem !important;
   font-weight: 800 !important;
   color: var(--sf-header) !important;
   flex-shrink: 0 !important;
+}
+.bed-row > .join-toggle {
+  grid-column: 1 / -1 !important;   /* join toggle spans full width */
+  justify-self: start !important;
+}
+.bed-row > .bed-joined { grid-column: 1 / -1 !important; }  /* joined bed spans both */
+
+/* ── Bed internals — compact, mockup-exact (2026-08-09) ── */
+.bed-slot, .bed-joined {
+  min-height: 0 !important;          /* kill the awkward empty space */
+  border: 2px dashed var(--sf-border-strong) !important;  /* subtle dashed drop zone */
+  border-radius: 10px !important;
+  padding: 8px !important;
+  background: #f2f6ec !important;
+  gap: 4px !important;
+}
+.bed-slot-tall, .bed-joined.bed-slot-tall { background: #edf4e4 !important; }
+.bed-slot-medium, .bed-joined.bed-slot-medium { background: #eef2e8 !important; }
+.bed-slot-low, .bed-joined.bed-slot-low { background: #f2f6ec !important; }
+.bed-slot .bed-area, .bed-joined .bed-area {
+  position: static !important;       /* in-flow, not floating */
+  font-size: 0.62rem !important;
+  font-weight: 700 !important;
+  color: var(--sf-muted) !important;
+  width: 100%;
+  margin-bottom: 2px;
+}
+.bed-slot .slot-tag {
+  position: static !important;       /* in-flow */
+  font-size: 0.55rem !important;
+  font-weight: 800 !important;
+  color: var(--sf-muted) !important;
+  margin-left: auto;
+}
+/* remove the 14px spacer that creates empty space */
+.bed-slot div[style*="height:14px"], .bed-joined div[style*="height:14px"] {
+  display: none !important;
+}
+/* plant chips inside beds — compact pill, subtle badge */
+.plant-in-bed, .plant-item, [class*="plant-wrap"] .plant {
+  background: #e8f0e6 !important;
+  border: 1.5px solid #6a9068 !important;
+  border-radius: 10px !important;
+  color: var(--sf-ink) !important;
+  font-weight: 700 !important;
+  padding: 3px 8px !important;
+  font-size: 0.68rem !important;
+}
+/* days badge — subtle, not loud */
+.days-badge, [class*="days-badge"], .plant-days {
+  background: transparent !important;
+  color: var(--sf-muted) !important;
+  font-weight: 600 !important;
+  font-size: 0.6rem !important;
+  border: none !important;
 }
 
 /* ── Garden setup control bar — quiet inline row (Sage Forte) ── */
