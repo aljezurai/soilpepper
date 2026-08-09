@@ -758,6 +758,39 @@ body {
   font-size: 0.9rem !important;
   font-weight: 600 !important;
 }
+.actions-bar .count strong {
+  color: var(--sf-header-2) !important;   /* dark green, like the matrix species list (was #c5e1a5) */
+}
+/* soil-type filter buttons + badges — light greens → dark green (alfalfa rule) */
+.filter-group [class*="chip"], .filter-group [class*="btn"], .filter-group label,
+[class*="filter-dropdown"] [class*="chip"], [class*="filter-dropdown"] [class*="btn"] {
+  color: var(--sf-ink) !important;
+}
+/* inline-styled dropdown action buttons (Select All/None/Invert) — dark green text */
+.filter-dropdown button {
+  color: var(--sf-header-2) !important;   /* overrides inline color:#81c784 */
+  border-color: var(--sf-border-strong) !important;
+  background: var(--sf-card-alt) !important;
+}
+.badge-soil-loam, .badge-loam, .badge-nfixer, .badge-category {
+  color: var(--sf-header-2) !important;   /* dark green #3e6a46 */
+}
+.badge-soil-loam { border-color: var(--sf-border-strong) !important; background: var(--sf-card-alt) !important; }
+.badge-nfixer { border-color: var(--sf-border-strong) !important; background: var(--sf-card-alt) !important; }
+.badge-category { border-color: var(--sf-border-strong) !important; background: var(--sf-card-alt) !important; }
+/* all other badge greens on Species Filter → dark green */
+.card .badge-soil, .card .badge-soil-sandy, .card .badge-soil-silty, .card .badge-soil-loam,
+.card .badge-soil-clay, .card .badge-soil-chalky, .card .badge-soil-peaty,
+.card .badge-sun, .card .badge-water {
+  color: var(--sf-header-2) !important;
+  border-color: var(--sf-border-strong) !important;
+  background: var(--sf-card-alt) !important;
+}
+.card .badge-fire, .card .badge-native, .card .badge-perennial, .card .badge-nfixer {
+  color: var(--sf-header-2) !important;
+  border-color: var(--sf-border-strong) !important;
+  background: var(--sf-card-alt) !important;
+}
 /* card text — dark-theme light colors must become dark on light cards */
 .card .card-name { color: var(--sf-ink) !important; font-weight: 700 !important; }
 .card .card-italian, .card .card-latin { color: var(--sf-ink-soft) !important; }
