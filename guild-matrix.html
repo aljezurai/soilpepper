@@ -330,6 +330,253 @@ h1 .sub { color: var(--text2); font-size: 0.6em; margin-left: 12px; font-style: 
   .species-item .cat { font-size: 0.65em; }
 }
 </style>
+<!-- SAGE-FORTE-v1 -->
+<style id="sage-forte">/* ══════════════════════════════════════════════════════════════
+   SOILPEPPER SAGE FORTE DESIGN SYSTEM (2026-08-09)
+   Light theme — deep forest green + sage + white cards + pepper red.
+   Marker: SAGE-FORTE-v1
+   Headings: Fraunces → Georgia serif fallback (offline-safe)
+   Body: Nunito → system-ui fallback (offline-safe)
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Tokens ─────────────────────────────────────────────── */
+:root {
+  --sf-bg:        #dde6da;   /* sage page background */
+  --sf-bg-deep:   #c8d6c4;   /* deeper sage (panels) */
+  --sf-header:    #2c4a32;   /* deep forest green */
+  --sf-header-2:  #3e6a46;   /* slightly lighter green */
+  --sf-card:      #ffffff;   /* cards */
+  --sf-card-alt:  #eef4ec;   /* subtle alt card */
+  --sf-border:    #a8c0a8;   /* card borders */
+  --sf-border-strong: #8aa88c; /* buttons/beds */
+  --sf-ink:       #1e2c22;   /* near-black green text */
+  --sf-ink-soft:  #3a4a3e;   /* secondary text */
+  --sf-muted:     #4a5c4e;   /* tertiary text */
+  --sf-accent:    #c8492e;   /* pepper red */
+  --sf-accent-dark:#a8381e;
+  --sf-green:     #2e7a3a;   /* action green */
+  --sf-sage-soft: #dcead8;   /* sow-month / tags */
+  --sf-radius:    14px;
+  --sf-radius-lg: 18px;
+  --sf-shadow:    0 2px 8px rgba(20,50,24,.14);
+  --sf-shadow-lg: 0 3px 10px rgba(20,50,24,.28);
+  --sf-font-head: 'Fraunces', Georgia, 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+  --sf-font-body: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+}
+
+/* ── Base ───────────────────────────────────────────────── */
+html { scrollbar-color: #8aa88c #dde6da; }
+body {
+  background: var(--sf-bg) !important;
+  color: var(--sf-ink) !important;
+  font-family: var(--sf-font-body) !important;
+}
+h1, h2, h3, h4, h5, .title, [class*="title"] {
+  font-family: var(--sf-font-head) !important;
+  color: var(--sf-header) !important;
+}
+a { color: var(--sf-green) !important; }
+input, select, textarea, button { font-family: var(--sf-font-body) !important; }
+
+/* ── Headers / top bars ─────────────────────────────────── */
+header, .topbar, [class*="header"], [class*="top-bar"], [class*="banner"], .masthead {
+  background: var(--sf-header) !important;
+  color: #ffffff !important;
+  border-color: #1e3624 !important;
+}
+header h1, .topbar h1, [class*="header"] h1, [class*="banner"] h1, .masthead h1,
+header h2, .topbar h2, [class*="header"] h2, [class*="banner"] h2,
+header a, [class*="header"] a, .topbar a {
+  color: #ffffff !important;
+}
+header a:hover, [class*="header"] a:hover { color: #cfe4d4 !important; }
+
+/* ── Cards & panels ─────────────────────────────────────── */
+.card, [class*="card"], .panel, [class*="panel"], .modal, [class*="popup"],
+.info-panel, .spec, .spec-card, .palette, .sidebar {
+  background: var(--sf-card) !important;
+  border-color: var(--sf-border) !important;
+  border-radius: var(--sf-radius) !important;
+  box-shadow: var(--sf-shadow) !important;
+  color: var(--sf-ink) !important;
+}
+/* modal specifically: white on white must stay readable */
+.modal, [class*="popup"], .info-panel {
+  background: var(--sf-card) !important;
+  box-shadow: var(--sf-shadow-lg) !important;
+}
+
+/* ── Buttons — white pills, strong border ───────────────── */
+button, .btn, [class*="btn"], [class*="toggle"], [class*="chip"], [class*="filter-btn"] {
+  background: var(--sf-card) !important;
+  color: var(--sf-ink) !important;
+  border: 2px solid var(--sf-border-strong) !important;
+  border-radius: 999px !important;
+  font-weight: 800 !important;
+  box-shadow: 0 2px 4px rgba(20,50,24,.15) !important;
+}
+button:hover, .btn:hover, [class*="btn"]:hover {
+  box-shadow: 0 4px 12px rgba(20,50,24,.2) !important;
+}
+button.active, .btn.active, [class*="btn"].active, [class*="toggle"].active, .active-toggle {
+  background: var(--sf-header-2) !important;
+  color: #ffffff !important;
+  border-color: var(--sf-header) !important;
+}
+/* primary = pepper red */
+.btn-primary, button.primary, [class*="btn-primary"], .primary-action {
+  background: var(--sf-accent) !important;
+  border-color: var(--sf-accent-dark) !important;
+  color: #ffffff !important;
+}
+/* danger */
+.btn-danger, button.danger, [class*="btn-danger"] {
+  background: #fdf2ee !important;
+  border-color: #d8a090 !important;
+  color: #8a3a2a !important;
+}
+/* ghost */
+.btn-ghost, button.ghost, [class*="btn-ghost"] {
+  background: transparent !important;
+  border-color: var(--sf-border-strong) !important;
+  color: var(--sf-header) !important;
+}
+
+/* ── Inputs ─────────────────────────────────────────────── */
+input, select, textarea {
+  background: var(--sf-card) !important;
+  color: var(--sf-ink) !important;
+  border: 1.5px solid var(--sf-border-strong) !important;
+  border-radius: 8px !important;
+}
+label, [class*="label"], th { color: var(--sf-header) !important; }
+
+/* ── Beds / garden area ─────────────────────────────────── */
+.bed, .bed-slot, .bed-joined, [class*="bed"] {
+  background: var(--sf-card) !important;
+  border: 2px solid var(--sf-border-strong) !important;
+  border-radius: var(--sf-radius) !important;
+  box-shadow: var(--sf-shadow) !important;
+}
+.plant-in-bed, .plant-item, [class*="plant"] {
+  background: #e8f0e6 !important;
+  border: 1.5px solid #6a9068 !important;
+  border-radius: 10px !important;
+  color: var(--sf-ink) !important;
+  font-weight: 700 !important;
+}
+.days-badge, [class*="badge"] { color: var(--sf-ink) !important; }
+
+/* ── Tables / grids ─────────────────────────────────────── */
+table, .grid, [class*="grid"] {
+  background: var(--sf-card) !important;
+  color: var(--sf-ink) !important;
+}
+td, th, [class*="cell"] {
+  color: var(--sf-ink) !important;
+  border-color: var(--sf-border) !important;
+}
+tr, .row, [class*="row"] { color: var(--sf-ink) !important; }
+
+/* ── Muted / secondary text ─────────────────────────────── */
+[class*="hint"], [class*="note"], .subtitle, [class*="subtitle"], [class*="muted"],
+[class*="meta"], [class*="footer"], [class*="stat"], [class*="crumb"] {
+  color: var(--sf-muted) !important;
+}
+
+/* ── Sow-month / info highlights ────────────────────────── */
+.sow-month, [class*="sow-month"], [class*="sow-harvest"] {
+  background: var(--sf-sage-soft) !important;
+  border-color: #9cbc98 !important;
+  color: var(--sf-ink) !important;
+}
+.sow-harvest-bar, .sh-seg, [class*="sh-"] {
+  border-color: #9cbc98 !important;
+}
+
+/* ── Module labels ──────────────────────────────────────── */
+[class*="module-label"], [class*="module"] {
+  background: var(--sf-header) !important;
+  color: #ffffff !important;
+  border-radius: 10px !important;
+}
+
+/* ── Brief strip (injected) ─────────────────────────────── */
+div[style*="142114"], div[style*="20, 33, 20"], div[style*="20,33,20"] {
+  background: var(--sf-card) !important;
+  border-color: var(--sf-border) !important;
+  color: var(--sf-ink-soft) !important;
+}
+div[style*="142114"] span, div[style*="20, 33, 20"] span, div[style*="20,33,20"] span { color: inherit !important; }
+div[style*="142114"] a, div[style*="20, 33, 20"] a, div[style*="20,33,20"] a { color: var(--sf-green) !important; }
+div[style*="142114"] b, div[style*="20, 33, 20"] b, div[style*="20,33,20"] b,
+div[style*="142114"] strong, div[style*="20, 33, 20"] strong, div[style*="20,33,20"] strong { color: var(--sf-header) !important; }
+div[style*="142114"] .bstrip-toggle, div[style*="20, 33, 20"] .bstrip-toggle, div[style*="20,33,20"] .bstrip-toggle { color: var(--sf-green) !important; }
+div[style*="142114"] span[style*="c4a040"], div[style*="20, 33, 20"] span[style*="c4a040"], div[style*="20,33,20"] span[style*="c4a040"] { color: var(--sf-accent) !important; }
+
+/* ── CSS-variable tools (Master Plan, Helicopter, Water, Guilds) ── */
+:root {
+  --bg: #dde6da !important;
+  --bg-card: #ffffff !important;
+  --bg-card-hover: #f0f6ee !important;
+  --border: #a8c0a8 !important;
+  --border-accent: #8aa88c !important;
+  --text: #1e2c22 !important;
+  --text-dim: #4a5c4e !important;
+  --text-bright: #1e2c22 !important;
+  --accent-emerald: #2c4a32 !important;
+  --accent-teal: #c8492e !important;
+  --accent-amber: #8a6420 !important;
+  --font-head: 'Fraunces', Georgia, 'Palatino Linotype', Palatino, serif !important;
+  --font-body: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif !important;
+  --radius: 12px !important;
+  --shadow: 0 2px 8px rgba(20,50,24,.14) !important;
+}
+
+/* ── Sector toggles & legend (Helicopter, Guilds) ───────── */
+.toggle, .legend-item, [class*="legend-item"], .layer-toggle {
+  background: var(--sf-card) !important;
+  border: 2px solid var(--sf-border-strong) !important;
+  color: var(--sf-ink) !important;
+  border-radius: 999px !important;
+}
+.toggle.on, .toggle.active, [class*="toggle"].on, [class*="toggle"].active, .legend-item.on {
+  background: var(--sf-header-2) !important;
+  border-color: var(--sf-header) !important;
+  color: #ffffff !important;
+}
+.toggle:hover, .legend-item:hover { box-shadow: 0 4px 12px rgba(20,50,24,.2) !important; }
+
+/* ── Filter bars (Species Filter, Guilds) ───────────────── */
+.filters-bar, .filter-group, .filter-dropdown, [class*="filter-bar"], [class*="filter-group"], [class*="filter-dropdown"] {
+  background: var(--sf-card) !important;
+  border-color: var(--sf-border) !important;
+  color: var(--sf-ink) !important;
+}
+.filters-bar h3, .filter-group h3, [class*="filter-bar"] h3, [class*="filter-group"] h3 { color: var(--sf-header) !important; }
+.filters-bar label, .filter-group label, [class*="filter-bar"] label, [class*="filter-group"] label { color: var(--sf-ink-soft) !important; }
+.filters-bar select, .filter-group select, .filter-dropdown select { background: var(--sf-card) !important; color: var(--sf-ink) !important; border-color: var(--sf-border-strong) !important; }
+
+/* ── Garden setup control bar ───────────────────────────── */
+.garden-setup {
+  background: var(--sf-header) !important;
+  border-color: #1e3624 !important;
+  border-radius: 12px !important;
+}
+.garden-setup label { color: #b8d4bc !important; }
+.garden-setup .g-hint { color: #8aa88c !important; }
+.garden-setup select, .garden-setup input {
+  background: var(--sf-card) !important;
+  border-color: var(--sf-border-strong) !important;
+  color: var(--sf-ink) !important;
+}
+
+/* ── Scrollbars ─────────────────────────────────────────── */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--sf-bg); }
+::-webkit-scrollbar-thumb { background: #8aa88c; border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: #6a9068; }
+</style>
 </head>
 <body>
 <!-- DESIGN BRIEF STRIP (shared reader — injected by design-brief system) -->
