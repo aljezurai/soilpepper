@@ -675,6 +675,28 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
 .grid-wrap { max-width: 1180px !important; margin-left: auto !important; margin-right: auto !important; }
 .paintbar { max-width: 1180px !important; margin-left: auto !important; margin-right: auto !important; }
 
+/* ── Helicopter View (rollout 2026-08-09): quiet controls, widths ── */
+.controls {
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 1.5px solid var(--sf-border-strong) !important;
+  border-radius: 0 !important;
+  padding: 8px 0 !important;
+  max-width: 1180px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+#heliview, [id*="heliview"], .svg-wrap, [class*="svg-wrap"] {
+  max-width: 1180px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+.sector-table-wrap, .site-label, [class*="sector-table"] {
+  max-width: 1180px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
 /* ── Sow-month chip buttons (2026-08-09) ────────────────── */
 .sow-chips {
   display: flex !important;
@@ -856,11 +878,10 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
   var editTxt = NL ? 'Bewerken in Master Plan' : 'Edit in Master Plan';
 
   // Build the strip — collapsible on mobile (compact line + tap to expand),
-  // full details on desktop. 2026-08-08.
+  // full details on desktop. 2026-08-08. Light border (no black line) 2026-08-09.
   var strip = document.createElement('div');
-  strip.style.cssText = 'background:#142114;border:1px solid #1a301a;border-radius:6px;padding:0;margin:0 auto 12px;' +
-    'max-width:900px;font-size:0.72rem;color:#a8b8a0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;';
-  var titleTxt = '<span style="color:#c4a040;font-weight:600">' + (b.title || 'Design') + '</span>';
+  strip.style.cssText = 'background:#ffffff;border:1px solid #d8e2d4;border-radius:6px;padding:0;margin:0 auto 12px;' +
+    'max-width:900px;font-size:0.72rem;color:#5a6a58;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;';
   var regionTxt = '<span>' + regionLbl + '</span>';
   var editHtml = '<a href="master-plan.html?region=' + region + '" style="color:#5a8a4a;text-decoration:none;font-weight:600">⚙️ ' + editTxt + '</a>';
   var detailParts = [
@@ -871,14 +892,10 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
     '<span>' + b.aspect + '</span>',
     '<span>' + b.slope + '</span>'
   ];
-  // Mobile compact line:  title · region · toggle-btn (right)
+  // Mobile compact line:  region (left) · edit link (far right)
   var compact = document.createElement('div');
-  compact.style.cssText = 'display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 12px;cursor:pointer;';
-  var editWrap = document.createElement('span');
-  editWrap.innerHTML = editHtml;
-  compact.innerHTML = '<span style="display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center;">' + titleTxt +
-    '<span style="opacity:0.4">·</span>' + regionTxt + '</span>';
-  compact.appendChild(editWrap);
+  compact.style.cssText = 'display:flex;align-items:center;gap:8px;padding:6px 12px;cursor:pointer;';
+  compact.innerHTML = '<span style="display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center;">' + regionTxt + '</span>';
   compact.addEventListener('click', function (ev) {
     if (ev.target && ev.target.closest && ev.target.closest('a')) return; // don't toggle when tapping the edit link
     var open = strip.getAttribute('data-open') !== '1';
@@ -889,14 +906,20 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
   var toggleBtn = document.createElement('span');
   toggleBtn.style.cssText = 'font-size:0.8rem;color:#5a8a4a;padding:2px 6px;';
   toggleBtn.textContent = '▾';
-  compact.insertBefore(toggleBtn, editWrap);
+  compact.appendChild(toggleBtn);
   // Details row (hidden on mobile, always visible on desktop via media query)
   var details = document.createElement('div');
   details.style.cssText = 'display:none;flex-wrap:wrap;gap:4px 14px;justify-content:center;align-items:center;' +
-    'padding:4px 12px 8px;border-top:1px solid #1a301a;font-size:0.72rem;color:#a8b8a0;';
+    'padding:4px 12px 8px;border-top:none;font-size:0.72rem;color:#5a6a58;';
   details.innerHTML = detailParts.join('<span style="opacity:0.4">·</span>');
   strip.appendChild(compact);
   strip.appendChild(details);
+  // Edit link as its own right-aligned element (2026-08-09): region left, edit far right
+  var editEl = document.createElement('span');
+  editEl.className = 'bstrip-edit';
+  editEl.innerHTML = editHtml;
+  editEl.style.cssText = 'padding:6px 12px;white-space:nowrap;';
+  strip.appendChild(editEl);
   // Desktop: show details, hide toggle. Mobile: compact + toggle (default closed).
   // Small injected style block scoped to the strip (no conflicts with tool CSS).
   var styleEl = document.createElement('style');
@@ -1031,6 +1054,8 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
   }
 })();
 </script>
+
+
 
 
 
