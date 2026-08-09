@@ -849,6 +849,28 @@ body {
 [class*="filter-dropdown"] [class*="chip"], [class*="filter-dropdown"] [class*="btn"] {
   color: var(--sf-ink) !important;
 }
+/* filter-group trigger labels + values — dark green like the matrix list */
+.filters-bar .label, .filter-group .label {
+  color: var(--sf-header-2) !important;   /* dark forest green */
+}
+.filters-bar .value, .filter-group .value {
+  color: var(--sf-header-2) !important;   /* was light #aed581 */
+  font-weight: 700 !important;
+}
+/* popup .tag chips (function/N-fixer/lifecycle/native) — dark navy → light */
+.detail-panel .tag {
+  background: var(--sf-card-alt) !important;
+  border: 1px solid var(--sf-border) !important;
+  color: var(--sf-ink) !important;
+}
+/* no background strip between the boxes — filters sit on the page sage */
+.filters-bar, [class*="filter-bar"] {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 6px 0 !important;
+  box-shadow: none !important;
+}
 /* inline-styled dropdown action buttons (Select All/None/Invert) — dark green text */
 .filter-dropdown button {
   color: var(--sf-header-2) !important;   /* overrides inline color:#81c784 */
