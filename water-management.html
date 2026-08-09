@@ -718,12 +718,56 @@ body {
   border: 1px solid var(--sf-border) !important;
   color: var(--sf-ink) !important;
 }
+/* popup .soil-cell chips (✅ Sandy / ❌ Clay etc.) — dark navy → light */
+.detail-panel .soil-cell, [class*="soil-cell"] {
+  background: var(--sf-card-alt) !important;
+  border: 1px solid var(--sf-border) !important;
+  color: var(--sf-ink) !important;
+}
+.detail-panel .soil-cell .tick.ok { color: var(--sf-header-2) !important; }
+.detail-panel .soil-cell .tick.warn { color: var(--sf-gold-ink) !important; }
+.detail-panel .soil-cell .tick.no { color: var(--sf-accent) !important; }
+/* mobile detail sheet — dark bottom sheet → light card */
+.mobile-detail-sheet {
+  background: var(--sf-card) !important;
+  color: var(--sf-ink) !important;
+}
+.mobile-detail-sheet h2, .mobile-detail-sheet h3 { color: var(--sf-header) !important; }
+.mobile-detail-sheet .detail-sub { color: var(--sf-ink-soft) !important; }
+.mobile-detail-sheet .detail-section h3 { color: var(--sf-header) !important; border-bottom-color: var(--sf-border) !important; }
+.mobile-detail-sheet .detail-stat, .mobile-detail-sheet .tag, .mobile-detail-sheet .soil-cell,
+.mobile-detail-sheet [class*="detail-stat"], .mobile-detail-sheet [class*="soil-cell"] {
+  background: var(--sf-card-alt) !important;
+  border: 1px solid var(--sf-border) !important;
+  color: var(--sf-ink) !important;
+}
+.mobile-detail-sheet .detail-desc {
+  background: var(--sf-card-alt) !important;
+  border-left: 3px solid var(--sf-accent) !important;
+  color: var(--sf-ink) !important;
+}
+.mobile-detail-sheet .mds-handle { background: var(--sf-border-strong) !important; }
+.mobile-detail-sheet button, .mobile-detail-sheet [class*="btn"] {
+  background: var(--sf-gold) !important;
+  color: var(--sf-gold-ink) !important;
+  border: 1.5px solid var(--sf-gold-border) !important;
+  border-radius: 999px !important;
+  padding: 4px 14px !important;
+  font-weight: 700 !important;
+}
 /* no background strip between the boxes — filters sit on the page sage */
 .filters-bar, [class*="filter-bar"] {
   background: transparent !important;
   border: none !important;
   border-radius: 0 !important;
   padding: 6px 0 !important;
+  box-shadow: none !important;
+}
+/* card-grid itself was caught by the generic [class*="card"] rule → card bg.
+   The gaps between species cards must show the sage page, not a light strip. */
+#card-grid, .card-grid, [id*="card-grid"] {
+  background: transparent !important;
+  border: none !important;
   box-shadow: none !important;
 }
 /* inline-styled dropdown action buttons (Select All/None/Invert) — dark green text */
