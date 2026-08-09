@@ -676,6 +676,45 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
 .grid-wrap { max-width: 1180px !important; margin-left: auto !important; margin-right: auto !important; }
 .paintbar { max-width: 1180px !important; margin-left: auto !important; margin-right: auto !important; }
 
+/* ── Design Proposal (rollout 2026-08-09): 1180px column + light sections ── */
+.section {
+  background: var(--sf-card) !important;      /* was dark #16213e */
+  border: 1px solid var(--sf-border) !important;
+  color: var(--sf-ink) !important;
+}
+.section-header {
+  background: var(--sf-card-alt) !important;  /* was deep green via [class*="header"] */
+  color: var(--sf-header) !important;
+  border-bottom: 1px solid var(--sf-border) !important;
+}
+.section-header .title { color: var(--sf-ink) !important; }
+.section-header:hover { background: var(--sf-card) !important; }
+.section-header .arrow { color: var(--sf-header-2) !important; }
+.section-body { color: var(--sf-ink) !important; border-top-color: var(--sf-border) !important; }
+.section-body h3 { color: var(--sf-header) !important; }
+.section-body h4 { color: var(--sf-header-2) !important; }
+.section-body p, .section-body li, .section-body div { color: var(--sf-ink) !important; }
+.section-body strong { color: var(--sf-header) !important; }
+.subtitle { color: var(--sf-ink-soft) !important; }
+.meta { color: var(--sf-ink-soft) !important; }
+/* remaining dark cards: progress, tool-links, master-plan live */
+.progress-wrap, .progress-bar, .mp-live, [class*="progress-"] {
+  background: var(--sf-card) !important;
+  border: 1px solid var(--sf-border) !important;
+  color: var(--sf-ink) !important;
+}
+.progress-bar { background: var(--sf-header-2) !important; }
+.tool-link, [class*="tool-link"] {
+  background: var(--sf-gold) !important;
+  border: 1.5px solid var(--sf-gold-border) !important;
+  color: var(--sf-gold-ink) !important;
+  border-radius: 999px !important;
+  padding: 3px 12px !important;
+  font-weight: 700 !important;
+}
+.section table th { background: var(--sf-header) !important; color: #ffffff !important; }
+.section table td { color: var(--sf-ink) !important; }
+
 /* ── Species Filter (rollout 2026-08-09): 1180px column + readability ── */
 body {
   max-width: 1180px !important;   /* was 1400px on Species Filter; unified everywhere */
@@ -1353,6 +1392,36 @@ body {
 })();
 </script>
 
+<!-- ═══ SAGE FORTE MASTHEAD (2026-08-09, rollout) ═══ -->
+<header class="sf-masthead" id="sf-masthead">
+  <div class="sf-brand">
+    <span class="sf-pepper">🌶️</span>
+    <div>
+      <h1 class="sf-logo">SOILPEPPER</h1>
+      <div class="sf-tagline"><span data-i18n="title">🌿 SOILPEPPER — Design Proposal</span></div>
+    </div>
+  </div>
+  <div class="sf-region" id="sf-region"></div>
+</header>
+<style>#h1-title{display:none}</style>
+<script>
+// Masthead region pill (2026-08-09, rollout): ONLY the current region, gold.
+document.addEventListener('DOMContentLoaded', function() {
+  var regionEl = document.getElementById('sf-region');
+  if (!regionEl || regionEl.children.length) return;
+  var cur = (typeof REGION !== 'undefined' && REGION === 'netherlands') ? 'netherlands' : 'tuscany';
+  var nlLang = typeof LANG !== 'undefined' && LANG === 'nl';
+  var lbl = cur === 'tuscany' ? (nlLang ? '🇮🇹 Toscane' : '🇮🇹 Tuscany') : (nlLang ? '🇳🇱 Nederland' : '🇳🇱 Netherlands');
+  var a = document.createElement('a');
+  a.className = 'sf-pill on';
+  a.textContent = lbl;
+  a.href = '?region=' + cur;
+  regionEl.appendChild(a);
+});
+</script>
+
+
+
 
 
 
@@ -1671,7 +1740,7 @@ function applyI18nDP() {
   });
 }
 </script>
-<h1 data-i18n="title">🌿 SOILPEPPER — Design Proposal</h1>
+<h1 data-i18n="title" id="h1-title">🌿 SOILPEPPER — Design Proposal</h1>
 <p class="subtitle">Aranya Step 6 · <span id="sub-area">1ha Hillside</span> · ~<span id="sub-alt">300</span>m · USDA Zone <span id="sub-zone">8b–9a</span> · <span id="sub-loc">Tuscany, Italy</span></p>
 <p class="meta">📅 July 2026 · 14 Interactive Tools · <span data-count="species">256</span> Species · 13 Tree Guilds · 4 Water Sources</p>
 

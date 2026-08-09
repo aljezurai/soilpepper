@@ -644,6 +644,45 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
 .grid-wrap { max-width: 1180px !important; margin-left: auto !important; margin-right: auto !important; }
 .paintbar { max-width: 1180px !important; margin-left: auto !important; margin-right: auto !important; }
 
+/* ── Design Proposal (rollout 2026-08-09): 1180px column + light sections ── */
+.section {
+  background: var(--sf-card) !important;      /* was dark #16213e */
+  border: 1px solid var(--sf-border) !important;
+  color: var(--sf-ink) !important;
+}
+.section-header {
+  background: var(--sf-card-alt) !important;  /* was deep green via [class*="header"] */
+  color: var(--sf-header) !important;
+  border-bottom: 1px solid var(--sf-border) !important;
+}
+.section-header .title { color: var(--sf-ink) !important; }
+.section-header:hover { background: var(--sf-card) !important; }
+.section-header .arrow { color: var(--sf-header-2) !important; }
+.section-body { color: var(--sf-ink) !important; border-top-color: var(--sf-border) !important; }
+.section-body h3 { color: var(--sf-header) !important; }
+.section-body h4 { color: var(--sf-header-2) !important; }
+.section-body p, .section-body li, .section-body div { color: var(--sf-ink) !important; }
+.section-body strong { color: var(--sf-header) !important; }
+.subtitle { color: var(--sf-ink-soft) !important; }
+.meta { color: var(--sf-ink-soft) !important; }
+/* remaining dark cards: progress, tool-links, master-plan live */
+.progress-wrap, .progress-bar, .mp-live, [class*="progress-"] {
+  background: var(--sf-card) !important;
+  border: 1px solid var(--sf-border) !important;
+  color: var(--sf-ink) !important;
+}
+.progress-bar { background: var(--sf-header-2) !important; }
+.tool-link, [class*="tool-link"] {
+  background: var(--sf-gold) !important;
+  border: 1.5px solid var(--sf-gold-border) !important;
+  color: var(--sf-gold-ink) !important;
+  border-radius: 999px !important;
+  padding: 3px 12px !important;
+  font-weight: 700 !important;
+}
+.section table th { background: var(--sf-header) !important; color: #ffffff !important; }
+.section table td { color: var(--sf-ink) !important; }
+
 /* ── Species Filter (rollout 2026-08-09): 1180px column + readability ── */
 body {
   max-width: 1180px !important;   /* was 1400px on Species Filter; unified everywhere */
