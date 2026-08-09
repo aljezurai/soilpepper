@@ -372,18 +372,17 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
   padding: 9px 16px !important;
 }
 
-/* ── Bed pairing: 2-column grid, mockup-exact (2026-08-09) ── */
+/* ── Beds: single column — each bed on its own line (2026-08-09) ── */
 #beds-container {
   display: grid !important;
-  grid-template-columns: 1fr 1fr !important;
-  gap: 12px 28px !important;   /* wide column gap = the ~92cm path */
+  grid-template-columns: 1fr !important;   /* M1-A, then M1-B BELOW it, etc. */
+  gap: 14px !important;
   align-items: start !important;
 }
 @media(max-width:768px){
-  #beds-container { grid-template-columns: 1fr !important; gap: 10px !important; }
-  .bed-row-module-label { grid-column: 1 / -1 !important; }
+  #beds-container { gap: 12px !important; }
 }
-/* module header — left-aligned, deep-green bar */
+/* module header — left-aligned, deep-green bar, pulled up 1 line */
 .bed-row-module-label {
   grid-column: 1 / -1 !important;
   background: var(--sf-header) !important;
@@ -394,7 +393,7 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
   font-weight: 800 !important;
   letter-spacing: normal !important;
   text-align: LEFT !important;        /* user: header text left-aligned */
-  margin: 6px 0 2px !important;
+  margin: 2px 0 10px !important;      /* tightened top gap = 1 line up */
 }
 /* bed row = plain layout wrapper, NO card look (user: no big box with inner dotted boxes) */
 .bed-row {

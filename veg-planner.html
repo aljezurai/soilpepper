@@ -572,18 +572,17 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
   padding: 9px 16px !important;
 }
 
-/* ── Bed pairing: 2-column grid, mockup-exact (2026-08-09) ── */
+/* ── Beds: single column — each bed on its own line (2026-08-09) ── */
 #beds-container {
   display: grid !important;
-  grid-template-columns: 1fr 1fr !important;
-  gap: 12px 28px !important;   /* wide column gap = the ~92cm path */
+  grid-template-columns: 1fr !important;   /* M1-A, then M1-B BELOW it, etc. */
+  gap: 14px !important;
   align-items: start !important;
 }
 @media(max-width:768px){
-  #beds-container { grid-template-columns: 1fr !important; gap: 10px !important; }
-  .bed-row-module-label { grid-column: 1 / -1 !important; }
+  #beds-container { gap: 12px !important; }
 }
-/* module header — left-aligned, deep-green bar */
+/* module header — left-aligned, deep-green bar, pulled up 1 line */
 .bed-row-module-label {
   grid-column: 1 / -1 !important;
   background: var(--sf-header) !important;
@@ -594,7 +593,7 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
   font-weight: 800 !important;
   letter-spacing: normal !important;
   text-align: LEFT !important;        /* user: header text left-aligned */
-  margin: 6px 0 2px !important;
+  margin: 2px 0 10px !important;      /* tightened top gap = 1 line up */
 }
 /* bed row = plain layout wrapper, NO card look (user: no big box with inner dotted boxes) */
 .bed-row {
@@ -1087,7 +1086,6 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
       <label><span data-i18n="slotLen">Slot length</span> <input type="number" id="cfg-slot" value="10" min="5" max="20" step="1" style="width:58px"> m</label>
       <span class="g-hint" id="garden-hint"></span>
     </div>
-    <div style="font-size:0.5em;color:rgba(255,255,255,0.2);text-align:center;margin-bottom:4px;">↑ <span data-i18n="north">North (tallest plants)</span></div>
     <div id="beds-container"></div>
     <div id="calendar-container" class="calendar-view"></div>
     <div class="spec-card" id="garden-spec">
@@ -1096,7 +1094,8 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
       <div class="spec-note" id="garden-spec-note"></div>
       <div class="zone-minimap" id="zone-minimap"></div>
     </div>
-    <div style="font-size:0.5em;color:rgba(255,255,255,0.2);text-align:center;margin-top:4px;">↓ <span data-i18n="south">South (full sun)</span></div>
+    <!-- Orientation indicators moved to the bottom (2026-08-09): module header sits 1 line up, right under the setup hardline -->
+    <div style="font-size:0.55em;color:var(--sf-muted);text-align:center;margin-top:6px;">↑ <span data-i18n="north">North (tallest plants)</span> · ↓ <span data-i18n="south">South (full sun)</span></div>
   </div>
 </div>
 
