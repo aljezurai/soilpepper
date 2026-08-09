@@ -633,6 +633,19 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
 .paintbar { max-width: 1180px !important; margin-left: auto !important; margin-right: auto !important; }
 
 /* ── Design Proposal (rollout 2026-08-09): 1180px column + light sections ── */
+/* summary stat cards — flat on the sage page (no card bg, like other tools' buttons) */
+.cards .card {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+.cards .card .num {
+  color: var(--sf-header-2) !important;   /* alfalfa green (was light #c5e1a5) */
+}
+.cards .card .lbl {
+  color: var(--sf-ink-soft) !important;   /* was faint rgba(255,255,255,.5) — invisible on light */
+}
+.cards .card .icon { opacity: 0.9 !important; }
 .section {
   background: var(--sf-card) !important;      /* was dark #16213e */
   border: 1px solid var(--sf-border) !important;
