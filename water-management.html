@@ -686,9 +686,36 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
 .grid-wrap { max-width: 1180px !important; margin-left: auto !important; margin-right: auto !important; }
 .paintbar { max-width: 1180px !important; margin-left: auto !important; margin-right: auto !important; }
 
-/* ── Guild Diagrams (rollout 2026-08-09): 1180px column ── */
+/* ── Guild Diagrams (rollout 2026-08-09): 1180px column + readable controls ── */
 .main-layout {
   max-width: 1180px !important;   /* was 1200px */
+}
+/* tree-info chips (family / scientific / type) → gold pills like other buttons */
+.controls .tree-info .stat {
+  background: var(--sf-gold) !important;
+  color: var(--sf-gold-ink) !important;
+  border: 1.5px solid var(--sf-gold-border) !important;
+  border-radius: 999px !important;
+  padding: 3px 12px !important;
+  font-weight: 700 !important;
+}
+/* legend-bar stays inside the 1180px column, wraps instead of overflowing */
+.legend-bar {
+  max-width: 1180px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  justify-content: center !important;
+}
+/* right-panel text readability (side-panel / guild info) */
+.side-panel, [class*="side-panel"] {
+  color: var(--sf-ink) !important;
+}
+.side-panel h2, .side-panel h3, [class*="side-panel"] h2, [class*="side-panel"] h3 {
+  color: var(--sf-header) !important;
+}
+.side-panel p, .side-panel li, .side-panel div, [class*="side-panel"] p,
+[class*="side-panel"] li, [class*="side-panel"] div {
+  color: var(--sf-ink) !important;
 }
 
 /* ── Guild Matrix (rollout 2026-08-09): 1180px column + readable list ── */

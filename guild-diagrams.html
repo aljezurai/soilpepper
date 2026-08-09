@@ -821,9 +821,36 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
 .grid-wrap { max-width: 1180px !important; margin-left: auto !important; margin-right: auto !important; }
 .paintbar { max-width: 1180px !important; margin-left: auto !important; margin-right: auto !important; }
 
-/* ── Guild Diagrams (rollout 2026-08-09): 1180px column ── */
+/* ── Guild Diagrams (rollout 2026-08-09): 1180px column + readable controls ── */
 .main-layout {
   max-width: 1180px !important;   /* was 1200px */
+}
+/* tree-info chips (family / scientific / type) → gold pills like other buttons */
+.controls .tree-info .stat {
+  background: var(--sf-gold) !important;
+  color: var(--sf-gold-ink) !important;
+  border: 1.5px solid var(--sf-gold-border) !important;
+  border-radius: 999px !important;
+  padding: 3px 12px !important;
+  font-weight: 700 !important;
+}
+/* legend-bar stays inside the 1180px column, wraps instead of overflowing */
+.legend-bar {
+  max-width: 1180px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  justify-content: center !important;
+}
+/* right-panel text readability (side-panel / guild info) */
+.side-panel, [class*="side-panel"] {
+  color: var(--sf-ink) !important;
+}
+.side-panel h2, .side-panel h3, [class*="side-panel"] h2, [class*="side-panel"] h3 {
+  color: var(--sf-header) !important;
+}
+.side-panel p, .side-panel li, .side-panel div, [class*="side-panel"] p,
+[class*="side-panel"] li, [class*="side-panel"] div {
+  color: var(--sf-ink) !important;
 }
 
 /* ── Guild Matrix (rollout 2026-08-09): 1180px column + readable list ── */
@@ -1153,25 +1180,16 @@ function applyI18nGD() {
 }
 </script>
 <h1 data-i18n="title" id="h1-title">🌳 SOILPEPPER — Tree Guild Diagrams</h1>
-<p class="subtitle">Zone 8b-9a · 300m · 800mm rain · Silty-sand · Mediterranean · <span data-i18n="subtitle">Interactive Guild Builder \u00b7 256 species</span></p>
 
 <!-- Controls -->
 <div class="controls">
   <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;width:100%">
     <label for="tree-select" data-i18n="selectTree">🌿 Select Tree:</label>
     <select id="tree-select" style="flex:1;min-width:160px"></select>
-    <div style="display:flex;gap:4px">
-      <button class="region-btn" data-val="all" onclick="setRegion('all')"><span data-i18n="regAll">🌍 All</span></button>
-      <button class="region-btn" data-val="tuscany" onclick="setRegion('tuscany')"><span data-i18n="regTus">🇮🇹 Tuscany</span></button>
-      <button class="region-btn" data-val="netherlands" onclick="setRegion('netherlands')"><span data-i18n="regNl">🇳🇱 Netherlands</span></button>
-    </div>
   </div>
   <div class="tree-info" id="tree-info"></div>
   <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
     <button id="reset-btn" style="padding:4px 12px;border-radius:6px;border:1px solid #2a3a2a;background:#0d1b2a;color:#c8d8c0;cursor:pointer;font-size:0.75em"><span data-i18n="reset">↺ Reset to suggestion</span></button>
-    <button id="backup-btn" style="padding:4px 12px;border-radius:6px;border:1px solid #2a3a2a;background:#0d1b2a;color:#c8d8c0;cursor:pointer;font-size:0.75em" onclick="gdBackup()"><span data-i18n="backupAll">💾 Backup alles</span></button>
-    <button id="restore-btn" style="padding:4px 12px;border-radius:6px;border:1px solid #2a3a2a;background:#0d1b2a;color:#c8d8c0;cursor:pointer;font-size:0.75em" onclick="document.getElementById('gd-restore').click()"><span data-i18n="restoreAll">📥 Herstel alles</span></button>
-    <input type="file" id="gd-restore" accept=".json,application/json" style="display:none" onchange="gdRestore(event)">
   </div>
 </div>
 
