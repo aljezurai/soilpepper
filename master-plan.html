@@ -1613,11 +1613,12 @@ function exportPlan() {
   // Build the grid as static HTML + detail panels (no JS needed to view)
   var gridHtml = buildGridHtml();
   var detailHtml = buildDetailHtml();
+  var vegLayerHtml = buildVegLayerHtml(region);   // vegetable-layer summary (2026-08-09)
   var planJson = JSON.stringify(plan);
   var speciesJson = JSON.stringify(minSpecies);
   var guildsJson = JSON.stringify(guilds);
   var briefJson = JSON.stringify(loadBrief());
-  var html = buildStandaloneHtml(planJson, speciesJson, guildsJson, briefJson, gridHtml, detailHtml, plan.cols, plan.rows, region);
+  var html = buildStandaloneHtml(planJson, speciesJson, guildsJson, briefJson, gridHtml, detailHtml, vegLayerHtml, plan.cols, plan.rows, region);
   var blob = new Blob([html], { type: 'text/html' });
   var a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
@@ -1722,7 +1723,62 @@ function buildDetailHtml() {
   return parts.join('\n');
 }
 
-function buildStandaloneHtml(planJson, speciesJson, guildsJson, briefJson, gridHtml, detailHtml, planCols, planRows, region) {
+// ============ VEGETABLE LAYER SUMMARY (2026-08-09) ============
+// Reads tuscanVegGarden (the Veg Planner's saved layout) and builds a static
+// per-bed crop summary with sow/harvest windows. Linked to grid cells via
+// tuscanVegGarden.cell (set when the planner is opened from a veg cell).
+function buildVegLayerHtml(region) {
+  var isNL = region === 'netherlands';
+  var data = null;
+  try { data = JSON.parse(localStorage.getItem('tuscanVegGarden') || 'null'); } catch (e) {}
+  if (!data || !Array.isArray(data.rows)) return '';
+  var rowsHtml = [];
+  var totalPlants = 0;
+  data.rows.forEach(function (row, r) {
+    var slots = row.slots || [];
+    var all = (slots[0] || []).concat(slots[1] || []);
+    if (all.length === 0) return;
+    totalPlants += all.length;
+    var bedName = isNL ? 'Rij' : 'Row';
+    var suffix = row.joined ? ' · 20m ' + (isNL ? 'gekoppeld' : 'joined') : '';
+    var plantsHtml = all.map(function (obj) {
+      var key = typeof obj === 'string' ? obj : (obj && obj.key);
+      if (!key) return '';
+      var s = SPECIES[key];
+      var icon = s ? (s.icon || '🌱') : '🌱';
+      var name = s ? (isNL ? (s.nameNL || s.name) : s.name) : key;
+      var sow = null, har = null;
+      if (s) {
+        sow = isNL ? (s.sowMonthsNL || s.sowMonths) : (s.sowMonths || []);
+        har = isNL ? (s.harvestMonthsNL || s.harvestMonths) : (s.harvestMonths || []);
+      }
+      var range = function (months) {
+        if (!months || months.length === 0) return '';
+        var first = Math.min.apply(null, months), last = Math.max.apply(null, months);
+        return first === last ? String(first) : first + '\u2013' + last;
+      };
+      var sowTxt = range(sow), harTxt = range(har);
+      var info = '';
+      if (sowTxt) info += (isNL ? '🌱 zaai ' : '🌱 sow ') + sowTxt;
+      if (harTxt) info += (isNL ? ' · 🧺 oogst ' : ' · 🧺 harvest ') + harTxt;
+      return '<span class="veg-plant">' + icon + ' ' + escHtml(name) + (info ? ' <span class="veg-info">' + info + '</span>' : '') + '</span>';
+    }).join('');
+    rowsHtml.push('<div class="veg-bed"><div class="veg-bed-name">' + (isNL ? 'Rij ' : 'Row ') + (r + 1) + ' (' + bedName + ' ' + (r + 1) + ')' + suffix + '</div><div class="veg-plants">' + plantsHtml + '</div></div>');
+  });
+  if (rowsHtml.length === 0) return '';
+  var cellInfo = '';
+  if (data.cell) {
+    cellInfo = '<div class="veg-cell-note">' + (isNL ? '🗺️ Gekoppeld aan rastercel ' : '🗺️ Linked to grid cell ') + escHtml(data.cell) + '</div>';
+  }
+  return '<div class="veg-layer">' +
+    '<h2>' + (isNL ? '🥕 Groentelaag \u2014 bedindeling' : '🥕 Vegetable Layer \u2014 bed layout') + '</h2>' +
+    '<div class="veg-total">' + (isNL ? totalPlants + ' planten in ' + rowsHtml.length + ' bedden' : totalPlants + ' plants across ' + rowsHtml.length + ' beds') + '</div>' +
+    cellInfo +
+    rowsHtml.join('') +
+    '</div>';
+}
+
+function buildStandaloneHtml(planJson, speciesJson, guildsJson, briefJson, gridHtml, detailHtml, vegLayerHtml, planCols, planRows, region) {
   // Escape closing script tag sequences to avoid breaking the embedded script tag
   var safePlan = planJson.replace(/<\//g, '<\\/');
   var safeSpecies = speciesJson.replace(/<\//g, '<\\/');
@@ -1803,6 +1859,16 @@ h1{font-family:Georgia,'Palatino',serif;color:#5a8a4a;text-align:center;font-siz
 .footer{text-align:center;color:#6a8068;font-size:0.6rem;font-family:'Courier New',monospace;margin-top:10px}
 .brief-line{text-align:center;color:#a8b8a0;font-size:0.7rem;background:#142114;
   border:1px solid #1a301a;border-radius:5px;padding:5px 10px;margin:0 auto 10px;max-width:640px}
+.veg-layer{background:#142114;border:1px solid #1a301a;border-radius:8px;padding:12px;margin-top:10px}
+.veg-layer h2{color:#5a8a4a;font-family:Georgia,serif;font-size:0.95rem;margin-bottom:4px}
+.veg-total{color:#6a8068;font-size:0.7rem;margin-bottom:8px}
+.veg-cell-note{color:#a8b8a0;font-size:0.7rem;margin-bottom:8px}
+.veg-bed{margin-bottom:8px;padding:7px;background:#0d1a0d;border-radius:5px;border-left:3px solid #4a7025}
+.veg-bed-name{color:#c4a040;font-size:0.72rem;font-weight:600;margin-bottom:4px}
+.veg-plants{display:flex;flex-wrap:wrap;gap:4px}
+.veg-plant{display:inline-flex;align-items:center;gap:2px;padding:2px 6px;background:#1a301a;
+  border-radius:4px;font-size:0.68rem;color:#c8d8c0}
+.veg-info{color:#8a9a80;font-size:0.62rem}
 @media(max-width:600px){.grid{gap:1px}.cell .cl{display:none}}
 </style>
 </head>
@@ -1828,6 +1894,7 @@ ${gridHtml}
 <div class="detail-section">
 ${detailHtml}
 </div>
+${vegLayerHtml}
 <div class="footer">Exported from Master Plan Grid \u00b7 opens offline anywhere</div>
 </body>
 </html>`;}
