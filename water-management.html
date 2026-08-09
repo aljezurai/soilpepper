@@ -688,7 +688,10 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
 
 /* ── Species Filter (rollout 2026-08-09): 1180px column + readability ── */
 body {
-  max-width: 1180px !important;   /* was 1400px */
+  max-width: 1180px !important;   /* was 1400px on Species Filter; unified everywhere */
+  margin-left: auto !important;   /* center — some tools' base body lacked margin:0 auto,
+                                     and the old rule left-pinned the whole page */
+  margin-right: auto !important;
 }
 /* count text readable (was pale rgba(255,255,255,.6) on light card) */
 .actions-bar .count {
@@ -903,6 +906,33 @@ body {
   color: var(--sf-header-2) !important;   /* darker green, readable (was light rgb(176,200,168)) */
   font-weight: 600 !important;
 }
+/* species profile card — the base dark card var leaked (dark green rgb(20,48,20)) */
+.profile {
+  background: var(--sf-card) !important;
+  border: 1px solid var(--sf-border) !important;
+  color: var(--sf-ink) !important;
+}
+.profile h2 { color: var(--sf-header) !important; }
+.profile .sub { color: var(--sf-ink-soft) !important; }
+.profile .tag-row .label {
+  color: var(--sf-header-2) !important;   /* was rgba(255,255,255,.3) */
+}
+.gives-tags .tag, .needs-tags .tag, .mineral-tags .tag, .root-tag,
+.profile [class*="tag"] {
+  background: var(--sf-card-alt) !important;
+  border: 1px solid var(--sf-border) !important;
+  color: var(--sf-ink) !important;
+}
+.profile .root-tag { color: var(--sf-ink-soft) !important; }
+.profile .unmet-box, .unmet-box {
+  background: var(--sf-card-alt) !important;
+  border: 1px solid var(--sf-border) !important;
+  color: var(--sf-ink) !important;
+}
+/* guild matrix companion table + legend text readable */
+.sidebar + .main table, .main table { color: var(--sf-ink) !important; }
+.main table th { background: var(--sf-header) !important; color: #ffffff !important; }
+.main table td { color: var(--sf-ink) !important; }
 
 /* ── Water Management (rollout 2026-08-09): unify to 1180px column ── */
 .canvas, .plan-toggle-wrap, .params, .stats, .balance, .spec-card,
