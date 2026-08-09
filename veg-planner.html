@@ -625,6 +625,10 @@ if (regionParam !== 'tuscany' && regionParam !== 'netherlands') {
 if (regionParam === 'tuscany') regionFilter = 'tuscany';
 else if (regionParam === 'netherlands') regionFilter = 'netherlands';
 
+// Link to a Master Plan grid cell (2026-08-09): master-plan passes ?cell=C3_4
+// when opening the planner from a vegetable cell. Stored in the saved layout.
+var vegCell = urlParams.get('cell') || null;
+
 // Build plants for the selected region
 buildPlants(regionFilter);
 
@@ -670,6 +674,7 @@ var T = {
     palette: 'Plant Palette', dragOnto: 'Drag onto beds',
     north: 'North (tallest plants)', south: 'South (full sun)',
     specTitle: 'Garden Layout — your dimensions',
+    gridCell: 'Grid cell', backToPlan: 'Back to Master Plan',
     exportJSON: 'Export JSON', importJSON: 'Import JSON',
     exportFV: 'Export Field View', exportICS: 'Export Calendar', exportFVTitle: 'Download a standalone HTML viewer of this garden — works offline on your phone',
     clearAll: 'Clear All', resetDefault: 'Reset Default',
@@ -702,6 +707,7 @@ var T = {
     palette: 'Plantenpalet', dragOnto: 'Sleep naar bedden',
     north: 'Noord (hoogste planten)', south: 'Zuid (volle zon)',
     specTitle: 'Tuindimensies — jouw afmetingen',
+    gridCell: 'Rastercel', backToPlan: 'Terug naar Masterplan',
     exportJSON: 'Export JSON', importJSON: 'Import JSON',
     exportFV: 'Export veldweergave', exportICS: 'Kalender exporteren', exportFVTitle: 'Download een losstaande HTML-viewer van deze tuin — werkt offline op je telefoon',
     clearAll: 'Alles wissen', resetDefault: 'Standaard herstellen',
@@ -783,7 +789,9 @@ function todayStr() {
 
 function saveLocalStorage() {
   try {
-    localStorage.setItem('tuscanVegGarden', JSON.stringify({version:3, cfg: gardenCfg, rows: rows}));
+    const data = {version:3, cfg: gardenCfg, rows: rows};
+    if (vegCell) data.cell = vegCell;   // link to Master Plan grid cell (2026-08-09)
+    localStorage.setItem('tuscanVegGarden', JSON.stringify(data));
   } catch(e) {}
 }
 
@@ -799,6 +807,8 @@ function loadLocalStorage() {
     if (!data) return false;
     if (data.version === 3 && Array.isArray(data.rows)) {
       gardenCfg = Object.assign(gardenCfg, data.cfg || {});
+      // restore grid-cell link if present (2026-08-09); URL ?cell= wins
+      if (data.cell && !vegCell) vegCell = data.cell;
       // clamp config to sane bounds
       gardenCfg.modules = Math.max(1, Math.min(3, gardenCfg.modules || 2));
       gardenCfg.bedWidth = Math.max(0.5, Math.min(1.2, gardenCfg.bedWidth || 0.75));
@@ -1824,7 +1834,8 @@ function renderGardenSpec() {
     `<div class="spec-item">🛤️ <b>~${(pathM * 100).toFixed(0)}cm ${tt('paths')}</b> ${tt('betweenRows')}</div>` +
     `<div class="spec-item">🔗 <b>${tot.joinedCount} ${tt('joined')}</b> (20m) · ✂️ <b>${tot.splitCount} ${tt('split')}</b> (2×10m)</div>` +
     `<div class="spec-item">🌱 <b>${tot.growing.toFixed(0)} m² ${tt('growing')}</b> · ${tot.planted} ${tt('plantsPlaced')}</div>` +
-    `<div class="spec-item">📍 <b>${cellsTotal} ${tt('cells')}</b> (${blockLenCells}×${blockWidCells}) · ${footprintM2.toFixed(0)} m² ${tt('footprint')}</div>`;
+    `<div class="spec-item">📍 <b>${cellsTotal} ${tt('cells')}</b> (${blockLenCells}×${blockWidCells}) · ${footprintM2.toFixed(0)} m² ${tt('footprint')}</div>` +
+    (vegCell ? `<div class="spec-item">🗺️ <b>${tt('gridCell')}: ${vegCell}</b> — <a href="master-plan.html?region=${LANG === 'nl' ? 'netherlands' : 'tuscany'}" style="color:#5a8a4a">${tt('backToPlan')}</a></div>` : '');
 
   note.innerHTML = LANG === 'nl'
     ? `Realistisch model: ${gardenCfg.rowsPerModule} rijen per ${gardenCfg.slotLen}m-cel — bed ${gardenCfg.bedWidth}m + ~${(pathM * 100).toFixed(0)}cm pad. Bedden lopen ${gardenCfg.slotLen * 2}m (2 cellen) bij koppelen. Stel modules, breedte en perceellengte hierboven in.`
