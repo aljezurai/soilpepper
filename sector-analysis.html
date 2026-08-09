@@ -297,18 +297,95 @@ div[style*="142114"] span[style*="c4a040"], div[style*="20, 33, 20"] span[style*
 .filters-bar label, .filter-group label, [class*="filter-bar"] label, [class*="filter-group"] label { color: var(--sf-ink-soft) !important; }
 .filters-bar select, .filter-group select, .filter-dropdown select { background: var(--sf-card) !important; color: var(--sf-ink) !important; border-color: var(--sf-border-strong) !important; }
 
-/* ── Garden setup control bar ───────────────────────────── */
-.garden-setup {
-  background: var(--sf-header) !important;
-  border-color: #1e3624 !important;
-  border-radius: 12px !important;
+/* ── Sage Forte masthead (Veg Planner 2026-08-09) ───────── */
+.sf-footer {
+  margin-top: 18px; text-align: center; font-size: 0.68rem; color: var(--sf-muted) !important; font-weight: 600;
 }
-.garden-setup label { color: #b8d4bc !important; }
-.garden-setup .g-hint { color: #8aa88c !important; }
+.subtitle { font-style: italic; color: var(--sf-muted) !important; font-size: 0.72rem; text-align: center; margin: 0 auto 10px; }
+
+.sf-masthead {
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+  background: var(--sf-header) !important;
+  border: 1px solid #1e3624 !important;
+  border-radius: var(--sf-radius-lg) !important;
+  padding: 14px 20px !important;
+  margin: 0 auto 12px !important;
+  max-width: 1500px;
+  box-shadow: var(--sf-shadow-lg) !important;
+}
+.sf-brand { display: flex; align-items: center; gap: 10px; }
+.sf-pepper { font-size: 1.6rem; }
+.sf-logo { font-family: var(--sf-font-head) !important; font-size: 1.2rem !important; font-weight: 700 !important; color: #ffffff !important; margin: 0 !important; }
+.sf-tagline { font-size: 0.72rem; color: #a8c8ac !important; font-weight: 600; }
+.sf-region { display: flex; gap: 6px; }
+.sf-pill { padding: 5px 12px; border-radius: 999px; font-size: 0.72rem; font-weight: 700; text-decoration: none; display: inline-block; }
+.sf-pill.it { background: var(--sf-gold) !important; color: var(--sf-gold-ink) !important; border: 1px solid var(--sf-gold-border) !important; }
+.sf-pill.nl { background: #e8f4e8 !important; color: #2e6a3a !important; border: 1px solid #c8e0c8 !important; }
+.sf-pill.on { background: var(--sf-header-2) !important; color: #ffffff !important; border-color: #5a8a62 !important; }
+
+/* ── Bed pairing: 2-column grid, mockup-exact (2026-08-09) ── */
+#beds-container {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 12px 28px !important;   /* wide column gap = the ~92cm path */
+  align-items: start !important;
+}
+@media(max-width:768px){
+  #beds-container { grid-template-columns: 1fr !important; gap: 10px !important; }
+  .bed-row-module-label { grid-column: 1 / -1 !important; }
+}
+.bed-row-module-label {
+  grid-column: 1 / -1 !important;   /* module headers span both columns */
+  background: var(--sf-header) !important;
+  color: #ffffff !important;
+  border-radius: 10px !important;
+  padding: 6px 12px !important;
+  font-size: 0.72rem !important;
+  font-weight: 800 !important;
+  letter-spacing: normal !important;
+  text-align: center !important;
+  margin: 6px 0 2px !important;
+}
+.bed-row {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  gap: 6px !important;
+  background: var(--sf-card) !important;
+  border: 2px solid var(--sf-border-strong) !important;
+  border-radius: 14px !important;
+  padding: 10px !important;
+  box-shadow: var(--sf-shadow) !important;
+}
+.bed-label {
+  width: auto !important;
+  text-align: left !important;
+  font-size: 0.7rem !important;
+  font-weight: 800 !important;
+  color: var(--sf-header) !important;
+  flex-shrink: 0 !important;
+}
+
+/* ── Garden setup control bar — quiet inline row (Sage Forte) ── */
+.garden-setup {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  justify-content: center !important;
+  margin: 4px auto 10px !important;
+  padding: 0 !important;
+  font-size: 0.72rem !important;
+  gap: 6px 14px !important;
+  color: var(--sf-muted) !important;
+}
+.garden-setup label { color: var(--sf-muted) !important; display: inline-flex; align-items: center; gap: 4px; }
+.garden-setup .g-hint { color: var(--sf-muted) !important; font-weight: 700; }
 .garden-setup select, .garden-setup input {
   background: var(--sf-card) !important;
-  border-color: var(--sf-border-strong) !important;
+  border: 1.5px solid var(--sf-border-strong) !important;
+  border-radius: 8px !important;
   color: var(--sf-ink) !important;
+  font-weight: 600;
 }
 
 /* ── Scrollbars ─────────────────────────────────────────── */

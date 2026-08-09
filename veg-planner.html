@@ -497,18 +497,95 @@ div[style*="142114"] span[style*="c4a040"], div[style*="20, 33, 20"] span[style*
 .filters-bar label, .filter-group label, [class*="filter-bar"] label, [class*="filter-group"] label { color: var(--sf-ink-soft) !important; }
 .filters-bar select, .filter-group select, .filter-dropdown select { background: var(--sf-card) !important; color: var(--sf-ink) !important; border-color: var(--sf-border-strong) !important; }
 
-/* ── Garden setup control bar ───────────────────────────── */
-.garden-setup {
-  background: var(--sf-header) !important;
-  border-color: #1e3624 !important;
-  border-radius: 12px !important;
+/* ── Sage Forte masthead (Veg Planner 2026-08-09) ───────── */
+.sf-footer {
+  margin-top: 18px; text-align: center; font-size: 0.68rem; color: var(--sf-muted) !important; font-weight: 600;
 }
-.garden-setup label { color: #b8d4bc !important; }
-.garden-setup .g-hint { color: #8aa88c !important; }
+.subtitle { font-style: italic; color: var(--sf-muted) !important; font-size: 0.72rem; text-align: center; margin: 0 auto 10px; }
+
+.sf-masthead {
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+  background: var(--sf-header) !important;
+  border: 1px solid #1e3624 !important;
+  border-radius: var(--sf-radius-lg) !important;
+  padding: 14px 20px !important;
+  margin: 0 auto 12px !important;
+  max-width: 1500px;
+  box-shadow: var(--sf-shadow-lg) !important;
+}
+.sf-brand { display: flex; align-items: center; gap: 10px; }
+.sf-pepper { font-size: 1.6rem; }
+.sf-logo { font-family: var(--sf-font-head) !important; font-size: 1.2rem !important; font-weight: 700 !important; color: #ffffff !important; margin: 0 !important; }
+.sf-tagline { font-size: 0.72rem; color: #a8c8ac !important; font-weight: 600; }
+.sf-region { display: flex; gap: 6px; }
+.sf-pill { padding: 5px 12px; border-radius: 999px; font-size: 0.72rem; font-weight: 700; text-decoration: none; display: inline-block; }
+.sf-pill.it { background: var(--sf-gold) !important; color: var(--sf-gold-ink) !important; border: 1px solid var(--sf-gold-border) !important; }
+.sf-pill.nl { background: #e8f4e8 !important; color: #2e6a3a !important; border: 1px solid #c8e0c8 !important; }
+.sf-pill.on { background: var(--sf-header-2) !important; color: #ffffff !important; border-color: #5a8a62 !important; }
+
+/* ── Bed pairing: 2-column grid, mockup-exact (2026-08-09) ── */
+#beds-container {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 12px 28px !important;   /* wide column gap = the ~92cm path */
+  align-items: start !important;
+}
+@media(max-width:768px){
+  #beds-container { grid-template-columns: 1fr !important; gap: 10px !important; }
+  .bed-row-module-label { grid-column: 1 / -1 !important; }
+}
+.bed-row-module-label {
+  grid-column: 1 / -1 !important;   /* module headers span both columns */
+  background: var(--sf-header) !important;
+  color: #ffffff !important;
+  border-radius: 10px !important;
+  padding: 6px 12px !important;
+  font-size: 0.72rem !important;
+  font-weight: 800 !important;
+  letter-spacing: normal !important;
+  text-align: center !important;
+  margin: 6px 0 2px !important;
+}
+.bed-row {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  gap: 6px !important;
+  background: var(--sf-card) !important;
+  border: 2px solid var(--sf-border-strong) !important;
+  border-radius: 14px !important;
+  padding: 10px !important;
+  box-shadow: var(--sf-shadow) !important;
+}
+.bed-label {
+  width: auto !important;
+  text-align: left !important;
+  font-size: 0.7rem !important;
+  font-weight: 800 !important;
+  color: var(--sf-header) !important;
+  flex-shrink: 0 !important;
+}
+
+/* ── Garden setup control bar — quiet inline row (Sage Forte) ── */
+.garden-setup {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  justify-content: center !important;
+  margin: 4px auto 10px !important;
+  padding: 0 !important;
+  font-size: 0.72rem !important;
+  gap: 6px 14px !important;
+  color: var(--sf-muted) !important;
+}
+.garden-setup label { color: var(--sf-muted) !important; display: inline-flex; align-items: center; gap: 4px; }
+.garden-setup .g-hint { color: var(--sf-muted) !important; font-weight: 700; }
 .garden-setup select, .garden-setup input {
   background: var(--sf-card) !important;
-  border-color: var(--sf-border-strong) !important;
+  border: 1.5px solid var(--sf-border-strong) !important;
+  border-radius: 8px !important;
   color: var(--sf-ink) !important;
+  font-weight: 600;
 }
 
 /* ── Scrollbars ─────────────────────────────────────────── */
@@ -519,6 +596,18 @@ div[style*="142114"] span[style*="c4a040"], div[style*="20, 33, 20"] span[style*
 </style>
 </head>
 <body>
+<!-- ═══ SAGE FORTE MASTHEAD (2026-08-09) ═══ -->
+<header class="sf-masthead" id="sf-masthead">
+  <div class="sf-brand">
+    <span class="sf-pepper">🌶️</span>
+    <div>
+      <h1 class="sf-logo">SOILPEPPER</h1>
+      <div class="sf-tagline"><span data-i18n="vegPlanner">Vegetable Garden Planner</span> · <span id="bed-count-mast">12</span> <span data-i18n="beds">Beds</span></div>
+    </div>
+  </div>
+  <div class="sf-region" id="sf-region"></div>
+</header>
+<style>#h1-title{display:none}</style>
 <!-- DESIGN BRIEF STRIP (shared reader — injected by design-brief system) -->
 <script>
 (function () {
@@ -620,7 +709,11 @@ div[style*="142114"] span[style*="c4a040"], div[style*="20, 33, 20"] span[style*
   details.className = 'bstrip-details';
   strip.appendChild(styleEl);
   var body = document.body;
-  body.insertBefore(strip, body.firstChild);
+  // Insert the strip after the Sage Forte masthead if present (2026-08-09),
+  // else at the very top.
+  var mh = document.getElementById('sf-masthead');
+  if (mh && mh.nextSibling) body.insertBefore(strip, mh.nextSibling);
+  else body.insertBefore(strip, body.firstChild);
 
   // Sector Analysis: prefill params from the brief once the page is ready
   // (one-way: brief is the source of truth; user can still override locally)
@@ -813,6 +906,11 @@ div[style*="142114"] span[style*="c4a040"], div[style*="20, 33, 20"] span[style*
   <button class="btn" onclick="exportICS()" title="Sow + harvest dates to your phone calendar">📅 <span data-i18n="exportICS">Export Calendar</span></button>
 </div>
 
+<!-- Footer (Sage Forte 2026-08-09) -->
+<footer class="sf-footer">
+  <span>SOILPEPPER · <span data-i18n="footerNote">everything runs on your device — no server, works offline</span> 🌱</span>
+</footer>
+
 <!-- Info panel -->
 <div class="info-panel" id="info-panel">
   <div id="info-content"></div>
@@ -910,6 +1008,33 @@ document.addEventListener('DOMContentLoaded', function() {
   applyI18n();
   var bc = document.getElementById('bed-count');
   if (bc) bc.textContent = rows.length;
+  var bcm = document.getElementById('bed-count-mast');
+  if (bcm) bcm.textContent = rows.length;
+  // Move the action bar to the top per the Sage Forte mockup:
+  // masthead → brief → actions → quiet setup row → content (2026-08-09).
+  var actBar = document.querySelector('.action-bar');
+  var setupEl = document.getElementById('garden-setup');
+  if (actBar && setupEl) {
+    setupEl.parentNode.insertBefore(actBar, setupEl);
+  }
+  // Masthead region pills (Toscane gold inactive / Nederland green active)
+  var regionEl = document.getElementById('sf-region');
+  if (regionEl && !regionEl.children.length) {
+    var cur = (typeof regionFilter !== 'undefined' && (regionFilter === 'tuscany' || regionFilter === 'netherlands')) ? regionFilter : 'tuscany';
+    var nlLang = typeof LANG !== 'undefined' && LANG === 'nl';
+    var pills = [
+      { r: 'tuscany', lbl: '🇮🇹 ' + (nlLang ? 'Toscane' : 'Tuscany'), cls: cur === 'tuscany' ? 'it on' : 'it' },
+      { r: 'netherlands', lbl: '🇳🇱 ' + (nlLang ? 'Nederland' : 'Netherlands'), cls: cur === 'netherlands' ? 'nl on' : 'nl' }
+    ];
+    pills.forEach(function(p) {
+      var a = document.createElement('a');
+      a.className = 'sf-pill ' + p.cls;
+      a.textContent = p.lbl;
+      a.href = '?region=' + p.r;
+      a.title = nlLang ? ('Wissel naar ' + p.lbl) : ('Switch to ' + p.lbl);
+      regionEl.appendChild(a);
+    });
+  }
 });
 
 const CATEGORIES = {
@@ -934,6 +1059,7 @@ var T = {
     modules: 'Modules', rows6: '1 (6 rows)', rows12: '2 (12 rows)', rows18: '3 (18 rows)',
     bedWidth: 'Bed width', slotLen: 'Slot length',
     palette: 'Plant Palette', dragOnto: 'Drag onto beds',
+    footerNote: 'everything runs on your device \u2014 no server, works offline',
     north: 'North (tallest plants)', south: 'South (full sun)',
     specTitle: 'Garden Layout — your dimensions',
     gridCell: 'Grid cell', backToPlan: 'Back to Master Plan',
@@ -967,6 +1093,7 @@ var T = {
     modules: 'Modules', rows6: '1 (6 rijen)', rows12: '2 (12 rijen)', rows18: '3 (18 rijen)',
     bedWidth: 'Bedbreedte', slotLen: 'Perceellengte',
     palette: 'Plantenpalet', dragOnto: 'Sleep naar bedden',
+    footerNote: 'alles draait op jouw apparaat \u2014 geen server, werkt offline',
     north: 'Noord (hoogste planten)', south: 'Zuid (volle zon)',
     specTitle: 'Tuindimensies — jouw afmetingen',
     gridCell: 'Rastercel', backToPlan: 'Terug naar Masterplan',
