@@ -1644,6 +1644,11 @@ function cellTitle(r, c, cell) {
   return '#' + num + ' ' + nm + (cell.label ? ' — ' + cell.label : '') + (extra.length ? ' · ' + extra.join(' · ') : '');
 }
 function buildGridHtml() {
+  var isNL = (getRegionParam() === 'netherlands');   // for veg-cell labels
+  // Veg layout linked to a grid cell (for the full grid version, 2026-08-09)
+  var vegData = null;
+  try { vegData = JSON.parse(localStorage.getItem('tuscanVegGarden') || 'null'); } catch (e) {}
+  var vegCellKey = (vegData && vegData.cell) || null;
   var parts = [];
   for (var r = 0; r < plan.rows; r++) {
     for (var c = 0; c < plan.cols; c++) {
@@ -1660,6 +1665,15 @@ function buildGridHtml() {
         if (label) h += '<div class="cl">' + escHtml(label) + '</div>';
         if (cell.zone !== undefined && cell.zone !== null && ZONE_META[cell.zone]) h += '<span class="cz">Z' + cell.zone + '</span>';
         if (cell.soil && SOIL_META[cell.soil]) h += '<span class="cs">' + SOIL_META[cell.soil].label + '</span>';
+        // Full grid version: vegetable cells with a linked layout show bed count
+        if (fn === 'vegetable' && vegCellKey === k && vegData && Array.isArray(vegData.rows)) {
+          var bedCount = vegData.rows.length;
+          var plantCount = 0;
+          vegData.rows.forEach(function (row) {
+            (row.slots || []).forEach(function (slot) { plantCount += (slot || []).length; });
+          });
+          h += '<span class="cveg">' + bedCount + (isNL ? ' bedden' : ' beds') + ' · ' + plantCount + ' 🌱</span>';
+        }
       } else {
         h += '<div class="ci" style="opacity:0.25">+</div>';
       }
@@ -1769,6 +1783,17 @@ function buildVegLayerHtml(region) {
   var cellInfo = '';
   if (data.cell) {
     cellInfo = '<div class="veg-cell-note">' + (isNL ? '🗺️ Gekoppeld aan rastercel ' : '🗺️ Linked to grid cell ') + escHtml(data.cell) + '</div>';
+    // Mini plot map: highlight the linked cell on the grid (full grid version)
+    var parts = String(data.cell).split('_');
+    var vr = parseInt(parts[0], 10), vc = parseInt(parts[1], 10);
+    var pRows = (plan && plan.rows) || 10, pCols = (plan && plan.cols) || 10;
+    var mapCells = [];
+    for (var mr = 0; mr < pRows; mr++) {
+      for (var mc = 0; mc < pCols; mc++) {
+        mapCells.push('<div class="vm-cell' + (mr === vr && mc === vc ? ' on' : '') + '"></div>');
+      }
+    }
+    cellInfo += '<div class="veg-map" style="--vc:' + pCols + ';--vr:' + pRows + '">' + mapCells.join('') + '</div>';
   }
   return '<div class="veg-layer">' +
     '<h2>' + (isNL ? '🥕 Groentelaag \u2014 bedindeling' : '🥕 Vegetable Layer \u2014 bed layout') + '</h2>' +
@@ -1869,6 +1894,12 @@ h1{font-family:Georgia,'Palatino',serif;color:#5a8a4a;text-align:center;font-siz
 .veg-plant{display:inline-flex;align-items:center;gap:2px;padding:2px 6px;background:#1a301a;
   border-radius:4px;font-size:0.68rem;color:#c8d8c0}
 .veg-info{color:#8a9a80;font-size:0.62rem}
+.cveg{position:absolute;top:1px;left:2px;font-size:clamp(4px,0.7vw,8px);font-weight:700;color:#e8f0e0;
+  background:rgba(0,0,0,0.6);padding:0 3px;border-radius:2px;line-height:1.4;white-space:nowrap}
+.veg-map{display:grid;gap:1px;background:#1a301a;padding:1px;border-radius:4px;margin-top:6px;
+  grid-template-columns:repeat(var(--vc,10),1fr);grid-template-rows:repeat(var(--vr,10),1fr)}
+.veg-map .vm-cell{aspect-ratio:1;border-radius:2px;background:#0a1a0a;border:1px solid rgba(255,255,255,0.05)}
+.veg-map .vm-cell.on{background:#4a7025;box-shadow:0 0 0 1px #c4a040 inset}
 @media(max-width:600px){.grid{gap:1px}.cell .cl{display:none}}
 </style>
 </head>
