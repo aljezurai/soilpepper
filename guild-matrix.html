@@ -1330,9 +1330,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-<header>
-  <h1 data-i18n="title" id="h1-title">🌳 Tuscan Guild Matrix <span class="sub">— Companion Explorer & Mix & Match</span></h1>
-</header>
 
 <!-- Mobile sidebar backdrop -->
 <div class="mobile-sidebar-backdrop" id="mobile-backdrop" onclick="closeMobileSidebar()"></div>
@@ -1751,26 +1748,9 @@ if (urlParams.get('region') === 'tuscany') regionFilter = 'tuscany';
 else if (urlParams.get('region') === 'netherlands') regionFilter = 'netherlands';
 
 document.addEventListener('DOMContentLoaded', function() {
-  // Insert region filter
-  const sidebar = document.querySelector('.sidebar');
-  const regionBar = document.createElement('div');
-  regionBar.style.cssText = 'display:flex;gap:4px;padding:0 14px 12px;';
-  regionBar.innerHTML = `
-    <button class="tab region-tab ${regionFilter==='all'?'active':''}" data-region="all">${tt('regAll')}</button>
-    <button class="tab region-tab ${regionFilter==='tuscany'?'active':''}" data-region="tuscany">${tt('regTus')}</button>
-    <button class="tab region-tab ${regionFilter==='netherlands'?'active':''}" data-region="netherlands">${tt('regNl')}</button>
-  `;
-  sidebar.querySelector('.search').after(regionBar);
-
-  regionBar.querySelectorAll('.region-tab').forEach(t => {
-    t.onclick = function(e) {
-      e.stopPropagation();
-      regionBar.querySelectorAll('.region-tab').forEach(tt => tt.classList.remove('active'));
-      t.classList.add('active');
-      regionFilter = t.dataset.region;
-      renderSidebar();
-    };
-  });
+  // Region filter bar REMOVED (2026-08-09): the region is chosen in the
+  // masthead pill / URL — duplicating All/Tuscany/Netherlands tabs here was
+  // redundant. regionFilter (from URL/brief) still drives the species list.
 
   // Insert category filter tabs
   const tabs = document.createElement('div');
