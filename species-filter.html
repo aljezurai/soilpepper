@@ -831,6 +831,11 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
 .grid-wrap { max-width: 1180px !important; margin-left: auto !important; margin-right: auto !important; }
 .paintbar { max-width: 1180px !important; margin-left: auto !important; margin-right: auto !important; }
 
+/* ── Species Filter (rollout 2026-08-09): 1180px column ── */
+body {
+  max-width: 1180px !important;   /* was 1400px */
+}
+
 /* ── Guild Diagrams (rollout 2026-08-09): 1180px column + readable controls ── */
 .main-layout {
   max-width: 1180px !important;   /* was 1200px */
@@ -1290,6 +1295,33 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
 })();
 </script>
 
+<!-- ═══ SAGE FORTE MASTHEAD (2026-08-09, rollout) ═══ -->
+<header class="sf-masthead" id="sf-masthead">
+  <div class="sf-brand">
+    <span class="sf-pepper">🌶️</span>
+    <div>
+      <h1 class="sf-logo">SOILPEPPER</h1>
+      <div class="sf-tagline"><span data-i18n="title">🌿 Tuscan Species Database — Filter & Explore</span></div>
+    </div>
+  </div>
+  <div class="sf-region" id="sf-region"></div>
+</header>
+<style>#h1-title{display:none}</style>
+<script>
+// Masthead region pill (2026-08-09, rollout): ONLY the current region, gold.
+document.addEventListener('DOMContentLoaded', function() {
+  var regionEl = document.getElementById('sf-region');
+  if (!regionEl || regionEl.children.length) return;
+  var cur = (typeof REGION !== 'undefined' && REGION === 'netherlands') ? 'netherlands' : 'tuscany';
+  var nlLang = typeof LANG !== 'undefined' && LANG === 'nl';
+  var lbl = cur === 'tuscany' ? (nlLang ? '🇮🇹 Toscane' : '🇮🇹 Tuscany') : (nlLang ? '🇳🇱 Nederland' : '🇳🇱 Netherlands');
+  var a = document.createElement('a');
+  a.className = 'sf-pill on';
+  a.textContent = lbl;
+  a.href = '?region=' + cur;
+  regionEl.appendChild(a);
+});
+</script>
 
 
 
@@ -1303,7 +1335,10 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
 
 
 
-<h1 data-i18n="title">🌿 Tuscan Species Database — Filter & Explore</h1>
+
+
+
+<h1 data-i18n="title" id="h1-title">🌿 Tuscan Species Database — Filter & Explore</h1>
 <p class="subtitle">1ha hillside · 300m · Zone 8b–9a · Silty-sand · Mediterranean</p>
 
 <div class="mobile-search-bar" id="mobile-search-bar">
