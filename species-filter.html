@@ -799,6 +799,7 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
 }
 #sf-masthead { margin-bottom: 10px !important; }
 .topbar {
+  position: relative !important;   /* for absolute plot-info (2026-08-09) */
   max-width: 1180px !important;
   margin-left: auto !important;
   margin-right: auto !important;
@@ -807,9 +808,17 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
   border-bottom: 1.5px solid var(--sf-border-strong) !important;
   border-radius: 0 !important;
   padding: 8px 0 !important;
-  justify-content: flex-start !important;
+  justify-content: center !important;   /* centered per user (2026-08-09) */
 }
-.topbar .plot-info { color: var(--sf-ink-soft) !important; font-family: var(--sf-font-body) !important; }
+.topbar .plot-info {
+  position: absolute !important;
+  right: 0 !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  color: var(--sf-ink-soft) !important;
+  font-family: var(--sf-font-body) !important;
+  font-size: 0.72rem !important;
+}
 .topbar .plot-info strong { color: var(--sf-header) !important; }
 #viewbar { border-bottom: none !important; margin-bottom: 6px !important; }
 .legend, .stats {
