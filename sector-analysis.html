@@ -273,12 +273,13 @@ div[style*="142114"] span[style*="c4a040"], div[style*="20, 33, 20"] span[style*
   --shadow: 0 2px 8px rgba(20,50,24,.14) !important;
 }
 
-/* ── Sector toggles & legend (Helicopter, Guilds) ───────── */
+/* ── Sector toggles & legend (Helicopter, Guilds, Water) ── */
 .toggle, .legend-item, [class*="legend-item"], .layer-toggle {
   background: var(--sf-card) !important;
   border: 2px solid var(--sf-border-strong) !important;
   color: var(--sf-ink) !important;
   border-radius: 999px !important;
+  padding: 5px 16px !important;   /* pill padding — text was flush right (2026-08-09) */
 }
 .toggle.on, .toggle.active, [class*="toggle"].on, [class*="toggle"].active, .legend-item.on {
   background: var(--sf-header-2) !important;
@@ -711,7 +712,10 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
 }
 
 /* ── Spec card (Tuindimensies) — buttons, left-aligned, bottom-aligned ── */
-.spec-card {
+/* Veg-Planner ONLY: spec card fills the garden column.
+   Scoped to .garden so OTHER tools (e.g. Water's #swale-spec) keep the
+   1180px column rule. Before scoping, max-width:none leaked everywhere. */
+.garden .spec-card {
   max-width: none !important;          /* match garden width */
   margin: 14px 0 !important;           /* align within the garden column */
   background: var(--sf-card) !important;
