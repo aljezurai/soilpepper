@@ -1091,15 +1091,17 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
 
 <!-- Action bar -->
 <div class="action-bar">
-  <button class="btn btn-primary" onclick="exportLayout()">📋 <span data-i18n="exportJSON">Export JSON</span></button>
-  <button class="btn" onclick="document.getElementById('import-input').click()">📂 <span data-i18n="importJSON">Import JSON</span></button>
+  <button class="btn btn-primary" onclick="exportLayout()">💾 <span data-i18n="exportJSON">Download backup</span></button>
+  <button class="btn" onclick="document.getElementById('import-input').click()">📂 <span data-i18n="importJSON">Upload backup</span></button>
   <input type="file" id="import-input" accept=".json" style="display:none" onchange="importLayout(event)">
   <button class="btn" onclick="exportFieldView()" title="Download a standalone HTML viewer of this garden — works offline on your phone">📤 <span data-i18n="exportFV">Export Field View</span></button>
   <button class="btn btn-danger" onclick="clearAll()">🗑️ <span data-i18n="clearAll">Clear All</span></button>
   <button class="btn" onclick="resetDefault()">🔄 <span data-i18n="resetDefault">Reset Default</span></button>
+  <!-- Calendar buttons ARCHIVED 2026-08-09 (user: remove for now). Code stays for re-enable.
   <button class="btn" id="calendar-toggle-btn" onclick="toggleCalendar()">📅 <span data-i18n="showCalendar">Show Calendar</span></button>
-  <button class="btn" id="sowharvest-toggle-btn" onclick="toggleSowHarvest()">🌱 <span data-i18n="showSH">Show Sow/Harvest</span></button>
   <button class="btn" onclick="exportICS()" title="Sow + harvest dates to your phone calendar">📅 <span data-i18n="exportICS">Export Calendar</span></button>
+  -->
+  <button class="btn" id="sowharvest-toggle-btn" onclick="toggleSowHarvest()">🌱 <span data-i18n="showSH">Show Sow/Harvest</span></button>
 </div>
 
 <!-- Footer (Sage Forte 2026-08-09) -->
@@ -1260,7 +1262,7 @@ var T = {
     north: 'North (tallest plants)', south: 'South (full sun)',
     specTitle: 'Garden Layout — your dimensions',
     gridCell: 'Grid cell', backToPlan: 'Back to Master Plan',
-    exportJSON: 'Export JSON', importJSON: 'Import JSON',
+    exportJSON: 'Download backup', importJSON: 'Upload backup',
     exportFV: 'Export Field View', exportICS: 'Export Calendar', exportFVTitle: 'Download a standalone HTML viewer of this garden — works offline on your phone',
     clearAll: 'Clear All', resetDefault: 'Reset Default',
     showCalendar: 'Show Calendar', showBeds: 'Show Beds',
@@ -1295,7 +1297,7 @@ var T = {
     north: 'Noord (hoogste planten)', south: 'Zuid (volle zon)',
     specTitle: 'Tuindimensies — jouw afmetingen',
     gridCell: 'Rastercel', backToPlan: 'Terug naar Masterplan',
-    exportJSON: 'Export JSON', importJSON: 'Import JSON',
+    exportJSON: 'Backup downloaden', importJSON: 'Backup uploaden',
     exportFV: 'Export veldweergave', exportICS: 'Kalender exporteren', exportFVTitle: 'Download een losstaande HTML-viewer van deze tuin — werkt offline op je telefoon',
     clearAll: 'Alles wissen', resetDefault: 'Standaard herstellen',
     showCalendar: 'Toon kalender', showBeds: 'Toon bedden',
