@@ -98,8 +98,8 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:8px;font-size:1.4em;}
 </style>
 <!-- SAGE-FORTE-v1 -->
 <style id="sage-forte">/* ══════════════════════════════════════════════════════════════
-   SOILPEPPER SAGE FORTE DESIGN SYSTEM (2026-08-09)
-   Light theme — deep forest green + sage + white cards + pepper red.
+   SOILPEPPER SOFT SAGE + TOSCANE GOLD DESIGN SYSTEM (2026-08-09)
+   Approved variant 8: soft-sage cards, deeper sage bg, gold buttons.
    Marker: SAGE-FORTE-v1
    Headings: Fraunces → Georgia serif fallback (offline-safe)
    Body: Nunito → system-ui fallback (offline-safe)
@@ -107,12 +107,13 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:8px;font-size:1.4em;}
 
 /* ── Tokens ─────────────────────────────────────────────── */
 :root {
-  --sf-bg:        #dde6da;   /* sage page background */
-  --sf-bg-deep:   #c8d6c4;   /* deeper sage (panels) */
+  --sf-bg:        #cdd8c8;   /* deeper sage page background */
+  --sf-bg-deep:   #bcc9b4;   /* deepest sage (panels) */
   --sf-header:    #2c4a32;   /* deep forest green */
   --sf-header-2:  #3e6a46;   /* slightly lighter green */
-  --sf-card:      #ffffff;   /* cards */
+  --sf-card:      #edf2e6;   /* soft sage cards (was #fff) */
   --sf-card-alt:  #eef4ec;   /* subtle alt card */
+  --sf-card-bright:#ffffff;  /* bright accents: brief strip, sow chips */
   --sf-border:    #a8c0a8;   /* card borders */
   --sf-border-strong: #8aa88c; /* buttons/beds */
   --sf-ink:       #1e2c22;   /* near-black green text */
@@ -122,7 +123,11 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:8px;font-size:1.4em;}
   --sf-accent-dark:#a8381e;
   --sf-green:     #2e7a3a;   /* action green */
   --sf-sage-soft: #dcead8;   /* sow-month / tags */
-  --sf-radius:    14px;
+  --sf-gold:      #f5ead6;   /* Toscane gold button bg */
+  --sf-gold-ink:  #8a6420;   /* Toscane gold button text */
+  --sf-gold-border:#e0d0a8;  /* Toscane gold button border */
+  --sf-gold-border-soft:#d8c898;
+  --sf-radius:    16px;
   --sf-radius-lg: 18px;
   --sf-shadow:    0 2px 8px rgba(20,50,24,.14);
   --sf-shadow-lg: 0 3px 10px rgba(20,50,24,.28);
@@ -172,17 +177,17 @@ header a:hover, [class*="header"] a:hover { color: #cfe4d4 !important; }
   box-shadow: var(--sf-shadow-lg) !important;
 }
 
-/* ── Buttons — white pills, strong border ───────────────── */
+/* ── Buttons — Toscane gold pills (mockup-exact) ────────── */
 button, .btn, [class*="btn"], [class*="toggle"], [class*="chip"], [class*="filter-btn"] {
-  background: var(--sf-card) !important;
-  color: var(--sf-ink) !important;
-  border: 2px solid var(--sf-border-strong) !important;
+  background: var(--sf-gold) !important;
+  color: var(--sf-gold-ink) !important;
+  border: 2px solid var(--sf-gold-border) !important;
   border-radius: 999px !important;
   font-weight: 800 !important;
-  box-shadow: 0 2px 4px rgba(20,50,24,.15) !important;
+  box-shadow: 0 2px 4px rgba(90,70,30,.15) !important;
 }
 button:hover, .btn:hover, [class*="btn"]:hover {
-  box-shadow: 0 4px 12px rgba(20,50,24,.2) !important;
+  box-shadow: 0 4px 12px rgba(90,70,30,.22) !important;
 }
 button.active, .btn.active, [class*="btn"].active, [class*="toggle"].active, .active-toggle {
   background: var(--sf-header-2) !important;
@@ -204,8 +209,8 @@ button.active, .btn.active, [class*="btn"].active, [class*="toggle"].active, .ac
 /* ghost */
 .btn-ghost, button.ghost, [class*="btn-ghost"] {
   background: transparent !important;
-  border-color: var(--sf-border-strong) !important;
-  color: var(--sf-header) !important;
+  border-color: var(--sf-gold-border-soft) !important;
+  color: var(--sf-gold-ink) !important;
 }
 
 /* ── Inputs ─────────────────────────────────────────────── */
@@ -219,9 +224,9 @@ label, [class*="label"], th { color: var(--sf-header) !important; }
 
 /* ── Beds / garden area ─────────────────────────────────── */
 .bed, .bed-slot, .bed-joined, [class*="bed"] {
-  background: var(--sf-card) !important;
+  background: #f2f6ec !important;
   border: 2px solid var(--sf-border-strong) !important;
-  border-radius: var(--sf-radius) !important;
+  border-radius: 14px !important;
   box-shadow: var(--sf-shadow) !important;
 }
 .plant-in-bed, .plant-item, [class*="plant"] {
@@ -232,6 +237,14 @@ label, [class*="label"], th { color: var(--sf-header) !important; }
   font-weight: 700 !important;
 }
 .days-badge, [class*="badge"] { color: var(--sf-ink) !important; }
+/* join/split toggles inside beds — Toscane gold */
+.bed .join button, [class*="join"] button, [class*="split"] button {
+  background: var(--sf-gold) !important;
+  border: 1.5px solid var(--sf-gold-border-soft) !important;
+  color: var(--sf-gold-ink) !important;
+  border-radius: 8px !important;
+  font-weight: 800 !important;
+}
 
 /* ── Tables / grids ─────────────────────────────────────── */
 table, .grid, [class*="grid"] {
@@ -251,11 +264,12 @@ tr, .row, [class*="row"] { color: var(--sf-ink) !important; }
 }
 
 /* ── Sow-month / info highlights ────────────────────────── */
-.sow-month, [class*="sow-month"], [class*="sow-harvest"] {
+.sow-month, [class*="sow-month"], [class*="sow-harvest"], #sow-month-panel {
   background: var(--sf-sage-soft) !important;
   border-color: #9cbc98 !important;
   color: var(--sf-ink) !important;
 }
+#sow-month-panel { border: 1px solid #9cbc98 !important; border-radius: 12px !important; color: #1e3624 !important; font-weight: 600 !important; }
 .sow-harvest-bar, .sh-seg, [class*="sh-"] {
   border-color: #9cbc98 !important;
 }
@@ -267,9 +281,9 @@ tr, .row, [class*="row"] { color: var(--sf-ink) !important; }
   border-radius: 10px !important;
 }
 
-/* ── Brief strip (injected) ─────────────────────────────── */
+/* ── Brief strip (injected) — bright white per mockup ───── */
 div[style*="142114"], div[style*="20, 33, 20"], div[style*="20,33,20"] {
-  background: var(--sf-card) !important;
+  background: var(--sf-card-bright) !important;
   border-color: var(--sf-border) !important;
   color: var(--sf-ink-soft) !important;
 }
@@ -282,9 +296,9 @@ div[style*="142114"] span[style*="c4a040"], div[style*="20, 33, 20"] span[style*
 
 /* ── CSS-variable tools (Master Plan, Helicopter, Water, Guilds) ── */
 :root {
-  --bg: #dde6da !important;
-  --bg-card: #ffffff !important;
-  --bg-card-hover: #f0f6ee !important;
+  --bg: #cdd8c8 !important;
+  --bg-card: #edf2e6 !important;
+  --bg-card-hover: #e4ebda !important;
   --border: #a8c0a8 !important;
   --border-accent: #8aa88c !important;
   --text: #1e2c22 !important;
@@ -295,7 +309,7 @@ div[style*="142114"] span[style*="c4a040"], div[style*="20, 33, 20"] span[style*
   --accent-amber: #8a6420 !important;
   --font-head: 'Fraunces', Georgia, 'Palatino Linotype', Palatino, serif !important;
   --font-body: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif !important;
-  --radius: 12px !important;
+  --radius: 16px !important;
   --shadow: 0 2px 8px rgba(20,50,24,.14) !important;
 }
 
