@@ -712,6 +712,14 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
   padding: 3px 12px !important;
   font-weight: 700 !important;
 }
+/* .tool-links CONTAINER (plural) was caught by [class*="tool-link"] → gold bg.
+   The container must be transparent — only the pills inside carry the gold. */
+.tool-links {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+}
 .section table th { background: var(--sf-header) !important; color: #ffffff !important; }
 .section table td { color: var(--sf-ink) !important; }
 
@@ -2271,13 +2279,6 @@ function applyI18nDP() {
       <a class="tool-link" href="./sector-analysis.html" target="_blank">🔗 Open Tool: Sector Analysis</a>
     </div>
   </div>
-</div>
-
-<!-- FOOTER -->
-<div style="text-align:center;margin:30px 0 20px;padding-top:15px;border-top:1px solid #2a3a2a;color:rgba(255,255,255,0.3);font-size:0.7em;">
-  <p>🌿 SOILPEPPER · Aranya Step 6 Design Proposal · 14 Interactive Tools · 256 Species Database</p>
-  <p style="margin-top:4px;">Built with all 10 interactive visuals — <a href="./helicopter-view.html" style="color:#81c784;">Helicopter View</a> · <a href="./sector-analysis.html" style="color:#81c784;">Sector Analysis</a> · <a href="./orchard-placement.html" style="color:#81c784;">Orchard</a> · <a href="./guild-diagrams.html" style="color:#81c784;">Guilds</a> · <a href="./veg-planner.html" style="color:#81c784;">Veg Garden</a> · <a href="./zone-2b.html" style="color:#81c784;">Zone 2b</a> · <a href="./water-management.html" style="color:#81c784;">Water</a> · <a href="./site-layout.html" style="color:#81c784;">Site Layout</a> · <a href="./veg-design.html" style="color:#81c784;">Veg Design</a> · <a href="./species-filter.html" style="color:#81c784;">Species</a></p>
-  <p style="margin-top:4px;">Data source: <a href="./species-catalogue.md" style="color:#81c784;">Species Catalogue</a> · <a href="./design-report.md" style="color:#81c784;">Design Report</a> · <a href="./suitability-assessment.md" style="color:#81c784;">Suitability Assessment</a></p>
 </div>
 
 <script>

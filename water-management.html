@@ -722,6 +722,14 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
   padding: 3px 12px !important;
   font-weight: 700 !important;
 }
+/* .tool-links CONTAINER (plural) was caught by [class*="tool-link"] → gold bg.
+   The container must be transparent — only the pills inside carry the gold. */
+.tool-links {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+}
 .section table th { background: var(--sf-header) !important; color: #ffffff !important; }
 .section table td { color: var(--sf-ink) !important; }
 
