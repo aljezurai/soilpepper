@@ -627,6 +627,12 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
   padding: 2px 8px !important;
 }
 .subtitle { color: var(--sf-ink-soft) !important; }
+/* sector panel text: strong words → alfalfa green; modular intro → readable dark */
+.info-panel p strong { color: var(--sf-header-2) !important; }
+.info-panel p { color: var(--sf-ink) !important; }
+p[style*="0.85em"], [style*="color:#b0bca0"], [style*="rgb(176, 188, 160)"] {
+  color: var(--sf-ink-soft) !important;   /* was pale #b0bca0 — unreadable */
+}
 
 /* ── Design Proposal (rollout 2026-08-09): 1180px column + light sections ── */
 /* summary stat cards — flat on the sage page (no card bg, like other tools' buttons) */
@@ -1868,7 +1874,6 @@ function applyI18nSA() {
 }
 </script>
 <h1 data-i18n="title" id="h1-title">🌍 SOILPEPPER — Sector Analysis</h1>
-<p class="subtitle" data-i18n="subtitle">Aranya step-by-step · Mapping wild energies · Modular &amp; parameterised</p>
 
 <!-- PLOT PARAMETERS -->
 <div class="param-inputs">
@@ -1929,12 +1934,7 @@ function applyI18nSA() {
   <button class="sector-btn" style="margin-top:10px;" onclick="updateSectors()">🔄 <span data-i18n="updateSectors">Update sectors</span></button>
 </div>
 
-<!-- PLOT SECTOR VISUAL -->
-<div class="sector-plot" id="sectorPlot">
-  <!-- Sectors drawn by JS -->
-  <div style="position:absolute;bottom:10%;left:50%;transform:translateX(-50%);font-size:1.5em;">📍</div>
-  <div style="position:absolute;bottom:45%;left:50%;transform:translateX(-50%);color:#666;font-size:0.6em;text-align:center;pointer-events:none;">1ha<br>plot</div>
-</div>
+<!-- PLOT SECTOR VISUAL — removed 2026-08-09 (user: graphic adds no value) -->
 
 <!-- LEGEND -->
 <div class="legend" id="legend"></div>
@@ -2151,8 +2151,9 @@ function updateSectors() {
     {id:'view', label: isNL ? '👁️ Rondom uitzicht' : '👁️ Best view', color:'rgba(0,230,118,0.08)', border:'rgba(0,230,118,0.2)', start:180-40, end:180+40, arc:true}
   ];
 
-  // Clear old arcs
-  plot.querySelectorAll('.sector-arc, .sector-label').forEach(el => el.remove());
+  // Clear old arcs (plot graphic removed 2026-08-09 — guard so legend + panels still update)
+  if (plot) {
+    plot.querySelectorAll('.sector-arc, .sector-label').forEach(el => el.remove());
 
   // Draw arcs
   sectors.forEach(s => {
@@ -2237,6 +2238,7 @@ function updateSectors() {
     label.textContent = s.label;
     plot.appendChild(label);
   });
+  }  // end if (plot)
 
   // Modular params table — NL values
   var mpLatVal = document.getElementById('mp-lat-val');
