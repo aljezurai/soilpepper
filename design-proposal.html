@@ -569,7 +569,17 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
 }
 
 /* ── Sow-month chip buttons (2026-08-09) ────────────────── */
-.sow-chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+.sow-chips {
+  display: flex !important;
+  flex-wrap: wrap;
+  gap: 4px !important;
+  margin-top: 6px !important;
+  background: transparent !important;   /* NOT a pill — the generic [class*="chip"] rule made it an oval */
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
 .sow-chip {
   background: var(--sf-gold) !important;
   color: var(--sf-gold-ink) !important;
