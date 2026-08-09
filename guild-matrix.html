@@ -1099,10 +1099,25 @@ body {
   font-weight: 600 !important;
 }
 /* species profile card — the base dark card var leaked (dark green rgb(20,48,20)) */
+.main {
+  padding: 0 0 0 24px !important;   /* was 30px — aligns profile top with sidebar & right edge with masthead */
+  max-height: none !important;      /* page scrolls instead of an internal scrollbar
+                                       (the internal bar ate ~15px, misaligning the boxes' right edge) */
+  overflow-y: visible !important;
+}
 .profile {
   background: var(--sf-card) !important;
   border: 1px solid var(--sf-border) !important;
   color: var(--sf-ink) !important;
+}
+/* companion table — rounded card like the guild diagrams panels */
+.companion-table-wrap {
+  background: var(--sf-card) !important;
+  border: 1px solid var(--sf-border) !important;
+  border-radius: 12px !important;
+  padding: 14px !important;
+  margin-top: 18px !important;
+  overflow: hidden !important;
 }
 .profile h2 { color: var(--sf-header) !important; }
 .profile .sub { color: var(--sf-ink-soft) !important; }
