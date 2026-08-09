@@ -831,6 +831,30 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
 .grid-wrap { max-width: 1180px !important; margin-left: auto !important; margin-right: auto !important; }
 .paintbar { max-width: 1180px !important; margin-left: auto !important; margin-right: auto !important; }
 
+/* ── Sector Analysis (rollout 2026-08-09): last tool — light panels + stat chips ── */
+.param-inputs {
+  background: var(--sf-card) !important;      /* was dark navy #16213e */
+  border: 1px solid var(--sf-border) !important;
+  color: var(--sf-ink) !important;
+}
+.param-inputs h3 { color: var(--sf-header) !important; }
+.param-inputs label { color: var(--sf-ink) !important; }
+.param-inputs input, .param-inputs select {
+  background: var(--sf-beds) !important;
+  border: 1px solid var(--sf-border) !important;
+  color: var(--sf-ink) !important;
+}
+.param-inputs button { color: var(--sf-gold-ink) !important; }
+/* sector summary .stat chips — dark navy → light (exact class only; [class*="stat"] would hit .stats/.status/.tool-card-stats) */
+.stat {
+  background: var(--sf-card-alt) !important;
+  border: 1px solid var(--sf-border) !important;
+  color: var(--sf-ink) !important;
+  border-radius: 8px !important;
+  padding: 2px 8px !important;
+}
+.subtitle { color: var(--sf-ink-soft) !important; }
+
 /* ── Design Proposal (rollout 2026-08-09): 1180px column + light sections ── */
 /* summary stat cards — flat on the sage page (no card bg, like other tools' buttons) */
 .cards .card {
