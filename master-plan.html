@@ -444,8 +444,8 @@ div[style*="142114"] span[style*="c4a040"], div[style*="20, 33, 20"] span[style*
 /* ── Sage Forte masthead (Veg Planner 2026-08-09) ───────── */
 .sf-masthead {
   display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
-  background: var(--sf-gold) !important;        /* button color, not dark green (2026-08-09) */
-  border: 2px solid var(--sf-gold-border) !important;
+  background: var(--sf-header) !important;        /* deep green (2026-08-09) */
+  border: 2px solid #1e3624 !important;
   border-radius: var(--sf-radius-lg) !important;
   padding: 14px 20px !important;
   margin: 0 auto 12px !important;
@@ -455,13 +455,13 @@ div[style*="142114"] span[style*="c4a040"], div[style*="20, 33, 20"] span[style*
 .sf-brand { display: flex; align-items: center; gap: 10px; }
 .sf-brand > div { display: flex; flex-direction: column; align-items: flex-start; text-align: left !important; }
 .sf-pepper { font-size: 1.6rem; }
-.sf-logo { font-family: var(--sf-font-head) !important; font-size: 1.3rem !important; font-weight: 700 !important; color: var(--sf-gold-ink) !important; margin: 0 !important; letter-spacing: 0.5px !important; text-align: left !important; line-height: 1.2 !important; }
-.sf-tagline { font-size: 0.78rem; color: var(--sf-gold-ink) !important; font-weight: 600; letter-spacing: 0.2px; text-align: left !important; opacity: .85; }
+.sf-logo { font-family: var(--sf-font-head) !important; font-size: 1.3rem !important; font-weight: 700 !important; color: #ffffff !important; margin: 0 !important; letter-spacing: 0.5px !important; text-align: left !important; line-height: 1.2 !important; }
+.sf-tagline { font-size: 0.78rem; color: #c8e4cc !important; font-weight: 600; letter-spacing: 0.2px; text-align: left !important; }
 .sf-region { display: flex; gap: 6px; }
 .sf-pill { padding: 6px 14px; border-radius: 999px; font-size: 0.74rem; font-weight: 700; text-decoration: none; display: inline-block; }
 .sf-pill.it { background: var(--sf-gold) !important; color: var(--sf-gold-ink) !important; border: 1px solid var(--sf-gold-border) !important; }
 .sf-pill.nl { background: #e8f4e8 !important; color: #2e6a3a !important; border: 1px solid #c8e0c8 !important; }
-.sf-pill.on { background: var(--sf-header) !important; color: #ffffff !important; border-color: var(--sf-header) !important; }
+.sf-pill.on { background: var(--sf-gold) !important; color: var(--sf-gold-ink) !important; border: 1px solid var(--sf-gold-border) !important; }
 
 /* ── Brief strip — one line, same width as masthead ─────── */
 div[style*="max-width:900px"], div[style*="max-width: 900px"] {
@@ -631,9 +631,10 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
   border: none !important;
 }
 
-/* ── Palette count — outlined badge under the title (2026-08-09) ── */
+/* ── Palette count — outlined badge BELOW the title (2026-08-09) ── */
 .palette .palette-count {
-  display: inline-block !important;   /* badge, not bare text */
+  display: block !important;          /* own line under 'Plantenpalet' */
+  width: fit-content !important;
   font-size: 0.66rem !important;
   font-weight: 700 !important;
   color: var(--sf-header) !important;
@@ -654,17 +655,34 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
 }
 .info-panel h4 { color: var(--sf-header) !important; font-size: 0.85rem !important; }
 .info-panel p { color: #000000 !important; font-size: 0.75rem !important; }
-.info-panel .sow-harvest-info { color: #000000 !important; border-top-color: var(--sf-border) !important; }
-.info-panel .sow-harvest-info b { color: var(--sf-header) !important; }
+.info-panel .stat { color: #000000 !important; }
+.info-panel .sow-harvest-info,
+.info-panel .sow-harvest-info div,
+.info-panel .sow-harvest-info b,
+.info-panel .sow-harvest-info span,
+.info-panel .p-detail,
+.info-panel .p-detail div,
+.info-panel .p-detail p {
+  color: #000000 !important;              /* ALL boxed text black, incl. bolds */
+}
+.info-panel .sow-harvest-info { border-top-color: var(--sf-border) !important; }
+.info-panel .sow-spec,
+.info-panel .sow-spec div,
+.info-panel .sow-spec b {
+  color: #000000 !important;              /* sowing spec boxes black too */
+}
 
-/* ── Remove button — solid pepper red (2026-08-09) ── */
+/* ── Remove button — white bg, red X (2026-08-09) ── */
 .plant-in-bed .remove-btn {
-  background: var(--sf-accent) !important;   /* same red as Download backup (#c8492e) */
+  background: #ffffff !important;      /* white circle */
+  color: var(--sf-accent) !important;  /* red X */
+  border: 1.5px solid var(--sf-accent) !important;
   width: 16px !important;
   height: 16px !important;
   font-size: 0.55em !important;
-  box-shadow: 0 1px 3px rgba(0,0,0,.3) !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,.25) !important;
 }
+.plant-in-bed .remove-btn:hover { background: #ffe9e4 !important; }
 
 /* ── Zone minimap — old design, hidden (2026-08-09) ── */
 .zone-minimap { display: none !important; }
