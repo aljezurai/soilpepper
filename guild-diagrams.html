@@ -874,7 +874,11 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
 .sf-footer {
   margin-top: 18px; text-align: center; font-size: 0.7rem; color: var(--sf-muted) !important; font-weight: 600;
 }
-.subtitle {
+/* Veg-Planner ONLY: drag-tips subtitle outlined with the module header.
+   Scoped to .garden so OTHER tools keep the centered-text subtitle
+   (rule at line 505). Before scoping, this !important rule won the
+   cascade everywhere — every tool's subtitle became a dark full-width bar. */
+.garden .subtitle {
   font-style: normal !important;
   color: #ffffff !important;
   font-size: 0.72rem !important;
