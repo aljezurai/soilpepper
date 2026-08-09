@@ -546,21 +546,32 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
 .sf-footer {
   margin-top: 18px; text-align: center; font-size: 0.7rem; color: var(--sf-muted) !important; font-weight: 600;
 }
-.subtitle { font-style: italic; color: var(--sf-muted) !important; font-size: 0.72rem; text-align: center; margin: 0 auto 10px; }
+.subtitle {
+  font-style: normal !important;
+  color: var(--sf-ink-soft) !important;
+  font-size: 0.78rem !important;
+  font-weight: 600 !important;
+  text-align: center !important;
+  margin: 0 auto 10px !important;
+  max-width: 1180px !important;
+}
 
 /* ── Garden width — in line with the 1180px top elements ── */
 .main-layout { max-width: 1180px !important; margin: 0 auto !important; }
 .garden { max-width: none !important; flex: 1; }
 .palette { flex-shrink: 0; }
 
-/* ── Garden setup control bar — quiet inline row (Sage Forte) ── */
+/* ── Garden setup control bar — inside garden column, hardline below (2026-08-09) ── */
 .garden-setup {
   background: transparent !important;
   border: none !important;
+  border-bottom: 1.5px solid var(--sf-border-strong) !important;  /* the hardline */
   border-radius: 0 !important;
   justify-content: center !important;
-  margin: 4px auto 10px !important;
-  padding: 0 !important;
+  margin: 0 auto 8px !important;
+  padding: 2px 0 10px !important;
+  max-width: none !important;
+  width: 100% !important;
   font-size: 0.72rem !important;
   gap: 6px 14px !important;
   color: var(--sf-muted) !important;

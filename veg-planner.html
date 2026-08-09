@@ -706,21 +706,32 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
 .sf-footer {
   margin-top: 18px; text-align: center; font-size: 0.7rem; color: var(--sf-muted) !important; font-weight: 600;
 }
-.subtitle { font-style: italic; color: var(--sf-muted) !important; font-size: 0.72rem; text-align: center; margin: 0 auto 10px; }
+.subtitle {
+  font-style: normal !important;
+  color: var(--sf-ink-soft) !important;
+  font-size: 0.78rem !important;
+  font-weight: 600 !important;
+  text-align: center !important;
+  margin: 0 auto 10px !important;
+  max-width: 1180px !important;
+}
 
 /* ── Garden width — in line with the 1180px top elements ── */
 .main-layout { max-width: 1180px !important; margin: 0 auto !important; }
 .garden { max-width: none !important; flex: 1; }
 .palette { flex-shrink: 0; }
 
-/* ── Garden setup control bar — quiet inline row (Sage Forte) ── */
+/* ── Garden setup control bar — inside garden column, hardline below (2026-08-09) ── */
 .garden-setup {
   background: transparent !important;
   border: none !important;
+  border-bottom: 1.5px solid var(--sf-border-strong) !important;  /* the hardline */
   border-radius: 0 !important;
   justify-content: center !important;
-  margin: 4px auto 10px !important;
-  padding: 0 !important;
+  margin: 0 auto 8px !important;
+  padding: 2px 0 10px !important;
+  max-width: none !important;
+  width: 100% !important;
   font-size: 0.72rem !important;
   gap: 6px 14px !important;
   color: var(--sf-muted) !important;
@@ -1054,17 +1065,6 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
 <h1 data-i18n-none="🥬 Vegetable Garden Planner" id="h1-title">🥬 <span data-i18n="vegPlanner">Vegetable Garden Planner</span> — <span id="bed-count">12</span> <span data-i18n="beds">Beds</span></h1>
   <div class="subtitle" data-i18n="subDrag">Drag plants from the palette onto beds · Hover over a plant to remove · Click for details · Click days badge to set date</div>
 
-<div class="garden-setup" id="garden-setup">
-  <label><span data-i18n="modules">Modules</span> <select id="cfg-modules">
-    <option value="1"><span data-i18n="rows6">1 (6 rows)</span></option>
-    <option value="2" selected><span data-i18n="rows12">2 (12 rows)</span></option>
-    <option value="3"><span data-i18n="rows18">3 (18 rows)</span></option>
-  </select></label>
-  <label><span data-i18n="bedWidth">Bed width</span> <input type="number" id="cfg-width" value="0.75" min="0.5" max="1.2" step="0.05" style="width:64px"> m</label>
-  <label><span data-i18n="slotLen">Slot length</span> <input type="number" id="cfg-slot" value="10" min="5" max="20" step="1" style="width:58px"> m</label>
-  <span class="g-hint" id="garden-hint"></span>
-</div>
-
 <div class="main-layout">
   <!-- Plant Palette -->
   <div class="palette" id="palette">
@@ -1076,6 +1076,17 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
 
   <!-- Garden -->
   <div class="garden" id="garden">
+    <!-- Setup row moved INTO the garden column (2026-08-09): top aligned with palette top, centered over beds, hardline below -->
+    <div class="garden-setup" id="garden-setup">
+      <label><span data-i18n="modules">Modules</span> <select id="cfg-modules">
+        <option value="1"><span data-i18n="rows6">1 (6 rows)</span></option>
+        <option value="2" selected><span data-i18n="rows12">2 (12 rows)</span></option>
+        <option value="3"><span data-i18n="rows18">3 (18 rows)</span></option>
+      </select></label>
+      <label><span data-i18n="bedWidth">Bed width</span> <input type="number" id="cfg-width" value="0.75" min="0.5" max="1.2" step="0.05" style="width:64px"> m</label>
+      <label><span data-i18n="slotLen">Slot length</span> <input type="number" id="cfg-slot" value="10" min="5" max="20" step="1" style="width:58px"> m</label>
+      <span class="g-hint" id="garden-hint"></span>
+    </div>
     <div style="font-size:0.5em;color:rgba(255,255,255,0.2);text-align:center;margin-bottom:4px;">↑ <span data-i18n="north">North (tallest plants)</span></div>
     <div id="beds-container"></div>
     <div id="calendar-container" class="calendar-view"></div>
@@ -1209,11 +1220,14 @@ document.addEventListener('DOMContentLoaded', function() {
   var bcm = document.getElementById('bed-count-mast');
   if (bcm) bcm.textContent = rows.length;
   // Move the action bar to the top per the Sage Forte mockup:
-  // masthead → brief → actions → quiet setup row → content (2026-08-09).
+  // masthead → brief → actions → subtitle (drag tips) → content (2026-08-09).
+  // Setup row lives INSIDE the garden column (top-aligned with palette);
+  // the action bar goes BEFORE the subtitle so the tips read after the actions.
   var actBar = document.querySelector('.action-bar');
-  var setupEl = document.getElementById('garden-setup');
-  if (actBar && setupEl) {
-    setupEl.parentNode.insertBefore(actBar, setupEl);
+  var subEl = document.querySelector('.subtitle');
+  var insertTarget = subEl || document.querySelector('.main-layout');
+  if (actBar && insertTarget) {
+    insertTarget.parentNode.insertBefore(actBar, insertTarget);
   }
   // Masthead region pills (Toscane gold inactive / Nederland green active)
   var regionEl = document.getElementById('sf-region');
