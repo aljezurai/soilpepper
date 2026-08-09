@@ -803,6 +803,12 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
 .grid-wrap { max-width: 1180px !important; margin-left: auto !important; margin-right: auto !important; }
 .paintbar { max-width: 1180px !important; margin-left: auto !important; margin-right: auto !important; }
 
+/* ── Water Management (rollout 2026-08-09): unify to 1180px column ── */
+.canvas, .plan-toggle-wrap, .params, .stats, .balance, .spec-card,
+.info-panel, .diagram-wrap, [class*="diagram"] {
+  max-width: 1180px !important;   /* was 1100px — masthead is 1180 */
+}
+
 /* ── Helicopter View (rollout 2026-08-09): quiet controls, widths ── */
 .controls {
   background: transparent !important;
