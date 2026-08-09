@@ -622,7 +622,11 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
 .bed-row > .join-toggle {
   grid-column: 1 / -1 !important;
   justify-self: start !important;
+  margin-left: 0 !important;          /* base .join-toggle sets margin-left:auto → pushed right; user wants it LEFT */
   margin-bottom: 2px !important;
+  font-size: 0.62rem !important;
+  padding: 4px 12px !important;
+  border-radius: 999px !important;
 }
 .bed-row > .bed-joined { grid-column: 1 / -1 !important; }  /* joined bed spans both */
 
