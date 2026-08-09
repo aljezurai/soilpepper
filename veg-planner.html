@@ -687,6 +687,15 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
   border: none !important;
 }
 
+/* ── Palette count on its own line below the title (2026-08-09) ── */
+.palette .palette-count {
+  display: block !important;         /* own line under 'Plantenpalet' */
+  font-size: 0.68rem !important;
+  font-weight: 600 !important;
+  color: var(--sf-muted) !important;
+  margin-top: 2px !important;
+}
+
 /* ── Sow-month chip buttons (2026-08-09) ────────────────── */
 .sow-chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
 .sow-chip {
@@ -1221,7 +1230,7 @@ if (regionFilter !== 'all') {
 document.addEventListener('DOMContentLoaded', function() {
   var count = Object.keys(PLANTS).length;
   var h3 = document.querySelector('.palette h3');
-  if (h3) h3.innerHTML = '🌱 <span data-i18n="palette">Plant Palette</span> (' + count + ' <span data-i18n="species">species</span>)';
+  if (h3) h3.innerHTML = '🌱 <span data-i18n="palette">Plant Palette</span><span class="palette-count">' + count + ' <span data-i18n="species">species</span></span>';
   applyI18n();
   var bc = document.getElementById('bed-count');
   if (bc) bc.textContent = rows.length;
@@ -1522,7 +1531,7 @@ function renderSowMonthPanel() {
   const chips = shown.map(function (n) {
     return '<button class="sow-chip" type="button" data-key="' + n.key + '" title="' + tt('sowChipTitle') + '">' + n.label + '</button>';
   }).join('');
-  panel.innerHTML = '<strong>' + tt('sowMonthTitle') + ':</strong><div class="sow-chips">' + chips + (more ? '<button class="sow-chip more" type="button">+' + more + '</button>' : '') + '</div>';
+  panel.innerHTML = '<strong>' + tt('sowMonthTitle') + ':</strong><div class="sow-chips">' + chips + '</div>';
   // Wire chip clicks → double-click add behaviour (first bed of matching type)
   Array.prototype.forEach.call(panel.querySelectorAll('.sow-chip[data-key]'), function (btn) {
     btn.onclick = function () {
@@ -2591,7 +2600,7 @@ fetch('plants.json').then(function (r) { return r.json(); }).then(function (db) 
   buildPlants(regionFilter);
   // Re-render palette + current view; keep the user's bed assignments
   var h3 = document.querySelector('.palette h3');
-  if (h3) h3.innerHTML = '🌱 <span data-i18n="palette">Plant Palette</span> (' + Object.keys(PLANTS).length + ' <span data-i18n="species">species</span>)';
+  if (h3) h3.innerHTML = '🌱 <span data-i18n="palette">Plant Palette</span><span class="palette-count">' + Object.keys(PLANTS).length + ' <span data-i18n="species">species</span></span>';
   applyI18n();
   renderPalette();
   render();
