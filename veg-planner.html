@@ -707,12 +707,15 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
 }
 .subtitle {
   font-style: normal !important;
-  color: var(--sf-ink-soft) !important;
-  font-size: 0.78rem !important;
+  color: #ffffff !important;
+  font-size: 0.72rem !important;
   font-weight: 600 !important;
   text-align: center !important;
-  margin: 0 auto 10px !important;
-  max-width: 1180px !important;
+  margin: 0 0 10px !important;
+  background: var(--sf-header) !important;      /* outlined with module header */
+  border-radius: 10px !important;
+  padding: 6px 14px !important;
+  width: 100% !important;
 }
 
 /* ── Garden width — in line with the 1180px top elements ── */
@@ -1062,7 +1065,6 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
 
 
 <h1 data-i18n-none="🥬 Vegetable Garden Planner" id="h1-title">🥬 <span data-i18n="vegPlanner">Vegetable Garden Planner</span> — <span id="bed-count">12</span> <span data-i18n="beds">Beds</span></h1>
-  <div class="subtitle" data-i18n="subDrag">Drag plants from the palette onto beds · Hover over a plant to remove · Click for details · Click days badge to set date</div>
 
 <div class="main-layout">
   <!-- Plant Palette -->
@@ -1086,6 +1088,9 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
       <label><span data-i18n="slotLen">Slot length</span> <input type="number" id="cfg-slot" value="10" min="5" max="20" step="1" style="width:58px"> m</label>
       <span class="g-hint" id="garden-hint"></span>
     </div>
+    <!-- Drag-instructions bar — outlined with the module header (2026-08-09):
+         same dark-green treatment, same width/left edge, sits directly above MODULE 1 -->
+    <div class="subtitle" data-i18n="subDrag">Drag plants from the palette onto beds · Hover over a plant to remove · Click for details · Click days badge to set date</div>
     <div id="beds-container"></div>
     <div id="calendar-container" class="calendar-view"></div>
     <div class="spec-card" id="garden-spec">
@@ -1219,14 +1224,12 @@ document.addEventListener('DOMContentLoaded', function() {
   var bcm = document.getElementById('bed-count-mast');
   if (bcm) bcm.textContent = rows.length;
   // Move the action bar to the top per the Sage Forte mockup:
-  // masthead → brief → actions → subtitle (drag tips) → content (2026-08-09).
-  // Setup row lives INSIDE the garden column (top-aligned with palette);
-  // the action bar goes BEFORE the subtitle so the tips read after the actions.
+  // masthead → brief → actions → content (2026-08-09). The drag-tips subtitle
+  // now lives INSIDE the garden column above MODULE 1, so insert before main-layout.
   var actBar = document.querySelector('.action-bar');
-  var subEl = document.querySelector('.subtitle');
-  var insertTarget = subEl || document.querySelector('.main-layout');
-  if (actBar && insertTarget) {
-    insertTarget.parentNode.insertBefore(actBar, insertTarget);
+  var mainLayout = document.querySelector('.main-layout');
+  if (actBar && mainLayout) {
+    mainLayout.parentNode.insertBefore(actBar, mainLayout);
   }
   // Masthead region pills (Toscane gold inactive / Nederland green active)
   var regionEl = document.getElementById('sf-region');
