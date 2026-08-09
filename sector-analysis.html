@@ -1935,9 +1935,7 @@ function applyI18nSA() {
 </div>
 
 <!-- PLOT SECTOR VISUAL — removed 2026-08-09 (user: graphic adds no value) -->
-
-<!-- LEGEND -->
-<div class="legend" id="legend"></div>
+<!-- LEGEND — removed 2026-08-09 (user: was the plot's color key; useless without it) -->
 
 <!-- SECTOR DETAIL PICKER -->
 <div style="text-align:center;margin:10px 0;">
@@ -2246,9 +2244,9 @@ function updateSectors() {
   var mpRainVal = document.getElementById('mp-rain-val');
   if (mpRainVal) mpRainVal.textContent = rainfall + 'mm/jaar';
 
-  // Update legend
+  // Update legend (removed 2026-08-09 — guard in case it returns)
   const legend = document.getElementById('legend');
-  legend.innerHTML = sectors.map(s => {
+  if (legend) legend.innerHTML = sectors.map(s => {
     const color = s.color || 'rgba(255,255,255,0.1)';
     return `<div class="legend-item"><span class="legend-swatch" style="background:${s.color};border-color:${s.border}"></span>${s.label}</div>`;
   }).join('');
