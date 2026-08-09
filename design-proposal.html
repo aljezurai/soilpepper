@@ -676,6 +676,13 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
 .grid-wrap { max-width: 1180px !important; margin-left: auto !important; margin-right: auto !important; }
 .paintbar { max-width: 1180px !important; margin-left: auto !important; margin-right: auto !important; }
 
+/* ── Guild Matrix (rollout 2026-08-09): 1180px column ── */
+.app {
+  max-width: 1180px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
 /* ── Water Management (rollout 2026-08-09): unify to 1180px column ── */
 .canvas, .plan-toggle-wrap, .params, .stats, .balance, .spec-card,
 .info-panel, .diagram-wrap, [class*="diagram"] {
@@ -944,7 +951,23 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
   details.className = 'bstrip-details';
   strip.appendChild(styleEl);
   var body = document.body;
-  body.insertBefore(strip, body.firstChild);
+  // Insert AFTER the Sage Forte masthead (2026-08-09). Must run after the
+  // full DOM is parsed — the masthead HTML comes AFTER this script tag, so
+  // an immediate insert can't see it (fell back to body.firstChild = above
+  // the masthead). Defer to DOMContentLoaded.
+  function placeStrip() {
+    var mh = document.getElementById('sf-masthead');
+    if (mh && mh.nextSibling) {
+      body.insertBefore(strip, mh.nextSibling);
+    } else {
+      body.insertBefore(strip, body.firstChild);
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', placeStrip);
+  } else {
+    placeStrip();
+  }
 
   // Sector Analysis: prefill params from the brief once the page is ready
   // (one-way: brief is the source of truth; user can still override locally)
@@ -1068,6 +1091,10 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
   }
 })();
 </script>
+
+
+
+
 
 
 
