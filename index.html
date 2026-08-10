@@ -278,7 +278,7 @@ var REGION = (IQ.get('region') === 'netherlands' || IQ.get('region') === 'tuscan
 var LANG = REGION === 'netherlands' ? 'nl' : 'en';
 var T = {
   en: {
-    brandSmall: 'Permaculture Design Toolkit', h1Sub: 'Permaculture Design Toolkit',
+    brandSmall: 'Design your vegetable garden & orchard', h1Sub: 'Design your vegetable garden & orchard',
     heroP1: 'Plan a permaculture site from blank plot to beautiful tree guilds and vegetable garden beds — <strong>no account, no server, no data leaving your device.</strong> At this moment you can choose from two presets. One for Tuscany (Mediterranean) and one for The Netherlands. More will follow.',
     heroP2: 'The real planning is easiest done on your desktop. Relaxed, on a big screen, overlooking your garden while sitting down with a cup of morning coffee (or tea). The field tools are specifically designed to help you out in the field. You can download your design easily on your smartphone and take it with you. Offline, once downloaded you do not need any internet. Great, right?',
     heroP3: 'We designed the tool to be as easy for you as possible. Helping you with the choices that you have to make. We hope you like it!',
@@ -287,6 +287,10 @@ var T = {
     navDesignH: 'Design Suite (Desktop)', navFieldH: 'Field Tools (Mobile)',
     footOpen: '🌍 open-source toolkit', footPrivacy: '🔒 data stays on-device', footOffline: '📱 works offline',
     regionLabel: 'Region preset:', regTus: 'Tuscany · Mediterranean', regNl: 'Netherlands · Temperate',
+    climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
+    climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
+    climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
+    climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
     climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
     climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
     climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
@@ -343,11 +347,19 @@ var T = {
     footCopy: 'SOILPEPPER · open-source permaculture toolkit'
   },
   nl: {
-    brandSmall: 'Ontwerp je eigen moestuin & boomgaard', h1Sub: 'Ontwerp je eigen moestuin & boomgaard', nav0: 'Masterplan', nav1: 'Ontwerpvoorstel', nav2: 'Sectoranalyse', nav3: 'Vogelperspectief', nav4: 'Waterbeheer', nav5: 'Plantrelaties', nav6: 'Bomen en eromheen', nav7: 'Soortendatabase', nav8: 'Moestuinplanner',
+    brandSmall: 'Ontwerp je eigen moestuin & boomgaard', h1Sub: 'Ontwerp je eigen moestuin & boomgaard',
+    heroP1: 'Ontwerp je eigen (moes)tuin van blanco perceel tot een prachtige omgeving vol boomgildes en groentebedden — <strong>geen account, geen server, geen data die je apparaat verlaat.</strong> Op dit moment kun je kiezen uit twee presets. Eén voor Toscane (Mediterraans klimaat) en één voor Nederland. Er volgen er meer. Bovendien kan je altijd alles aanpassen aan je eigen plek.',
+    heroP2: 'Het echte plannen doe je natuurlijk het makkelijkst op je desktop. Ontspannen, op een groot scherm, uitkijkend over je tuin met een kop koffie (of thee) op tafel. De tuintools zijn speciaal ontworpen om je buiten in het veld te helpen. Je downloadt je ontwerp eenvoudig op je smartphone en neemt het mee. Offline — éénmaal gedownload heb je geen internet (meer) nodig.',
+    heroP3: 'We hebben onze ontwerp- en beheertools zo makkelijk mogelijk voor je gemaakt. We hopen dat je ze met veel plezier en succes gaat gebruiken!',
+    nav0: 'Masterplan', nav1: 'Ontwerpvoorstel', nav2: 'Sectoranalyse', nav3: 'Vogelperspectief', nav4: 'Waterbeheer', nav5: 'Plantrelaties', nav6: 'Bomen en eromheen', nav7: 'Soortendatabase', nav8: 'Moestuinplanner',
     navDashboard: 'Dashboard', navOverview: '📊 Overzicht', navDesignSuite: '🖥️ Ontwerpsuite', navFieldTools: '📱 Veldgereedschap',
     navDesignH: 'Ontwerpsuite (desktop)', navFieldH: 'Veldgereedschap (mobiel)',
     footOpen: '🌍 open-source toolkit', footPrivacy: '🔒 data blijft op je apparaat', footOffline: '📱 werkt offline',
     regionLabel: 'Regiovoorinstelling:', regTus: 'Toscane · Middellands', regNl: 'Nederland · Gematigd',
+    climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
+    climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
+    climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
+    climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
     climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
     climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
     climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
@@ -493,6 +505,10 @@ function selectRegion(region) {
 })();
 </script>
 </body>
+
+
+
+
 
 
 
