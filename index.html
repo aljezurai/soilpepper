@@ -117,6 +117,13 @@ a{text-decoration:none}
     <button class="pill" data-region="netherlands" onclick="selectRegion('netherlands')"><span class="flag">🇳🇱</span> <span data-i18n="regNl">Netherlands · Temperate</span></button>
   </div>
 
+  <!-- CLIMATE BAR (presets for the conditions) -->
+  <div class="region-bar" style="margin-top:-14px">
+    <span class="label" data-i18n="climateLabel">Climate preset:</span>
+    <button class="pill active" data-region="tuscany" onclick="selectRegion('tuscany')"><span class="flag">☀️</span> <span data-i18n="cliTus">Mediterranean · hot dry summers</span></button>
+    <button class="pill" data-region="netherlands" onclick="selectRegion('netherlands')"><span class="flag">🌧️</span> <span data-i18n="cliNl">Temperate · maritime</span></button>
+  </div>
+
   <!-- DESIGN SUITE -->
   <div class="section-head">
     <span class="icon">🖥️</span>
@@ -253,7 +260,7 @@ a{text-decoration:none}
   <!-- FOOTER -->
   <footer class="foot">
     <div class="stats" id="footer-meta"></div>
-    <span class="copy" data-i18n="footCopy">SOILPEPPER · open-source permaculture toolkit · built on the Aranya method</span>
+    <span class="copy" data-i18n="footCopy">SOILPEPPER · open-source permaculture toolkit</span>
   </footer>
 
 </div>
@@ -270,8 +277,9 @@ var T = {
     navDesignH: 'Design Suite (Desktop)', navFieldH: 'Field Tools (Mobile)',
     footOpen: '🌍 open-source toolkit', footPrivacy: '🔒 data stays on-device', footOffline: '📱 works offline',
     regionLabel: 'Region preset:', regTus: 'Tuscany · Mediterranean', regNl: 'Netherlands · Temperate',
+    climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
     privacyNote: '🔒 <strong>Privacy by design:</strong> everything runs in your browser. Your site plans, water calculations and garden layouts are stored in <strong>your browser\'s localStorage</strong> — they never touch a server. <strong>Back up your work</strong> with the 💾 Backup button in Master Plan, Water Management or Guild Diagrams (one JSON file), and restore it anywhere.',
-    secDesign: 'Design Suite', secDesignCount: 'desktop · 5 tools', secField: 'Field Tools', secFieldCount: 'mobile · 5 tools',
+    secDesign: 'Design Suite', secDesignCount: 'desktop · 5 tools', secField: 'Field Tools', secFieldCount: 'mobile · 4 tools',
     statusComplete: 'Complete',
     openLink: '📂 open →',
     cardMasterT: 'Master Plan Grid', cardMasterB: '10×10m cells · functions',
@@ -304,7 +312,7 @@ var T = {
     footSpecies: 'Species: <strong><span data-count="species">256</span></strong>',
     footTrees: 'Trees &amp; shrubs: <strong><span data-count="treeshrub">116</span></strong>',
     footRegions: 'Regions: <strong>2 presets</strong>', footStorage: 'Storage: <strong>your browser</strong>',
-    footCopy: 'SOILPEPPER · open-source permaculture toolkit · built on the Aranya method'
+    footCopy: 'SOILPEPPER · open-source permaculture toolkit'
   },
   nl: {
     brandSmall: 'Permacultuur-ontwerpgereedschap', h1Sub: 'Permacultuur-ontwerpgereedschap', nav0: 'Masterplan-raster', nav1: 'Ontwerpvoorstel', nav2: 'Sectoranalyse', nav3: 'Vogelperspectief', nav4: 'Waterbeheer', nav5: 'Gilde-matrix', nav6: 'Boomgilde-diagrammen', nav7: 'Soortendatabase', nav8: 'Groententuin-planner',
@@ -312,8 +320,9 @@ var T = {
     navDesignH: 'Ontwerpsuite (desktop)', navFieldH: 'Veldgereedschap (mobiel)',
     footOpen: '🌍 open-source toolkit', footPrivacy: '🔒 data blijft op je apparaat', footOffline: '📱 werkt offline',
     regionLabel: 'Regiovoorinstelling:', regTus: 'Toscane · Middellands', regNl: 'Nederland · Gematigd',
+    climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
     privacyNote: '🔒 <strong>Privacy by design:</strong> alles draait in je browser. Je terreinplannen, waterberekeningen en tuinindelingen worden opgeslagen in <strong>de localStorage van je browser</strong> — ze raken nooit een server. <strong>Back-up je werk</strong> met de 💾 Back-upknop in Masterplan, Waterbeheer of Boomgilde-diagrammen (één JSON-bestand) en herstel het overal.',
-    secDesign: 'Ontwerpsuite', secDesignCount: 'desktop · 5 tools', secField: 'Veldgereedschap', secFieldCount: 'mobiel · 5 tools',
+    secDesign: 'Ontwerpsuite', secDesignCount: 'desktop · 5 tools', secField: 'Veldgereedschap', secFieldCount: 'mobiel · 4 tools',
     statusComplete: 'Compleet',
     openLink: '📂 openen →',
     cardMasterT: 'Masterplan-raster', cardMasterB: '10×10m cellen · functies',
@@ -346,7 +355,7 @@ var T = {
     footSpecies: 'Soorten: <strong><span data-count="species">256</span></strong>',
     footTrees: 'Bomen &amp; struiken: <strong><span data-count="treeshrub">116</span></strong>',
     footRegions: 'Regio\'s: <strong>2 voorinstellingen</strong>', footStorage: 'Opslag: <strong>je browser</strong>',
-    footCopy: 'SOILPEPPER · open-source permacultuur-toolkit · gebouwd op de Aranya-methode'
+    footCopy: 'SOILPEPPER · open-source permacultuur-toolkit'
   }
 };
 function tt(k) { return (T[LANG] && T[LANG][k] !== undefined) ? T[LANG][k] : (T.en[k] !== undefined ? T.en[k] : k); }
@@ -431,5 +440,6 @@ function selectRegion(region) {
 })();
 </script>
 </body>
+
 
 </html>
