@@ -111,7 +111,11 @@ a{text-decoration:none}
   <div class="hero">
     <div class="chili">🌶️</div>
     <h1>SOILPEPPER — <span data-i18n="h1Sub">Permaculture Design Toolkit</span></h1>
-    <p id="hero-desc"></p>
+    <p data-i18n="heroP1"></p>
+    <p data-i18n="heroP2"></p>
+    <p data-i18n="heroP3"></p>
+    <p data-i18n="heroP4"></p>
+    <p data-i18n="heroP5"></p>
     <div class="privacy" data-i18n="privacyNote"></div>
   </div>
 
@@ -273,19 +277,17 @@ var REGION = (IQ.get('region') === 'netherlands' || IQ.get('region') === 'tuscan
 var LANG = REGION === 'netherlands' ? 'nl' : 'en';
 var T = {
   en: {
-    brandSmall: 'Permaculture Design Toolkit', h1Sub: 'Permaculture Design Toolkit', nav0: 'Master Plan', nav1: 'Design Proposal', nav2: 'Sector Analysis', nav3: 'Helicopter View', nav4: 'Water Management', nav5: 'Guild Matrix', nav6: 'Guild Diagrams', nav7: 'Species Filter', nav8: 'Veg Planner',
+    brandSmall: 'Permaculture Design Toolkit', h1Sub: 'Permaculture Design Toolkit',
+    heroP1: 'Plan a permaculture site from blank plot to beautiful tree guilds and vegetable garden beds — <strong>no account, no server, no data leaving your device.</strong>',
+    heroP2: 'At this moment you can choose from two presets. One for Tuscany (Mediterranean) and one for The Netherlands. More will follow.',
+    heroP3: 'The real planning is easiest done on your desktop. Relaxed, on a big screen, overlooking your garden while sitting down with a cup of morning coffee (or tea).',
+    heroP4: 'The field tools are specifically designed to help you out in the field. You can download your design easily on your smartphone and take it with you. Offline, once downloaded you do not need any internet. Great, right?',
+    heroP5: 'We designed the tool to be as easy for you as possible. Helping you with the choices that you have to make. We hope you like it!',
+    nav0: 'Master Plan', nav1: 'Design Proposal', nav2: 'Sector Analysis', nav3: 'Helicopter View', nav4: 'Water Management', nav5: 'Guild Matrix', nav6: 'Guild Diagrams', nav7: 'Species Filter', nav8: 'Veg Planner',
     navDashboard: 'Dashboard', navOverview: '📊 Overview', navDesignSuite: '🖥️ Design Suite', navFieldTools: '📱 Field Tools',
     navDesignH: 'Design Suite (Desktop)', navFieldH: 'Field Tools (Mobile)',
     footOpen: '🌍 open-source toolkit', footPrivacy: '🔒 data stays on-device', footOffline: '📱 works offline',
     regionLabel: 'Region preset:', regTus: 'Tuscany · Mediterranean', regNl: 'Netherlands · Temperate',
-    climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
-    climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
-    climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
-    climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
-    climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
-    climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
-    climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
-    climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
     climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
     privacyNote: '🔒 <strong>Privacy by design:</strong> everything runs in your browser. Your site plans, water calculations and garden layouts are stored in <strong>your browser\'s localStorage</strong> — they never touch a server. <strong>Back up your work</strong> with the 💾 Backup button in Master Plan, Water Management or Guild Diagrams (one JSON file), and restore it anywhere.',
     secDesign: 'Design Suite', secDesignCount: 'desktop · 5 tools', secField: 'Field Tools', secFieldCount: 'mobile · 4 tools',
@@ -324,19 +326,17 @@ var T = {
     footCopy: 'SOILPEPPER · open-source permaculture toolkit'
   },
   nl: {
-    brandSmall: 'Permacultuur-ontwerpgereedschap', h1Sub: 'Permacultuur-ontwerpgereedschap', nav0: 'Masterplan-raster', nav1: 'Ontwerpvoorstel', nav2: 'Sectoranalyse', nav3: 'Vogelperspectief', nav4: 'Waterbeheer', nav5: 'Gilde-matrix', nav6: 'Boomgilde-diagrammen', nav7: 'Soortendatabase', nav8: 'Groententuin-planner',
+    brandSmall: 'Permacultuur-ontwerpgereedschap', h1Sub: 'Permacultuur-ontwerpgereedschap',
+    heroP1: 'Plan een permacultuurlocatie van blanco perceel tot prachtige boomgildes en groentebedden — <strong>geen account, geen server, geen data die je apparaat verlaat.</strong>',
+    heroP2: 'Op dit moment kun je kiezen uit twee voorinstellingen. Eén voor Toscane (Middellands) en één voor Nederland. Er volgen er meer.',
+    heroP3: 'Het echte plannen doe je het makkelijkst op je desktop. Ontspannen, op een groot scherm, uitkijkend over je tuin terwijl je met een kop ochtendkoffie (of thee) zit.',
+    heroP4: 'De veldtools zijn speciaal ontworpen om je in het veld te helpen. Je downloadt je ontwerp eenvoudig op je smartphone en neemt het mee. Offline — eenmaal gedownload heb je geen internet nodig. Toch?',
+    heroP5: 'We hebben de tool zo makkelijk mogelijk voor je gemaakt. Je helpen met de keuzes die je moet maken. We hopen dat je hem leuk vindt!',
+    nav0: 'Masterplan-raster', nav1: 'Ontwerpvoorstel', nav2: 'Sectoranalyse', nav3: 'Vogelperspectief', nav4: 'Waterbeheer', nav5: 'Gilde-matrix', nav6: 'Boomgilde-diagrammen', nav7: 'Soortendatabase', nav8: 'Groententuin-planner',
     navDashboard: 'Dashboard', navOverview: '📊 Overzicht', navDesignSuite: '🖥️ Ontwerpsuite', navFieldTools: '📱 Veldgereedschap',
     navDesignH: 'Ontwerpsuite (desktop)', navFieldH: 'Veldgereedschap (mobiel)',
     footOpen: '🌍 open-source toolkit', footPrivacy: '🔒 data blijft op je apparaat', footOffline: '📱 werkt offline',
     regionLabel: 'Regiovoorinstelling:', regTus: 'Toscane · Middellands', regNl: 'Nederland · Gematigd',
-    climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
-    climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
-    climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
-    climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
-    climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
-    climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
-    climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
-    climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
     climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
     privacyNote: '🔒 <strong>Privacy by design:</strong> alles draait in je browser. Je terreinplannen, waterberekeningen en tuinindelingen worden opgeslagen in <strong>de localStorage van je browser</strong> — ze raken nooit een server. <strong>Back-up je werk</strong> met de 💾 Back-upknop in Masterplan, Waterbeheer of Boomgilde-diagrammen (één JSON-bestand) en herstel het overal.',
     secDesign: 'Ontwerpsuite', secDesignCount: 'desktop · 5 tools', secField: 'Veldgereedschap', secFieldCount: 'mobiel · 4 tools',
@@ -406,11 +406,10 @@ document.addEventListener('DOMContentLoaded', function() {
   // hero desc for current region (NL variant if dutch)
   var r0 = REGIONS[REGION];
   if (r0) {
-    document.getElementById("hero-desc").innerHTML = (LANG === 'nl' && r0.descNL) ? r0.descNL : r0.desc;
-    var csEl = document.getElementById("climate-stats");
-    if (csEl) csEl.innerHTML = (LANG === "nl" && r0.metaNL ? r0.metaNL : r0.meta).slice(0,3).map(function(p) { return "<span>" + p[0] + ": <strong>" + p[1] + "</strong></span>"; }).join("");
-
-  document.getElementById("footer-meta").innerHTML =
+    var hd0 = document.getElementById("hero-desc"); if (hd0) hd0.innerHTML = (LANG === 'nl' && r0.descNL) ? r0.descNL : r0.desc;
+    var csEl0 = document.getElementById("climate-stats");
+    if (csEl0) csEl0.innerHTML = (LANG === "nl" && r0.metaNL ? r0.metaNL : r0.meta).slice(0,3).map(function(p) { return "<span>" + p[0] + ": <strong>" + p[1] + "</strong></span>"; }).join("");
+    document.getElementById("footer-meta").innerHTML =
       (LANG === 'nl' && r0.metaNL ? r0.metaNL : r0.meta).map(function(p) { return "<span>" + p[0] + ": <strong>" + p[1] + "</strong></span>"; }).join("");
   }
   document.querySelectorAll(".pill").forEach(function(b) {
@@ -423,7 +422,7 @@ function selectRegion(region) {
   });
   LANG = (region === 'netherlands') ? 'nl' : 'en';
   var r = REGIONS[region];
-  document.getElementById("hero-desc").innerHTML = (LANG === 'nl' && r.descNL) ? r.descNL : r.desc;
+  var hd = document.getElementById("hero-desc"); if (hd) hd.innerHTML = (LANG === 'nl' && r.descNL) ? r.descNL : r.desc;
   var csEl = document.getElementById("climate-stats");
   if (csEl) csEl.innerHTML = (LANG === 'nl' && r.metaNL ? r.metaNL : r.meta).slice(0,3).map(function(p) { return "<span>" + p[0] + ": <strong>" + p[1] + "</strong></span>"; }).join("");
 
@@ -464,6 +463,16 @@ function selectRegion(region) {
 })();
 </script>
 </body>
+
+
+
+
+
+
+
+
+
+
 
 
 
