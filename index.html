@@ -46,6 +46,11 @@ a{text-decoration:none}
 .pill:hover{border-color:var(--sf-gold-border)}
 .pill.active{background:var(--sf-gold);color:var(--sf-gold-ink);border-color:var(--sf-gold-border)}
 
+/* ── CLIMATE STATS (dynamic text under region pills) ── */
+.climate-stats{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;margin:-8px 0 6px;font-size:13px;color:var(--sf-ink-soft)}
+.climate-stats span{white-space:nowrap}
+.climate-stats strong{color:var(--sf-header-2);font-weight:700}
+
 /* ── SECTION HEADER ── */
 .section-head{display:flex;align-items:center;gap:10px;margin:30px 0 16px;padding-bottom:10px;border-bottom:1.5px solid var(--sf-border)}
 .section-head .icon{font-size:20px}
@@ -117,12 +122,8 @@ a{text-decoration:none}
     <button class="pill" data-region="netherlands" onclick="selectRegion('netherlands')"><span class="flag">🇳🇱</span> <span data-i18n="regNl">Netherlands · Temperate</span></button>
   </div>
 
-  <!-- CLIMATE BAR (presets for the conditions) -->
-  <div class="region-bar" style="margin-top:-14px">
-    <span class="label" data-i18n="climateLabel">Climate preset:</span>
-    <button class="pill active" data-region="tuscany" onclick="selectRegion('tuscany')"><span class="flag">☀️</span> <span data-i18n="cliTus">Mediterranean · hot dry summers</span></button>
-    <button class="pill" data-region="netherlands" onclick="selectRegion('netherlands')"><span class="flag">🌧️</span> <span data-i18n="cliNl">Temperate · maritime</span></button>
-  </div>
+  <!-- CLIMATE STATS (dynamic text — follows selected region) -->
+  <div class="climate-stats" id="climate-stats"></div>
 
   <!-- DESIGN SUITE -->
   <div class="section-head">
@@ -278,6 +279,11 @@ var T = {
     footOpen: '🌍 open-source toolkit', footPrivacy: '🔒 data stays on-device', footOffline: '📱 works offline',
     regionLabel: 'Region preset:', regTus: 'Tuscany · Mediterranean', regNl: 'Netherlands · Temperate',
     climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
+    climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
+    climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
+    climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
+    climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
+    climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
     privacyNote: '🔒 <strong>Privacy by design:</strong> everything runs in your browser. Your site plans, water calculations and garden layouts are stored in <strong>your browser\'s localStorage</strong> — they never touch a server. <strong>Back up your work</strong> with the 💾 Backup button in Master Plan, Water Management or Guild Diagrams (one JSON file), and restore it anywhere.',
     secDesign: 'Design Suite', secDesignCount: 'desktop · 5 tools', secField: 'Field Tools', secFieldCount: 'mobile · 4 tools',
     statusComplete: 'Complete',
@@ -320,6 +326,11 @@ var T = {
     navDesignH: 'Ontwerpsuite (desktop)', navFieldH: 'Veldgereedschap (mobiel)',
     footOpen: '🌍 open-source toolkit', footPrivacy: '🔒 data blijft op je apparaat', footOffline: '📱 werkt offline',
     regionLabel: 'Regiovoorinstelling:', regTus: 'Toscane · Middellands', regNl: 'Nederland · Gematigd',
+    climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
+    climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
+    climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
+    climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
+    climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
     climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
     privacyNote: '🔒 <strong>Privacy by design:</strong> alles draait in je browser. Je terreinplannen, waterberekeningen en tuinindelingen worden opgeslagen in <strong>de localStorage van je browser</strong> — ze raken nooit een server. <strong>Back-up je werk</strong> met de 💾 Back-upknop in Masterplan, Waterbeheer of Boomgilde-diagrammen (één JSON-bestand) en herstel het overal.',
     secDesign: 'Ontwerpsuite', secDesignCount: 'desktop · 5 tools', secField: 'Veldgereedschap', secFieldCount: 'mobiel · 4 tools',
@@ -390,7 +401,10 @@ document.addEventListener('DOMContentLoaded', function() {
   var r0 = REGIONS[REGION];
   if (r0) {
     document.getElementById("hero-desc").innerHTML = (LANG === 'nl' && r0.descNL) ? r0.descNL : r0.desc;
-    document.getElementById("footer-meta").innerHTML =
+    var csEl = document.getElementById("climate-stats");
+    if (csEl) csEl.innerHTML = (LANG === "nl" && r0.metaNL ? r0.metaNL : r0.meta).slice(0,3).map(function(p) { return "<span>" + p[0] + ": <strong>" + p[1] + "</strong></span>"; }).join("");
+
+  document.getElementById("footer-meta").innerHTML =
       (LANG === 'nl' && r0.metaNL ? r0.metaNL : r0.meta).map(function(p) { return "<span>" + p[0] + ": <strong>" + p[1] + "</strong></span>"; }).join("");
   }
   document.querySelectorAll(".pill").forEach(function(b) {
@@ -404,6 +418,10 @@ function selectRegion(region) {
   LANG = (region === 'netherlands') ? 'nl' : 'en';
   var r = REGIONS[region];
   document.getElementById("hero-desc").innerHTML = (LANG === 'nl' && r.descNL) ? r.descNL : r.desc;
+  var csEl = document.getElementById("climate-stats");
+  if (csEl) csEl.innerHTML = (LANG === 'nl' && r.metaNL ? r.metaNL : r.meta).slice(0,3).map(function(p) { return "<span>" + p[0] + ": <strong>" + p[1] + "</strong></span>"; }).join("");
+
+
   document.getElementById("footer-meta").innerHTML =
     (LANG === 'nl' && r.metaNL ? r.metaNL : r.meta).map(function(p) { return "<span>" + p[0] + ": <strong>" + p[1] + "</strong></span>"; }).join("");
   applyI18nLanding();
@@ -440,6 +458,11 @@ function selectRegion(region) {
 })();
 </script>
 </body>
+
+
+
+
+
 
 
 </html>
