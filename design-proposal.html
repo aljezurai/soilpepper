@@ -1401,19 +1401,24 @@ body {
     var wmAlt = document.getElementById('wm-alt');
     if (wmAlt && b.altitude) wmAlt.textContent = '~' + b.altitude + 'm ' + (NL ? 'hoogte' : 'altitude');
     // Design Proposal: Site Overview body from the brief (if present)
-    var dpAlt = document.getElementById('dp-alt');
-    if (dpAlt && b.altitude) dpAlt.textContent = b.altitude;
-    var dpZone = document.getElementById('dp-zone');
-    if (dpZone && b.climateZone) dpZone.textContent = b.climateZone;
-    var dpArea = document.getElementById('dp-area');
-    if (dpArea && b.plotW && b.plotH) {
-      var dpHa = (b.plotW * b.plotH) / 10000;
-      dpArea.textContent = (dpHa >= 1 ? dpHa + ' hectares' : Math.round(b.plotW * b.plotH) + ' m²') + ' (' + b.plotW + '×' + b.plotH + 'm)';
-    }
-    var dpRain = document.getElementById('dp-rain');
-    var waterForRain = null;
-    try { waterForRain = JSON.parse(localStorage.getItem('tuscan-water-v1') || 'null'); } catch (e) {}
-    if (dpRain && waterForRain && waterForRain.rainfall) dpRain.textContent = waterForRain.rainfall;
+    // NOTE: run again AFTER applyI18nDP() — the i18n dict values contain the
+    // dp-* spans with defaults, so the brief fill must win. 2026-08-10.
+    window.fillDPSiteOverview = function () {
+      var dpAlt = document.getElementById('dp-alt');
+      if (dpAlt && b.altitude) dpAlt.textContent = b.altitude;
+      var dpZone = document.getElementById('dp-zone');
+      if (dpZone && b.climateZone) dpZone.textContent = b.climateZone;
+      var dpArea = document.getElementById('dp-area');
+      if (dpArea && b.plotW && b.plotH) {
+        var dpHa = (b.plotW * b.plotH) / 10000;
+        dpArea.textContent = (dpHa >= 1 ? dpHa + (NL ? ' hectare' : ' hectares') : Math.round(b.plotW * b.plotH) + ' m²') + ' (' + b.plotW + '×' + b.plotH + 'm)';
+      }
+      var dpRain = document.getElementById('dp-rain');
+      var waterForRain = null;
+      try { waterForRain = JSON.parse(localStorage.getItem('tuscan-water-v1') || 'null'); } catch (e) {}
+      if (dpRain && waterForRain && waterForRain.rainfall) dpRain.textContent = waterForRain.rainfall;
+    };
+    window.fillDPSiteOverview();
     // Summary cards: site area + swales
     var cardArea = document.getElementById('card-area');
     if (cardArea && b.plotW && b.plotH) {
@@ -1537,6 +1542,13 @@ var T = {
     s9: '📅 Implementation Phasing', s10: '🧠 Design Rationale',
     badgeComplete: '✅ Complete', siteOverview: 'Site Overview', designGoals: 'Design Goals', corePrinciples: 'Core Principles',
     soLocation: 'Location:', soArea: 'Area:', soClimate: 'Climate:', soSoil: 'Soil:', soRainfall: 'Rainfall:', soBuilding: 'Building:', soFrost: 'Frost-free period:',
+    soLocTxt: '<span id="dp-loc">Tuscany, Italy</span> — ~<span id="dp-alt">300</span>m altitude, hilly terrain, south-facing slope',
+    soAreaTxt: '<span id="dp-area">1 hectare (10,000m²)</span>',
+    soClimTxt: 'Csa (Hot-summer Mediterranean) — USDA Zone <span id="dp-zone">8b–9a</span>',
+    soSoilTxt: '<span id="dp-soil">Silty-sandy, fertile, good drainage, some clay lenses</span>',
+    soRainTxt: '~<span id="dp-rain">800</span>mm/year, concentrated Oct–Dec and Mar–May; summer drought (Jul ~25mm)',
+    soBuildTxt: '250m² south-facing stone house — roof catchment for rainwater',
+    soFrostTxt: '~180–210 days (last frost ~Apr, first frost ~Nov)',
     dgSelf: 'Self-sufficiency:', dgSelfTxt: 'Vegetable garden for 2 people, fruit trees, berry bushes, herbs',
     dgWater: 'Water autonomy:', dgWaterTxt: 'Well + rainwater harvesting (15m³ tanks) + irrigation pond (200m³) + natural pool (112m³)',
     dgFire: 'Fire safety:', dgFireTxt: 'SE firebreak, fire-resistant species, water access for firefighting',
@@ -1654,6 +1666,13 @@ var T = {
     s9: 'Fasering implementatie', s10: '🧠 Ontwerp-onderbouwing',
     badgeComplete: '✅ Compleet', siteOverview: 'Locatieoverzicht', designGoals: 'Ontwerpdoelen', corePrinciples: 'Kernprincipes',
     soLocation: 'Locatie:', soArea: 'Oppervlakte:', soClimate: 'Klimaat:', soSoil: 'Grond:', soRainfall: 'Neerslag:', soBuilding: 'Gebouw:', soFrost: 'Vorstvrije periode:',
+    soLocTxt: '<span id="dp-loc">Toscane, Italië</span> — ~<span id="dp-alt">300</span>m hoogte, heuvelachtig terrein, helling op het zuiden',
+    soAreaTxt: '<span id="dp-area">1 hectare (10.000m²)</span>',
+    soClimTxt: 'Csa (hete zomers mediterraan) — USDA-zone <span id="dp-zone">8b–9a</span>',
+    soSoilTxt: '<span id="dp-soil">Silt-zand, vruchtbaar, goede drainage, enkele kleilagen</span>',
+    soRainTxt: '~<span id="dp-rain">800</span>mm/jaar, geconcentreerd okt–dec en mrt–mei; zomerdroogte (jul ~25mm)',
+    soBuildTxt: '250m² stenen huis op het zuiden — dakopvang voor regenwater',
+    soFrostTxt: '~180–210 dagen (laatste vorst ~apr, eerste vorst ~nov)',
     dgSelf: 'Zelfvoorziening:', dgSelfTxt: 'Moestuin voor 2 personen, fruitbomen, bessenstruiken, kruiden',
     dgWater: 'Waterautonomie:', dgWaterTxt: 'Put + opvang regenwater (15m³ tanks) + irrigatievijver (200m³) + natuurlijk zwembad (112m³)',
     dgFire: 'Brandveiligheid:', dgFireTxt: 'ZO-brandgang, brandwerende soorten, watertoegang voor brandbestrijding',
@@ -1815,13 +1834,13 @@ function applyI18nDP() {
   </div>
   <div class="section-body open">
     <h3 data-i18n="siteOverview">Site Overview</h3>
-    <p><strong data-i18n="soLocation">Location:</strong> <span id="dp-loc">Tuscany, Italy</span> — ~<span id="dp-alt">300</span>m altitude, hilly terrain, south-facing slope</p>
-    <p><strong data-i18n="soArea">Area:</strong> <span id="dp-area">1 hectare (10,000m²)</span></p>
-    <p><strong data-i18n="soClimate">Climate:</strong> Csa (Hot-summer Mediterranean) — USDA Zone <span id="dp-zone">8b–9a</span></p>
-    <p><strong data-i18n="soSoil">Soil:</strong> <span id="dp-soil">Silty-sandy, fertile, good drainage, some clay lenses</span></p>
-    <p><strong data-i18n="soRainfall">Rainfall:</strong> ~<span id="dp-rain">800</span>mm/year, concentrated Oct–Dec and Mar–May; summer drought (Jul ~25mm)</p>
-    <p><strong data-i18n="soBuilding">Building:</strong> 250m² south-facing stone house — roof catchment for rainwater</p>
-    <p><strong data-i18n="soFrost">Frost-free period:</strong> ~180–210 days (last frost ~Apr, first frost ~Nov)</p>
+    <p><strong data-i18n="soLocation">Location:</strong> <span data-i18n="soLocTxt"><span id="dp-loc">Tuscany, Italy</span> — ~<span id="dp-alt">300</span>m altitude, hilly terrain, south-facing slope</span></p>
+    <p><strong data-i18n="soArea">Area:</strong> <span data-i18n="soAreaTxt"><span id="dp-area">1 hectare (10,000m²)</span></span></p>
+    <p><strong data-i18n="soClimate">Climate:</strong> <span data-i18n="soClimTxt">Csa (Hot-summer Mediterranean) — USDA Zone <span id="dp-zone">8b–9a</span></span></p>
+    <p><strong data-i18n="soSoil">Soil:</strong> <span data-i18n="soSoilTxt"><span id="dp-soil">Silty-sandy, fertile, good drainage, some clay lenses</span></span></p>
+    <p><strong data-i18n="soRainfall">Rainfall:</strong> <span data-i18n="soRainTxt">~<span id="dp-rain">800</span>mm/year, concentrated Oct–Dec and Mar–May; summer drought (Jul ~25mm)</span></p>
+    <p><strong data-i18n="soBuilding">Building:</strong> <span data-i18n="soBuildTxt">250m² south-facing stone house — roof catchment for rainwater</span></p>
+    <p><strong data-i18n="soFrost">Frost-free period:</strong> <span data-i18n="soFrostTxt">~180–210 days (last frost ~Apr, first frost ~Nov)</span></p>
 
     <h3 data-i18n="designGoals">Design Goals</h3>
     <ul>
@@ -2449,8 +2468,8 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', render);
-    document.addEventListener('DOMContentLoaded', function() { applyI18nDP(); applyNLDPLogic(); });
-  } else { render(); applyI18nDP(); applyNLDPLogic(); }
+    document.addEventListener('DOMContentLoaded', function() { applyI18nDP(); applyNLDPLogic(); if (window.fillDPSiteOverview) window.fillDPSiteOverview(); });
+  } else { render(); applyI18nDP(); applyNLDPLogic(); if (window.fillDPSiteOverview) window.fillDPSiteOverview(); }
 })();
 </script>
 </body>
