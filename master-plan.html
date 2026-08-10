@@ -1615,20 +1615,20 @@ var T = {
     footer: 'Master Plan Grid · Juniper Ridge theme · auto-saves to this browser'
   },
   nl: {
-    title: '🗺️ Masterplan-raster', plotSetup: '⚙️ Perceel instellen', waterSetup: '💧 Water instellen',
-    export: '📤 Exporteren', import: '📥 Importeren', backupAll: '💾 Backup alles', restoreAll: '📥 Herstel alles', backupDone: '💾 Backup gedownload — bewaar hem goed', viewFunctions: '🎨 Functies', viewZones: '🧭 Zones',
+    title: 'Masterplan', plotSetup: 'Jouw tuinontwerp', waterSetup: 'Waterbeheer',
+    export: 'Downloaden', import: 'Uploaden', backupAll: '💾 Backup alles', restoreAll: '📥 Herstel alles', backupDone: '💾 Backup gedownload — bewaar hem goed', viewFunctions: '🎨 Functies', viewZones: '🧭 Zones',
     viewSoil: '🪨 Grond', viewSectors: '🌪️ Sectoren', suggestZones: '✨ Stel zones voor', undo: '↩️ Ongedaan maken',
     cellAssignment: 'Celtoewijzing', function: 'Functie', zone: 'Zone', soilType: 'Grondsoort',
-    label: 'Label (optioneel)', guildTree: 'Gilde-boom', openGuild: '📂 Open Gilde-diagram →',
-    vegGarden: '🥕 Groententuin', openVeg: '🥕 Open Groententuinplanner →',
-    vegHint: 'Deze cel is een groententuin. Open de planner om de bedden te ontwerpen (modules, 10m-percelen, koppel-schakelaars) en planten toe te wijzen.',
-    clearCell: '🗑️ Wis deze cel', setupTitle: '⚙️ Perceel instellen', cancel: 'Annuleren', apply: 'Toepassen',
+    label: 'Label (optioneel)', guildTree: 'Plantengildes', openGuild: 'Plantengilde openen',
+    vegGarden: 'Moestuin', openVeg: 'Open moestuinplanner',
+    vegHint: 'Deze cel is een moestuin. Open de planner om de groentebedden te ontwerpen (modules, 10m-percelen, schakelaar voor grootte) en planten toe te wijzen.',
+    clearCell: '🗑️ Wis deze cel', setupTitle: 'Jouw tuinontwerp', cancel: 'Annuleren', apply: 'Toepassen',
     waterTitle: '💧 Watersysteem instellen', saveWater: 'Water instellingen opslaan',
-    notSet: '— niet ingesteld —', zoneOpts: {0:'Z0 · Huis & directe omgeving',1:'Z1 · Moestuin',2:'Z2 · Boomgaard / kippen',3:'Z3 · Veldgewassen',4:'Z4 · Half-onderhouden',5:'Z5 · Wild'},
+    notSet: '— niet ingesteld —', zoneOpts: {0:'Z0 · Huis & directe omgeving',1:'Z1 · Moestuin',2:'Boomgaard',3:'Z3 · Veldgewassen',4:'Z4 · Half-onderhouden',5:'Z5 · Wild'},
     funcOpts: {open:'🌿 Open / Niet toegewezen',guild:'🌳 Gilde',vegetable:'🥕 Groententuin',water:'💧 Water',road:'🛣️ Weg / Toegang',construction:'🏠 Bouw'},
-    soilOpts: {sandy:'Zandgrond',silty:'Silt',loam:'Leem',clay:'Klei',chalky:'Kalkrijk',peaty:'Veen'},
+    soilOpts: {sandy:'Zandgrond',silty:'Zilt',loam:'Leem',clay:'Klei',chalky:'Kalkrijk',peaty:'Veen'},
     undoNothing: 'Niets om ongedaan te maken', undone: '↩️ Ongedaan gemaakt', restoreFail: '⚠️ Kon niet herstellen',
-    cleared: '🧹 Alle ', zones: 'zones gewist', soilTypes: 'grondsoorten gewist',
+    cleared: 'Alles gewist', zones: 'zones', soilTypes: 'grondsoorten',
     plotTooSmall: '⚠️ Perceel moet minimaal één cel zijn', newPlot: '✅ Nieuw perceel aangemaakt · standaardgrond: ',
     plotResized: '⚠️ Perceelgrootte gewijzigd', plotWarn: 'celtoewijzingen zijn gereset (raster veranderd) — gebruik ⌘Z om ongedaan te maken',
     planLoadFail: '⚠️ Opgeslagen plan kon niet worden gelezen — toont een leeg raster ZONDER op te slaan. Gebruik Backup/Herstel of controleer browseropslag.',
@@ -1638,22 +1638,22 @@ var T = {
     cellSoil: 'Celgrond: ', siteDefault: ' (standaard)',
     zoneHint: 'Permacultuurzones op basis van gebruik — 0 dichtst bij huis, 5 wildst.',
     setupDesc: 'Definieer je perceel. Cellen worden automatisch op vaste grootte aangemaakt. Standaarden passen bij deze 1ha-locatie.',
-    waterDesc: 'Definieer de waterinfrastructuur voor deze locatie. Opgeslagen in <code>tuscan-water-v1</code> — gelezen door de Waterbeheer-pagina, Plattegrond en Ontwerpvoorstel.',
-    setupSoilHint: 'Basisgrond voor het hele perceel — schilder later per cel. Brief voor Toscane: silt-zand.',
+    waterDesc: 'Bepaal de waterinfrastructuur voor deze locatie. Opgeslagen in <code>tuscan-water-v1</code> — gelezen door de Waterbeheer-pagina en Ontwerpvoorstel.',
+    setupSoilHint: 'Basisgrond voor het hele perceel — verander later per cel. Brief voor Toscane: silt-zand.',
     headHint: 'Verticale val van vijver naar tuin — bepaalt de druppeldruk.',
     lblSiteTitle: 'Locatienaam (ontwerpbrief)', lblWidth: 'Breedte (m)', lblHeight: 'Hoogte (m)', lblCell: 'Celgrootte (m)',
     lblAlt: 'Hoogte (m)', lblClimate: 'Klimaatzone', lblAspect: 'Aspect (hellingsrichting)', lblSlope: 'Helling',
     lblGrid: 'Resulterend raster', lblDefSoil: 'Standaardgrondsoort (ontwerpbrief)',
     lblRoof: 'Dakoppervlak (m²)', lblRain: 'Neerslag (mm/jaar)', lblEff: 'Dakefficiëntie', lblPond: 'Irrigatievijver (m³)',
     lblPool: 'Natuurlijk zwembad (m³)', lblDemand: 'Jaarlijkse vraag (m³)', lblTanks: 'Regenwatertanks',
-    lblTankSize: 'Tankinhoud (L elk)', lblSwales: 'Swales', lblHead: 'Zwaartekrachtval (m)', lblHarvest: 'Resulterende dakopvang',
+    lblTankSize: 'Tankinhoud (L elk)', lblSwales: 'Swales', lblHead: 'Zwaartekrachtval (m)', lblHarvest: 'Resulterende dakopbrengst',
     lblSiteTitle: 'Locatienaam (ontwerpbrief)', lblWidth: 'Breedte (m)', lblHeight: 'Hoogte (m)', lblCell: 'Celgrootte (m)',
     lblAlt: 'Hoogte (m)', lblClimate: 'Klimaatzone', lblAspect: 'Aspect (hellingsrichting)', lblSlope: 'Helling',
     lblGrid: 'Resulterend raster', lblDefSoil: 'Standaardgrondsoort (ontwerpbrief)',
     lblRoof: 'Dakoppervlak (m²)', lblRain: 'Neerslag (mm/jaar)', lblEff: 'Dakefficiëntie', lblPond: 'Irrigatievijver (m³)',
     lblPool: 'Natuurlijk zwembad (m³)', lblDemand: 'Jaarlijkse vraag (m³)', lblTanks: 'Regenwatertanks',
     lblTankSize: 'Tankinhoud (L elk)', lblSwales: 'Swales', lblHead: 'Zwaartekrachtval (m)', lblHarvest: 'Resulterende dakopvang',
-    footer: 'Masterplan-raster · Juniper Ridge thema · slaat automatisch op in deze browser'
+    footer: 'Masterplan · slaat automatisch op in deze browser'
   }
 };
 function tt(k) { return (T[LANG] && T[LANG][k] !== undefined) ? T[LANG][k] : (T.en[k] !== undefined ? T.en[k] : k); }
@@ -1731,9 +1731,9 @@ const ZONE_META = {
 };
 // Standard permaculture zone advice per function
 const ZONE_ADVICE = {
-  construction: '0',   // house itself
+  construction: 'Bebouwing',   // house itself
   guild: '2',          // orchards & guilds = Zone 2
-  vegetable: '1',      // kitchen garden = Zone 1
+  vegetable: 'Moestuin',      // kitchen garden = Zone 1
   water: '3',          // water features often lower/field edge
   road: '3',           // access through field zone
   open: ''             // no advice
