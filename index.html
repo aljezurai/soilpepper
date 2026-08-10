@@ -35,7 +35,7 @@ a{text-decoration:none}
 .hero{background:linear-gradient(135deg,var(--sf-card) 0%,var(--sf-sage-soft) 100%);border:1.5px solid var(--sf-border-strong);border-radius:var(--sf-radius-lg);padding:28px 34px;text-align:center;margin-bottom:4px}
 .hero h1{font-family:var(--font-head);color:var(--sf-header);font-size:28px;margin-bottom:10px}
 .hero .chili{font-size:32px}
-.hero p{color:var(--sf-ink);font-size:14.5px;line-height:1.65;max-width:680px;margin:0 auto}
+.hero p{color:var(--sf-ink);font-size:14.5px;line-height:1.65;max-width:680px;margin:0 0 10px;text-align:left}
 .hero p strong{color:var(--sf-header-2)}
 .privacy{margin-top:16px;background:var(--sf-card-alt);border:1.5px solid var(--sf-border);border-radius:10px;padding:11px 16px;font-size:12.5px;color:var(--sf-ink-soft);line-height:1.6}
 
@@ -289,6 +289,7 @@ var T = {
     footOpen: '🌍 open-source toolkit', footPrivacy: '🔒 data stays on-device', footOffline: '📱 works offline',
     regionLabel: 'Region preset:', regTus: 'Tuscany · Mediterranean', regNl: 'Netherlands · Temperate',
     climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
+    climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
     privacyNote: '🔒 <strong>Privacy by design:</strong> everything runs in your browser. Your site plans, water calculations and garden layouts are stored in <strong>your browser\'s localStorage</strong> — they never touch a server. <strong>Back up your work</strong> with the 💾 Backup button in Master Plan, Water Management or Guild Diagrams (one JSON file), and restore it anywhere.',
     secDesign: 'Design Suite', secDesignCount: 'desktop · 5 tools', secField: 'Field Tools', secFieldCount: 'mobile · 4 tools',
     statusComplete: 'Complete',
@@ -337,6 +338,7 @@ var T = {
     navDesignH: 'Ontwerpsuite (desktop)', navFieldH: 'Veldgereedschap (mobiel)',
     footOpen: '🌍 open-source toolkit', footPrivacy: '🔒 data blijft op je apparaat', footOffline: '📱 werkt offline',
     regionLabel: 'Regiovoorinstelling:', regTus: 'Toscane · Middellands', regNl: 'Nederland · Gematigd',
+    climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
     climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
     privacyNote: '🔒 <strong>Privacy by design:</strong> alles draait in je browser. Je terreinplannen, waterberekeningen en tuinindelingen worden opgeslagen in <strong>de localStorage van je browser</strong> — ze raken nooit een server. <strong>Back-up je werk</strong> met de 💾 Back-upknop in Masterplan, Waterbeheer of Boomgilde-diagrammen (één JSON-bestand) en herstel het overal.',
     secDesign: 'Ontwerpsuite', secDesignCount: 'desktop · 5 tools', secField: 'Veldgereedschap', secFieldCount: 'mobiel · 4 tools',
@@ -463,6 +465,7 @@ function selectRegion(region) {
 })();
 </script>
 </body>
+
 
 
 
