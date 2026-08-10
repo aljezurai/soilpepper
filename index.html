@@ -35,7 +35,7 @@ a{text-decoration:none}
 .hero{background:linear-gradient(135deg,var(--sf-card) 0%,var(--sf-sage-soft) 100%);border:1.5px solid var(--sf-border-strong);border-radius:var(--sf-radius-lg);padding:28px 34px;text-align:center;margin-bottom:4px}
 .hero h1{font-family:var(--font-head);color:var(--sf-header);font-size:28px;margin-bottom:10px}
 .hero .chili{font-size:32px}
-.hero p{color:var(--sf-ink);font-size:14.5px;line-height:1.65;max-width:680px;margin:0 0 10px;text-align:left}
+.hero p{color:var(--sf-ink);font-size:14.5px;line-height:1.65;margin:0 0 10px;text-align:left}
 .hero p strong{color:var(--sf-header-2)}
 .privacy{margin-top:16px;background:var(--sf-card-alt);border:1.5px solid var(--sf-border);border-radius:10px;padding:11px 16px;font-size:12.5px;color:var(--sf-ink-soft);line-height:1.6}
 
@@ -114,8 +114,6 @@ a{text-decoration:none}
     <p data-i18n="heroP1"></p>
     <p data-i18n="heroP2"></p>
     <p data-i18n="heroP3"></p>
-    <p data-i18n="heroP4"></p>
-    <p data-i18n="heroP5"></p>
     <div class="privacy" data-i18n="privacyNote"></div>
   </div>
 
@@ -278,16 +276,15 @@ var LANG = REGION === 'netherlands' ? 'nl' : 'en';
 var T = {
   en: {
     brandSmall: 'Permaculture Design Toolkit', h1Sub: 'Permaculture Design Toolkit',
-    heroP1: 'Plan a permaculture site from blank plot to beautiful tree guilds and vegetable garden beds — <strong>no account, no server, no data leaving your device.</strong>',
-    heroP2: 'At this moment you can choose from two presets. One for Tuscany (Mediterranean) and one for The Netherlands. More will follow.',
-    heroP3: 'The real planning is easiest done on your desktop. Relaxed, on a big screen, overlooking your garden while sitting down with a cup of morning coffee (or tea).',
-    heroP4: 'The field tools are specifically designed to help you out in the field. You can download your design easily on your smartphone and take it with you. Offline, once downloaded you do not need any internet. Great, right?',
-    heroP5: 'We designed the tool to be as easy for you as possible. Helping you with the choices that you have to make. We hope you like it!',
+    heroP1: 'Plan a permaculture site from blank plot to beautiful tree guilds and vegetable garden beds — <strong>no account, no server, no data leaving your device.</strong> At this moment you can choose from two presets. One for Tuscany (Mediterranean) and one for The Netherlands. More will follow.',
+    heroP2: 'The real planning is easiest done on your desktop. Relaxed, on a big screen, overlooking your garden while sitting down with a cup of morning coffee (or tea). The field tools are specifically designed to help you out in the field. You can download your design easily on your smartphone and take it with you. Offline, once downloaded you do not need any internet. Great, right?',
+    heroP3: 'We designed the tool to be as easy for you as possible. Helping you with the choices that you have to make. We hope you like it!',
     nav0: 'Master Plan', nav1: 'Design Proposal', nav2: 'Sector Analysis', nav3: 'Helicopter View', nav4: 'Water Management', nav5: 'Guild Matrix', nav6: 'Guild Diagrams', nav7: 'Species Filter', nav8: 'Veg Planner',
     navDashboard: 'Dashboard', navOverview: '📊 Overview', navDesignSuite: '🖥️ Design Suite', navFieldTools: '📱 Field Tools',
     navDesignH: 'Design Suite (Desktop)', navFieldH: 'Field Tools (Mobile)',
     footOpen: '🌍 open-source toolkit', footPrivacy: '🔒 data stays on-device', footOffline: '📱 works offline',
     regionLabel: 'Region preset:', regTus: 'Tuscany · Mediterranean', regNl: 'Netherlands · Temperate',
+    climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
     climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
     climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
     privacyNote: '🔒 <strong>Privacy by design:</strong> everything runs in your browser. Your site plans, water calculations and garden layouts are stored in <strong>your browser\'s localStorage</strong> — they never touch a server. <strong>Back up your work</strong> with the 💾 Backup button in Master Plan, Water Management or Guild Diagrams (one JSON file), and restore it anywhere.',
@@ -328,16 +325,15 @@ var T = {
   },
   nl: {
     brandSmall: 'Permacultuur-ontwerpgereedschap', h1Sub: 'Permacultuur-ontwerpgereedschap',
-    heroP1: 'Plan een permacultuurlocatie van blanco perceel tot prachtige boomgildes en groentebedden — <strong>geen account, geen server, geen data die je apparaat verlaat.</strong>',
-    heroP2: 'Op dit moment kun je kiezen uit twee voorinstellingen. Eén voor Toscane (Middellands) en één voor Nederland. Er volgen er meer.',
-    heroP3: 'Het echte plannen doe je het makkelijkst op je desktop. Ontspannen, op een groot scherm, uitkijkend over je tuin terwijl je met een kop ochtendkoffie (of thee) zit.',
-    heroP4: 'De veldtools zijn speciaal ontworpen om je in het veld te helpen. Je downloadt je ontwerp eenvoudig op je smartphone en neemt het mee. Offline — eenmaal gedownload heb je geen internet nodig. Toch?',
-    heroP5: 'We hebben de tool zo makkelijk mogelijk voor je gemaakt. Je helpen met de keuzes die je moet maken. We hopen dat je hem leuk vindt!',
+    heroP1: 'Plan een permacultuurlocatie van blanco perceel tot prachtige boomgildes en groentebedden — <strong>geen account, geen server, geen data die je apparaat verlaat.</strong> Op dit moment kun je kiezen uit twee voorinstellingen. Eén voor Toscane (Middellands) en één voor Nederland. Er volgen er meer.',
+    heroP2: 'Het echte plannen doe je het makkelijkst op je desktop. Ontspannen, op een groot scherm, uitkijkend over je tuin terwijl je met een kop ochtendkoffie (of thee) zit. De veldtools zijn speciaal ontworpen om je in het veld te helpen. Je downloadt je ontwerp eenvoudig op je smartphone en neemt het mee. Offline — eenmaal gedownload heb je geen internet nodig. Toch?',
+    heroP3: 'We hebben de tool zo makkelijk mogelijk voor je gemaakt. Je helpen met de keuzes die je moet maken. We hopen dat je hem leuk vindt!',
     nav0: 'Masterplan-raster', nav1: 'Ontwerpvoorstel', nav2: 'Sectoranalyse', nav3: 'Vogelperspectief', nav4: 'Waterbeheer', nav5: 'Gilde-matrix', nav6: 'Boomgilde-diagrammen', nav7: 'Soortendatabase', nav8: 'Groententuin-planner',
     navDashboard: 'Dashboard', navOverview: '📊 Overzicht', navDesignSuite: '🖥️ Ontwerpsuite', navFieldTools: '📱 Veldgereedschap',
     navDesignH: 'Ontwerpsuite (desktop)', navFieldH: 'Veldgereedschap (mobiel)',
     footOpen: '🌍 open-source toolkit', footPrivacy: '🔒 data blijft op je apparaat', footOffline: '📱 werkt offline',
     regionLabel: 'Regiovoorinstelling:', regTus: 'Toscane · Middellands', regNl: 'Nederland · Gematigd',
+    climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
     climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
     climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
     privacyNote: '🔒 <strong>Privacy by design:</strong> alles draait in je browser. Je terreinplannen, waterberekeningen en tuinindelingen worden opgeslagen in <strong>de localStorage van je browser</strong> — ze raken nooit een server. <strong>Back-up je werk</strong> met de 💾 Back-upknop in Masterplan, Waterbeheer of Boomgilde-diagrammen (één JSON-bestand) en herstel het overal.',
@@ -465,6 +461,7 @@ function selectRegion(region) {
 })();
 </script>
 </body>
+
 
 
 
