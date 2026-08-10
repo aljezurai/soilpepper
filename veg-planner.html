@@ -1857,7 +1857,7 @@ var T = {
     sowing: 'Sowing', depth: 'Depth', maturity: 'Maturity', days: 'days', beds: 'beds', slots: 'slots'
   },
   nl: {
-    vegPlanner: 'Groententuin-planner',
+    vegPlanner: 'Moestuinplanner',
     beds: 'Bedden', subDrag: 'Sleep planten van het palet naar de bedden · Hover over een plant om te verwijderen · Klik voor details · Klik op de dagen-badge om datum te zetten',
     modules: 'Modules', rows6: '1 (6 rijen)', rows12: '2 (12 rijen)', rows18: '3 (18 rijen)',
     bedWidth: 'Bedbreedte', slotLen: 'Perceellengte',
@@ -2841,7 +2841,7 @@ function exportFieldView() {
 
   const html = '<!DOCTYPE html>\n<html lang="' + (LANG === 'nl' ? 'nl' : 'en') + '">\n<head>\n<meta charset="UTF-8">\n' +
   '<meta name="viewport" content="width=device-width,initial-scale=1.0">\n' +
-  '<title>' + (LANG === 'nl' ? 'Groententuin — Veldweergave' : 'Vegetable Garden — Field View') + '</title>\n<style>\n' +
+  '<title>' + (LANG === 'nl' ? 'Moestuin — Veldweergave' : 'Vegetable Garden — Field View') + '</title>\n<style>\n' +
   '*{box-sizing:border-box;margin:0;padding:0}\n' +
   'body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;background:#0a1a0a;color:#c8d8c0;padding:12px;max-width:900px;margin:0 auto;line-height:1.5}\n' +
   'h1{font-family:Georgia,"Palatino",serif;color:#5a8a4a;text-align:center;font-size:1.3rem;margin-bottom:2px}\n' +
@@ -2870,7 +2870,7 @@ function exportFieldView() {
   '.cd-val{color:#e8f0e0;text-align:right}\n' +
   '.legend{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-top:12px;font-size:0.62rem;color:#6a8068}\n' +
   '</style>\n</head>\n<body>\n<a id="top"></a>\n' +
-  '<h1>🥕 ' + (LANG === 'nl' ? 'Groententuin — Veldweergave' : 'Vegetable Garden — Field View') + '</h1>\n' +
+  '<h1>🥕 ' + (LANG === 'nl' ? 'Moestuin — Veldweergave' : 'Vegetable Garden — Field View') + '</h1>\n' +
   '<p class="subtitle">' + rows.length + ' ' + tt('rows') + ' · ' + gardenCfg.modules + ' ' + tt('module') + (gardenCfg.modules > 1 ? 's' : '') + ' · ' + gardenCfg.bedWidth + 'm ' + tt('beds') + ' × ' + gardenCfg.slotLen + 'm ' + tt('slots') + ' · ' + tt('paths') + ' ~' + (pathM * 100).toFixed(0) + 'cm</p>\n' +
   briefLine +
   '<div class="spec">' +
