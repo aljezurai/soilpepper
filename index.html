@@ -271,7 +271,10 @@ a{text-decoration:none}
 <script>
 /* ===== I18N (2026-08-07) — landing page ===== */
 var IQ = new URLSearchParams(window.location.search);
-var REGION = (IQ.get('region') === 'netherlands' || IQ.get('region') === 'tuscany') ? IQ.get('region') : 'tuscany';
+var _savedRegion = null;
+try { _savedRegion = localStorage.getItem('soilpepper-region'); } catch (e) {}
+var REGION = (IQ.get('region') === 'netherlands' || IQ.get('region') === 'tuscany') ? IQ.get('region') :
+  ((_savedRegion === 'netherlands' || _savedRegion === 'tuscany') ? _savedRegion : 'tuscany');
 var LANG = REGION === 'netherlands' ? 'nl' : 'en';
 var T = {
   en: {
@@ -284,6 +287,8 @@ var T = {
     navDesignH: 'Design Suite (Desktop)', navFieldH: 'Field Tools (Mobile)',
     footOpen: '🌍 open-source toolkit', footPrivacy: '🔒 data stays on-device', footOffline: '📱 works offline',
     regionLabel: 'Region preset:', regTus: 'Tuscany · Mediterranean', regNl: 'Netherlands · Temperate',
+    climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
+    climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
     climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
     climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
     climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
@@ -326,14 +331,13 @@ var T = {
   },
   nl: {
     brandSmall: 'Permacultuur-ontwerpgereedschap', h1Sub: 'Ontwerp je eigen (moes)tuin',
-    heroP1: 'Ontwerp je eigen (moes)tuin van blanco perceel tot een prachtige omgeving vol boomgildes en groentebedden — <strong>geen account, geen server, geen data die je apparaat verlaat.</strong> Op dit moment kun je kiezen uit twee presets. Eén voor Toscane (Mediterraans klimaat) en één voor Nederland. Er volgen er meer. Bovendien kan je altijd alles aanpassen aan je eigen plek.',
-    heroP2: 'Het echte plannen doe je natuurlijk het makkelijkst op je desktop. Ontspannen, op een groot scherm, uitkijkend over je tuin met een kop koffie (of thee) op tafel. De tuintools zijn speciaal ontworpen om je buiten in het veld te helpen. Je downloadt je ontwerp eenvoudig op je smartphone en neemt het mee. Offline — éénmaal gedownload heb je geen internet (meer) nodig.',
-    heroP3: 'We hebben onze ontwerp- en beheertools zo makkelijk mogelijk voor je gemaakt. We hopen dat je ze met veel plezier en succes gaat gebruiken!',
     nav0: 'Masterplan-raster', nav1: 'Ontwerpvoorstel', nav2: 'Sectoranalyse', nav3: 'Vogelperspectief', nav4: 'Waterbeheer', nav5: 'Gilde-matrix', nav6: 'Boomgilde-diagrammen', nav7: 'Soortendatabase', nav8: 'Groententuin-planner',
     navDashboard: 'Dashboard', navOverview: '📊 Overzicht', navDesignSuite: '🖥️ Ontwerpsuite', navFieldTools: '📱 Veldgereedschap',
     navDesignH: 'Ontwerpsuite (desktop)', navFieldH: 'Veldgereedschap (mobiel)',
     footOpen: '🌍 open-source toolkit', footPrivacy: '🔒 data blijft op je apparaat', footOffline: '📱 werkt offline',
     regionLabel: 'Regiovoorinstelling:', regTus: 'Toscane · Middellands', regNl: 'Nederland · Gematigd',
+    climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
+    climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
     climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
     climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
     climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
@@ -417,6 +421,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 function selectRegion(region) {
+  try { localStorage.setItem("soilpepper-region", region); } catch (e) {}
   document.querySelectorAll(".pill").forEach(function(b) {
     b.classList.toggle("active", b.dataset.region === region);
   });
@@ -463,6 +468,8 @@ function selectRegion(region) {
 })();
 </script>
 </body>
+
+
 
 
 
