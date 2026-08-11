@@ -56,7 +56,10 @@ button:active, [onclick]:active, a:active, .toggle:active, .chip:active,
   /* All buttons/links/tappables reach the 44px touch minimum */
   button, .btn, [class*="btn"], .toggle, .chip, [class*="chip"],
   .filter-btn, a.tool-card-link, .tool-card-link, .plant-item,
-  .species-item, .sector-btn, .legend-item {
+  .species-item, .sector-btn, .legend-item,
+  .sf-pill, .stat-help,   /* region pill + Help card are <a> links — 44px too (2026-08-11) */
+  .bstrip-edit a, .bstrip-toggle,  /* brief-strip edit link + toggle (2026-08-11) */
+  .tool-link {            /* cross-tool links (Design Proposal) — 44px (2026-08-11) */
     min-height: 44px;
     display: inline-flex;
     align-items: center;
@@ -114,6 +117,9 @@ button:active, [onclick]:active, a:active, .toggle:active, .chip:active,
   backdrop-filter: blur(8px);
 }
 </style>
+
+
+
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
