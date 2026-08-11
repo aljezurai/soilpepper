@@ -49,11 +49,6 @@ h1{font-family:var(--font-head);color:var(--accent-emerald);text-align:center;
   font-size:0.78rem;transition:all .15s;font-family:var(--font-body)}
 .btn:hover{background:var(--accent-emerald);color:#0a1a0a;border-color:var(--accent-emerald)}
 .btn.primary{background:var(--accent-emerald);color:#0a1a0a;border-color:var(--accent-emerald);font-weight:600}
-/* tutorial button — yellow, black text, right-aligned with the grid (2026-08-11) */
-.btn-tutorial{margin-left:auto;background:var(--sf-gold);color:#000;border-color:var(--sf-gold-border);font-weight:700;text-decoration:none}
-a.btn-tutorial, a.btn-tutorial:hover{color:#000 !important}
-.btn-tutorial:hover{background:var(--sf-gold);color:#000;border-color:var(--sf-gold-ink)}
-@media(max-width:768px){.btn-tutorial{margin-left:0}}
 .btn.primary:hover{filter:brightness(1.1)}
 .btn.danger{color:#e57373;border-color:rgba(229,115,115,0.4)}
 .btn.danger:hover{background:#6a3030;color:#fff;border-color:#6a3030}
@@ -131,6 +126,11 @@ a.btn-tutorial, a.btn-tutorial:hover{color:#000 !important}
 
 /* ===== STATS ===== */
 .stats{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:14px}
+.stats-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:stretch;margin-bottom:14px}
+.stats-row .stats{margin-bottom:0}
+/* Help button — same size/shape as the .stat cards, yellow, black text (2026-08-11) */
+.stat-help{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:90px;padding:8px 14px;text-align:center;background:#f4c92f;border:1px solid #d9a800;border-radius:8px;color:#000;font-weight:700;font-size:0.9rem;text-decoration:none;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.stat-help:hover{background:#e9ba22;color:#000}
 .stat{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
   padding:8px 14px;text-align:center;min-width:90px}
 .stat .num{font-size:1.4rem;font-weight:600;color:var(--accent-teal);font-family:var(--font-head)}
@@ -338,22 +338,12 @@ header a, [class*="header"] a, .topbar a {
   color: #ffffff !important;
 }
 header a:hover, [class*="header"] a:hover { color: #cfe4d4 !important; }
-/* tutorial link in the Master Plan topbar — STRONG YELLOW, black text (2026-08-11).
-   Not the pale --sf-gold token — user asked for a clearly-yellow button.
-   line-height + display match the sibling .btn buttons so height is identical (36px→32px). */
-.topbar a.btn-tutorial, .topbar a.btn-tutorial:hover {
+/* tutorial/Help link — yellow card matching the stat cards, black text (2026-08-11) */
+a.stat-help, a.stat-help:hover {
   color: #000000 !important;
   background: #f4c92f !important;
   border-color: #d9a800 !important;
   box-shadow: 0 1px 3px rgba(0,0,0,.25) !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  line-height: normal !important;
-  height: auto !important;
-  vertical-align: middle !important;
-  min-height: 32px !important;
-  box-sizing: border-box !important;
 }
 
 /* ── Cards & panels ─────────────────────────────────────── */
@@ -1389,7 +1379,6 @@ body {
   <button class="btn" onclick="document.getElementById('import-file').click()"><span data-i18n="import">📥 Import</span></button>
   <button class="btn btn-backup" onclick="backupAll()"><span data-i18n="backupAll">💾 Backup alles</span></button>
   <button class="btn btn-restore" onclick="document.getElementById('restore-file').click()"><span data-i18n="restoreAll">📥 Herstel alles</span></button>
-  <a class="btn btn-tutorial" href="masterplan-tutorial.html" target="_blank"><span data-i18n="tutorial">5 steps</span></a>
   <input type="file" id="import-file" accept=".json,application/json" style="display:none" onchange="importPlan(event)">
   <input type="file" id="restore-file" accept=".json,application/json" style="display:none" onchange="restoreBackup(event)">
 </div>
@@ -1417,7 +1406,10 @@ body {
 </div>
 
 <!-- STATS -->
-<div class="stats" id="stats"></div>
+<div class="stats-row">
+  <div class="stats" id="stats"></div>
+  <a class="stat-help" href="masterplan-tutorial.html" target="_blank"><span data-i18n="tutorial">Help</span></a>
+</div>
 
 <!-- GRID -->
 <div class="grid-wrap">
