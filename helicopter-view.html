@@ -2191,7 +2191,7 @@ function showCell(r, c) {
     if (gives.some(function(g) { return ['pollinator','pest-repellent','habitat','windbreak'].indexOf(g) >= 0; })) rings.push('Outer — Canopy Edge');
     gd.innerHTML = '<p><strong>' + (s.icon || '🌳') + ' ' + s.name + '</strong>' + (s.latin ? ' · ' + s.latin : '') + '</p>' +
       (rings.length ? '<div class="gp-rings">' + rings.map(function(x) { return '<span class="gp-ring">' + x + '</span>'; }).join('') + '</div>' : '') +
-      '<p style="margin-top:6px;color:#a8b8a0;">Guild data from the species database — see <a href="guild-diagrams.html?region=' + (brief.region || 'tuscany') + '&tree=' + encodeURIComponent(cell.treeKey) + '" style="color:#c4a040;">full guild diagram</a>.</p>';
+      '<p style="margin-top:6px;color:#a8b8a0;">Guild data from the species database — see <a href="trees-and-around.html?region=' + (brief.region || 'tuscany') + '&tree=' + encodeURIComponent(cell.treeKey) + '" style="color:#c4a040;">full guild diagram</a>.</p>';
   } else {
     gd.innerHTML = '';
   }

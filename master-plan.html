@@ -2793,13 +2793,13 @@ function openGuildDiagram() {
   const treeKey = document.getElementById('tree-select').value;
   if (!treeKey) { showToast(tt('selectTreeFirst')); return; }
   const region = getRegionParam();
-  window.open('guild-diagrams.html?region=' + region + '&tree=' + encodeURIComponent(treeKey), '_blank');
+  window.open('trees-and-around.html?region=' + region + '&tree=' + encodeURIComponent(treeKey), '_blank');
 }
 function openVegPlanner() {
   const region = getRegionParam();
   const parts = selectedCell ? selectedCell.split('_') : null;
   const cellParams = parts ? '&cell=' + parts[0] + '_' + parts[1] : '';
-  window.open('veg-planner.html?region=' + region + cellParams, '_blank');
+  window.open('vegetable-garden-planner.html?region=' + region + cellParams, '_blank');
 }
 // Read back the veg layout linked to this cell (2026-08-09).
 // tuscanVegGarden.cell holds the grid cell the planner was opened from.
