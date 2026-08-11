@@ -1900,6 +1900,7 @@ function speciesMatches(s) {
     if (!catState.has(s.category)) return false;
   }
   // Sun (single)
+  if (state.sun !== 'either' && state.sun !== s.sun) return false;
   // Water (single)
   if (state.water !== 'either' && state.water !== s.water) return false;
   // Function (multi)
