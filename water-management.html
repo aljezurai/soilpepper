@@ -200,10 +200,12 @@ body {
   background-repeat: no-repeat !important;
   background-attachment: fixed !important;
 }
-/* iOS Safari bug: background-attachment:fixed paints black bands over content
-   while scrolling (user 2026-08-11). Mobile → scroll (photo moves with page). */
+/* iOS Safari/WebKit bug: large base64 wallpaper with background-size:cover
+   paints black bands over content while scrolling (user 2026-08-11, Brave iOS).
+   Disable the wallpaper on mobile entirely — plain sage bg takes over. */
 @media (max-width: 768px) {
   body {
+    background-image: none !important;
     background-attachment: scroll !important;
   }
 }
