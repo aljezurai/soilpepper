@@ -29,6 +29,10 @@ h1{font-family:var(--font-head);color:var(--sf-header);text-align:center;margin:
 .bed{background:var(--sf-card-alt);border:1.5px solid var(--sf-border);border-radius:10px;padding:10px 12px;text-align:center}
 .bed .ico{font-size:1.2em;display:block;margin-bottom:3px}
 .bed .nm{font-size:0.76em;font-weight:700;color:var(--sf-header)}
+.notes{margin-top:10px;display:flex;flex-direction:column;gap:8px}
+.note{display:flex;gap:10px;align-items:flex-start;background:var(--sf-card-alt);border:1px solid var(--sf-border);border-radius:10px;padding:9px 12px;font-size:0.8em;color:var(--sf-ink-soft)}
+.note .i{font-size:1.05em;flex-shrink:0}
+.note b{color:var(--sf-header)}
 .tip{display:flex;gap:10px;align-items:flex-start;background:var(--sf-gold);border:1px solid var(--sf-gold-border);border-radius:10px;padding:10px 14px;font-size:0.8em;color:var(--sf-gold-ink);margin-top:8px}
 .tip .i{font-size:1.1em}
 footer{text-align:center;color:var(--sf-ink-soft);font-size:0.75em;margin-top:26px}
@@ -60,13 +64,21 @@ footer{text-align:center;color:var(--sf-ink-soft);font-size:0.75em;margin-top:26
   <div class="step">
     <div class="step-h"><span class="step-n">2</span><span class="step-ico">🖐️</span><div class="step-t">Drag plants into beds</div></div>
     <p>Drag from the palette onto a bed. The planner watches for companion conflicts and warns you.</p>
-    <div class="btnrow"><span class="mbtn hi">🥕 Drag plants</span><span class="mbtn">🌱 Sow this month</span></div>
+    <div class="btnrow"><span class="mbtn hi">🥕 Drag plants</span></div>
+    <div class="notes">
+      <div class="note"><span class="i">🔄</span><span><b>Move vegetables around</b> — drag any plant already in a bed to another bed (or another spot) to rearrange. Hover/tap a plant and use the ✕ to remove it. Your layout stays in sync everywhere.</span></div>
+      <div class="note"><span class="i">🟰</span><span><b>10m vs 20m beds</b> — each slot is a 10m bed. Tap the <b>join</b> toggle on a row to merge two 10m beds into one 20m bed, or split it back. Handy for long rows like beans or squash.</span></div>
+    </div>
   </div>
 
   <div class="step">
-    <div class="step-h"><span class="step-n">3</span><span class="step-ico">📅</span><div class="step-t">Check the calendar</div></div>
-    <p>See when to sow and harvest each plant — and export a garden calendar to your phone.</p>
-    <div class="btnrow"><span class="mbtn">📅 Sow / harvest</span><span class="mbtn">📆 Export calendar</span></div>
+    <div class="step-h"><span class="step-n">3</span><span class="step-ico">🌱</span><div class="step-t">Know what to sow now</div></div>
+    <p>Use <b>Sow this month</b> to see exactly what's ready to plant in the current month.</p>
+    <div class="btnrow"><span class="mbtn hi">🌱 Sow this month</span><span class="mbtn">📅 Sow / harvest</span></div>
+    <div class="notes">
+      <div class="note"><span class="i">🗓️</span><span><b>Sow this month</b> highlights the plants whose sowing window is open right now — nothing to sow? It says so, so you're never guessing.</span></div>
+      <div class="note"><span class="i">📐</span><span><b>Spacing &amp; distance in the popup</b> — tap any plant to open its card: it shows the sowing pattern (square / row / hill), exact seed spacing, row distance, seed depth, thinning and how many plants fit one 7.5 m² slot.</span></div>
+    </div>
   </div>
 
   <div class="step">
