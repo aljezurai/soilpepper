@@ -1814,11 +1814,11 @@ const ZONE_META = {
   4: { label: 'Z4 · Semi-wild',  color: '#4a6a5a' },
   5: { label: 'Z5 · Wild',       color: '#3a5a4a' }
 };
-// Standard permaculture zone advice per function
+// Standard permaculture zone advice per function — values are ZONE_META KEYS (0-5)
 const ZONE_ADVICE = {
-  construction: 'Bebouwing',   // house itself
+  construction: '0',   // house itself = Zone 0
   guild: '2',          // orchards & guilds = Zone 2
-  vegetable: 'Moestuin',      // kitchen garden = Zone 1
+  vegetable: '1',      // kitchen garden = Zone 1
   water: '3',          // water features often lower/field edge
   road: '3',           // access through field zone
   open: ''             // no advice
