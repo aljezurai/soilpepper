@@ -246,6 +246,14 @@ body {
     word-wrap: break-word !important;
   }
 }
+/* dark table headers = the 'black band' the user sees while scrolling (2026-08-11):
+   base theme th{background:#1a2a1a} wins because sector tables sit directly under
+   <body>, NOT inside .section (the .section table th override never matched).
+   Force light headers everywhere — desktop AND mobile. */
+body table th {
+  background: var(--sf-header) !important;
+  color: #ffffff !important;
+}
 h1, h2, h3, h4, h5, .title, [class*="title"] {
   font-family: var(--sf-font-head) !important;
   color: var(--sf-header) !important;
