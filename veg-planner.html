@@ -766,8 +766,9 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
   padding: 0 !important;
   margin-left: auto;
 }
-/* remove the 14px spacer that creates empty space */
-.bed-slot div[style*="height:14px"], .bed-joined div[style*="height:14px"] {
+/* remove the 14px spacer that creates empty space (match both `height:14px` and normalized `height: 14px`) */
+.bed-slot div[style*="height:14px"], .bed-joined div[style*="height:14px"],
+.bed-slot div[style*="height: 14px"], .bed-joined div[style*="height: 14px"] {
   display: none !important;
 }
 /* plant chips inside beds — compact pill, subtle badge */
@@ -2590,22 +2591,31 @@ function resetDefault() {
   gardenCfg.slotLen = 10;
   initRows();
   const d = todayStr();
-  const suggestions = [
-    [{key:'tomato',plantedDate:d},{key:'pole-beans',plantedDate:d},{key:'basil',plantedDate:d}],
-    [{key:'lettuce',plantedDate:d},{key:'radish',plantedDate:d},{key:'spinach',plantedDate:d}],
-    [{key:'cavolo-nero',plantedDate:d},{key:'fennel',plantedDate:d},{key:'peppers',plantedDate:d}],
-    [{key:'carrots',plantedDate:d},{key:'onions',plantedDate:d},{key:'garlic-veg',plantedDate:d}],
-    [{key:'climbing-cucumber',plantedDate:d},{key:'sunflower',plantedDate:d}],
-    [{key:'strawberry-veg',plantedDate:d},{key:'parsley',plantedDate:d}],
-    [{key:'swiss-chard',plantedDate:d},{key:'broccoli',plantedDate:d},{key:'eggplant',plantedDate:d}],
-    [{key:'radicchio',plantedDate:d},{key:'beets',plantedDate:d},{key:'cilantro',plantedDate:d}],
-    [{key:'corn',plantedDate:d},{key:'pole-beans',plantedDate:d}],
-    [{key:'chives-veg',plantedDate:d},{key:'lettuce',plantedDate:d}],
-    [{key:'artichoke',plantedDate:d},{key:'kale',plantedDate:d},{key:'fennel',plantedDate:d}],
-    [{key:'carrots',plantedDate:d},{key:'radish',plantedDate:d},{key:'onions',plantedDate:d}]
-  ];
-  for (let i = 0; i < rows.length; i++) {
-    rows[i].slots[0] = (suggestions[i % suggestions.length] || []).map(p => ({...p}));
+  // Default garden = the plants recommended for THIS month (same filter as 'Sow this month')
+  const now = new Date();
+  const m = now.getMonth() + 1;
+  const sowKeys = Object.keys(PLANTS).filter(k => {
+    const p = PLANTS[k];
+    if (!p || p.category === 'flower' || p.category === 'herb' || p.category === 'ground-cover') return false; // beds are for vegetables
+    const months = LANG === 'nl' ? (p.sowMonthsNL || p.sowMonths) : (p.sowMonths || []);
+    return months.includes(m);
+  });
+  if (sowKeys.length > 0) {
+    // Distribute across beds by row type (tall/medium/low), cycling to spread them out
+    const perType = { tall: [], medium: [], low: [] };
+    for (let r = 0; r < rows.length; r++) perType[rowType(r)].push(r);
+    const cursor = { tall: 0, medium: 0, low: 0 };
+    sowKeys.forEach(function(k) {
+      const sub = PLANTS[k].subcategory || '';
+      const type = (sub === 'tall' || sub === 'medium' || sub === 'low') ? sub : 'low'; // normalize unknown → low
+      const pool = perType[type];
+      if (!pool.length) return;
+      const r = pool[cursor[type] % pool.length];
+      rows[r].slots[0].push({ key: k, plantedDate: d });
+      cursor[type]++;
+    });
+  } else {
+    showInfo(tt('noSowMonth'));
   }
   render();
   renderGardenSpec();

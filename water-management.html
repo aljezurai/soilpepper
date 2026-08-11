@@ -768,8 +768,9 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
   padding: 0 !important;
   margin-left: auto;
 }
-/* remove the 14px spacer that creates empty space */
-.bed-slot div[style*="height:14px"], .bed-joined div[style*="height:14px"] {
+/* remove the 14px spacer that creates empty space (match both `height:14px` and normalized `height: 14px`) */
+.bed-slot div[style*="height:14px"], .bed-joined div[style*="height:14px"],
+.bed-slot div[style*="height: 14px"], .bed-joined div[style*="height: 14px"] {
   display: none !important;
 }
 /* plant chips inside beds — compact pill, subtle badge */
