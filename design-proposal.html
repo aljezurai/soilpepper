@@ -36,6 +36,7 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:3px;font-size:1.7em;}
 .section-header .title{flex:1;font-size:0.95em;font-weight:600;color:#e0e0d0;}
 .section-header .badge{font-size:0.6em;padding:2px 8px;border-radius:10px;font-weight:600;white-space:nowrap;}
 .badge-complete{background:rgba(129,199,132,0.2);color:#81c784;border:1px solid rgba(129,199,132,0.3);}
+/* NOTE 2026-08-11: .badge-complete + badgeComplete keys removed from markup (user: static 'Complete' badges removed) — CSS rule kept in case badges return as data-driven status later */
 .badge-progress{background:rgba(255,183,77,0.2);color:#ffb74d;border:1px solid rgba(255,183,77,0.3);}
 .badge-planned{background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.4);border:1px solid rgba(255,255,255,0.1);}
 .section-body{display:none;padding:0 16px 16px;border-top:1px solid #2a3a2a;line-height:1.6;font-size:0.85em;}
@@ -1580,7 +1581,7 @@ var T = {
     s1: '📋 Design Brief', s2: '🌍 Sector Analysis Summary', s3: '🏡 Zone Plan', s4: '💧 Water Strategy',
     s5: '🛤️ Access & Infrastructure', s6: '🌿 Species Selection', s7: '🌳 Guild Integration', s8: '🔥 Fire Safety',
     s9: '📅 Implementation Phasing', s10: '🧠 Design Rationale',
-    badgeComplete: '✅ Complete', siteOverview: 'Site Overview', designGoals: 'Design Goals', corePrinciples: 'Core Principles',
+    siteOverview: 'Site Overview', designGoals: 'Design Goals', corePrinciples: 'Core Principles',
     soLocation: 'Location:', soArea: 'Area:', soClimate: 'Climate:', soSoil: 'Soil:', soRainfall: 'Rainfall:', soBuilding: 'Building:', soFrost: 'Frost-free period:',
     soLocTxt: '<span id="dp-loc">Tuscany, Italy</span> — ~<span id="dp-alt">300</span>m altitude, hilly terrain, south-facing slope',
     soAreaTxt: '<span id="dp-area">1 hectare (10,000m²)</span>',
@@ -1704,7 +1705,7 @@ var T = {
     s1: 'Ontwerp', s2: 'Sectoranalyse samenvatting', s3: 'Zoneplan', s4: '💧 Waterstrategie',
     s5: '🛤️ Toegang & Infrastructuur', s6: '🌿 Soortenselectie', s7: '🌳 Gilde-integratie', s8: '🔥 Brandveiligheid',
     s9: 'Fasering implementatie', s10: '🧠 Ontwerp-onderbouwing',
-    badgeComplete: '✅ Compleet', siteOverview: 'Locatieoverzicht', designGoals: 'Ontwerpdoelen', corePrinciples: 'Kernprincipes',
+    siteOverview: 'Locatieoverzicht', designGoals: 'Ontwerpdoelen', corePrinciples: 'Kernprincipes',
     soLocation: 'Locatie:', soArea: 'Oppervlakte:', soClimate: 'Klimaat:', soSoil: 'Grond:', soRainfall: 'Neerslag:', soBuilding: 'Gebouw:', soFrost: 'Vorstvrije periode:',
     soLocTxt: '<span id="dp-loc">Toscane, Italië</span> — ~<span id="dp-alt">300</span>m hoogte, heuvelachtig terrein, helling op het zuiden',
     soAreaTxt: '<span id="dp-area">1 hectare (10.000m²)</span>',
@@ -1870,7 +1871,7 @@ function applyI18nDP() {
   <div class="section-header open" onclick="toggleSection(this)">
     <span class="arrow">▶</span>
     <span class="title" data-i18n="s1">📋 Design Brief</span>
-    <span class="badge badge-complete">✅ Complete</span>
+    
   </div>
   <div class="section-body open">
     <h3 data-i18n="siteOverview">Site Overview</h3>
@@ -1913,7 +1914,7 @@ function applyI18nDP() {
   <div class="section-header" onclick="toggleSection(this)">
     <span class="arrow">▶</span>
     <span class="title" data-i18n="s2">🌍 Sector Analysis Summary</span>
-    <span class="badge badge-complete">✅ Complete</span>
+    
   </div>
   <div class="section-body">
     <p><span data-i18n="s2Intro">The site's <strong>south-facing slope</strong> at ~300m altitude in Tuscany creates a unique set of sector influences. 9 sectors — 6 directional and 3 topographical — define the design constraints and opportunities. The south-facing aspect is the dominant advantage: maximum solar gain, natural shelter from cold north winds, and excellent frost drainage.</span></p>
@@ -1945,7 +1946,7 @@ function applyI18nDP() {
   <div class="section-header" onclick="toggleSection(this)">
     <span class="arrow">▶</span>
     <span class="title" data-i18n="s3">🏡 Zone Plan</span>
-    <span class="badge badge-complete">✅ Complete</span>
+    
   </div>
   <div class="section-body">
     <p><span data-i18n="s3Intro">Zones are arranged from the building (Zone 0) outward, following the south-facing slope. The warmest, most accessible areas closest to the house host the most intensive production. Outer zones transition to managed woodland, firebreak, and wild corridors.</span></p>
@@ -1997,7 +1998,7 @@ function applyI18nDP() {
   <div class="section-header" onclick="toggleSection(this)">
     <span class="arrow">▶</span>
     <span class="title" data-i18n="s4">💧 Water Strategy</span>
-    <span class="badge badge-complete">✅ Complete</span>
+    
   </div>
   <div class="section-body">
     <p><span data-i18n="s4Intro">Four water sources provide <strong>excellent water security</strong> for the 1ha site. The system is designed around gravity-fed irrigation, with the irrigation pond at the highest point of the property. Annual rainfall on the 1ha is <span data-water="rain">8,000</span> m³ — even a fraction captured by swales makes the system robust.</span></p>
@@ -2050,7 +2051,7 @@ function applyI18nDP() {
   <div class="section-header" onclick="toggleSection(this)">
     <span class="arrow">▶</span>
     <span class="title" data-i18n="s5">🛤️ Access & Infrastructure</span>
-    <span class="badge badge-complete">✅ Complete</span>
+    
   </div>
   <div class="section-body">
     <h4 data-i18n="accH4">Access</h4>
@@ -2083,7 +2084,7 @@ function applyI18nDP() {
   <div class="section-header" onclick="toggleSection(this)">
     <span class="arrow">▶</span>
     <span class="title" data-i18n="s6">🌿 Species Selection</span>
-    <span class="badge badge-complete">✅ Complete</span>
+    
   </div>
   <div class="section-body">
     <p><span data-i18n="s6Intro">The species database contains <strong><span data-count="species">256</span> species</strong> with 10 filter dimensions (soil type, category, sun, water, function, season, perennial, N-fixer, fire-resistant, native). 31 species were formally assessed for suitability. Key selections by function:</span></p>
@@ -2145,7 +2146,7 @@ function applyI18nDP() {
   <div class="section-header" onclick="toggleSection(this)">
     <span class="arrow">▶</span>
     <span class="title" data-i18n="s7">🌳 Guild Integration</span>
-    <span class="badge badge-complete">✅ Complete</span>
+    
   </div>
   <div class="section-body">
     <p><span data-i18n="s7Intro"><strong>13 tree guilds</strong> form the backbone of the orchard, each with a 3-ring structure: inner (support/companion), mid (guild-specific), and outer (canopy/edge). The guild system creates self-regulating, low-maintenance ecosystems around each tree.</span></p>
@@ -2201,7 +2202,7 @@ function applyI18nDP() {
   <div class="section-header" onclick="toggleSection(this)">
     <span class="arrow">▶</span>
     <span class="title" data-i18n="s8">🔥 Fire Safety</span>
-    <span class="badge badge-complete">✅ Complete</span>
+    
   </div>
   <div class="section-body">
     <p><span data-i18n="s8Intro"><strong>Wildfire risk is REAL in Tuscany.</strong> The combination of hot, dry summers (Jul–Sep peak), dry Mediterranean vegetation, and the Sirocco wind from the SE creates a significant fire sector. The south-facing slope also means vegetation is drier and more combustible.</span></p>
@@ -2252,7 +2253,7 @@ function applyI18nDP() {
   <div class="section-header" onclick="toggleSection(this)">
     <span class="arrow">▶</span>
     <span class="title" data-i18n="s9">📅 Implementation Phasing</span>
-    <span class="badge badge-complete">✅ Complete</span>
+    
   </div>
   <div class="section-body">
     <p><span data-i18n="s9Intro">Three-year phased implementation prioritising infrastructure first (water, access, fire safety), then production systems (orchard, guilds), then maturation and fine-tuning.</span></p>
@@ -2318,7 +2319,7 @@ function applyI18nDP() {
   <div class="section-header" onclick="toggleSection(this)">
     <span class="arrow">▶</span>
     <span class="title" data-i18n="s10">🧠 Design Rationale</span>
-    <span class="badge badge-complete">✅ Complete</span>
+    
   </div>
   <div class="section-body">
     <p><span data-i18n="s10Intro">Key design decisions and the reasoning behind them. Each choice is rooted in the site's specific conditions: climate, topography, soil, and the client's goals for self-sufficiency and resilience.</span></p>
