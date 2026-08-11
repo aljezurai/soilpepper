@@ -2422,10 +2422,13 @@ function renderBeds() {
     const row = document.createElement('div');
     row.className = 'bed-row';
 
-    // Label + join toggle
+    // Label + join toggle — show the bed-number range instead of M1-A etc. (2026-08-11)
     const label = document.createElement('div');
     label.className = 'bed-label';
-    label.textContent = `${name} · ${tt(type)}`;
+    // compute this row's bed numbers: split = 2 beds, joined = 1 bed
+    const startNum = bedNum + 1;
+    const endNum = joined ? startNum : bedNum + 2;
+    label.textContent = `${startNum}${joined ? '' : '–' + endNum} · ${tt(type)}`;
     row.appendChild(label);
 
     const joinBtn = document.createElement('button');
