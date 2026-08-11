@@ -141,6 +141,15 @@ body {
     width: 100% !important;
     aspect-ratio: 1 / 1 !important;
   }
+  /* swale explanation cards — single column + larger text on mobile (user 2026-08-11) */
+  .swale-explain {
+    grid-template-columns: 1fr !important;
+    font-size: 1.0em !important;
+    line-height: 1.65 !important;
+  }
+  .swale-explain > div {
+    padding: 14px 16px !important;
+  }
 }
 h1, h2, h3, h4, h5, .title, [class*="title"] {
   font-family: var(--sf-font-head) !important;

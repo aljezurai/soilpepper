@@ -229,6 +229,15 @@ body {
     width: 100% !important;
     aspect-ratio: 1 / 1 !important;
   }
+  /* swale explanation cards — single column + larger text on mobile (user 2026-08-11) */
+  .swale-explain {
+    grid-template-columns: 1fr !important;
+    font-size: 1.0em !important;
+    line-height: 1.65 !important;
+  }
+  .swale-explain > div {
+    padding: 14px 16px !important;
+  }
 }
 h1, h2, h3, h4, h5, .title, [class*="title"] {
   font-family: var(--sf-font-head) !important;
@@ -2415,7 +2424,7 @@ function showInfo(id) {
 <!-- ═══════════════════════════════════════════════════════════ -->
 
 <h2 style="text-align:center;color:var(--accent-teal);margin:30px auto 5px;font-size:1.3em;font-family:var(--font-head);"><span data-i18n="swaleSection">📝 Swale Cross-Section — How It Works</span></h2>
-<p style="text-align:center;color:var(--text-dim);margin-bottom:15px;font-size:0.85em;"><span data-i18n="swaleIntro">A swale is a ditch dug ON CONTOUR. It stops rainwater running downhill and lets it soak into the soil.</span></p>
+<p style="text-align:center;color:var(--text-dim);margin-bottom:15px;font-size:0.95em;"><span data-i18n="swaleIntro">A swale is a ditch dug ON CONTOUR. It stops rainwater running downhill and lets it soak into the soil.</span></p>
 
 <div style="max-width:1100px;margin:0 auto;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:30px 20px;">
 
@@ -2542,7 +2551,7 @@ function showInfo(id) {
 </svg>
 
 <!-- Explanation text -->
-<div style="margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:15px;font-size:0.85em;line-height:1.6;color:var(--text-dim);">
+<div class="swale-explain" style="margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:15px;font-size:0.95em;line-height:1.6;color:var(--text-dim);">
   <div style="background:var(--bg-card-hover);padding:12px 15px;border-radius:var(--radius);">
     <strong style="color:var(--accent-teal);">📍 Where:</strong> On contour — following a line of equal elevation across the hill. Never going up or down.
   </div>
@@ -2569,7 +2578,7 @@ function showInfo(id) {
   </div>
 </div>
 
-<div style="margin-top:15px;text-align:center;font-size:0.8em;color:var(--text-dim);">
+<div style="margin-top:15px;text-align:center;font-size:0.9em;color:var(--text-dim);">
   <span data-i18n="noSwales">Without swales: rain runs off the hill → erosion, dry soil.</span><br>
   <span data-i18n="withSwales">With swales: rain stops at each swale → soaks in → soil stays moist for weeks. Trees on berms thrive.</span>
 </div>
