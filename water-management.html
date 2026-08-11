@@ -33,6 +33,12 @@ h1 { font-family: var(--font-head); text-align: center; color: var(--accent-teal
 .legend-color { width: 18px; height: 18px; border-radius: 3px; border: 1px solid rgba(255,255,255,0.2); }
 .canvas { max-width: 1100px; margin: 0 auto; }
 .plot { position: relative; width: 100%; aspect-ratio: 10/11; background: linear-gradient(170deg, #4a5b3a 0%, #5d6e3e 30%, #6b7e4e 60%, #7a8e5e 100%); border-radius: 12px; border: 3px solid #33691e; overflow: hidden; }
+/* MOBILE: site-map schematic is illegible at phone width — hide canvas + its
+   plan-toggle so stats → swale spec flow directly (user 2026-08-11) */
+@media(max-width:768px){
+  .canvas { display: none !important; }
+  .plan-toggle-wrap { display: none !important; }
+}
 .element { position: absolute; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-weight: 600; padding: 8px; cursor: pointer; transition: all 0.3s; }
 .element:hover { transform: scale(1.03); z-index: 20; filter: brightness(1.2); }
 .label { font-size: 0.95em; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
