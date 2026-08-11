@@ -1515,10 +1515,10 @@ body {
   <span class="plot-info" id="plot-info">Plot: —</span>
   <button class="btn" onclick="openSetup()"><span data-i18n="plotSetup">⚙️ Plot Setup</span></button>
   <button class="btn" onclick="openWaterSetup()"><span data-i18n="waterSetup">💧 Water Setup</span></button>
-  <button class="btn" onclick="exportPlan()"><span data-i18n="export">📤 Export</span></button>
-  <button class="btn" onclick="document.getElementById('import-file').click()"><span data-i18n="import">📥 Import</span></button>
-  <button class="btn btn-backup" onclick="backupAll()"><span data-i18n="backupAll">💾 Backup alles</span></button>
-  <button class="btn btn-restore" onclick="document.getElementById('restore-file').click()"><span data-i18n="restoreAll">📥 Herstel alles</span></button>
+  <button class="btn" onclick="exportPlan()"><span data-i18n="export">📤 Download design</span></button>
+  <button class="btn" onclick="document.getElementById('import-file').click()"><span data-i18n="import">📥 Upload design</span></button>
+  <button class="btn btn-backup" onclick="backupAll()"><span data-i18n="backupAll">💾 Backup data</span></button>
+  <button class="btn btn-restore" onclick="document.getElementById('restore-file').click()"><span data-i18n="restoreAll">📥 Upload data</span></button>
   <input type="file" id="import-file" accept=".json,application/json" style="display:none" onchange="importPlan(event)">
   <input type="file" id="restore-file" accept=".json,application/json" style="display:none" onchange="restoreBackup(event)">
 </div>
@@ -1799,7 +1799,7 @@ var T = {
   en: {
     title: '🗺️ Masterplan', plotSetup: '⚙️ Plot Setup', waterSetup: '💧 Water Setup',
     subtitle: 'Divide the plot into cells and assign a function to each — the whole design on one map.',
-    export: '📤 Export', import: '📥 Import', backupAll: '💾 Backup all', restoreAll: '📥 Restore all', backupDone: '💾 Backup downloaded — keep it safe', viewFunctions: '🎨 Functions', viewZones: '🧭 Zones',
+    export: '📤 Download design', import: '📥 Upload design', backupAll: '💾 Backup data', restoreAll: '📥 Upload data', backupDone: '💾 Backup downloaded — keep it safe', viewFunctions: '🎨 Functions', viewZones: '🧭 Zones',
     viewSoil: '🪨 Soil', viewSectors: '🌪️ Sectors', suggestZones: '✨ Suggest Zones', undo: '↩️ Undo', tutorial: 'Help',
     cellAssignment: 'Cell Assignment', function: 'Function', zone: 'Zone', soilType: 'Soil type',
     label: 'Label (optional)', guildTree: 'Guild Tree', openGuild: '📂 Open Guild Diagram →',
@@ -1841,7 +1841,7 @@ var T = {
   nl: {
     title: 'Masterplan', plotSetup: 'Jouw tuinontwerp', waterSetup: 'Waterbeheer',
     subtitle: 'Verdeel het perceel in cellen en ken aan elke cel een functie toe — het hele ontwerp op één kaart.',
-    export: 'Downloaden', import: 'Uploaden', backupAll: '💾 Backup alles', restoreAll: '📥 Herstel alles', backupDone: '💾 Backup gedownload — bewaar hem goed', viewFunctions: '🎨 Functies', viewZones: '🧭 Zones',
+    export: '📤 Download design', import: '📥 Upload design', backupAll: '💾 Backup data', restoreAll: '📥 Upload data', backupDone: '💾 Backup gedownload — bewaar hem goed', viewFunctions: '🎨 Functies', viewZones: '🧭 Zones',
     viewSoil: '🪨 Grond', viewSectors: '🌪️ Sectoren', suggestZones: '✨ Stel zones voor', undo: '↩️ Ongedaan maken', tutorial: 'Help',
     cellAssignment: 'Celtoewijzing', function: 'Functie', zone: 'Zone', soilType: 'Grondsoort',
     label: 'Label (optioneel)', guildTree: 'Plantengildes', openGuild: 'Plantengilde openen',
