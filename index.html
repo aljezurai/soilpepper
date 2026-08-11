@@ -42,6 +42,7 @@ a{text-decoration:none}
 .hero p{color:var(--sf-ink);font-size:14.5px;line-height:1.65;margin:0 0 10px;text-align:left}
 .hero p strong{color:var(--sf-header-2)}
 .privacy{margin-top:16px;background:var(--sf-card-alt);border:1.5px solid var(--sf-border);border-radius:10px;padding:11px 16px;font-size:12.5px;color:var(--sf-ink-soft);line-height:1.6}
+.story-band{margin-top:12px;background:var(--sf-card-alt);border:1.5px solid var(--sf-border);border-left:3px solid var(--sf-header-2);border-radius:10px;padding:12px 16px;font-size:14px;font-weight:600;color:var(--sf-header);line-height:1.5;text-align:center}
 
 /* ── REGION BAR (between hero and sections) ── */
 .region-bar{display:flex;align-items:center;justify-content:center;gap:10px;margin:16px 0 26px;flex-wrap:wrap}
@@ -109,7 +110,7 @@ a{text-decoration:none}
     <span class="pepper">🌶️</span>
     <div>
       <div class="logo">SOILPEPPER</div>
-      <div class="tagline" data-i18n="brandSmall">Permaculture Design Toolkit</div>
+      <div class="tagline" data-i18n="brandSmall">Design and run your own permaculture project</div>
     </div>
   </div>
 </header>
@@ -119,11 +120,12 @@ a{text-decoration:none}
   <!-- HERO -->
   <div class="hero">
     <div class="chili">🌶️</div>
-    <h1>SOILPEPPER — <span data-i18n="h1Sub">Permaculture Design Toolkit</span></h1>
+    <h1>SOILPEPPER — <span data-i18n="h1Sub">Design and run your own permaculture project</span></h1>
     <p data-i18n="heroP1"></p>
     <p data-i18n="heroP2"></p>
     <p data-i18n="heroP3"></p>
     <div class="privacy" data-i18n="privacyNote"></div>
+    <div class="story-band" data-i18n="storyBand"></div>
   </div>
 
   <!-- REGION BAR -->
@@ -287,10 +289,10 @@ var REGION = (IQ.get('region') === 'netherlands' || IQ.get('region') === 'tuscan
 var LANG = REGION === 'netherlands' ? 'nl' : 'en';
 var T = {
   en: {
-    brandSmall: 'Design your vegetable garden & orchard', h1Sub: 'Design your vegetable garden & orchard',
-    heroP1: 'Plan a permaculture site from blank plot to beautiful tree guilds and vegetable garden beds — <strong>no account, no server, no data leaving your device.</strong> At this moment you can choose from two presets. One for Tuscany (Mediterranean) and one for The Netherlands. More will follow.',
-    heroP2: 'The real planning is easiest done on your desktop. Relaxed, on a big screen, overlooking your garden while sitting down with a cup of morning coffee (or tea). The field tools are specifically designed to help you out in the field. You can download your design easily on your smartphone and take it with you. Offline, once downloaded you do not need any internet. Great, right?',
-    heroP3: 'We designed the tool to be as easy for you as possible. Helping you with the choices that you have to make. We hope you like it!',
+    brandSmall: 'Design and run your own permaculture project — from blank plot to working vegetable garden and more', h1Sub: 'Design and run your own permaculture project — from blank plot to working vegetable garden and more',
+    heroP1: 'We wanted to start a vegetable garden but couldn\'t find a tool that actually worked for us. So we built one ourselves — based on real experience in the field. That\'s SOILPEPPER: a real workbench for a real plot, ready for yours. Choose a preset, or start from scratch — <strong>no account, no server, no data leaving your device.</strong>',
+    heroP2: 'Plan on your desktop — relaxed, on a big screen, coffee in hand. Then download your design to your phone and take it outside. Offline, once downloaded, you don\'t need any internet at all. The field tools are built for easy tapping in the garden, not wrestling with a laptop.',
+    heroP3: 'Start with one of our presets — Tuscany (Mediterranean) or The Netherlands (temperate) — then make it yours. More presets are on the way.',
     nav0: 'Master Plan', nav1: 'Design Proposal', nav2: 'Sector Analysis', nav3: 'Helicopter View', nav4: 'Water Management', nav5: 'Plantrelations', nav6: 'Trees and around', nav7: 'Species Filter', nav8: 'Veg Planner',
     navDashboard: 'Dashboard', navOverview: '📊 Overview', navDesignSuite: '🖥️ Design Suite', navFieldTools: '📱 Field Tools',
     navDesignH: 'Design Suite (Desktop)', navFieldH: 'Field Tools (Mobile)',
@@ -323,6 +325,9 @@ var T = {
     climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
     climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
     climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
+    climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
+    climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
+    storyBand: 'Built from real field experience and our own necessity for a tool that works',
     privacyNote: '🔒 <strong>Privacy by design:</strong> everything runs in your browser. Your site plans, water calculations and garden layouts are stored in <strong>your browser\'s localStorage</strong> — they never touch a server. <strong>Back up your work</strong> with the 💾 Backup button in Master Plan, Water Management or Trees and around (one JSON file), and restore it anywhere.',
     secDesign: 'Design Suite', secDesignCount: 'desktop · 5 tools', secField: 'Field Tools', secFieldCount: 'mobile · 4 tools',
     statusComplete: 'Complete',
@@ -360,10 +365,10 @@ var T = {
     footCopy: 'SOILPEPPER · open-source permaculture toolkit'
   },
   nl: {
-    brandSmall: 'Ontwerp je eigen moestuin & boomgaard', h1Sub: 'Ontwerp je eigen moestuin & boomgaard',
-    heroP1: 'Ontwerp je eigen (moes)tuin van blanco perceel tot een prachtige omgeving vol boomgildes en groentebedden — <strong>geen account, geen server, geen data die je apparaat verlaat.</strong> Op dit moment kun je kiezen uit twee presets. Eén voor Toscane (Mediterraans klimaat) en één voor Nederland. Er volgen er meer. Bovendien kan je altijd alles aanpassen aan je eigen plek.',
-    heroP2: 'Het echte plannen doe je natuurlijk het makkelijkst op je desktop. Ontspannen, op een groot scherm, uitkijkend over je tuin met een kop koffie (of thee) op tafel. De tuintools zijn speciaal ontworpen om je buiten in het veld te helpen. Je downloadt je ontwerp eenvoudig op je smartphone en neemt het mee. Offline — éénmaal gedownload heb je geen internet (meer) nodig.',
-    heroP3: 'We hebben onze ontwerp- en beheertools zo makkelijk mogelijk voor je gemaakt. We hopen dat je ze met veel plezier en succes gaat gebruiken!',
+    brandSmall: 'Ontwerp en onderhoud je eigen permacultuur project — van blanco perceel tot werkende moestuin en meer.', h1Sub: 'Ontwerp en onderhoud je eigen permacultuur project — van blanco perceel tot werkende moestuin en meer.',
+    heroP1: 'We wilden onze eigen moestuin starten maar konden geen tool vinden die écht goed werkte voor ons. Dus bouwden we er zelf één — gebaseerd op echte ervaring in het veld. Dat is SOILPEPPER: een echte werkbank voor een echt perceel, klaar voor jouw project. Kies een preset of begin blanco — <strong>geen account, geen server, geen data die je apparaat verlaat.</strong>',
+    heroP2: 'Plan op je desktop — ontspannen, op een groot scherm, met een kop koffie op tafel. Download daarna je ontwerp op je telefoon en neem alle informatie mee naar buiten. Offline — éénmaal gedownload heb je geen internet meer nodig. De tuintools zijn specifiek ontworpen om in de tuin te gebruiken.',
+    heroP3: 'Begin met één van onze presets — Toscane (Mediterraans) of Nederland (gematigd) — en pas het daarna aan op jouw project. Meer presets komen eraan.',
     nav0: 'Masterplan', nav1: 'Ontwerpvoorstel', nav2: 'Sectoranalyse', nav3: 'Vogelperspectief', nav4: 'Waterbeheer', nav5: 'Plantrelaties', nav6: 'Bomen en eromheen', nav7: 'Soortendatabase', nav8: 'Moestuinplanner',
     navDashboard: 'Dashboard', navOverview: '📊 Overzicht', navDesignSuite: '🖥️ Ontwerpsuite', navFieldTools: '📱 Tuingereedschap',
     navDesignH: 'Ontwerpsuite (desktop)', navFieldH: 'Tuingereedschap (mobiel)',
@@ -396,6 +401,9 @@ var T = {
     climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
     climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
     climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
+    climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
+    climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
+    storyBand: 'Gebouwd op echte ervaring in het veld en vanuit onze eigen wens naar een tool die werkt.',
     privacyNote: '🔒 <strong>Privacy by design:</strong> alles draait in je browser. Je terreinplannen, waterberekeningen en tuinindelingen worden opgeslagen in <strong>de localStorage van je browser</strong> — ze raken nooit een server. <strong>Back-up je werk</strong> met de 💾 Back-upknop in Masterplan, Waterbeheer of Bomen en eromheen (één JSON-bestand) en herstel het overal.',
     secDesign: 'Ontwerpsuite', secDesignCount: 'desktop · 5 tools', secField: 'Tuingereedschap', secFieldCount: 'mobiel · 4 tools',
     statusComplete: 'Compleet',
@@ -522,6 +530,8 @@ function selectRegion(region) {
 })();
 </script>
 </body>
+
+
 
 
 
