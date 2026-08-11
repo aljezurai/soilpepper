@@ -2047,12 +2047,12 @@ function applyI18nDP() {
 
 <!-- ========== SECTION 1: DESIGN BRIEF ========== -->
 <div class="section">
-  <div class="section-header open" onclick="toggleSection(this)">
+  <div class="section-header" onclick="toggleSection(this)">
     <span class="arrow">▶</span>
     <span class="title" data-i18n="s1">📋 Design Brief</span>
     
   </div>
-  <div class="section-body open">
+  <div class="section-body">
     <h3 data-i18n="siteOverview">Site Overview</h3>
     <p><strong data-i18n="soLocation">Location:</strong> <span data-i18n="soLocTxt"><span id="dp-loc">Tuscany, Italy</span> — ~<span id="dp-alt">300</span>m altitude, hilly terrain, south-facing slope</span></p>
     <p><strong data-i18n="soArea">Area:</strong> <span data-i18n="soAreaTxt"><span id="dp-area">1 hectare (10,000m²)</span></span></p>
@@ -2560,10 +2560,7 @@ function toggleSection(header) {
   body.classList.toggle('open');
 }
 
-// Auto-open first section on load
-document.addEventListener('DOMContentLoaded', function() {
-  // Already open by default
-});
+// All sections start closed by default (2026-08-11) — user wants them collapsed on load
 </script>
 
 <!-- AUTO-COUNT: fills [data-count] spans from plants.json at load -->
