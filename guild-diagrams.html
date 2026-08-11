@@ -235,12 +235,6 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:3px;font-size:1.5em;}
 .info-card .companion-list{display:flex;flex-wrap:wrap;gap:3px;margin-top:5px;}
 .info-card .companion-chip{cursor:pointer;padding:2px 6px;border-radius:4px;font-size:0.65em;background:#0d1b2a;border:1px solid #2a3a2a;color:#aed581;transition:all 0.15s;}
 .info-card .companion-chip:hover{background:#33691e;border-color:#4a8a2e;}
-/* why-this-companion reasons (2026-08-11) */
-.info-card .companion-chip-wrap{cursor:pointer;padding:3px;border-radius:5px;}
-.info-card .companion-chip-wrap:hover{background:rgba(90,138,74,0.15);}
-.info-card .companion-why{display:flex;flex-direction:column;gap:1px;margin-top:2px;padding-left:4px;}
-.info-card .why-item{font-size:0.58em;color:#8a9a82;line-height:1.3;}
-.info-card .why-warn{font-size:0.58em;color:#e67e6a;font-weight:600;line-height:1.3;}
 .ctx-btn{padding:6px 10px;cursor:pointer;border-radius:4px;font-size:0.8em;color:#c8d8c0;transition:background .15s;}
 .ctx-btn:hover{background:rgba(255,255,255,0.06);}
 .region-btn{padding:4px 10px;border-radius:6px;border:1px solid #2a3a2a;background:#0d1b2a;color:rgba(255,255,255,0.4);cursor:pointer;font-size:0.72em;transition:all .2s;}
@@ -1517,10 +1511,7 @@ var T = {
     roleErosion: 'Erosion control', roleEvergreen: 'Evergreen shelter',
     needN: 'Nitrogen', needK: 'Potassium', needPrep: 'Deep soil prep', needShade: 'Shade as seedling',
     needWind: 'Wind protection', needSupport: 'Support structure', needGround: 'Ground cover', needPoll: 'Pollination',
-    needMyco: 'Mycorrhizal inoculation', needRich: 'Rich soil', needMoist: 'Moisture retention',
-    whyGives: 'Gives', whyNeeds: 'needs', whyDoc: 'Documented companion', whyAvoid: '⚠ Antagonist — avoid together',
-    needShade2: 'Shade', needPartShade: 'Partial shade', needWeedSup: 'Weed suppression', needPestRep: 'Pest repellent',
-    needErosion: 'Erosion control', needSoilStruct: 'Soil structure', needShelter: 'Shelter', needCrossPoll: 'Cross-pollination'
+    needMyco: 'Mycorrhizal inoculation', needRich: 'Rich soil', needMoist: 'Moisture retention'
   },
   nl: {
     helpCard: 'Help',
@@ -1551,16 +1542,13 @@ var T = {
     roleErosion: 'Erosiebestrijding', roleEvergreen: 'Wintergroene beschutting',
     needN: 'Stikstof', needK: 'Kalium', needPrep: 'Diepe grondbewerking', needShade: 'Schaduw als zaailing',
     needWind: 'Windbescherming', needSupport: 'Steunstructuur', needGround: 'Bodembedekker', needPoll: 'Bestuiving',
-    needMyco: 'Mycorrhiza-inoculatie', needRich: 'Voedzame grond', needMoist: 'Vochthoudendheid',
-    whyGives: 'Geeft', whyNeeds: 'heeft nodig', whyDoc: 'Gedocumenteerde compagnon', whyAvoid: '⚠ Antagonist — vermijd samen',
-    needShade2: 'Schaduw', needPartShade: 'Halfschaduw', needWeedSup: 'Onkruidonderdrukking', needPestRep: 'Plaagwerend',
-    needErosion: 'Erosiebestrijding', needSoilStruct: 'Bodemstructuur', needShelter: 'Beschutting', needCrossPoll: 'Kruisbestuiving'
+    needMyco: 'Mycorrhiza-inoculatie', needRich: 'Voedzame grond', needMoist: 'Vochthoudendheid'
   }
 };
 function tt(k) { return (T[LANG] && T[LANG][k] !== undefined) ? T[LANG][k] : (T.en[k] !== undefined ? T.en[k] : k); }
 function spName(s) { return (LANG === 'nl' && s.nameNL) ? s.nameNL : (s.name || s.key); }
 function roleLbl(r) { var m = { 'n-fixer':'roleNfixer','minerals-accumulator':'roleAccum','biomass':'roleBiomass','mulch':'roleMulch','light-shade':'roleLightShade','deep-shade':'roleDeepShade','windbreak':'roleWindbreak','root-aeration':'roleRootAer','ground-cover':'roleGround','weed-suppression':'roleWeedSup','pollinator-attractor':'rolePoll','beneficial-habitat':'roleHabitat','pest-repellent':'rolePestRep','support':'roleSupport','trap-crop':'roleTrap','mycorrhizal-host':'roleMyco','erosion-control':'roleErosion','evergreen-shelter':'roleEvergreen' }[r]; return m ? tt(m) : r; }
-function needLbl(n) { var m = { 'nitrogen':'needN','potassium':'needK','deep-soil-prep':'needPrep','shade-as-seedling':'needShade','wind-protection':'needWind','support':'needSupport','ground-cover':'needGround','pollination':'needPoll','mycorrhizal-inoculation':'needMyco','rich-soil':'needRich','moisture-retention':'needMoist','shade':'needShade2','partial-shade':'needPartShade','shade-to-part-shade':'needPartShade','sun-to-part-shade':'needPartShade','weed-suppression':'needWeedSup','pest-repellent':'needPestRep','erosion-control':'needErosion','soil-structure':'needSoilStruct','shelter':'needShelter','cross-pollination':'needCrossPoll','cross-pollinator-within-30m':'needCrossPoll' }[n]; return m ? tt(m) : n; }
+function needLbl(n) { var m = { 'nitrogen':'needN','potassium':'needK','deep-soil-prep':'needPrep','shade-as-seedling':'needShade','wind-protection':'needWind','support':'needSupport','ground-cover':'needGround','pollination':'needPoll','mycorrhizal-inoculation':'needMyco','rich-soil':'needRich','moisture-retention':'needMoist' }[n]; return m ? tt(m) : n; }
 /* ============ UNIFIED BACKUP / RESTORE (2026-08-08) ============ */
 function gdBackup() {
   var keys = [];
@@ -1774,49 +1762,6 @@ function scoreGuildCompanion(comKey, treeKey, placedKeys) {
   return Math.round(s * 10) / 10;
 }
 
-// Human-readable "why this companion?" reasons for a pair (comKey in treeKey's guild). 2026-08-11
-// Maps a companion's GIVES role to the NEEDS it satisfies (the two vocabularies differ, so we translate).
-var GIVES_SATISFIES = {
-  'n-fixer': ['nitrogen'],
-  'biomass': ['rich-soil', 'nutrient-rich-sediment'],
-  'mulch': ['moisture-retention', 'rich-soil'],
-  'mulch-biomass': ['moisture-retention', 'rich-soil'],
-  'light-shade': ['shade-as-seedling', 'partial-shade', 'shade-to-part-shade', 'sun-to-part-shade'],
-  'deep-shade': ['shade', 'shade-to-part-shade'],
-  'windbreak': ['wind-protection'],
-  'root-aeration': ['deep-soil-prep', 'soil-structure'],
-  'ground-cover': ['weed-suppression', 'moisture-retention'],
-  'weed-suppression': ['weed-suppression', 'regular-mowing'],
-  'pollinator-attractor': ['pollination', 'cross-pollination', 'cross-pollinator-within-30m'],
-  'pest-repellent': ['pest-repellent'],
-  'support': ['support', 'climbing-cover'],
-  'mycorrhizal-host': ['mycorrhizal-inoculation'],
-  'erosion-control': ['erosion-control', 'trafficability'],
-  'evergreen-shelter': ['wind-protection', 'shade', 'shelter'],
-  'minerals-accumulator': ['potassium', 'rich-soil'],
-  'soil-structure': ['deep-soil-prep', 'tolerates-most-soils']
-};
-function whyCompanion(comKey, treeKey) {
-  var a = SPECIES[comKey], b = SPECIES[treeKey];
-  var reasons = [];
-  if (!a || !a.guild || !b || !b.guild) return reasons;
-  var ag = a.guild, bg = b.guild;
-  var bNeeds = bg.needs || [];
-  (ag.gives || []).forEach(function(g) {
-    // direct token match, or via the semantic map
-    var satisfied = bNeeds.indexOf(g) >= 0 ? [g] : (GIVES_SATISFIES[g] || []).filter(function(n) { return bNeeds.indexOf(n) >= 0; });
-    satisfied.forEach(function(n) { reasons.push(tt('whyGives') + ' ' + roleLbl(g) + ' · ' + tt('whyNeeds') + ' ' + needLbl(n)); });
-  });
-  (bg.gives || []).forEach(function(g) {
-    var aNeeds = ag.needs || [];
-    var satisfied = aNeeds.indexOf(g) >= 0 ? [g] : (GIVES_SATISFIES[g] || []).filter(function(n) { return aNeeds.indexOf(n) >= 0; });
-    satisfied.forEach(function(n) { reasons.push(roleLbl(g) + ' → ' + tt('whyNeeds') + ' ' + needLbl(n)); });
-  });
-  if ((ag.companions || []).indexOf(treeKey) >= 0 || (bg.companions || []).indexOf(comKey) >= 0) reasons.push(tt('whyDoc'));
-  if ((ag.antagonists || []).indexOf(treeKey) >= 0 || (bg.antagonists || []).indexOf(comKey) >= 0) reasons.push(tt('whyAvoid'));
-  return reasons;
-}
-
 function rateScore(total) {
   if (total >= 12) return [tt('ratingExc'), '#5a8a4a'];
   if (total >= 6) return [tt('ratingGood'), '#c4a040'];
@@ -2010,13 +1955,8 @@ function renderInfo() {
       (currentGuild[r] || []).forEach(function(key) {
         var s = SPECIES[key];
         if (!s) return;
-        var why = whyCompanion(key, currentGuild.tree);
-        var whyHtml = why.length ? '<div class="companion-why">' + why.map(function(w) {
-          var warn = (w === tt('whyAvoid'));
-          return '<span class="' + (warn ? 'why-warn' : 'why-item') + '">' + w + '</span>';
-        }).join('') + '</div>' : '';
-        h += '<div class="companion-chip-wrap" onclick="showContext(\'' + key + '\',\'' + r + '\',' + (currentGuild[r].indexOf(key)) + ',event)">' +
-          '<span class="companion-chip">' + s.icon + ' ' + spName(s) + '</span>' + whyHtml + '</div>';
+        h += '<span class="companion-chip" onclick="showContext(\'' + key + '\',\'' + r + '\',' + (currentGuild[r].indexOf(key)) + ',event)">' +
+          s.icon + ' ' + spName(s) + '</span>';
       });
     });
     h += '</div>';
