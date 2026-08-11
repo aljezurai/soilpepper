@@ -2092,7 +2092,7 @@ function showInfo(key) {
     '<div style="display:flex;align-items:center;gap:8px"><span style="font-size:1.3em">' + s.icon + '</span>' +
     '<div><div style="font-size:1em;font-weight:700;color:#3a4a3a">' + s.name + '</div>' +
     '<div style="font-size:0.7em;color:#7a8a72"><em>' + (s.latin || '') + '</em></div></div></div>' +
-    '<span onclick="this.closest(\'div\').parentNode.remove()" style="cursor:pointer;color:#8a9a82;font-size:1.2em;padding:0 2px" title="Close">\u2715</span></div>' +
+    '<span onclick="this.closest(\'div\').parentNode.parentNode.remove()" style="cursor:pointer;color:#8a9a82;font-size:1.2em;padding:0 2px" title="Close">\u2715</span></div>' +
     '<div style="margin-bottom:8px"><span style="color:#7a8a72;font-size:0.65em;text-transform:uppercase;letter-spacing:0.5px">' + tt('family') + '</span><div style="color:#3a4a3a;font-size:0.85em;font-weight:600">' + (s.family || '—') + '</div></div>' +
     '<div style="margin-bottom:8px"><span style="color:#7a8a72;font-size:0.65em;text-transform:uppercase;letter-spacing:0.5px">' + tt('roles') + '</span><div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px">' +
     gives.map(function(g) { return '<span style="display:inline-block;padding:3px 10px;border-radius:999px;background:#e8f0e4;border:1px solid #bcd4b4;color:#3e6a46;font-size:0.72em;font-weight:600">' + roleLbl(g) + '</span>'; }).join('') + '</div></div>' +
