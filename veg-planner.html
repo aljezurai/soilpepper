@@ -203,8 +203,8 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:4px;font-size:1.4em;}
 .action-bar{display:flex;gap:6px;margin-top:10px;justify-content:center;flex-wrap:wrap;}
 .btn{display:inline-flex;align-items:center;gap:4px;padding:6px 14px;border:1px solid rgba(255,255,255,0.2);border-radius:6px;cursor:pointer;font-size:0.7em;background:rgba(255,255,255,0.05);color:#ccc;transition:all .2s;}
 .btn:hover{background:rgba(255,255,255,0.1);}
-.btn-primary{background:rgba(129,199,132,0.15);border-color:#81c784;color:#c5e1a5;}
-.btn-primary:hover{background:rgba(129,199,132,0.25);}
+body .btn-primary{background:#f4c92f !important;border-color:#d9a800 !important;color:#000 !important;font-weight:700;}
+body .btn-primary:hover{background:#e9ba22 !important;color:#000 !important;}
 .btn-danger{background:rgba(244,67,54,0.15);border-color:rgba(244,67,54,0.4);color:#ef5350;}
 .btn-danger:hover{background:rgba(244,67,54,0.25);}
 .btn.active-toggle{background:rgba(129,199,132,0.2);border-color:#81c784;color:#c5e1a5;}
@@ -1756,10 +1756,10 @@ body {
 
 <!-- Action bar -->
 <div class="action-bar">
-  <button class="btn btn-primary" onclick="exportLayout()">💾 <span data-i18n="exportJSON">Download backup</span></button>
-  <button class="btn" onclick="document.getElementById('import-input').click()">📂 <span data-i18n="importJSON">Upload backup</span></button>
+  <button class="btn btn-primary" onclick="exportLayout()">💾 <span data-i18n="exportJSON">Save data</span></button>
+  <button class="btn" onclick="document.getElementById('import-input').click()">📂 <span data-i18n="importJSON">Upload data</span></button>
   <input type="file" id="import-input" accept=".json" style="display:none" onchange="importLayout(event)">
-  <button class="btn" onclick="exportFieldView()" title="Download a standalone HTML viewer of this garden — works offline on your phone">📤 <span data-i18n="exportFV">Export Field View</span></button>
+  <button class="btn" onclick="exportFieldView()" title="Download a standalone HTML viewer of this garden — works offline on your phone">📤 <span data-i18n="exportFV">Download design</span></button>
   <button class="btn" id="sowharvest-toggle-btn" onclick="toggleSowHarvest()">🌱 <span data-i18n="showSH">Show Sow/Harvest</span></button>
   <button class="btn" onclick="resetDefault()">🔄 <span data-i18n="resetDefault">Reset Default</span></button>
   <button class="btn btn-danger" onclick="clearAll()">🗑️ <span data-i18n="clearAll">Clear All</span></button>
@@ -1926,8 +1926,8 @@ var T = {
     north: 'North (tallest plants)', south: 'South (full sun)',
     specTitle: 'Garden Layout — your dimensions',
     gridCell: 'Grid cell', backToPlan: 'Back to Master Plan',
-    exportJSON: 'Download backup', importJSON: 'Upload backup',
-    exportFV: 'Export Field View', exportICS: 'Export Calendar', exportFVTitle: 'Download a standalone HTML viewer of this garden — works offline on your phone',
+    exportJSON: 'Save data', importJSON: 'Upload data',
+    exportFV: 'Download design', exportICS: 'Export Calendar', exportFVTitle: 'Download a standalone HTML viewer of this garden — works offline on your phone',
     clearAll: 'Clear All', resetDefault: 'Reset Default',
     showCalendar: 'Show Calendar', showBeds: 'Show Beds',
     showSH: 'Show Sow/Harvest', noSowMonth: 'Nothing to sow this month', conflictLbl: '⚠️ Conflicts with:', sowMonthTitle: '🌱 Sow this month', hideSH: 'Hide Sow/Harvest',
@@ -1962,8 +1962,8 @@ var T = {
     north: 'Noord (hoogste planten)', south: 'Zuid (volle zon)',
     specTitle: 'Tuindimensies — jouw afmetingen',
     gridCell: 'Rastercel', backToPlan: 'Terug naar Masterplan',
-    exportJSON: 'Backup downloaden', importJSON: 'Backup uploaden',
-    exportFV: 'Export veldweergave', exportICS: 'Kalender exporteren', exportFVTitle: 'Download een losstaande HTML-viewer van deze tuin — werkt offline op je telefoon',
+    exportJSON: 'Save data', importJSON: 'Upload data',
+    exportFV: 'Download design', exportICS: 'Kalender exporteren', exportFVTitle: 'Download een losstaande HTML-viewer van deze tuin — werkt offline op je telefoon',
     clearAll: 'Alles wissen', resetDefault: 'Standaard herstellen',
     showCalendar: 'Toon kalender', showBeds: 'Toon bedden',
     showSH: 'Toon Zaaien/Oogsten', noSowMonth: 'Niets te zaaien deze maand', conflictLbl: '⚠️ Botst met:', sowMonthTitle: '🌱 Deze maand zaaien', hideSH: 'Verberg Zaaien/Oogsten',
