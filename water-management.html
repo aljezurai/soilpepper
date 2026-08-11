@@ -284,6 +284,26 @@ a.stat-help, a.stat-help:hover {
   border-color: #d9a800 !important;
   box-shadow: 0 1px 3px rgba(0,0,0,.25) !important;
 }
+/* right-aligned row for the Help card on tools without a stats row (2026-08-11) */
+.tool-help-row {
+  display: flex;
+  justify-content: flex-end;
+  max-width: 1180px;
+  margin: 0 auto 8px;
+}
+.tool-help-row .stat-help {
+  min-width: 90px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-decoration: none;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+@media(max-width:768px){ .tool-help-row .stat-help{ font-size: 0.85rem; } }
 
 /* ── Cards & panels ─────────────────────────────────────── */
 .card, [class*="card"], .panel, [class*="panel"], .modal, [class*="popup"],
@@ -1616,7 +1636,7 @@ var REGION = (WQ.get('region') === 'netherlands' || WQ.get('region') === 'tuscan
 var LANG = REGION === 'netherlands' ? 'nl' : 'en';
 var T = {
   en: {
-    title: '💧 Water Management System', subtitle: '4 water sources · Gravity-fed drip · ',
+    title: '💧 Water Management System', subtitle: '4 water sources · Gravity-fed drip · ', helpCard: 'Help',
     params: '⚙️ Water Parameters', balance: '⚖️ Water Balance', updateDiagram: '🔄 Update diagram',
     saveDefaults: '💾 Save as defaults', resetDefaults: '↩️ Reset to defaults', backupAll: '💾 Backup all', restoreAll: '📥 Restore all', backupDone: '💾 Backup downloaded — keep it safe',
     roofArea: 'Roof area (m²)', rainfall: 'Rainfall (mm/yr)', efficiency: 'Efficiency',
@@ -1652,7 +1672,7 @@ var T = {
     maint: '✅ Maintenance:', maintText: 'Minimal. Check berms after heavy rain in year 1-2. By year 3, tree roots hold everything together. Leaf litter filling the ditch is fine — it acts as mulch.'
   },
   nl: {
-    title: '💧 Waterbeheer', subtitle: '4 waterbronnen · Zwaartekracht-druppelirrigatie · ',
+    title: '💧 Waterbeheer', subtitle: '4 waterbronnen · Zwaartekracht-druppelirrigatie · ', helpCard: 'Help',
     params: '⚙️ Waterparameters', balance: '⚖️ Waterbalans', updateDiagram: '🔄 Diagram bijwerken',
     saveDefaults: '💾 Opslaan als standaard', resetDefaults: '↩️ Terug naar standaard', backupAll: '💾 Backup alles', restoreAll: '📥 Herstel alles', backupDone: '💾 Backup gedownload — bewaar hem goed',
     roofArea: 'Dakoppervlak (m²)', rainfall: 'Neerslag (mm/jaar)', efficiency: 'Efficiëntie',
@@ -1746,6 +1766,7 @@ function applyI18nWM() {
 </script>
 <h1 data-i18n="title" id="h1-title">💧 SOILPEPPER — Water Management System</h1>
 <p class="subtitle"><span data-i18n="subtitle">4 water sources · Gravity-fed drip · </span><span id="wm-plot">1 ha</span> · <span id="wm-alt">~300m altitude</span></p>
+<div class="tool-help-row"><a class="stat-help" href="water-tutorial.html" target="_blank" data-i18n="helpCard">Help</a></div>
 
 <!-- WATER PARAMETERS (what-if panel — reads tuscan-water-v1, never writes back automatically) -->
 <div class="params">
