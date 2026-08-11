@@ -339,12 +339,21 @@ header a, [class*="header"] a, .topbar a {
 }
 header a:hover, [class*="header"] a:hover { color: #cfe4d4 !important; }
 /* tutorial link in the Master Plan topbar — STRONG YELLOW, black text (2026-08-11).
-   Not the pale --sf-gold token — user asked for a clearly-yellow button. */
+   Not the pale --sf-gold token — user asked for a clearly-yellow button.
+   line-height + display match the sibling .btn buttons so height is identical (36px→32px). */
 .topbar a.btn-tutorial, .topbar a.btn-tutorial:hover {
   color: #000000 !important;
   background: #f4c92f !important;
   border-color: #d9a800 !important;
   box-shadow: 0 1px 3px rgba(0,0,0,.25) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: normal !important;
+  height: auto !important;
+  vertical-align: middle !important;
+  min-height: 32px !important;
+  box-sizing: border-box !important;
 }
 
 /* ── Cards & panels ─────────────────────────────────────── */
@@ -1659,7 +1668,7 @@ var T = {
     title: '🗺️ Master Plan Grid', plotSetup: '⚙️ Plot Setup', waterSetup: '💧 Water Setup',
     subtitle: 'Divide the plot into cells and assign a function to each — the whole design on one map.',
     export: '📤 Export', import: '📥 Import', backupAll: '💾 Backup all', restoreAll: '📥 Restore all', backupDone: '💾 Backup downloaded — keep it safe', viewFunctions: '🎨 Functions', viewZones: '🧭 Zones',
-    viewSoil: '🪨 Soil', viewSectors: '🌪️ Sectors', suggestZones: '✨ Suggest Zones', undo: '↩️ Undo', tutorial: '5 steps',
+    viewSoil: '🪨 Soil', viewSectors: '🌪️ Sectors', suggestZones: '✨ Suggest Zones', undo: '↩️ Undo', tutorial: 'Help',
     cellAssignment: 'Cell Assignment', function: 'Function', zone: 'Zone', soilType: 'Soil type',
     label: 'Label (optional)', guildTree: 'Guild Tree', openGuild: '📂 Open Guild Diagram →',
     vegGarden: '🥕 Vegetable Garden', openVeg: '🥕 Open Vegetable Garden Planner →',
@@ -1701,7 +1710,7 @@ var T = {
     title: 'Masterplan', plotSetup: 'Jouw tuinontwerp', waterSetup: 'Waterbeheer',
     subtitle: 'Verdeel het perceel in cellen en ken aan elke cel een functie toe — het hele ontwerp op één kaart.',
     export: 'Downloaden', import: 'Uploaden', backupAll: '💾 Backup alles', restoreAll: '📥 Herstel alles', backupDone: '💾 Backup gedownload — bewaar hem goed', viewFunctions: '🎨 Functies', viewZones: '🧭 Zones',
-    viewSoil: '🪨 Grond', viewSectors: '🌪️ Sectoren', suggestZones: '✨ Stel zones voor', undo: '↩️ Ongedaan maken', tutorial: '5 stappen',
+    viewSoil: '🪨 Grond', viewSectors: '🌪️ Sectoren', suggestZones: '✨ Stel zones voor', undo: '↩️ Ongedaan maken', tutorial: 'Help',
     cellAssignment: 'Celtoewijzing', function: 'Functie', zone: 'Zone', soilType: 'Grondsoort',
     label: 'Label (optioneel)', guildTree: 'Plantengildes', openGuild: 'Plantengilde openen',
     vegGarden: 'Moestuin', openVeg: 'Open moestuinplanner',
