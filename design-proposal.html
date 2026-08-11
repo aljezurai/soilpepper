@@ -1627,6 +1627,7 @@ var REGION = (PQ.get('region') === 'netherlands' || PQ.get('region') === 'tuscan
 var LANG = REGION === 'netherlands' ? 'nl' : 'en';
 var T = {
   en: {
+    helpCard: 'Help',
     title: '🌿 Design Proposal',
     completion: '🏗️ Design Completion', complete: '10/10 Sections — Complete',
     pDesignBrief: 'Design Brief', pSector: 'Sector Analysis', pZone: 'Zone Plan', pWater: 'Water Strategy',
@@ -1751,6 +1752,7 @@ var T = {
     y3li8: '<strong>🔄 Cycling:</strong> Compost system reaches steady state. Full nutrient cycling operational.'
   },
   nl: {
+    helpCard: 'Help',
     title: '🌿 Ontwerpvoorstel',
     completion: 'Afronding ontwerp', complete: '10/10 secties — compleet',
     pDesignBrief: 'Ontwerp', pSector: 'Sectoranalyse', pZone: 'Zoneplan', pWater: 'Waterstrategie',
@@ -1908,6 +1910,8 @@ function applyI18nDP() {
 }
 </script>
 <h1 data-i18n="title" id="h1-title">🌿 SOILPEPPER — Design Proposal</h1>
+
+<div class="tool-help-row"><a class="stat-help" href="design-proposal-tutorial.html" target="_blank" data-i18n="helpCard">Help</a></div>
 
 <!-- SUMMARY CARDS -->
 <div class="cards">

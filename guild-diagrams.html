@@ -1476,6 +1476,7 @@ var REGION = (GQ.get('region') === 'netherlands' || GQ.get('region') === 'tuscan
 var LANG = REGION === 'netherlands' ? 'nl' : 'en';
 var T = {
   en: {
+    helpCard: 'Help',
     title: '🌳 Trees and around', subtitle: 'Interactive Guild Builder · 256 species',
     selectTree: '🌿 Select Tree:', regAll: '🌍 All', regTus: '🇮🇹 Tuscany', regNl: '🇳🇱 Netherlands',
     reset: '↺ Reset to suggestion', backupAll: '💾 Backup all', restoreAll: '📥 Restore all', backupDone: '💾 Backup downloaded — keep it safe', legInner: 'Inner (trunk zone)', legMid: 'Mid (drip line)', legOuter: 'Outer (canopy edge)',
@@ -1506,6 +1507,7 @@ var T = {
     needMyco: 'Mycorrhizal inoculation', needRich: 'Rich soil', needMoist: 'Moisture retention'
   },
   nl: {
+    helpCard: 'Help',
     title: '🌳 Bomen en eromheen', subtitle: 'Interactieve Gilde-bouwer · 256 soorten',
     selectTree: '🌿 Kies boom:', regAll: '🌍 Alles', regTus: '🇮🇹 Toscane', regNl: '🇳🇱 Nederland',
     reset: '↺ Reset naar suggestie', backupAll: '💾 Backup alles', restoreAll: '📥 Herstel alles', backupDone: '💾 Backup gedownload — bewaar hem goed', legInner: 'Binnen (stamzone)', legMid: 'Midden (druppellijn)', legOuter: 'Buiten (kroonrand)',
@@ -1591,6 +1593,8 @@ function applyI18nGD() {
 }
 </script>
 <h1 data-i18n="title" id="h1-title">🌳 Trees and around</h1>
+
+<div class="tool-help-row"><a class="stat-help" href="guild-diagrams-tutorial.html" target="_blank" data-i18n="helpCard">Help</a></div>
 
 <!-- Controls -->
 <div class="controls">

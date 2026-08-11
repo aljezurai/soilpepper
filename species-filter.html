@@ -1741,6 +1741,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <h1 data-i18n="title" id="h1-title">🌿 Tuscan Species Database — Filter & Explore</h1>
 
+<div class="tool-help-row"><a class="stat-help" href="species-filter-tutorial.html" target="_blank" data-i18n="helpCard">Help</a></div>
+
 <div class="mobile-search-bar" id="mobile-search-bar">
   <input type="text" id="mobile-search" placeholder="🔍 Search species…" data-i18n="searchSp" oninput="renderCards()">
 </div>
@@ -1793,6 +1795,7 @@ var REGION = (urlParams.get('region') === 'netherlands' || urlParams.get('region
 var LANG = REGION === 'netherlands' ? 'nl' : 'en';
 var T = {
   en: {
+    helpCard: 'Help',
     title: '🌿 Species Database — Filter & Explore', search: '🔍 Search…', searchSp: '🔍 Search species…',
     count: 'Showing <strong>%1</strong> of <strong>%2</strong> species',
     clearFilters: '🗑️ Clear all filters', filters: '🔍 Filters', noMatches: 'No species match your filters',
@@ -1807,6 +1810,7 @@ var T = {
     perennial: '🌿 Perennial', nFixer: '🔄 N-fixer', fireResistant: '🔥 Fire Resistant'
   },
   nl: {
+    helpCard: 'Help',
     title: '🌿 Soortendatabase — Filter & Verken', search: '🔍 Zoeken…', searchSp: '🔍 Zoek soorten…',
     count: '<strong>%1</strong> van <strong>%2</strong> soorten',
     clearFilters: '🗑️ Wis alle filters', filters: '🔍 Filters', noMatches: 'Geen soorten passen bij je filters',

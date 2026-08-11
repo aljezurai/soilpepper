@@ -1708,6 +1708,8 @@ body {
 
 <h1 data-i18n-none="🥬 Vegetable Garden Planner" id="h1-title">🥬 <span data-i18n="vegPlanner">Vegetable Garden Planner</span> — <span id="bed-count">12</span> <span data-i18n="beds">Beds</span></h1>
 
+<div class="tool-help-row"><a class="stat-help" href="veg-planner-tutorial.html" target="_blank" data-i18n="helpCard">Help</a></div>
+
 <div class="main-layout">
   <!-- Plant Palette -->
   <div class="palette" id="palette">
@@ -1907,6 +1909,7 @@ const CATEGORIES_NL = {
 var LANG = (typeof regionFilter !== 'undefined' && regionFilter === 'netherlands') ? 'nl' : 'en';
 var T = {
   en: {
+    helpCard: 'Help',
     vegPlanner: 'Vegetable Garden Planner',
     beds: 'Beds', subDrag: 'Drag plants from the palette onto beds · Hover over a plant to remove · Click for details · Click days badge to set date',
     modules: 'Modules', rows6: '1 (6 rows)', rows12: '2 (12 rows)', rows18: '3 (18 rows)',
@@ -1942,6 +1945,7 @@ var T = {
     sowing: 'Sowing', depth: 'Depth', maturity: 'Maturity', days: 'days', beds: 'beds', slots: 'slots'
   },
   nl: {
+    helpCard: 'Help',
     vegPlanner: 'Moestuinplanner',
     beds: 'Bedden', subDrag: 'Sleep planten van het palet naar de bedden · Hover over een plant om te verwijderen · Klik voor details · Klik op de dagen-badge om datum te zetten',
     modules: 'Modules', rows6: '1 (6 rijen)', rows12: '2 (12 rijen)', rows18: '3 (18 rijen)',

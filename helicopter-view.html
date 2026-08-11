@@ -1543,6 +1543,8 @@ body {
 <style>#h1-title{display:none}</style>
 
 <h1 data-i18n="title" id="h1-title">🌍 SOILPEPPER — Helicopter View</h1>
+
+<div class="tool-help-row"><a class="stat-help" href="helicopter-view-tutorial.html" target="_blank" data-i18n="helpCard">Help</a></div>
 <script>
 // Masthead region pill (2026-08-09, rollout): ONLY the current region, gold.
 document.addEventListener('DOMContentLoaded', function() {
@@ -1600,6 +1602,7 @@ var REGION = (HQ.get('region') === 'netherlands' || HQ.get('region') === 'tuscan
 var LANG = REGION === 'netherlands' ? 'nl' : 'en';
 var T = {
   en: {
+    helpCard: 'Help',
     title: '🌍 Helicopter View', layers: 'Layers:', sun: '☀️ Sun', wind: '💨 Wind', fire: '🔥 Fire',
     frost: '❄️ Frost', water: '💧 Water', wildlife: '🦌 Wildlife', toggleAll: '🔄 Toggle All', resetView: '🏠 Reset View',
     legZ0: 'Z0 House', legZ1: 'Z1 Kitchen', legZ2: 'Z2 Orchard', legZ3: 'Z3 Field', legZ4: 'Z4 Semi-wild', legZ5: 'Z5 Wild',
@@ -1611,6 +1614,7 @@ var T = {
     thSector: 'Sector', thMitigation: 'Mitigation', thLocation: 'Location'
   },
   nl: {
+    helpCard: 'Help',
     title: '🌍 Vogelperspectief', layers: 'Lagen:', sun: '☀️ Zon', wind: '💨 Wind', fire: '🔥 Vuur',
     frost: '❄️ Vorst', water: '💧 Water', wildlife: '🦌 Wild', toggleAll: '🔄 Alles wisselen', resetView: '🏠 Reset weergave',
     legZ0: 'Z0 Huis', legZ1: 'Z1 Keuken', legZ2: 'Z2 Boomgaard', legZ3: 'Z3 Veld', legZ4: 'Z4 Half-wild', legZ5: 'Z5 Wild',
