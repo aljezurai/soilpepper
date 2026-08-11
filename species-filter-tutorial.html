@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SOILPEPPER — Species Filter tutorial</title>
+<style>
+:root{--sf-bg:#cdd8c8;--sf-card:#edf2e6;--sf-card-alt:#eef4ec;--sf-sage-soft:#dcead8;--sf-header:#2c4a32;--sf-header-2:#3e6a46;--sf-ink:#1e2c22;--sf-ink-soft:#4a5c4e;--sf-border:#d0dac8;--sf-border-strong:#8aa88c;--sf-accent:#c8492e;--sf-gold:#f5ead6;--sf-gold-ink:#8a6420;--sf-gold-border:#e0d0a8;--font-head:'Fraunces','Palatino',Georgia,serif;--font-body:'Nunito','Segoe UI',system-ui,sans-serif;--radius:16px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-body);background:var(--sf-bg);color:var(--sf-ink);line-height:1.5;min-height:100vh}
+.wrap{max-width:980px;margin:0 auto;padding:20px}
+.masthead{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--sf-header);border:2px solid #1e3624;border-radius:var(--radius);padding:14px 20px;margin-bottom:18px;box-shadow:0 2px 8px rgba(20,50,24,.2)}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{font-family:var(--font-head);color:#fff;font-size:1.4em;font-weight:700}
+.tagline{color:var(--sf-sage-soft);font-size:0.75em}
+.tut-badge{background:var(--sf-gold);color:var(--sf-gold-ink);border:2px solid var(--sf-gold-border);border-radius:999px;padding:4px 14px;font-size:0.78em;font-weight:700}
+h1{font-family:var(--font-head);color:var(--sf-header);text-align:center;margin:6px 0 2px}
+.sub{text-align:center;color:var(--sf-ink-soft);font-size:0.9em;margin-bottom:22px}
+.step{background:var(--sf-card);border:1.5px solid var(--sf-border);border-radius:14px;padding:16px 20px;margin-bottom:16px}
+.step-h{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.step-n{background:var(--sf-header-2);color:#fff;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.9em;flex-shrink:0}
+.step-t{font-family:var(--font-head);color:var(--sf-header);font-size:1.05em}
+.step-ico{font-size:1.3em}
+.step p{font-size:0.85em;color:var(--sf-ink-soft);margin-bottom:10px}
+.btnrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.mbtn{font-size:0.78em;padding:7px 14px;border-radius:10px;border:1.5px solid var(--sf-border-strong);background:var(--sf-card);color:var(--sf-ink);cursor:pointer;display:inline-flex;align-items:center;gap:5px}
+.mbtn.hi{outline:3px solid var(--sf-accent);outline-offset:2px;font-weight:700}
+.dims{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-top:12px}
+.dim{background:var(--sf-card-alt);border:1.5px solid var(--sf-border);border-radius:10px;padding:8px 10px;text-align:center}
+.dim .ico{font-size:1.2em;display:block;margin-bottom:3px}
+.dim .nm{font-size:0.72em;font-weight:700;color:var(--sf-header)}
+.tip{display:flex;gap:10px;align-items:flex-start;background:var(--sf-gold);border:1px solid var(--sf-gold-border);border-radius:10px;padding:10px 14px;font-size:0.8em;color:var(--sf-gold-ink);margin-top:8px}
+.tip .i{font-size:1.1em}
+footer{text-align:center;color:var(--sf-ink-soft);font-size:0.75em;margin-top:26px}
+@media(max-width:600px){.dims{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="masthead">
+    <div class="brand"><span style="font-size:1.5em">🔍</span>
+      <div><div class="logo">SOILPEPPER</div><div class="tagline">Species Filter — tutorial</div></div>
+    </div>
+    <span class="tut-badge">3 steps</span>
+  </header>
+
+  <h1>Find the right plant in 3 steps</h1>
+  <p class="sub">Search all 256 species across 11 dimensions — soil, sun, water, function and more.</p>
+
+  <div class="step">
+    <div class="step-h"><span class="step-n">1</span><span class="step-ico">⌨️</span><div class="step-t">Search by name</div></div>
+    <p>Type any name — English or Dutch — to jump straight to a species.</p>
+    <div class="btnrow"><span class="mbtn hi">🔍 Search</span></div>
+  </div>
+
+  <div class="step">
+    <div class="step-h"><span class="step-n">2</span><span class="step-ico">🎛️</span><div class="step-t">Filter by what you need</div></div>
+    <p>Narrow by soil, sunlight, water needs, function, season, perennial, nitrogen-fixing, fire-resistant, native — combine as many as you like.</p>
+    <div class="dims">
+      <div class="dim"><span class="ico">🪨</span><div class="nm">Soil</div></div>
+      <div class="dim"><span class="ico">☀️</span><div class="nm">Sun</div></div>
+      <div class="dim"><span class="ico">💧</span><div class="nm">Water</div></div>
+      <div class="dim"><span class="ico">🎯</span><div class="nm">Function</div></div>
+      <div class="dim"><span class="ico">🍂</span><div class="nm">Season</div></div>
+      <div class="dim"><span class="ico">🌱</span><div class="nm">Perennial</div></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-h"><span class="step-n">3</span><span class="step-ico">🖱️</span><div class="step-t">Read a species card</div></div>
+    <p>Open any result to see its full profile — guild roles, minerals, spacing, sowing.</p>
+    <div class="tip"><span class="i">💡</span><span><b>Tip:</b> switch region to see only plants suited to Tuscany or The Netherlands.</span></div>
+  </div>
+
+  <footer>SOILPEPPER · Species Filter tutorial · your data stays yours</footer>
+</div>
+</body>
+</html>
