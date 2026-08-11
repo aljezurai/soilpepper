@@ -1537,12 +1537,12 @@ body {
 
 <!-- LEGEND -->
 <div class="legend" id="legend">
-  <span class="legend-item"><span class="legend-swatch" style="background:#2a5a2a"></span> 🌳 Guild</span>
-  <span class="legend-item"><span class="legend-swatch" style="background:#4a7025"></span> 🥕 Vegetable</span>
-  <span class="legend-item"><span class="legend-swatch" style="background:#1a5a9a"></span> 💧 Water</span>
-  <span class="legend-item"><span class="legend-swatch" style="background:#6a4a38"></span> 🛣️ Road / Access</span>
-  <span class="legend-item"><span class="legend-swatch" style="background:#7a3030"></span> 🏠 Construction</span>
-  <span class="legend-item"><span class="legend-swatch" style="background:#1a301a"></span> 🌿 Open / Unassigned</span>
+  <span class="legend-item" data-func="guild"><span class="legend-swatch" style="background:#2a5a2a"></span> 🌳 Guild</span>
+  <span class="legend-item" data-func="vegetable"><span class="legend-swatch" style="background:#4a7025"></span> 🥕 Vegetable</span>
+  <span class="legend-item" data-func="water"><span class="legend-swatch" style="background:#1a5a9a"></span> 💧 Water</span>
+  <span class="legend-item" data-func="road"><span class="legend-swatch" style="background:#6a4a38"></span> 🛣️ Road / Access</span>
+  <span class="legend-item" data-func="construction"><span class="legend-swatch" style="background:#7a3030"></span> 🏠 Construction</span>
+  <span class="legend-item" data-func="open"><span class="legend-swatch" style="background:#1a301a"></span> 🌿 Open / Unassigned</span>
 </div>
 
 <!-- STATS -->
@@ -1842,7 +1842,7 @@ var T = {
     title: 'Masterplan', plotSetup: 'Jouw tuinontwerp', waterSetup: 'Waterbeheer',
     subtitle: 'Verdeel het perceel in cellen en ken aan elke cel een functie toe — het hele ontwerp op één kaart.',
     export: '📤 Download design', import: '📥 Upload design', backupAll: '💾 Backup data', restoreAll: '📥 Upload data', backupDone: '💾 Backup gedownload — bewaar hem goed', viewFunctions: '🎨 Functies', viewZones: '🧭 Zones',
-    viewSoil: '🪨 Grond', viewSectors: '🌪️ Sectoren', suggestZones: '✨ Stel zones voor', undo: '↩️ Ongedaan maken', tutorial: 'Help',
+    viewSoil: '🪨 Bodem', viewSectors: '🌪️ Sectoren', suggestZones: '✨ Stel zones voor', undo: '↩️ Ongedaan maken', tutorial: 'Help',
     cellAssignment: 'Celtoewijzing', function: 'Functie', zone: 'Zone', soilType: 'Grondsoort',
     label: 'Label (optioneel)', guildTree: 'Plantengildes', openGuild: 'Plantengilde openen',
     vegGarden: 'Moestuin', openVeg: 'Open moestuinplanner',
@@ -1850,7 +1850,7 @@ var T = {
     clearCell: '🗑️ Wis deze cel', setupTitle: 'Jouw tuinontwerp', cancel: 'Annuleren', apply: 'Toepassen',
     waterTitle: '💧 Watersysteem instellen', saveWater: 'Water instellingen opslaan',
     notSet: '— niet ingesteld —', zoneOpts: {0:'Z0 · Huis & directe omgeving',1:'Z1 · Moestuin',2:'Boomgaard',3:'Z3 · Veldgewassen',4:'Z4 · Half-onderhouden',5:'Z5 · Wild'},
-    funcOpts: {open:'🌿 Open / Niet toegewezen',guild:'🌳 Gilde',vegetable:'🥕 Groententuin',water:'💧 Water',road:'🛣️ Weg / Toegang',construction:'🏠 Bouw'},
+    funcOpts: {open:'🌿 Open / onbepaald',guild:'🌳 Gilde',vegetable:'🥕 Groententuin',water:'💧 Water',road:'🛣️ Weg / Toegang',construction:'🏠 Bebouwd'},
     soilOpts: {sandy:'Zandgrond',silty:'Zilt',loam:'Leem',clay:'Klei',chalky:'Kalkrijk',peaty:'Veen'},
     undoNothing: 'Niets om ongedaan te maken', undone: '↩️ Ongedaan gemaakt', restoreFail: '⚠️ Kon niet herstellen',
     cleared: 'Alles gewist', zones: 'zones', soilTypes: 'grondsoorten',
@@ -2445,12 +2445,14 @@ function updateLegend() {
       '<span class="legend-item"><span class="legend-swatch" style="background:rgba(139,195,74,0.5)"></span> 🦌 Wildlife</span>' +
       '<span class="legend-item" style="border-style:dashed;">Cells underneath = your plan</span>';
   } else {
+    var fopts = T[LANG].funcOpts;
     legend.innerHTML =
-      '<span class="legend-item"><span class="legend-swatch" style="background:#2a5a2a"></span> 🌳 Guild</span>' +
-      '<span class="legend-item"><span class="legend-swatch" style="background:#1a5a9a"></span> 💧 Water</span>' +
-      '<span class="legend-item"><span class="legend-swatch" style="background:#6a4a38"></span> 🛣️ Road / Access</span>' +
-      '<span class="legend-item"><span class="legend-swatch" style="background:#7a3030"></span> 🏠 Construction</span>' +
-      '<span class="legend-item"><span class="legend-swatch" style="background:#1a301a"></span> 🌿 Open / Unassigned</span>';
+      '<span class="legend-item"><span class="legend-swatch" style="background:#2a5a2a"></span> ' + fopts.guild + '</span>' +
+      '<span class="legend-item"><span class="legend-swatch" style="background:#4a7025"></span> ' + fopts.vegetable + '</span>' +
+      '<span class="legend-item"><span class="legend-swatch" style="background:#1a5a9a"></span> ' + fopts.water + '</span>' +
+      '<span class="legend-item"><span class="legend-swatch" style="background:#6a4a38"></span> ' + fopts.road + '</span>' +
+      '<span class="legend-item"><span class="legend-swatch" style="background:#7a3030"></span> ' + fopts.construction + '</span>' +
+      '<span class="legend-item"><span class="legend-swatch" style="background:#1a301a"></span> ' + fopts.open + '</span>';
   }
 }
 
