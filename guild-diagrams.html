@@ -148,7 +148,7 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:3px;font-size:1.5em;}
 
 /* Diagram container */
 .diagram-wrap{flex:0 0 640px;position:relative;}
-.diagram-container{position:relative;width:640px;height:640px;background:radial-gradient(ellipse at center,#1a2a1a 0%,#0d1b2a 100%);border:2px solid #2a3a2a;border-radius:16px;overflow:hidden;margin:0 auto;}
+.diagram-container{position:relative;width:640px;height:640px;background:radial-gradient(ellipse at center,#dce8d4 0%,#b9cdb0 100%);border:2px solid #7a9a6e;border-radius:16px;overflow:hidden;margin:0 auto;}
 
 /* SVG rings */
 .diagram-container svg{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;}
@@ -160,7 +160,7 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:3px;font-size:1.5em;}
 .tree-center .tree-name{font-size:0.6em;color:#e0e0d0;font-weight:bold;line-height:1.2;margin-top:2px;}
 
 /* Zone labels */
-.zone-label{position:absolute;font-size:0.55em;color:rgba(255,255,255,0.15);pointer-events:none;z-index:2;text-transform:uppercase;letter-spacing:1px;}
+.zone-label{position:absolute;font-size:0.55em;color:#5a6b52;pointer-events:none;z-index:2;text-transform:uppercase;letter-spacing:1px;}
 
 /* Plant items */
 .plant{position:absolute;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;z-index:8;text-shadow:0 1px 2px rgba(0,0,0,0.8);font-weight:bold;border:2px solid rgba(255,255,255,0.15);overflow:hidden;padding:2px;}
@@ -172,10 +172,10 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:3px;font-size:1.5em;}
 /* Role badges on plant */
 .plant .roles{display:flex;flex-wrap:wrap;gap:1px;justify-content:center;margin-top:1px;font-size:0.35em;line-height:1;}
 
-/* Zone ring colors for plants */
-.plant.inner-zone{background:rgba(141,110,99,0.7);border-color:rgba(141,110,99,0.5);}
-.plant.mid-zone{background:rgba(102,187,106,0.35);border-color:rgba(102,187,106,0.3);}
-.plant.outer-zone{background:rgba(66,165,245,0.25);border-color:rgba(66,165,245,0.2);}
+/* Zone ring colors for plants — brightened for the light diagram bg (2026-08-11) */
+.plant.inner-zone{background:rgba(168,138,124,0.85);border-color:#8d6e63;}
+.plant.mid-zone{background:rgba(126,178,116,0.75);border-color:#3e6a46;}
+.plant.outer-zone{background:rgba(122,172,215,0.7);border-color:#4a7fb5;}
 
 /* Water drops */
 .water-drops{position:absolute;bottom:-8px;right:-8px;font-size:0.45em;z-index:12;}
@@ -343,6 +343,20 @@ body {
   body .companion-table-wrap {
     overflow-x: auto !important;
     overflow-y: hidden !important;
+  }
+  /* guild diagram: shared [class*="diagram"]{max-width:1180px!important} beats the
+     page's mobile max-width:500px → diagram renders ~644px wide, cut off with h-scroll
+     (user 2026-08-11). body-prefix + width:100% fixes it; wrap needs min-width:0
+     (flex min-width:auto refuses to shrink below the 640px base). */
+  body .diagram-wrap {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    flex-basis: 100% !important;
+  }
+  body .diagram-container {
+    max-width: 100% !important;
+    width: 100% !important;
+    aspect-ratio: 1 / 1 !important;
   }
 }
 h1, h2, h3, h4, h5, .title, [class*="title"] {
@@ -1768,9 +1782,9 @@ function drawRings() {
   if (!svg) return;
   svg.innerHTML = '';
   var cfgs = [
-  {r: RINGS.inner, label: RING_NAMES.inner, color: '#8d6e63', fill: 'rgba(141,110,99,0.08)'},
-  {r: RINGS.mid, label: RING_NAMES.mid, color: '#66bb6a', fill: 'rgba(102,187,106,0.06)'},
-  {r: RINGS.outer, label: RING_NAMES.outer, color: '#42a5f5', fill: 'rgba(66,165,245,0.04)'}
+  {r: RINGS.inner, label: RING_NAMES.inner, color: '#8d6e63', fill: 'rgba(141,110,99,0.14)'},
+  {r: RINGS.mid, label: RING_NAMES.mid, color: '#3e6a46', fill: 'rgba(62,106,70,0.10)'},
+  {r: RINGS.outer, label: RING_NAMES.outer, color: '#4a7fb5', fill: 'rgba(74,127,181,0.08)'}
   ];
   cfgs.forEach(function(cfg) {
   var NS = 'http://www.w3.org/2000/svg';
@@ -1793,7 +1807,7 @@ function drawRings() {
     ln.setAttribute('x1', CENTER.x); ln.setAttribute('y1', CENTER.y);
     ln.setAttribute('x2', CENTER.x + RINGS.outer * Math.cos(rad));
     ln.setAttribute('y2', CENTER.y + RINGS.outer * Math.sin(rad));
-    ln.setAttribute('stroke', 'rgba(255,255,255,0.04)'); ln.setAttribute('stroke-width', '1');
+    ln.setAttribute('stroke', 'rgba(58,74,62,0.10)'); ln.setAttribute('stroke-width', '1');
     svg.appendChild(ln);
   }
 }
