@@ -254,7 +254,7 @@ body {
   background-size: cover !important;
   background-position: center !important;
   background-repeat: no-repeat !important;
-  background-attachment: fixed !important;
+  background-attachment: scroll !important;   /* was fixed — Chromium black-band bug (2026-08-11) */
 }
 /* iOS Safari/WebKit bug: large base64 wallpaper with background-size:cover
    paints black bands over content while scrolling (user 2026-08-11, Brave iOS).
@@ -309,6 +309,10 @@ body {
 body table th {
   background: var(--sf-header) !important;
   color: #ffffff !important;
+}
+/* dark row hover (#0d1b2a) also reads as a band — light sage hover instead */
+body table tr:hover td {
+  background: var(--sf-sage-soft) !important;
 }
 h1, h2, h3, h4, h5, .title, [class*="title"] {
   font-family: var(--sf-font-head) !important;
