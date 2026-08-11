@@ -264,6 +264,13 @@ body {
     background-image: none !important;
     background-attachment: scroll !important;
   }
+  /* companion table: the rounded-card wrap's overflow:hidden must not clip the
+     horizontally-scrollable table on mobile (WHY column cut off — user 2026-08-11).
+     body-prefix beats the later .companion-table-wrap{overflow:hidden!important} */
+  body .companion-table-wrap {
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+  }
 }
 h1, h2, h3, h4, h5, .title, [class*="title"] {
   font-family: var(--sf-font-head) !important;

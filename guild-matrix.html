@@ -394,6 +394,13 @@ body {
     background-image: none !important;
     background-attachment: scroll !important;
   }
+  /* companion table: the rounded-card wrap's overflow:hidden must not clip the
+     horizontally-scrollable table on mobile (WHY column cut off — user 2026-08-11).
+     body-prefix beats the later .companion-table-wrap{overflow:hidden!important} */
+  body .companion-table-wrap {
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+  }
 }
 h1, h2, h3, h4, h5, .title, [class*="title"] {
   font-family: var(--sf-font-head) !important;
@@ -1779,6 +1786,18 @@ var T = {
 function tt(k) { return (T[LANG] && T[LANG][k] !== undefined) ? T[LANG][k] : (T.en[k] !== undefined ? T.en[k] : k); }
 function spName(s) { return (LANG === 'nl' && s.nameNL) ? s.nameNL : (s.name || s.key); }
 function catName(c) { return tt('categoryV')[c] || c; }
+/* Accordion for '+more' reason tags (user 2026-08-11): opening one folds the
+   previously-open row back. Scoped to the companion table. */
+function toggleMoreReasons(el) {
+  const table = el.closest('.companion-table');
+  if (!table) return;
+  // collapse every open row first
+  table.querySelectorAll('.rt.hidden-reason').forEach(e => e.style.display = 'none');
+  table.querySelectorAll('.rt.gives[onclick]').forEach(s => { if (s !== el) s.style.display = ''; });
+  // then expand only the clicked row
+  el.parentElement.querySelectorAll('.rt.hidden-reason').forEach(e => e.style.display = 'inline-flex');
+  el.style.display = 'none';
+}
 function applyI18nGM() {
   document.querySelectorAll('[data-i18n]').forEach(function(el) {
     var key = el.getAttribute('data-i18n');
@@ -2087,7 +2106,7 @@ function renderMain() {
         html += `<span class="rt ${r.type}">${r.text.trim()}</span>`;
       }
       if (sc.reasons.length > 4) {
-        html += `<span class="rt gives" style="cursor:pointer;text-decoration:underline" onclick="this.parentElement.querySelectorAll('.rt.hidden-reason').forEach(e=>e.style.display='inline-flex');this.style.display='none'">+${sc.reasons.length - 4} ${tt('more')}</span>`;
+        html += `<span class="rt gives" style="cursor:pointer;text-decoration:underline" onclick="toggleMoreReasons(this)">+${sc.reasons.length - 4} ${tt('more')}</span>`;
         for (const r of sc.reasons.slice(4)) {
           html += `<span class="rt ${r.type} hidden-reason" style="display:none">${r.text.trim()}</span>`;
         }
