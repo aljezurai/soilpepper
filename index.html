@@ -49,6 +49,11 @@ a{text-decoration:none}
 .pill{background:var(--sf-card);color:var(--sf-muted);border:2px solid var(--sf-border-strong);border-radius:999px;padding:6px 16px;font-size:13px;font-weight:700;cursor:pointer;transition:all .12s}
 .pill:hover{border-color:var(--sf-gold-border)}
 .pill.active{background:var(--sf-gold);color:var(--sf-gold-ink);border-color:var(--sf-gold-border)}
+/* tap targets ≥44px on mobile (audit 2026-08-11) */
+@media (max-width: 768px) {
+  .pill { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+  .open-btn { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+}
 
 /* ── CLIMATE STATS (dynamic text under region pills) ── */
 .climate-stats{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;margin:-8px 0 6px;font-size:13px;color:var(--sf-ink-soft)}
@@ -316,6 +321,7 @@ var T = {
     climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
     climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
     climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
+    climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
     privacyNote: '🔒 <strong>Privacy by design:</strong> everything runs in your browser. Your site plans, water calculations and garden layouts are stored in <strong>your browser\'s localStorage</strong> — they never touch a server. <strong>Back up your work</strong> with the 💾 Backup button in Master Plan, Water Management or Trees and around (one JSON file), and restore it anywhere.',
     secDesign: 'Design Suite', secDesignCount: 'desktop · 5 tools', secField: 'Field Tools', secFieldCount: 'mobile · 4 tools',
     statusComplete: 'Complete',
@@ -362,6 +368,7 @@ var T = {
     navDesignH: 'Ontwerpsuite (desktop)', navFieldH: 'Tuingereedschap (mobiel)',
     footOpen: '🌍 open-source toolkit', footPrivacy: '🔒 data blijft op je apparaat', footOffline: '📱 werkt offline',
     regionLabel: 'Regiovoorinstelling:', regTus: 'Toscane · Middellands', regNl: 'Nederland · Gematigd',
+    climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
     climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
     climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
     climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
@@ -513,6 +520,7 @@ function selectRegion(region) {
 })();
 </script>
 </body>
+
 
 
 
