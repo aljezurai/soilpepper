@@ -49,6 +49,11 @@ h1{font-family:var(--font-head);color:var(--accent-emerald);text-align:center;
   font-size:0.78rem;transition:all .15s;font-family:var(--font-body)}
 .btn:hover{background:var(--accent-emerald);color:#0a1a0a;border-color:var(--accent-emerald)}
 .btn.primary{background:var(--accent-emerald);color:#0a1a0a;border-color:var(--accent-emerald);font-weight:600}
+/* tutorial button — yellow, black text, right-aligned with the grid (2026-08-11) */
+.btn-tutorial{margin-left:auto;background:var(--sf-gold);color:#000;border-color:var(--sf-gold-border);font-weight:700;text-decoration:none}
+a.btn-tutorial, a.btn-tutorial:hover{color:#000 !important}
+.btn-tutorial:hover{background:var(--sf-gold);color:#000;border-color:var(--sf-gold-ink)}
+@media(max-width:768px){.btn-tutorial{margin-left:0}}
 .btn.primary:hover{filter:brightness(1.1)}
 .btn.danger{color:#e57373;border-color:rgba(229,115,115,0.4)}
 .btn.danger:hover{background:#6a3030;color:#fff;border-color:#6a3030}
@@ -333,6 +338,12 @@ header a, [class*="header"] a, .topbar a {
   color: #ffffff !important;
 }
 header a:hover, [class*="header"] a:hover { color: #cfe4d4 !important; }
+/* tutorial link in the Master Plan topbar — yellow bg, black text (2026-08-11) */
+.topbar a.btn-tutorial, .topbar a.btn-tutorial:hover {
+  color: #000000 !important;
+  background: var(--sf-gold) !important;
+  border-color: var(--sf-gold-border) !important;
+}
 
 /* ── Cards & panels ─────────────────────────────────────── */
 .card, [class*="card"], .panel, [class*="panel"], .modal, [class*="popup"],
@@ -1367,6 +1378,7 @@ body {
   <button class="btn" onclick="document.getElementById('import-file').click()"><span data-i18n="import">📥 Import</span></button>
   <button class="btn btn-backup" onclick="backupAll()"><span data-i18n="backupAll">💾 Backup alles</span></button>
   <button class="btn btn-restore" onclick="document.getElementById('restore-file').click()"><span data-i18n="restoreAll">📥 Herstel alles</span></button>
+  <a class="btn btn-tutorial" href="masterplan-tutorial.html" target="_blank"><span data-i18n="tutorial">5 steps</span></a>
   <input type="file" id="import-file" accept=".json,application/json" style="display:none" onchange="importPlan(event)">
   <input type="file" id="restore-file" accept=".json,application/json" style="display:none" onchange="restoreBackup(event)">
 </div>
@@ -1645,7 +1657,7 @@ var T = {
     title: '🗺️ Master Plan Grid', plotSetup: '⚙️ Plot Setup', waterSetup: '💧 Water Setup',
     subtitle: 'Divide the plot into cells and assign a function to each — the whole design on one map.',
     export: '📤 Export', import: '📥 Import', backupAll: '💾 Backup all', restoreAll: '📥 Restore all', backupDone: '💾 Backup downloaded — keep it safe', viewFunctions: '🎨 Functions', viewZones: '🧭 Zones',
-    viewSoil: '🪨 Soil', viewSectors: '🌪️ Sectors', suggestZones: '✨ Suggest Zones', undo: '↩️ Undo',
+    viewSoil: '🪨 Soil', viewSectors: '🌪️ Sectors', suggestZones: '✨ Suggest Zones', undo: '↩️ Undo', tutorial: '5 steps',
     cellAssignment: 'Cell Assignment', function: 'Function', zone: 'Zone', soilType: 'Soil type',
     label: 'Label (optional)', guildTree: 'Guild Tree', openGuild: '📂 Open Guild Diagram →',
     vegGarden: '🥕 Vegetable Garden', openVeg: '🥕 Open Vegetable Garden Planner →',
@@ -1687,7 +1699,7 @@ var T = {
     title: 'Masterplan', plotSetup: 'Jouw tuinontwerp', waterSetup: 'Waterbeheer',
     subtitle: 'Verdeel het perceel in cellen en ken aan elke cel een functie toe — het hele ontwerp op één kaart.',
     export: 'Downloaden', import: 'Uploaden', backupAll: '💾 Backup alles', restoreAll: '📥 Herstel alles', backupDone: '💾 Backup gedownload — bewaar hem goed', viewFunctions: '🎨 Functies', viewZones: '🧭 Zones',
-    viewSoil: '🪨 Grond', viewSectors: '🌪️ Sectoren', suggestZones: '✨ Stel zones voor', undo: '↩️ Ongedaan maken',
+    viewSoil: '🪨 Grond', viewSectors: '🌪️ Sectoren', suggestZones: '✨ Stel zones voor', undo: '↩️ Ongedaan maken', tutorial: '5 stappen',
     cellAssignment: 'Celtoewijzing', function: 'Functie', zone: 'Zone', soilType: 'Grondsoort',
     label: 'Label (optioneel)', guildTree: 'Plantengildes', openGuild: 'Plantengilde openen',
     vegGarden: 'Moestuin', openVeg: 'Open moestuinplanner',
