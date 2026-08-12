@@ -1886,6 +1886,8 @@ function initState() {
       state[key] = 'either';
     }
   }
+  // region is a top-level filter (not a FILTERS entry); default to the current region
+  state.region = (typeof REGION !== 'undefined' && (REGION === 'tuscany' || REGION === 'netherlands')) ? REGION : 'tuscany';
 }
 initState();
 
