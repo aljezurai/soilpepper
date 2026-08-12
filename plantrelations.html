@@ -178,8 +178,8 @@ h1 .sub { color: var(--text2); font-size: 0.6em; margin-left: 12px; font-style: 
 .species-item.active { background: rgba(76,175,80,0.15); color: var(--accent); }
 .species-item .icon { font-size: 1.2em; flex-shrink: 0; }
 .species-item .cat {
-  margin-left: auto; font-size: 0.7em; text-transform: uppercase; letter-spacing: 0.5px;
-  color: rgba(255,255,255,0.25); padding: 2px 6px; border-radius: 4px; background: rgba(0,0,0,0.2);
+  margin-left: auto; font-size: 0.78em; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px;
+  color: rgba(255,255,255,0.78); padding: 2px 7px; border-radius: 4px; background: rgba(0,0,0,0.35);
 }
 
 /* Main content */
@@ -235,12 +235,12 @@ h1 .sub { color: var(--text2); font-size: 0.6em; margin-left: 12px; font-style: 
 
 .reason-tags { display: flex; flex-wrap: wrap; gap: 4px; }
 .reason-tags .rt {
-  font-size: 0.7em; padding: 2px 6px; border-radius: 4px;
+  font-size: 0.8em; font-weight: 500; padding: 3px 7px; border-radius: 4px; line-height: 1.35;
 }
-.reason-tags .rt.gives { background: rgba(39,174,96,0.15); color: rgba(39,174,96,0.8); }
-.reason-tags .rt.needs { background: rgba(230,126,34,0.15); color: rgba(230,126,34,0.8); }
-.reason-tags .rt.companion { background: rgba(196,160,64,0.15); color: var(--gold); }
-.reason-tags .rt.antagonist { background: rgba(192,57,43,0.15); color: var(--danger); }
+.reason-tags .rt.gives { background: rgba(39,174,96,0.22); color: #7be3a5; }
+.reason-tags .rt.needs { background: rgba(230,126,34,0.22); color: #ffb86b; }
+.reason-tags .rt.companion { background: rgba(196,160,64,0.22); color: var(--gold); }
+.reason-tags .rt.antagonist { background: rgba(192,57,43,0.22); color: #ff8a80; }
 
 /* Filter tabs */
 .tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
@@ -320,7 +320,8 @@ h1 .sub { color: var(--text2); font-size: 0.6em; margin-left: 12px; font-style: 
   .companion-table td { padding: 12px 10px; }
 
   /* Reason tags — bigger */
-  .reason-tags .rt { padding: 4px 8px; font-size: 0.78em; }
+  .reason-tags .rt { padding: 5px 9px; font-size: 0.85em; }
+  .species-item .cat { font-size: 0.8em; padding: 3px 8px; }
 
   /* Unmet box */
   .unmet-box { padding: 10px 14px; }
