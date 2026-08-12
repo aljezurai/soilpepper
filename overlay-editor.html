@@ -74,6 +74,13 @@ footer{padding:16px 22px;color:var(--muted);font-size:.72em;text-align:center;bo
 .meta-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .expert-box{background:var(--panel2);border:1px solid var(--border);border-radius:10px;padding:14px}
 .expert-box h3{font-size:.72em;text-transform:uppercase;letter-spacing:.8px;color:var(--accent);margin-bottom:10px}
+/* Override fields — visually distinct (amber = changes a base value) */
+.override-row{background:rgba(244,201,47,.06);border:1px solid rgba(244,201,47,.25);border-radius:10px;padding:14px}
+.override-row .ov-label{display:flex;align-items:center;gap:8px;font-size:.72em;text-transform:uppercase;letter-spacing:.8px;color:var(--gold);margin-bottom:4px}
+.override-row .ov-warn{font-size:.7em;color:var(--muted);line-height:1.4;margin-bottom:10px;padding-left:24px}
+.override-row .field label{color:var(--gold)}
+.override-row input{border-color:rgba(244,201,47,.4)}
+.override-row input:focus{border-color:var(--gold)}
 @media(max-width:820px){.layout{grid-template-columns:1fr}.splist{max-height:240px}.connections{grid-template-columns:1fr}}
 </style>
 </head>
@@ -127,10 +134,14 @@ footer{padding:16px 22px;color:var(--muted);font-size:.72em;text-align:center;bo
         <button class="add-btn" onclick="addVariety()">+ Add a variety</button>
       </div>
 
-      <!-- Spacing + soil depth -->
-      <div class="meta-row">
-        <div class="field"><label>Spacing override (cm)</label><input id="f_spacing" type="number" placeholder="leave blank to keep base"></div>
-        <div class="field"><label>Soil depth override (cm)</label><input id="f_soilDepth" type="number" placeholder="leave blank to keep base"></div>
+      <!-- Overrides — amber warning: these CAN change a base value -->
+      <div class="override-row">
+        <div class="ov-label">⚠️ Changes a base value</div>
+        <div class="ov-warn">Only fill these if field practice truly differs from the base data. Every other field only <b>adds</b> expert knowledge and never touches your data.</div>
+        <div class="meta-row">
+          <div class="field"><label>Spacing override (cm)</label><input id="f_spacing" type="number" placeholder="leave blank to keep base"></div>
+          <div class="field"><label>Soil depth override (cm)</label><input id="f_soilDepth" type="number" placeholder="leave blank to keep base"></div>
+        </div>
       </div>
 
       <!-- Connections -->
