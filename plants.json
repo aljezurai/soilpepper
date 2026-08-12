@@ -9392,7 +9392,8 @@
    "netherlands"
   ],
   "icon": "🌾",
-  "nameNL": "Luzerne"
+  "nameNL": "Luzerne",
+  "season": "cool"
  },
  "crimson-clover": {
   "key": "crimson-clover",
@@ -9462,7 +9463,8 @@
    "netherlands"
   ],
   "icon": "🌾",
-  "nameNL": "Incarnaatklaver"
+  "nameNL": "Incarnaatklaver",
+  "season": "cool"
  },
  "white-lupin": {
   "key": "white-lupin",
@@ -9525,7 +9527,8 @@
    "netherlands"
   ],
   "icon": "🌾",
-  "nameNL": "Witte lupine"
+  "nameNL": "Witte lupine",
+  "season": "cool"
  },
  "tree-medic": {
   "key": "tree-medic",
@@ -9774,7 +9777,8 @@
   "rowSpacing": 90,
   "seedDepth": 2,
   "thinTo": 60,
-  "nameNL": "Kardoen"
+  "nameNL": "Kardoen",
+  "season": "cool"
  },
  "endive": {
   "key": "endive",
@@ -9836,7 +9840,8 @@
   "rowSpacing": 30,
   "seedDepth": 1,
   "thinTo": 25,
-  "nameNL": "Andijvie"
+  "nameNL": "Andijvie",
+  "season": "cool"
  },
  "catalogna-chicory": {
   "key": "catalogna-chicory",
@@ -9899,7 +9904,8 @@
   "rowSpacing": 30,
   "seedDepth": 1,
   "thinTo": 20,
-  "nameNL": "Catalaanse andijvie"
+  "nameNL": "Catalaanse andijvie",
+  "season": "cool"
  },
  "jerusalem-artichoke": {
   "key": "jerusalem-artichoke",
@@ -9968,7 +9974,8 @@
   "rowSpacing": 50,
   "seedDepth": 8,
   "thinTo": 30,
-  "nameNL": "Aardpeer"
+  "nameNL": "Aardpeer",
+  "season": "cool"
  },
  "black-salsify": {
   "key": "black-salsify",
@@ -10039,7 +10046,8 @@
   "rowSpacing": 30,
   "seedDepth": 2,
   "thinTo": 8,
-  "nameNL": "Zwarte schorseneer"
+  "nameNL": "Zwarte schorseneer",
+  "season": "cool"
  },
  "parsnip": {
   "key": "parsnip",
@@ -10105,7 +10113,8 @@
   "rowSpacing": 25,
   "seedDepth": 1.5,
   "thinTo": 10,
-  "nameNL": "Pastinaak"
+  "nameNL": "Pastinaak",
+  "season": "cool"
  },
  "chamomile": {
   "name": "Chamomile",
@@ -11265,7 +11274,8 @@
   "rowSpacing": 90,
   "seedDepth": 3,
   "thinTo": 80,
-  "nameNL": "Rabarber"
+  "nameNL": "Rabarber",
+  "season": "cool"
  },
  "sorrel": {
   "name": "Sorrel",
@@ -11341,7 +11351,8 @@
   "rowSpacing": 30,
   "seedDepth": 0.5,
   "thinTo": 25,
-  "nameNL": "Veldzuring"
+  "nameNL": "Veldzuring",
+  "season": "cool"
  },
  "buckwheat": {
   "name": "Buckwheat",
@@ -14426,7 +14437,7 @@
   "sowMonths": "",
   "harvestMonths": "",
   "daysToMaturity": "",
-  "season": "",
+  "season": "cool",
   "function": "",
   "nFixer": false,
   "perennial": false,
@@ -14527,7 +14538,7 @@
   "sowMonths": "",
   "harvestMonths": "",
   "daysToMaturity": "",
-  "season": "",
+  "season": "cool",
   "function": "",
   "nFixer": false,
   "perennial": false,
@@ -14579,7 +14590,7 @@
   "sowMonths": "",
   "harvestMonths": "",
   "daysToMaturity": "",
-  "season": "",
+  "season": "cool",
   "function": "",
   "nFixer": false,
   "perennial": false,
@@ -14631,7 +14642,7 @@
   "sowMonths": "",
   "harvestMonths": "",
   "daysToMaturity": "",
-  "season": "",
+  "season": "cool",
   "function": "",
   "nFixer": false,
   "perennial": false,
@@ -15212,7 +15223,7 @@
   "sowMonths": "",
   "harvestMonths": "",
   "daysToMaturity": "",
-  "season": "",
+  "season": "cool",
   "function": "",
   "nFixer": false,
   "perennial": false,
@@ -15313,7 +15324,7 @@
   "sowMonths": "",
   "harvestMonths": "",
   "daysToMaturity": "",
-  "season": "",
+  "season": "cool",
   "function": "",
   "nFixer": false,
   "perennial": false,
@@ -15366,7 +15377,7 @@
   "sowMonths": "",
   "harvestMonths": "",
   "daysToMaturity": "",
-  "season": "",
+  "season": "cool",
   "function": "",
   "nFixer": false,
   "perennial": false,
@@ -15562,7 +15573,7 @@
   "sowMonths": "",
   "harvestMonths": "",
   "daysToMaturity": "",
-  "season": "",
+  "season": "cool",
   "function": "",
   "nFixer": true,
   "perennial": false,
@@ -15618,7 +15629,7 @@
   "sowMonths": "",
   "harvestMonths": "",
   "daysToMaturity": "",
-  "season": "",
+  "season": "cool",
   "function": "",
   "nFixer": true,
   "perennial": false,
@@ -15674,7 +15685,7 @@
   "sowMonths": "",
   "harvestMonths": "",
   "daysToMaturity": "",
-  "season": "",
+  "season": "cool",
   "function": "",
   "nFixer": false,
   "perennial": false,
@@ -15732,7 +15743,7 @@
   "sowMonths": "",
   "harvestMonths": "",
   "daysToMaturity": "",
-  "season": "",
+  "season": "cool",
   "function": "",
   "nFixer": false,
   "perennial": false,
@@ -15786,7 +15797,7 @@
   "sowMonths": "",
   "harvestMonths": "",
   "daysToMaturity": "",
-  "season": "",
+  "season": "cool",
   "function": "",
   "nFixer": false,
   "perennial": false,
@@ -15888,7 +15899,7 @@
   "sowMonths": "",
   "harvestMonths": "",
   "daysToMaturity": "",
-  "season": "",
+  "season": "cool",
   "function": "",
   "nFixer": false,
   "perennial": false,
@@ -15941,7 +15952,7 @@
   "sowMonths": "",
   "harvestMonths": "",
   "daysToMaturity": "",
-  "season": "",
+  "season": "cool",
   "function": "",
   "nFixer": false,
   "perennial": false,
@@ -16647,7 +16658,7 @@
   "sowMonths": "",
   "harvestMonths": "",
   "daysToMaturity": "",
-  "season": "",
+  "season": "cool",
   "function": "",
   "nFixer": false,
   "perennial": false,
