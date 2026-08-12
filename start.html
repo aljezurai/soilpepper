@@ -82,13 +82,19 @@ body{font-family:-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--sf-
 .video-banner .dismiss{margin-left:auto;color:var(--sf-muted);background:none;border:none;cursor:pointer;font-size:.9em}
 
 footer{max-width:1180px;margin:34px auto 0;padding:22px 34px;border-top:1px solid var(--sf-border);color:var(--sf-muted);font-size:.82em}
+
+.langtxt{font-size:.82em;color:var(--sf-muted);background:#fff;border:1px solid var(--sf-border);border-radius:999px;padding:6px 14px;cursor:pointer;user-select:none}
+.langtxt span{cursor:pointer;padding:0 3px}
+.langtxt .active{color:var(--sf-green);font-weight:700}
+.langtxt .sep{opacity:.35;cursor:default}
+
 </style>
 </head>
 <body>
 
 <div class="masthead">
-  <div class="logo">SOIL<span>PEPPER</span></div>
-  <div class="lang" onclick="toggleLang()" id="langbtn">🌐 NL</div>
+  <div class="logo">🌶️ SOIL<span>PEPPER</span></div>
+  <div class="langtxt" id="langbtn"><span class="l-nl" onclick="setLang('nl',this)">NL</span> <span class="sep">|</span> <span class="l-en" onclick="setLang('en',this)">EN</span></div>
 </div>
 
 <div class="wrap">
@@ -238,8 +244,7 @@ var LANG = 'en';
 function applyI18n(){document.querySelectorAll('[data-i18n]').forEach(function(el){
   var k=el.getAttribute('data-i18n'); var v=(T[LANG]&&T[LANG][k])||T.en[k]; if(v!==undefined) el.textContent=v;
 });}
-function toggleLang(){LANG = (LANG==='en')?'nl':'en'; applyI18n();
-  document.getElementById('langbtn').textContent = (LANG==='en')?'🌐 NL':'🌐 EN';}
+function setLang(l,el){LANG=l;applyI18n();document.querySelectorAll('.langtxt span').forEach(function(f){f.classList.remove('active')});if(el)el.classList.add('active');}
 
 /* ===== mode / region / soil selection ===== */
 var state = {mode:null, region:null, soil:null};

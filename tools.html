@@ -100,6 +100,11 @@ a{text-decoration:none}
   .hero h1{font-size:22px}
   .section-head .count{display:none}
 }
+
+.langtxt{font-size:.85em;cursor:pointer;user-select:none;border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:5px 12px}
+.langtxt span{cursor:pointer;padding:0 3px;opacity:.7}
+.langtxt .active{color:#fff;opacity:1;font-weight:700}
+
 </style>
 </head>
 <body>
@@ -113,7 +118,10 @@ a{text-decoration:none}
       <div class="tagline" data-i18n="brandSmall">Design and run your own permaculture project</div>
     </div>
   </div>
-  <a href="index.html" style="color:#fff;font-size:.85em;text-decoration:none;background:rgba(255,255,255,.14);padding:7px 16px;border-radius:999px;white-space:nowrap">← Home</a>
+  <div style="display:flex;align-items:center;gap:12px">
+    <a href="index.html" style="color:#fff;font-size:.85em;text-decoration:none;background:rgba(255,255,255,.14);padding:7px 16px;border-radius:999px;white-space:nowrap">← Home</a>
+    <div class="langtxt" id="langbtn" style="color:#fff"><span class="l-nl" onclick="setLangT('nl',this)">NL</span> <span class="sep" style="opacity:.4">|</span> <span class="l-en" onclick="setLangT('en',this)">EN</span></div>
+  </div>
 </header>
 
 <div class="main">
@@ -460,6 +468,14 @@ function applyI18nLanding() {
     var key = el.getAttribute('data-i18n');
     if (T[LANG][key] !== undefined) el.innerHTML = T[LANG][key];
   });
+}
+
+function setLangT(l,el){
+  LANG = l;
+  applyI18nLanding();
+  document.querySelectorAll('.langtxt span').forEach(function(f){f.classList.remove('active')});
+  if(el) el.classList.add('active');
+  if(typeof selectRegion === 'function' && window.REGION) selectRegion(REGION);
 }
 </script>
 
