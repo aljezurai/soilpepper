@@ -139,7 +139,7 @@ footer{padding:16px 22px;color:var(--muted);font-size:.72em;text-align:center;bo
         </div>
         <div style="display:flex;gap:8px;align-items:center">
           <span class="save-state" id="saveState"></span>
-          <button class="btn" onclick="saveNext()">Save & next →</button>
+          <button class="btn gold" onclick="saveNext()">Save & next →</button>
         </div>
       </div>
     </div>
@@ -391,7 +391,7 @@ function showResults(q,type){
   const keys=SPECIES_KEYS.filter(k=>k!==currentKey && (SPECIES_INDEX[k].name||'').toLowerCase().includes(q)).slice(0,12);
   if(!keys.length){box.style.display='none';return;}
   box.style.display='block';
-  box.innerHTML=keys.map(k=>`<div class="r" onmousedown="addConn('${type}','${k}')">${SPECIES_INDEX[k].icon} ${SPECIES_INDEX[k].name} <small style="color:var(--muted)">${SPECIES_INDEX[k].category}</small></div>`).join('');
+  box.innerHTML=keys.map(k=>`<div class="r" onpointerdown="addConn('${type}','${k}')">${SPECIES_INDEX[k].icon} ${SPECIES_INDEX[k].name} <small style="color:var(--muted)">${SPECIES_INDEX[k].category}</small></div>`).join('');
 }
 function hideResults(type){setTimeout(()=>{document.getElementById(type+'Results').style.display='none';},150);}
 function addConn(type,key){
