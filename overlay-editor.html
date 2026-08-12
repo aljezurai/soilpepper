@@ -114,9 +114,9 @@ footer{padding:16px 22px;color:var(--muted);font-size:.72em;text-align:center;bo
 <header>
   <div class="brand">🌶️ SOIL<span>PEPPER</span><span class="sub">Expert Overlay Editor</span></div>
   <div class="actions">
-    <button class="btn ghost" onclick="newLayer()">+ New layer</button>
-    <button class="btn" onclick="exportJSON()">⬇ Export overlay</button>
-    <button class="btn gold" onclick="saveLocal()">💾 Save draft</button>
+    <button type="button" class="btn ghost" onclick="newLayer()">+ New layer</button>
+    <button type="button" class="btn" onclick="exportJSON()">⬇ Export overlay</button>
+    <button type="button" class="btn gold" onclick="saveLocal()">💾 Save draft</button>
   </div>
 </header>
 
@@ -139,7 +139,7 @@ footer{padding:16px 22px;color:var(--muted);font-size:.72em;text-align:center;bo
         </div>
         <div style="display:flex;gap:8px;align-items:center">
           <span class="save-state" id="saveState"></span>
-          <button class="btn gold" onclick="saveNext()">Save & next →</button>
+          <button type="button" class="btn gold" onclick="saveNext()">Save & next →</button>
         </div>
       </div>
     </div>
@@ -158,14 +158,14 @@ footer{padding:16px 22px;color:var(--muted);font-size:.72em;text-align:center;bo
       <div class="field">
         <label>Field-tested tips <small>(one actionable sentence each)</small></label>
         <div class="tips-box" id="tipsBox"></div>
-        <button class="add-btn" onclick="addTip()">+ Add a tip</button>
+        <button type="button" class="add-btn" onclick="addTip()">+ Add a tip</button>
       </div>
 
       <!-- Varieties -->
       <div class="field">
         <label>Proven varieties / cultivars</label>
         <div id="varietiesBox"></div>
-        <button class="add-btn" onclick="addVariety()">+ Add a variety</button>
+        <button type="button" class="add-btn" onclick="addVariety()">+ Add a variety</button>
       </div>
 
       <!-- Overrides — amber warning: these CAN change a base value -->
@@ -201,7 +201,7 @@ footer{padding:16px 22px;color:var(--muted);font-size:.72em;text-align:center;bo
       <div class="field">
         <label>Soil mutual benefit <small>(how it helps soil / how soil helps it)</small></label>
         <div class="principles-box" id="principlesBox"></div>
-        <button class="add-btn" onclick="openPrinciplePicker()">+ Add / edit soil benefits</button>
+        <button type="button" class="add-btn" onclick="openPrinciplePicker()">+ Add / edit soil benefits</button>
       </div>
 
       <!-- Cautions -->
@@ -223,7 +223,7 @@ footer{padding:16px 22px;color:var(--muted);font-size:.72em;text-align:center;bo
   <div class="modal">
     <div class="modal-head">
       <h3>🌿 Soil mutual benefit</h3>
-      <button class="modal-x" onclick="closePrinciplePicker()">✕</button>
+      <button type="button" class="modal-x" onclick="closePrinciplePicker()">✕</button>
     </div>
     <div class="modal-body">
       <p class="modal-hint">Select from the standard list so everyone uses the same terms. These are stored on this species only.</p>
@@ -239,8 +239,8 @@ footer{padding:16px 22px;color:var(--muted);font-size:.72em;text-align:center;bo
       </div>
     </div>
     <div class="modal-foot">
-      <button class="btn ghost" onclick="closePrinciplePicker()">Cancel</button>
-      <button class="btn gold" onclick="confirmPrinciples()">✓ Apply</button>
+      <button type="button" class="btn ghost" onclick="closePrinciplePicker()">Cancel</button>
+      <button type="button" class="btn gold" onclick="confirmPrinciples()">✓ Apply</button>
     </div>
   </div>
 </div>
@@ -306,7 +306,7 @@ function selectSpecies(key){
 /* ===== Tips ===== */
 function renderTips(){
   const b=document.getElementById('tipsBox');
-  b.innerHTML=editing.expertTips.map((t,i)=>`<div class="tip"><textarea placeholder="e.g. Pinch suckers weekly" onchange="editTip(${i},this.value)">${t}</textarea><button class="rm" onclick="delTip(${i})">✕</button></div>`).join('');
+  b.innerHTML=editing.expertTips.map((t,i)=>`<div class="tip"><textarea placeholder="e.g. Pinch suckers weekly" onchange="editTip(${i},this.value)">${t}</textarea><button type="button" class="rm" onclick="delTip(${i})">✕</button></div>`).join('');
 }
 function addTip(){editing.expertTips.push('');renderTips();}
 function editTip(i,v){editing.expertTips[i]=v;markDirty();}
@@ -319,7 +319,7 @@ function renderVarieties(){
     <div class="tip">
       <input style="flex:1" placeholder="Variety name" value="${v.name||''}" onchange="editVarietyName(${i},this.value)">
       <input style="flex:1" placeholder="Note (optional)" value="${v.note||''}" onchange="editVarietyNote(${i},this.value)">
-      <button class="rm" onclick="delVariety(${i})">✕</button>
+      <button type="button" class="rm" onclick="delVariety(${i})">✕</button>
     </div>`).join('');
 }
 function addVariety(){editing.expertVarieties.push({name:'',note:''});renderVarieties();}
@@ -342,7 +342,7 @@ function renderPrinciples(){
     <div class="principle-row">
       <div class="pv"><span class="lbl">Gives to soil</span><div class="val">${(p.gives||[]).map(g=>GIVES_LABEL[g]||g).join(', ')||'—'}</div></div>
       <div class="pv"><span class="lbl">Gets from soil</span><div class="val">${(p.gets||[]).map(g=>NEEDS_LABEL[g]||g).join(', ')||'—'}</div></div>
-      <button class="rm" onclick="delPrinciple(${pi})">✕</button>
+      <button type="button" class="rm" onclick="delPrinciple(${pi})">✕</button>
     </div>`).join('');
 }
 function openPrinciplePicker(){
@@ -381,8 +381,8 @@ function renderChips(){
   const a=editing.guildOverrides.antagonists||[];
   const cg=document.getElementById('companionsChips');
   const ag=document.getElementById('antagonistsChips');
-  cg.innerHTML=c.map(k=>`<span class="chip">${SPECIES_INDEX[k]?SPECIES_INDEX[k].icon:''} ${SPECIES_INDEX[k]?SPECIES_INDEX[k].name:k} <button onclick="removeConn('companions','${k}')">✕</button></span>`).join('')||'<span style="color:var(--muted);font-size:.75em">None yet</span>';
-  ag.innerHTML=a.map(k=>`<span class="chip antag">${SPECIES_INDEX[k]?SPECIES_INDEX[k].icon:''} ${SPECIES_INDEX[k]?SPECIES_INDEX[k].name:k} <button onclick="removeConn('antagonists','${k}')">✕</button></span>`).join('')||'<span style="color:var(--muted);font-size:.75em">None yet</span>';
+  cg.innerHTML=c.map(k=>`<span class="chip">${SPECIES_INDEX[k]?SPECIES_INDEX[k].icon:''} ${SPECIES_INDEX[k]?SPECIES_INDEX[k].name:k} <button type="button" onclick="removeConn('companions','${k}')">✕</button></span>`).join('')||'<span style="color:var(--muted);font-size:.75em">None yet</span>';
+  ag.innerHTML=a.map(k=>`<span class="chip antag">${SPECIES_INDEX[k]?SPECIES_INDEX[k].icon:''} ${SPECIES_INDEX[k]?SPECIES_INDEX[k].name:k} <button type="button" onclick="removeConn('antagonists','${k}')">✕</button></span>`).join('')||'<span style="color:var(--muted);font-size:.75em">None yet</span>';
 }
 function showResults(q,type){
   q=(q||'').toLowerCase().trim();
