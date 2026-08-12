@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SOILPEPPER — Expert Overlay Editor</title>
+<style>
+:root{
+  --bg:#0f1d16; --panel:#16291f; --panel2:#1c3528; --ink:#e8f0e6; --muted:#9db8a3;
+  --green:#3e6a46; --green2:#5a8f63; --accent:#7bc48a; --gold:#f4c92f; --goldb:#d9a800;
+  --red:#d98383; --border:#2c4636; --radius:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;min-height:100vh}
+header{background:var(--panel);border-bottom:2px solid var(--border);padding:14px 22px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;position:sticky;top:0;z-index:20}
+.brand{font-size:1.05em;font-weight:700;letter-spacing:.5px}
+.brand span{color:var(--gold)}
+.sub{font-size:.75em;color:var(--muted);margin-left:10px;font-weight:400}
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+.btn{background:var(--green2);color:#fff;border:1px solid var(--green);border-radius:999px;padding:9px 18px;font-size:.85em;cursor:pointer;font-weight:600;transition:.15s}
+.btn:hover{background:#4a7a54}
+.btn.gold{background:var(--gold);color:#000;border-color:var(--goldb)}
+.btn.gold:hover{background:#f8d94e}
+.btn.ghost{background:transparent;color:var(--muted);border:1px solid var(--border)}
+.btn.danger{background:transparent;color:var(--red);border:1px solid var(--red)}
+.layout{display:grid;grid-template-columns:300px 1fr;gap:18px;padding:20px;max-width:1400px;margin:0 auto}
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.panel h2{font-size:.8em;text-transform:uppercase;letter-spacing:1px;color:var(--accent);padding:14px 16px 8px;border-bottom:1px solid var(--border)}
+.search{padding:12px}
+.search input{width:100%;background:var(--panel2);border:1px solid var(--border);border-radius:9px;padding:10px 12px;color:var(--ink);font-size:.9em;outline:none}
+.search input:focus{border-color:var(--green2)}
+.splist{max-height:calc(100vh - 240px);overflow-y:auto}
+.spec{display:flex;align-items:center;gap:10px;padding:9px 16px;cursor:pointer;border-bottom:1px solid rgba(44,70,54,.5);transition:.12s}
+.spec:hover{background:var(--panel2)}
+.spec.active{background:var(--green);border-left:3px solid var(--gold)}
+.spec .icon{font-size:1.2em}
+.spec .nm{flex:1;font-size:.88em}
+.spec .cat{font-size:.66em;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);background:rgba(0,0,0,.3);padding:2px 6px;border-radius:5px}
+.spec .has{color:var(--gold);font-size:.8em}
+.empty{padding:24px;color:var(--muted);text-align:center;font-size:.85em}
+.editor{display:flex;flex-direction:column;min-height:60vh}
+.editor-head{padding:18px 20px;border-bottom:1px solid var(--border)}
+.editor-head h1{font-size:1.35em;margin-bottom:2px}
+.editor-head .latin{font-style:italic;color:var(--muted);font-size:.85em}
+.editor-head .cat-badge{display:inline-block;background:var(--green2);border-radius:999px;padding:2px 10px;font-size:.7em;text-transform:uppercase;margin-top:8px}
+.editor-body{padding:18px 20px;display:flex;flex-direction:column;gap:16px;overflow-y:auto}
+.field label{display:block;font-size:.72em;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:5px}
+.field input,.field textarea,.field select{width:100%;background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:9px 11px;color:var(--ink);font-size:.9em;outline:none;font-family:inherit}
+.field textarea{min-height:60px;resize:vertical}
+.field input:focus,.field textarea:focus{border-color:var(--green2)}
+.tips-box{display:flex;flex-direction:column;gap:8px}
+.tip{display:flex;gap:8px;align-items:flex-start}
+.tip textarea{flex:1}
+.tip .rm{background:none;border:none;color:var(--red);cursor:pointer;font-size:1.1em;padding:6px}
+.add-btn{background:none;border:1px dashed var(--green2);color:var(--accent);border-radius:8px;padding:8px;cursor:pointer;font-size:.82em}
+.add-btn:hover{background:var(--panel2)}
+.connections{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.conn-box{border:1px solid var(--border);border-radius:10px;padding:12px;background:var(--panel2)}
+.conn-box h3{font-size:.72em;text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.conn-box.companions h3{color:#7bc48a}
+.conn-box.antagonists h3{color:var(--red)}
+.conn-search{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 10px;color:var(--ink);font-size:.82em;outline:none;margin-bottom:8px}
+.conn-list{display:flex;flex-wrap:wrap;gap:6px;min-height:34px}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--green);color:#fff;border-radius:999px;padding:4px 10px;font-size:.78em}
+.chip.antag{background:#7a2f2f}
+.chip button{background:none;border:none;color:#fff;cursor:pointer;font-size:1em;line-height:1;opacity:.7}
+.chip button:hover{opacity:1}
+.results{max-height:180px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;display:none}
+.results .r{padding:7px 10px;cursor:pointer;font-size:.8em;border-bottom:1px solid rgba(44,70,54,.4)}
+.results .r:hover{background:var(--green)}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--gold);color:#000;border-radius:999px;padding:10px 22px;font-size:.85em;font-weight:600;z-index:50;opacity:0;transition:.25s;pointer-events:none;box-shadow:0 4px 16px rgba(0,0,0,.4)}
+.toast.show{opacity:1}
+footer{padding:16px 22px;color:var(--muted);font-size:.72em;text-align:center;border-top:1px solid var(--border)}
+.meta-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.expert-box{background:var(--panel2);border:1px solid var(--border);border-radius:10px;padding:14px}
+.expert-box h3{font-size:.72em;text-transform:uppercase;letter-spacing:.8px;color:var(--accent);margin-bottom:10px}
+@media(max-width:820px){.layout{grid-template-columns:1fr}.splist{max-height:240px}.connections{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">🌶️ SOIL<span>PEPPER</span><span class="sub">Expert Overlay Editor</span></div>
+  <div class="actions">
+    <button class="btn ghost" onclick="newLayer()">+ New layer</button>
+    <button class="btn" onclick="exportJSON()">⬇ Export overlay</button>
+    <button class="btn gold" onclick="saveLocal()">💾 Save draft</button>
+  </div>
+</header>
+
+<div class="layout">
+  <!-- SPECIES LIST -->
+  <div class="panel">
+    <h2>Species</h2>
+    <div class="search"><input id="spSearch" placeholder="Search species…" oninput="renderList(this.value)"></div>
+    <div class="splist" id="splist"></div>
+  </div>
+
+  <!-- EDITOR -->
+  <div class="panel editor">
+    <div class="editor-head" id="editorHead" style="display:none">
+      <h1 id="ehName"></h1>
+      <div class="latin" id="ehLatin"></div>
+      <span class="cat-badge" id="ehCat"></span>
+    </div>
+    <div class="editor-body" id="editorBody" style="display:none">
+
+      <!-- Expert attribution -->
+      <div class="expert-box">
+        <h3>Expert attribution</h3>
+        <div class="meta-row">
+          <div class="field"><label>Expert name</label><input id="f_source" placeholder="e.g. A. Rossi"></div>
+          <div class="field"><label>Credibility note</label><input id="f_note" placeholder="e.g. 20y Mediterranean food forest"></div>
+        </div>
+      </div>
+
+      <!-- Tips -->
+      <div class="field">
+        <label>Field-tested tips <small>(one actionable sentence each)</small></label>
+        <div class="tips-box" id="tipsBox"></div>
+        <button class="add-btn" onclick="addTip()">+ Add a tip</button>
+      </div>
+
+      <!-- Varieties -->
+      <div class="field">
+        <label>Proven varieties / cultivars</label>
+        <div id="varietiesBox"></div>
+        <button class="add-btn" onclick="addVariety()">+ Add a variety</button>
+      </div>
+
+      <!-- Spacing + soil depth -->
+      <div class="meta-row">
+        <div class="field"><label>Spacing override (cm)</label><input id="f_spacing" type="number" placeholder="leave blank to keep base"></div>
+        <div class="field"><label>Soil depth override (cm)</label><input id="f_soilDepth" type="number" placeholder="leave blank to keep base"></div>
+      </div>
+
+      <!-- Connections -->
+      <div class="field">
+        <label>Connections — tap a species to add it as companion or antagonist</label>
+        <div class="connections">
+          <div class="conn-box companions">
+            <h3>🌿 Companions <small>(strong)</small></h3>
+            <input class="conn-search" placeholder="Search species…" oninput="showResults(this.value,'companions')" onfocus="showResults(this.value,'companions')" onblur="hideResults('companions')">
+            <div class="conn-list" id="companionsChips"></div>
+            <div class="results" id="companionsResults"></div>
+          </div>
+          <div class="conn-box antagonists">
+            <h3>⛔ Antagonists <small>(avoid)</small></h3>
+            <input class="conn-search" placeholder="Search species…" oninput="showResults(this.value,'antagonists')" onfocus="showResults(this.value,'antagonists')" onblur="hideResults('antagonists')">
+            <div class="conn-list" id="antagonistsChips"></div>
+            <div class="results" id="antagonistsResults"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Principles -->
+      <div class="field">
+        <label>Soil mutual benefit <small>(how it helps soil / how soil helps it)</small></label>
+        <div class="tips-box" id="principlesBox"></div>
+        <button class="add-btn" onclick="addPrinciple()">+ Add a principle</button>
+      </div>
+
+      <!-- Cautions -->
+      <div class="field">
+        <label>Cautions / flags</label>
+        <textarea id="f_caution" placeholder="e.g. Allelopathic (juglone) — keep away from sensitive veg"></textarea>
+      </div>
+
+    </div>
+    <div class="empty" id="editorEmpty">Select a species on the left to start adding expert knowledge.</div>
+  </div>
+</div>
+
+<footer>Deep-merges over plants.json — the base stays untouched. Export produces an overlay layer keyed by species.</footer>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ===== SPECIES INDEX (embedded from plants.json) ===== */
+const SPECIES_INDEX = {"tomato":{"name":"Tomato","nameNL":"Tomaat","category":"vegetable","icon":"🍅","latin":"Solanum lycopersicum"},"pole-beans":{"name":"Pole beans","nameNL":"Stokbonen","category":"vegetable","icon":"🫘","latin":"Phaseolus vulgaris"},"corn":{"name":"Sweet corn","nameNL":"Suikermaïs","category":"vegetable","icon":"🌽","latin":"Zea mays"},"sunflower":{"name":"Sunflower","nameNL":"Zonnebloem","category":"vegetable","icon":"🌻","latin":"Helianthus annuus"},"climbing-cucumber":{"name":"Climbing cucumber","nameNL":"Klimkomkommer","category":"vegetable","icon":"🥒","latin":"Cucumis sativus"},"grape-veg":{"name":"Grape (table)","nameNL":"Druif (tafel)","category":"vegetable","icon":"🍇","latin":"Vitis vinifera"},"peas":{"name":"Peas","nameNL":"Erwt","category":"vegetable","icon":"🫘","latin":"Pisum sativum"},"cavolo-nero":{"name":"Cavolo Nero","nameNL":"Zwarte kool","category":"vegetable","icon":"🥬","latin":"Brassica oleracea var. sabellica"},"fennel":{"name":"Fennel","nameNL":"Venkel","category":"vegetable","icon":"🌿","latin":"Foeniculum vulgare var. azoricum"},"peppers":{"name":"Peppers","nameNL":"Paprika","category":"vegetable","icon":"🫑","latin":"Capsicum annuum"},"eggplant":{"name":"Eggplant","nameNL":"Aubergine","category":"vegetable","icon":"🍆","latin":"Solanum melongena"},"kale":{"name":"Kale","nameNL":"Boerenkool","category":"vegetable","icon":"🥬","latin":"Brassica oleracea var. sabellica"},"swiss-chard":{"name":"Swiss chard","nameNL":"Snijbiet","category":"vegetable","icon":"🥬","latin":"Beta vulgaris subsp. vulgaris"},"broccoli":{"name":"Broccoli","nameNL":"Broccoli","category":"vegetable","icon":"🥦","latin":"Brassica oleracea var. italica"},"artichoke":{"name":"Artichoke","nameNL":"Artisjok","category":"vegetable","icon":"🌰","latin":"Cynara cardunculus"},"peperoncini":{"name":"Peperoncini","nameNL":"Peperoncini","category":"vegetable","icon":"🌶️","latin":"Capsicum annum"},"cauliflower":{"name":"Cauliflower","nameNL":"Bloemkool","category":"vegetable","icon":"🥦","latin":"Brassica oleracea var. botrytis"},"potatoes":{"name":"Potatoes","nameNL":"Aardappel","category":"vegetable","icon":"🥔","latin":"Solanum tuberosum"},"lettuce":{"name":"Lettuce","nameNL":"Sla","category":"vegetable","icon":"🥗","latin":"Lactuca sativa"},"spinach":{"name":"Spinach","nameNL":"Spinazie","category":"vegetable","icon":"🌿","latin":"Spinacia oleracea"},"basil":{"name":"Basil","nameNL":"Basilicum","category":"vegetable","icon":"🌿","latin":"Ocimum basilicum"},"cilantro":{"name":"Cilantro","nameNL":"Koriander","category":"vegetable","icon":"🌿","latin":"Coriandrum sativum"},"parsley":{"name":"Parsley","nameNL":"Peterselie","category":"vegetable","icon":"🌿","latin":"Petroselinum crispum"},"chives-veg":{"name":"Chives","nameNL":"Bieslook","category":"vegetable","icon":"🧅","latin":"Allium schoenoprasum"},"strawberry-veg":{"name":"Strawberry","nameNL":"Aardbei","category":"vegetable","icon":"🍓","latin":"Fragaria × ananassa"},"carrots":{"name":"Carrots","nameNL":"Wortel","category":"vegetable","icon":"🥕","latin":"Daucus carota subsp. sativus"},"onions":{"name":"Onions","nameNL":"Ui","category":"vegetable","icon":"🧅","latin":"Allium cepa"},"garlic-veg":{"name":"Garlic","nameNL":"Knoflook","category":"vegetable","icon":"🧄","latin":"Allium sativum"},"radicchio":{"name":"Radicchio","nameNL":"Radicchio","category":"vegetable","icon":"🥬","latin":"Cichorium intybus"},"beets":{"name":"Beets","nameNL":"Biet","category":"vegetable","icon":"🫘","latin":"Beta vulgaris"},"radish":{"name":"Radish","nameNL":"Radijs","category":"vegetable","icon":"🫘","latin":"Raphanus sativus"},"leek":{"name":"Leek","nameNL":"Prei","category":"vegetable","icon":"🧅","latin":"Allium porrum"},"shallot":{"name":"Shallot","nameNL":"Sjalot","category":"vegetable","icon":"🧅","latin":"Allium cepa var. aggregatum"},"turnip":{"name":"Turnip","nameNL":"Raap","category":"vegetable","icon":"🫘","latin":"Brassica rapa"},"celery":{"name":"Celery","nameNL":"Selderij","category":"vegetable","icon":"🌿","latin":"Apium graveolens"},"melon":{"name":"Melon","nameNL":"Meloen","category":"vegetable","icon":"🍈","latin":"Cucumis melo"},"squash":{"name":"Squash (zucchini)","nameNL":"Courgette","category":"vegetable","icon":"🥒","latin":"Cucurbita pepo"},"kohlrabi":{"name":"Kohlrabi","nameNL":"Koolrabi","category":"vegetable","icon":"🫘","latin":"Brassica oleracea var. gongylodes"},"cime-rapa":{"name":"Cime di rapa","nameNL":"Rapenstelen","category":"vegetable","icon":"🥬","latin":"Brassica rapa subsp. rapa"},"asparagus":{"name":"Asparagus","nameNL":"Asperge","category":"vegetable","icon":"🌿","latin":"Asparagus officinalis"},"white-clover":{"name":"White clover","nameNL":"Witte klaver","category":"cover-crop","icon":"🌱","latin":"Trifolium repens"},"berseem-clover":{"name":"Berseem clover","nameNL":"Alexandrijnse klaver","category":"cover-crop","icon":"🌱","latin":"Trifolium alexandrinum"},"sub-clover":{"name":"Subterranean clover","nameNL":"Onderaardse klaver","category":"cover-crop","icon":"🌱","latin":"Trifolium subterraneum"},"vetch":{"name":"Common vetch","nameNL":"Voederwikke","category":"cover-crop","icon":"🌱","latin":"Vicia sativa"},"field-bean-cover":{"name":"Field bean","nameNL":"Veldboon","category":"cover-crop","icon":"🫘","latin":"Vicia faba"},"sulla":{"name":"Sulla","nameNL":"Sulla","category":"cover-crop","icon":"🌱","latin":"Hedysarum coronarium"},"trefoil":{"name":"Birdsfoot trefoil","nameNL":"Gewone rolklaver","category":"cover-crop","icon":"🌱","latin":"Lotus corniculatus"},"phacelia":{"name":"Phacelia","nameNL":"Phacelia","category":"cover-crop","icon":"🌸","latin":"Phacelia tanacetifolia"},"fig":{"name":"Fig","nameNL":"Vijg","category":"tree","icon":"🍇","latin":"Ficus carica"},"persimmon":{"name":"Persimmon","nameNL":"Kaki","category":"tree","icon":"🍊","latin":"Diospyros kaki"},"grape":{"name":"Grape (vineyard)","nameNL":"Druif (wijngaard)","category":"tree","icon":"🍇","latin":"Vitis vinifera"},"peach":{"name":"Peach","nameNL":"Perzik","category":"tree","icon":"🍑","latin":"Prunus persica"},"plum":{"name":"Plum","nameNL":"Pruim","category":"tree","icon":"🍓","latin":"Prunus domestica"},"apple":{"name":"Apple","nameNL":"Appel","category":"tree","icon":"🍏","latin":"Malus domestica"},"pear":{"name":"Pear","nameNL":"Peer","category":"tree","icon":"🍐","latin":"Pyrus communis"},"hazelnut":{"name":"Hazelnut","nameNL":"Hazelnoot","category":"tree","icon":"🌰","latin":"Corylus avellana"},"walnut":{"name":"Walnut","nameNL":"Walnoot","category":"tree","icon":"🥜","latin":"Juglans regia"},"lemon":{"name":"Lemon","nameNL":"Citroenboom","category":"tree","icon":"🍋","latin":"Citrus × limon"},"carob":{"name":"Carob","nameNL":"Johannesbroodboom","category":"tree","icon":"🌾","latin":"Ceratonia siliqua"},"almond":{"name":"Almond","nameNL":"Amandel","category":"tree","icon":"🌾","latin":"Prunus dulcis"},"pistachio":{"name":"Pistachio","nameNL":"Pistache","category":"tree","icon":"🥜","latin":"Pistacia vera"},"pomegranate":{"name":"Pomegranate","nameNL":"Granaatappel","category":"shrub","icon":"🍓","latin":"Punica granatum"},"jujube":{"name":"Jujube","nameNL":"Jujube","category":"shrub","icon":"🍒","latin":"Ziziphus jujuba"},"goji":{"name":"Goji","nameNL":"Gojibes","category":"shrub","icon":"🍓","latin":"Lycium barbarum"},"elderberry":{"name":"Elderberry","nameNL":"Vlier","category":"shrub","icon":"🍓","latin":"Sambucus nigra"},"blackberry":{"name":"Blackberry","nameNL":"Braam","category":"shrub","icon":"🍓","latin":"Rubus ulmifolius"},"raspberry":{"name":"Raspberry","nameNL":"Framboos","category":"shrub","icon":"🍓","latin":"Rubus idaeus"},"red-currant":{"name":"Red currant","nameNL":"Rode bes","category":"shrub","icon":"🍓","latin":"Ribes rubrum"},"sea-buckthorn":{"name":"Sea buckthorn","nameNL":"Duindoorn","category":"shrub","icon":"🍂","latin":"Hippophae rhamnoides"},"goumi":{"name":"Goumi","nameNL":"Goumi","category":"shrub","icon":"🌿","latin":"Elaeagnus multiflora"},"italian-alder":{"name":"Italian alder","nameNL":"Italiaanse els","category":"tree","icon":"🌲","latin":"Alnus cordata"},"common-alder":{"name":"Common alder","nameNL":"Zwarte els","category":"tree","icon":"🌲","latin":"Alnus glutinosa"},"grey-alder":{"name":"Grey alder","nameNL":"Witte els","category":"tree","icon":"🌲","latin":"Alnus incana"},"scotch-broom":{"name":"Scotch broom","nameNL":"Brem","category":"shrub","icon":"🌿","latin":"Cytisus scoparius"},"etna-broom":{"name":"Etna broom","nameNL":"Etna-brem","category":"shrub","icon":"🌿","latin":"Genista aetnensis"},"spanish-broom":{"name":"Spanish broom","nameNL":"Spaanse brem","category":"shrub","icon":"🌿","latin":"Spartium junceum"},"stinking-bean-trefoil":{"name":"Stinking bean trefoil","nameNL":"Stinkende erwt","category":"shrub","icon":"🌿","latin":"Anagyris foetida"},"rosemary":{"name":"Rosemary","nameNL":"Rozemarijn","category":"herb","icon":"🌿","latin":"Salvia rosmarinus"},"lavender":{"name":"Lavender","nameNL":"Lavendel","category":"herb","icon":"🌿","latin":"Lavandula angustifolia"},"sage":{"name":"Sage","nameNL":"Salie","category":"herb","icon":"🌿","latin":"Salvia officinalis"},"thyme":{"name":"Thyme","nameNL":"Tijm","category":"herb","icon":"🌿","latin":"Thymus vulgaris"},"oregano":{"name":"Oregano","nameNL":"Oregano","category":"herb","icon":"🌿","latin":"Origanum vulgare"},"marjoram":{"name":"Marjoram","nameNL":"Marjolein","category":"herb","icon":"🌿","latin":"Origanum majorana"},"nasturtium":{"name":"Nasturtium","nameNL":"Oost-Indische kers","category":"flower","icon":"🌻","latin":"Tropaeolum majus"},"calendula":{"name":"Calendula","nameNL":"Goudsbloem","category":"flower","icon":"🌻","latin":"Calendula officinalis"},"yarrow":{"name":"Yarrow","nameNL":"Duizendblad","category":"flower","icon":"🌻","latin":"Achillea millefolium"},"comfrey":{"name":"Comfrey","nameNL":"Smeerwortel","category":"herb","icon":"🌿","latin":"Symphytum officinale"},"borage":{"name":"Borage","nameNL":"Bernagie","category":"flower","icon":"🌻","latin":"Borago officinalis"},"chicory":{"name":"Chicory","nameNL":"Cichorei","category":"herb","icon":"🥬","latin":"Cichorium intybus"},"dandelion":{"name":"Dandelion","nameNL":"Paardenbloem","category":"herb","icon":"🌻","latin":"Taraxacum officinale"},"chives":{"name":"Chives (guild)","nameNL":"Bieslook","category":"herb","icon":"🌿","latin":"Allium schoenoprasum"},"daffodil":{"name":"Daffodil (Tazetta)","nameNL":"Tazettanarcis","category":"flower","icon":"🌻","latin":"Narcissus tazetta"},"crocus":{"name":"Crocus (Saffron)","nameNL":"Saffraankrokus","category":"flower","icon":"🌻","latin":"Crocus sativus"},"garlic-flower":{"name":"Three-cornered leek","nameNL":"Driekantig look","category":"flower","icon":"🌻","latin":"Allium triquetrum"},"fava-beans":{"name":"Fava beans","nameNL":"Tuinderwt / veldboon","category":"cover-crop","icon":"🌾","latin":"Vicia faba"},"strawberry-wild":{"name":"Wild strawberry","nameNL":"Bosaardbei","category":"flower","icon":"🌻","latin":"Fragaria vesca"},"olive":{"name":"Olive","nameNL":"Olijfboom","category":"tree","icon":"🍂","latin":"Olea europaea"},"cherry":{"name":"Cherry","nameNL":"Zoete kers","category":"tree","icon":"🍒","latin":"Prunus avium"},"apricot":{"name":"Apricot","nameNL":"Abrikoos","category":"tree","icon":"🍑","latin":"Prunus armeniaca"},"chestnut":{"name":"Chestnut","nameNL":"Tamme kastanje","category":"tree","icon":"🌰","latin":"Castanea sativa"},"quince":{"name":"Quince","nameNL":"Kweepeer","category":"tree","icon":"🍐","latin":"Cydonia oblonga"},"medlar":{"name":"Medlar","nameNL":"Mispel","category":"tree","icon":"🍐","latin":"Crataegus germanica"},"rose":{"name":"Dog rose","nameNL":"Hondsroos","category":"shrub","icon":"🌹","latin":"Rosa canina"},"iris":{"name":"Iris","nameNL":"Iris","category":"flower","icon":"🌻","latin":"Iris germanica"},"lavender-cotton":{"name":"Lavender cotton","nameNL":"Heiligenbloem","category":"herb","icon":"🌿","latin":"Santolina chamaecyparissus"},"alfalfa":{"name":"Alfalfa","nameNL":"Luzerne","category":"cover-crop","icon":"🌾","latin":"Medicago sativa"},"crimson-clover":{"name":"Crimson clover","nameNL":"Incarnaatklaver","category":"cover-crop","icon":"🌾","latin":"Trifolium incarnatum"},"white-lupin":{"name":"White lupin","nameNL":"Witte lupine","category":"cover-crop","icon":"🌾","latin":"Lupinus albus"},"tree-medic":{"name":"Tree medic","nameNL":"Boomluzerne","category":"shrub","icon":"🌿","latin":"Medicago arborea"},"bladder-senna":{"name":"Bladder senna","nameNL":"Blazenstruik","category":"shrub","icon":"🌿","latin":"Colutea arborescens"},"cardoon":{"name":"Cardoon","nameNL":"Kardoen","category":"vegetable","icon":"🥥","latin":"Cynara cardunculus"},"endive":{"name":"Endive","nameNL":"Andijvie","category":"vegetable","icon":"🥥","latin":"Cichorium endivia"},"catalogna-chicory":{"name":"Catalogna chicory","nameNL":"Catalaanse andijvie","category":"vegetable","icon":"🥥","latin":"Cichorium intybus Catalogna group"},"jerusalem-artichoke":{"name":"Jerusalem artichoke","nameNL":"Aardpeer","category":"vegetable","icon":"🍠","latin":"Helianthus tuberosus"},"black-salsify":{"name":"Black salsify","nameNL":"Zwarte schorseneer","category":"vegetable","icon":"🥥","latin":"Scorzonera hispanica"},"parsnip":{"name":"Parsnip","nameNL":"Pastinaak","category":"vegetable","icon":"🥥","latin":"Pastinaca sativa"},"chamomile":{"name":"Chamomile","nameNL":"Echte kamille","category":"herb","icon":"🌼","latin":"Matricaria chamomilla"},"dill":{"name":"Dill","nameNL":"Dille","category":"herb","icon":"🌿","latin":"Anethum graveolens"},"echinacea":{"name":"Echinacea","nameNL":"Zonnehoed","category":"herb","icon":"🌸","latin":"Echinacea purpurea"},"hyssop":{"name":"Hyssop","nameNL":"Hysop","category":"herb","icon":"🌿","latin":"Hyssopus officinalis"},"lovage":{"name":"Lovage","nameNL":"Lavas","category":"herb","icon":"🌿","latin":"Levisticum officinale"},"mint":{"name":"Mint","nameNL":"Munt","category":"herb","icon":"🌿","latin":"Mentha spicata"},"stevia":{"name":"Stevia","nameNL":"Stevia","category":"herb","icon":"🌿","latin":"Stevia rebaudiana"},"valerian":{"name":"Valerian","nameNL":"Echte valeriaan","category":"herb","icon":"🌸","latin":"Valeriana officinalis"},"zucchini":{"name":"Zucchini","nameNL":"Courgette","category":"vegetable","icon":"🥒","latin":"Cucurbita pepo"},"cucumber":{"name":"Cucumber","nameNL":"Komkommer","category":"vegetable","icon":"🥒","latin":"Cucumis sativus"},"watermelon":{"name":"Watermelon","nameNL":"Watermeloen","category":"vegetable","icon":"🍉","latin":"Citrullus lanatus"},"pumpkin":{"name":"Pumpkin","nameNL":"Pompoen","category":"vegetable","icon":"🎃","latin":"Cucurbita maxima"},"daikon":{"name":"Daikon","nameNL":"Daikon","category":"vegetable","icon":"🥕","latin":"Raphanus sativus var. longipinnatus"},"sweet-potato":{"name":"Sweet potato","nameNL":"Zoete aardappel","category":"vegetable","icon":"🍠","latin":"Ipomoea batatas"},"rhubarb":{"name":"Rhubarb","nameNL":"Rabarber","category":"vegetable","icon":"🌿","latin":"Rheum rhabarbarum"},"sorrel":{"name":"Sorrel","nameNL":"Veldzuring","category":"vegetable","icon":"🌿","latin":"Rumex acetosa"},"buckwheat":{"name":"Buckwheat","nameNL":"Boekweit","category":"cover-crop","icon":"🌾","latin":"Fagopyrum esculentum"},"mustard":{"name":"Mustard","nameNL":"Mosterd","category":"cover-crop","icon":"🌼","latin":"Sinapis alba"},"rye":{"name":"Rye","nameNL":"Rogge","category":"cover-crop","icon":"🌾","latin":"Secale cereale"},"oats":{"name":"Oats","nameNL":"Haver","category":"cover-crop","icon":"🌾","latin":"Avena sativa"},"barley":{"name":"Barley","nameNL":"Gerst","category":"cover-crop","icon":"🌾","latin":"Hordeum vulgare"},"wheat":{"name":"Wheat","nameNL":"Tarwe","category":"cover-crop","icon":"🌾","latin":"Triticum aestivum"},"flowering-maple":{"name":"Flowering maple","nameNL":"Bloeiende esdoorn","category":"tree","icon":"🌳","latin":"Abutilon vitifolium"},"saskatoon":{"name":"Saskatoon","nameNL":"Elzenbes","category":"tree","icon":"🌳","latin":"Amelanchier alnifolia"},"monkey-puzzle":{"name":"Monkey Puzzle Tree","nameNL":"Chileense apenboom","category":"tree","icon":"🌳","latin":"Araucaria araucana"},"strawberry-tree":{"name":"Strawberry Tree","nameNL":"Aardbeiboom","category":"tree","icon":"🌳","latin":"Arbutus unedo"},"pawpaw":{"name":"Pawpaw","nameNL":"Pawpaw","category":"tree","icon":"🌳","latin":"Asimina triloba"},"common-barberry":{"name":"Common Barberry","nameNL":"Zuurbes","category":"shrub","icon":"🌿","latin":"Berberis vulgaris"},"paper-mulberry":{"name":"Paper Mulberry","nameNL":"Papier moerbei","category":"tree","icon":"🌳","latin":"Broussonetia papyrifera"},"carolina-allspice":{"name":"Carolina Allspice","nameNL":"Carolinische specerijstruik","category":"shrub","icon":"🌿","latin":"Calycanthus floridus"},"siberian-pea-tree":{"name":"Siberian Pea Tree","nameNL":"Siberische erwtenboom","category":"tree","icon":"🌳","latin":"Caragana arborescens"},"allegheny-chinkapin":{"name":"Allegheny Chinkapin","nameNL":"Dwergkastanje","category":"tree","icon":"🌳","latin":"Castanea pumila"},"new-jersey-tea":{"name":"New Jersey Tea","nameNL":"Nederlandse theeplant","category":"shrub","icon":"🌿","latin":"Ceanothus americanus"},"japanese-plum-yew":{"name":"Japanese Plum-Yew","nameNL":"Japanese pruimtaxus","category":"tree","icon":"🌳","latin":"Cephalotaxus harringtonia"},"judas-tree":{"name":"Judas Tree","nameNL":"Judasboom","category":"tree","icon":"🌳","latin":"Cercis siliquastrum"},"japanese-quince":{"name":"Japanese Quince","nameNL":"Sierkwee","category":"shrub","icon":"🌿","latin":"Chaenomeles japonica"},"cornelian-cherry":{"name":"Cornelian Cherry","nameNL":"Kornoelje","category":"shrub","icon":"🌿","latin":"Cornus mas"},"azerole":{"name":"Azerole","nameNL":"Azarolmeidoorn","category":"tree","icon":"🌳","latin":"Crataegus azarolus"},"dead-mans-fingers":{"name":"Dead Man's Fingers","nameNL":"Dode mans vingers","category":"shrub","icon":"🌿","latin":"Decaisnea fargesii"},"date-plum":{"name":"Date-plum","nameNL":"Lotusboom","category":"tree","icon":"🌳","latin":"Diospyros lotus"},"american-persimmon":{"name":"American Persimmon","nameNL":"Amerikaanse dadelpruim","category":"tree","icon":"🌳","latin":"Diospyros virginiana"},"beech":{"name":"Beech","nameNL":"Beuk","category":"tree","icon":"🌳","latin":"Fagus sylvatica"},"salal":{"name":"Salal","nameNL":"Salal","category":"shrub","icon":"🌿","latin":"Gaultheria shallon"},"chilean-hazel":{"name":"Chilean Hazel","nameNL":"Chileense hazelnoot","category":"tree","icon":"🌳","latin":"Gevuina avellana"},"ginkgo":{"name":"Ginkgo","nameNL":"Japanse notenboom","category":"tree","icon":"🌳","latin":"Ginkgo biloba"},"japanese-raisin-tree":{"name":"Japanese Raisin Tree","nameNL":"Rozijnenboom","category":"tree","icon":"🌳","latin":"Hovenia dulcis"},"black-walnut":{"name":"Black Walnut","nameNL":"Zwarte walnoot","category":"tree","icon":"🌳","latin":"Juglans nigra"},"juniper":{"name":"Juniper","nameNL":"Jeneverbes","category":"shrub","icon":"🌿","latin":"Juniperus communis"},"bay-laurel":{"name":"Bay Laurel","nameNL":"Laurier","category":"tree","icon":"🌳","latin":"Laurus nobilis"},"honeyberry":{"name":"Honeyberry","nameNL":"Honingbes","category":"shrub","icon":"🌿","latin":"Lonicera caerulea"},"oregon-grape":{"name":"Oregon Grape","nameNL":"Mahoniestruik","category":"shrub","icon":"🌿","latin":"Mahonia aquifolium"},"chilean-guava":{"name":"Chilean Guava","nameNL":"Chileense guave","category":"shrub","icon":"🌿","latin":"Ugni molinae"},"briancon-apricot":{"name":"Briançon Apricot","nameNL":"Briançon-abrikoos","category":"tree","icon":"🌳","latin":"Prunus brigantina"},"sour-cherry":{"name":"Sour Cherry","nameNL":"Zure kers","category":"tree","icon":"🌳","latin":"Prunus cerasus"},"beach-plum":{"name":"Beach Plum","nameNL":"Strandpruim","category":"shrub","icon":"🌿","latin":"Prunus maritima"},"blackthorn":{"name":"Blackthorn","nameNL":"Sleedoorn","category":"shrub","icon":"🌿","latin":"Prunus spinosa"},"dwarf-russian-almond":{"name":"Dwarf Russian Almond","nameNL":"Dwergamandel","category":"shrub","icon":"🌿","latin":"Prunus tenella"},"nanking-cherry":{"name":"Nanking Cherry","nameNL":"Nankingkers","category":"shrub","icon":"🌿","latin":"Prunus tomentosa"},"holm-oak":{"name":"Holm Oak","nameNL":"Steeneik","category":"tree","icon":"🌳","latin":"Quercus ilex"},"stags-horn-sumach":{"name":"Stag's Horn Sumach","nameNL":"Fluweelboom","category":"tree","icon":"🌳","latin":"Rhus typhina"},"blackcurrant":{"name":"Blackcurrant","nameNL":"Zwarte bes","category":"shrub","icon":"🌿","latin":"Ribes nigrum"},"gooseberry":{"name":"Gooseberry","nameNL":"Kruisbes","category":"shrub","icon":"🌿","latin":"Ribes uva-crispa"},"black-locust":{"name":"Black Locust","nameNL":"Robinia","category":"tree","icon":"🌳","latin":"Robinia pseudoacacia"},"rugosa-rose":{"name":"Rugosa Rose","nameNL":"Rimpelroos","category":"shrub","icon":"🌿","latin":"Rosa rugosa"},"wineberry":{"name":"Wineberry","nameNL":"Japanse wijnbes","category":"shrub","icon":"🌿","latin":"Rubus phoenicolasius"},"goat-willow":{"name":"Goat Willow","nameNL":"Waterwilg","category":"tree","icon":"🌳","latin":"Salix caprea"},"sassafras":{"name":"Sassafras","nameNL":"Sassafras","category":"tree","icon":"🌳","latin":"Sassafras albidum"},"whitebeam":{"name":"Whitebeam","nameNL":"Gewone lijsterbes","category":"tree","icon":"🌳","latin":"Sorbus aria"},"rowan":{"name":"Rowan","nameNL":"Wilde lijsterbes","category":"tree","icon":"🌳","latin":"Sorbus aucuparia"},"service-tree":{"name":"Service Tree","nameNL":"Peervormige lijsterbes","category":"tree","icon":"🌳","latin":"Sorbus domestica"},"wild-service-tree":{"name":"Wild Service Tree","nameNL":"Elsbes","category":"tree","icon":"🌳","latin":"Sorbus torminalis"},"yew":{"name":"Yew","nameNL":"Taxus","category":"tree","icon":"🌳","latin":"Taxus baccata"},"small-leaved-lime":{"name":"Small-leaved Lime","nameNL":"Winterlinde","category":"tree","icon":"🌳","latin":"Tilia cordata"},"chinese-toon":{"name":"Chinese Toon","nameNL":"Chinese toonboom","category":"tree","icon":"🌳","latin":"Toona sinensis"},"chaste-tree":{"name":"Chaste Tree","nameNL":"Monnikspeper","category":"shrub","icon":"🌿","latin":"Vitex agnus-castus"},"egyptian-onion":{"name":"Egyptian Onion","nameNL":"Egyptische ui","category":"vegetable","icon":"🥕","latin":"Allium × proliferum"},"ramsons":{"name":"Ramsons","nameNL":"Daslook","category":"herb","icon":"🌱","latin":"Allium ursinum"},"sea-beet":{"name":"Sea Beet","nameNL":"Zeebiet","category":"vegetable","icon":"🥕","latin":"Beta vulgaris subsp. maritima"},"turkish-rocket":{"name":"Turkish Rocket","nameNL":"Turkse rucola","category":"vegetable","icon":"🥕","latin":"Bunias orientalis"},"quamash":{"name":"Quamash","nameNL":"Quamash","category":"vegetable","icon":"🥕","latin":"Camassia quamash"},"red-valerian":{"name":"Red Valerian","nameNL":"Rode spoorbloem","category":"flower","icon":"🌸","latin":"Centranthus ruber"},"daylily":{"name":"Daylily","nameNL":"Daglelie","category":"flower","icon":"🌸","latin":"Hemerocallis fulva"},"musk-mallow":{"name":"Musk Mallow","nameNL":"Muskuskaasjeskruid","category":"flower","icon":"🌸","latin":"Malva moschata"},"mayapple":{"name":"Mayapple","nameNL":"Meiappel","category":"herb","icon":"🌱","latin":"Podophyllum peltatum"},"solomons-seal":{"name":"Solomon's Seal","nameNL":"Welriekende salomonszegel","category":"herb","icon":"🌱","latin":"Polygonatum odoratum"},"lungwort":{"name":"Lungwort","nameNL":"Longkruid","category":"herb","icon":"🌱","latin":"Pulmonaria officinalis"},"sweet-violet":{"name":"Sweet Violet","nameNL":"Maarts viooltje","category":"flower","icon":"🌸","latin":"Viola odorata"},"blueberry":{"name":"Blueberry","nameNL":"Blauwe bes","category":"shrub","icon":"🌿","latin":"Vaccinium corymbosum"},"ground-elder":{"name":"Ground Elder","nameNL":"Zevenblad","category":"herb","icon":"🌱","latin":"Aegopodium podagraria"},"anise-hyssop":{"name":"Anise Hyssop","nameNL":"Anijshysop","category":"herb","icon":"🌱","latin":"Agastache foeniculum"},"angelica":{"name":"Angelica","nameNL":"Grote engelwortel","category":"herb","icon":"🌱","latin":"Angelica archangelica"},"udo":{"name":"Udo","nameNL":"Udo","category":"vegetable","icon":"🥕","latin":"Aralia cordata"},"golden-saxifrage":{"name":"Golden Saxifrage","nameNL":"Goudveil","category":"herb","icon":"🌱","latin":"Chrysosplenium alternifolium"},"pignut":{"name":"Pignut","nameNL":"Aardnootje","category":"vegetable","icon":"🥕","latin":"Conopodium majus"},"chinese-mallow":{"name":"Chinese Mallow","nameNL":"Chinese kaasjeskruid","category":"vegetable","icon":"🥕","latin":"Malva verticillata"},"lemon-balm":{"name":"Lemon Balm","nameNL":"Citroenmelisse","category":"herb","icon":"🌱","latin":"Melissa officinalis"},"sweet-cicely":{"name":"Sweet Cicely","nameNL":"Roomse kervel","category":"herb","icon":"🌱","latin":"Myrrhis odorata"},"creeping-bramble":{"name":"Creeping Bramble","nameNL":"Kruipbraam","category":"ground-cover","icon":"🌿","latin":"Rubus pentalobus"},"hog-peanut":{"name":"Hog Peanut","nameNL":"Hog peanut (Aardboon)","category":"vegetable","icon":"🥕","latin":"Amphicarpaea bracteata"},"groundnut":{"name":"Groundnut","nameNL":"Aardnoot","category":"vegetable","icon":"🥕","latin":"Apios americana"},"burdock":{"name":"Burdock","nameNL":"Grote klit","category":"vegetable","icon":"🥕","latin":"Arctium lappa"},"horseradish":{"name":"Horseradish","nameNL":"Mierikswortel","category":"vegetable","icon":"🥕","latin":"Armoracia rusticana"},"campanula-rapunculus":{"name":"Rampion","nameNL":"Rapunzelklokje","category":"vegetable","icon":"🥕","latin":"Campanula rapunculus"},"common-liquorice":{"name":"Common Liquorice","nameNL":"Zoethout","category":"herb","icon":"🌱","latin":"Glycyrrhiza glabra"},"skirret":{"name":"Skirret","nameNL":"Suikerwortel","category":"vegetable","icon":"🥕","latin":"Sium sisarum"},"ulluco":{"name":"Ulluco","nameNL":"Ulluco","category":"vegetable","icon":"🥕","latin":"Ullucus tuberosus"},"hardy-kiwi":{"name":"Hardy Kiwi","nameNL":"Kiwi","category":"shrub","icon":"🌿","latin":"Actinidia arguta"},"chocolate-vine":{"name":"Chocolate Vine","nameNL":"Chocoladeplant","category":"shrub","icon":"🌿","latin":"Akebia quinata"},"schisandra":{"name":"Schisandra","nameNL":"Schisandra","category":"shrub","icon":"🌿","latin":"Schisandra chinensis"},"red-alder":{"name":"Red Alder","nameNL":"Rode els","category":"tree","icon":"🌳","latin":"Alnus rubra"},"evergreen-olive":{"name":"Evergreen Olive","nameNL":"Wintergroene olijfwilg","category":"shrub","icon":"🌿","latin":"Elaeagnus × ebbingei"},"northern-bayberry":{"name":"Northern Bayberry","nameNL":"Noordelijke wasbes","category":"shrub","icon":"🌿","latin":"Myrica pensylvanica"},"dwarf-gunnera":{"name":"Dwarf Gunnera","nameNL":"Dwerggunnera","category":"herb","icon":"🌱","latin":"Gunnera magellanica"},"earthnut-pea":{"name":"Earthnut Pea","nameNL":"Aardaker","category":"herb","icon":"🌱","latin":"Lathyrus tuberosus"},"everlasting-pea":{"name":"Everlasting Pea","nameNL":"Brede lathyrus","category":"flower","icon":"🌸","latin":"Lathyrus latifolius"},"chinese-wisteria":{"name":"Chinese Wisteria","nameNL":"Chinese blauweregen","category":"shrub","icon":"🌿","latin":"Wisteria sinensis"},"shagbark-hickory":{"name":"Shagbark Hickory","nameNL":"Schorshickory","category":"tree","icon":"🌳","latin":"Carya ovata"},"silver-birch":{"name":"Silver Birch","nameNL":"Ruwe berk","category":"tree","icon":"🌳","latin":"Betula pendula"},"field-horsetail":{"name":"Field Horsetail","nameNL":"Heermoes","category":"herb","icon":"🌱","latin":"Equisetum arvense"},"watercress":{"name":"Watercress","nameNL":"Waterkers","category":"vegetable","icon":"🥕","latin":"Nasturtium officinale"},"black-poplar":{"name":"Black Poplar","nameNL":"Zwarte populier","category":"tree","icon":"🌳","latin":"Populus nigra"},"american-bird-cherry":{"name":"American Bird Cherry","nameNL":"Amerikaanse vogelkers","category":"tree","icon":"🌳","latin":"Prunus serotina"},"turkish-hazel":{"name":"Turkish Hazel","nameNL":"Turkse hazelaar","category":"tree","icon":"🌳","latin":"Corylus colurna"},"lambert-hazel":{"name":"Lambert Hazel / Filbert","nameNL":"Lambertsnoot","category":"shrub-tree","icon":"🌳","latin":"Corylus maxima"},"field-brome":{"name":"Field Brome / Meadow Brome","nameNL":"Beemdraaigras","category":"grass-cover","icon":"🌾","latin":"Bromus spp. (Veldbeemdrassen)"},"gagel":{"name":"Sweet gale","nameNL":"Wilde gagel","category":"shrub","icon":"🌿","latin":"Myrica gale"},"kardinaalsmuts":{"name":"Spindle","nameNL":"Kardinaalsmuts","category":"shrub","icon":"🌿","latin":"Euonymus europaeus"},"hulst":{"name":"Holly","nameNL":"Hulst","category":"tree","icon":"🌳","latin":"Ilex aquifolium"},"liguster":{"name":"Wild privet","nameNL":"Wilde liguster","category":"shrub","icon":"🌿","latin":"Ligustrum vulgare"},"wilde-appel":{"name":"European crab apple","nameNL":"Wilde appel","category":"tree","icon":"🌳","latin":"Malus sylvestris"},"vogelkers":{"name":"Bird cherry","nameNL":"Vogelkers","category":"tree","icon":"🌳","latin":"Prunus padus"},"wilg":{"name":"Willow","nameNL":"Witte wilg","category":"tree","icon":"🌳","latin":"Salix alba"},"meidoorn":{"name":"Hawthorn","nameNL":"Meidoorn","category":"tree","icon":"🌳","latin":"Crataegus monogyna"},"es":{"name":"Common ash","nameNL":"Es","category":"tree","icon":"🌳","latin":"Fraxinus excelsior"},"esdoorn":{"name":"Sycamore maple","nameNL":"Esdoorn","category":"tree","icon":"🌳","latin":"Acer pseudoplatanus"},"wilde-kamperfoelie":{"name":"Honeysuckle","nameNL":"Wilde kamperfoelie","category":"climber","icon":"🌿","latin":"Lonicera periclymenum"},"wilde-peer":{"name":"Wild pear","nameNL":"Wilde peer","category":"tree","icon":"🌳","latin":"Pyrus pyraster"},"riet":{"name":"Common reed","nameNL":"Riet","category":"perennial-herb","icon":"🌱","latin":"Phragmites australis"},"witte-waterlelie":{"name":"White water lily","nameNL":"Witte waterlelie","category":"aquatic","icon":"💧","latin":"Nymphaea alba"},"speenkruid":{"name":"Lesser celandine","nameNL":"Speenkruid","category":"perennial-herb","icon":"🌱","latin":"Ficaria verna"}};
+
+/* ===== Editor state ===== */
+let currentKey = null;
+let overlay = {};   // overlay[currentKey] = {...}
+let editing = {};   // current editing buffer
+
+const SPECIES_KEYS = Object.keys(SPECIES_INDEX);
+
+/* ===== List rendering ===== */
+function renderList(q){
+  q=(q||'').toLowerCase().trim();
+  const list=document.getElementById('splist');
+  const keys=SPECIES_KEYS.filter(k=>{
+    if(!q)return true;
+    const s=SPECIES_INDEX[k];
+    return (s.name||'').toLowerCase().includes(q)||(s.nameNL||'').toLowerCase().includes(q)||(s.latin||'').toLowerCase().includes(q)||k.includes(q);
+  });
+  if(!keys.length){list.innerHTML='<div class="empty">No species match.</div>';return;}
+  list.innerHTML=keys.map(k=>{
+    const s=SPECIES_INDEX[k];
+    const has=(overlay[k]&&(Object.keys(overlay[k]).some(f=>f!=='source'&&f!=='note')))?"●":"";
+    return `<div class="spec ${k===currentKey?'active':''}" onclick="selectSpecies('${k}')">
+      <span class="icon">${s.icon}</span>
+      <span class="nm">${s.name||k}</span>
+      <span class="cat">${s.category||''}</span>
+      <span class="has" title="has overlay data">${has}</span>
+    </div>`;
+  }).join('');
+}
+
+function selectSpecies(key){
+  currentKey=key;
+  const s=SPECIES_INDEX[key];
+  editing=JSON.parse(JSON.stringify(overlay[key]||{}));
+  // init sub-objects
+  editing.expertTips=editing.expertTips||[];
+  editing.expertVarieties=editing.expertVarieties||[];
+  editing.guildOverrides=editing.guildOverrides||{companions:[],antagonists:[]};
+  editing.principles=editing.principles||[];
+  document.getElementById('editorHead').style.display='block';
+  document.getElementById('editorBody').style.display='flex';
+  document.getElementById('editorEmpty').style.display='none';
+  document.getElementById('ehName').textContent=s.icon+' '+s.name;
+  document.getElementById('ehLatin').textContent='· '+s.latin+' ·';
+  document.getElementById('ehCat').textContent=s.category||'';
+  document.getElementById('f_source').value=editing.source||'';
+  document.getElementById('f_note').value=editing.note||'';
+  document.getElementById('f_spacing').value=editing.spacingOverride||'';
+  document.getElementById('f_soilDepth').value=editing.soilDepthOverride||'';
+  document.getElementById('f_caution').value=(editing.flags&&editing.flags.caution)||'';
+  renderTips();renderVarieties();renderChips();renderPrinciples();
+  renderList(document.getElementById('spSearch').value);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ===== Tips ===== */
+function renderTips(){
+  const b=document.getElementById('tipsBox');
+  b.innerHTML=editing.expertTips.map((t,i)=>`<div class="tip"><textarea placeholder="e.g. Pinch suckers weekly" onchange="editTip(${i},this.value)">${t}</textarea><button class="rm" onclick="delTip(${i})">✕</button></div>`).join('');
+}
+function addTip(){editing.expertTips.push('');renderTips();}
+function editTip(i,v){editing.expertTips[i]=v;markDirty();}
+function delTip(i){editing.expertTips.splice(i,1);renderTips();markDirty();}
+
+/* ===== Varieties ===== */
+function renderVarieties(){
+  const b=document.getElementById('varietiesBox');
+  b.innerHTML=editing.expertVarieties.map((v,i)=>`
+    <div class="tip">
+      <input style="flex:1" placeholder="Variety name" value="${v.name||''}" onchange="editVarietyName(${i},this.value)">
+      <input style="flex:1" placeholder="Note (optional)" value="${v.note||''}" onchange="editVarietyNote(${i},this.value)">
+      <button class="rm" onclick="delVariety(${i})">✕</button>
+    </div>`).join('');
+}
+function addVariety(){editing.expertVarieties.push({name:'',note:''});renderVarieties();}
+function editVarietyName(i,v){editing.expertVarieties[i].name=v;markDirty();}
+function editVarietyNote(i,v){editing.expertVarieties[i].note=v;markDirty();}
+function delVariety(i){editing.expertVarieties.splice(i,1);renderVarieties();markDirty();}
+
+/* ===== Principles ===== */
+function renderPrinciples(){
+  const b=document.getElementById('principlesBox');
+  b.innerHTML=editing.principles.map((p,i)=>`
+    <div class="tip">
+      <input style="flex:1" placeholder="Gives to soil (e.g. deep roots aerate clay)" value="${p.gives||''}" onchange="editPrinciple(${i},'gives',this.value)">
+      <input style="flex:1" placeholder="Gets from soil (e.g. needs fungal-rich topsoil)" value="${p.gets||''}" onchange="editPrinciple(${i},'gets',this.value)">
+      <button class="rm" onclick="delPrinciple(${i})">✕</button>
+    </div>`).join('');
+}
+function addPrinciple(){editing.principles.push({gives:'',gets:''});renderPrinciples();}
+function editPrinciple(i,f,v){editing.principles[i][f]=v;markDirty();}
+function delPrinciple(i){editing.principles.splice(i,1);renderPrinciples();markDirty();}
+
+/* ===== Connections ===== */
+function renderChips(){
+  const c=editing.guildOverrides.companions||[];
+  const a=editing.guildOverrides.antagonists||[];
+  const cg=document.getElementById('companionsChips');
+  const ag=document.getElementById('antagonistsChips');
+  cg.innerHTML=c.map(k=>`<span class="chip">${SPECIES_INDEX[k]?SPECIES_INDEX[k].icon:''} ${SPECIES_INDEX[k]?SPECIES_INDEX[k].name:k} <button onclick="removeConn('companions','${k}')">✕</button></span>`).join('')||'<span style="color:var(--muted);font-size:.75em">None yet</span>';
+  ag.innerHTML=a.map(k=>`<span class="chip antag">${SPECIES_INDEX[k]?SPECIES_INDEX[k].icon:''} ${SPECIES_INDEX[k]?SPECIES_INDEX[k].name:k} <button onclick="removeConn('antagonists','${k}')">✕</button></span>`).join('')||'<span style="color:var(--muted);font-size:.75em">None yet</span>';
+}
+function showResults(q,type){
+  q=(q||'').toLowerCase().trim();
+  const box=document.getElementById(type+'Results');
+  if(!q){box.style.display='none';return;}
+  const keys=SPECIES_KEYS.filter(k=>k!==currentKey && (SPECIES_INDEX[k].name||'').toLowerCase().includes(q)).slice(0,12);
+  if(!keys.length){box.style.display='none';return;}
+  box.style.display='block';
+  box.innerHTML=keys.map(k=>`<div class="r" onmousedown="addConn('${type}','${k}')">${SPECIES_INDEX[k].icon} ${SPECIES_INDEX[k].name} <small style="color:var(--muted)">${SPECIES_INDEX[k].category}</small></div>`).join('');
+}
+function hideResults(type){setTimeout(()=>{document.getElementById(type+'Results').style.display='none';},150);}
+function addConn(type,key){
+  const arr=editing.guildOverrides[type];
+  if(!arr.includes(key))arr.push(key);
+  renderChips();markDirty();toast('Added to '+type);
+}
+function removeConn(type,key){
+  editing.guildOverrides[type]=editing.guildOverrides[type].filter(k=>k!==key);
+  renderChips();markDirty();
+}
+
+/* ===== Persist ===== */
+function collect(){
+  editing.source=document.getElementById('f_source').value;
+  editing.note=document.getElementById('f_note').value;
+  const sp=document.getElementById('f_spacing').value;
+  const sd=document.getElementById('f_soilDepth').value;
+  if(sp)editing.spacingOverride=Number(sp);else delete editing.spacingOverride;
+  if(sd)editing.soilDepthOverride=Number(sd);else delete editing.soilDepthOverride;
+  const caut=document.getElementById('f_caution').value;
+  if(caut){editing.flags=editing.flags||{};editing.flags.caution=caut;}
+  // drop empties
+  if(!editing.expertTips.length)delete editing.expertTips;
+  if(!editing.expertVarieties.length)delete editing.expertVarieties;
+  if(!editing.principles.length)delete editing.principles;
+  if(!editing.guildOverrides.companions.length)delete editing.guildOverrides.companions;
+  if(!editing.guildOverrides.antagonists.length)delete editing.guildOverrides.antagonists;
+  if(!Object.keys(editing.guildOverrides).length)delete editing.guildOverrides;
+  if(!editing.source)delete editing.source;
+  if(!editing.note)delete editing.note;
+  // if empty overall, drop the species
+  if(Object.keys(editing).length===0){delete overlay[currentKey];}
+  else{overlay[currentKey]=editing;}
+}
+function markDirty(){collect();renderList(document.getElementById('spSearch').value);}
+function saveLocal(){
+  collect();
+  try{localStorage.setItem('soilpepper.expertOverlay',JSON.stringify(overlay));toast('💾 Draft saved on this device');}
+  catch(e){toast('Could not save (private mode)');}
+}
+function exportJSON(){
+  collect();
+  const out={version:1,expert:document.getElementById('f_source').value||'expert',layers:[],species:overlay};
+  const blob=new Blob([JSON.stringify(out,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='expert-overlay.json';
+  a.click();
+  toast('⬇ Overlay exported — send it back to SOILPEPPER');
+}
+function newLayer(){
+  if(confirm('Start a fresh overlay? Unsaved edits are lost.')){overlay={};currentKey=null;
+    document.getElementById('editorHead').style.display='none';
+    document.getElementById('editorBody').style.display='none';
+    document.getElementById('editorEmpty').style.display='block';
+    renderList('');}
+}
+/* ===== Toast ===== */
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove('show'),2200);}
+
+/* ===== Load saved draft if present ===== */
+(function(){
+  try{const saved=localStorage.getItem('soilpepper.expertOverlay');if(saved){overlay=JSON.parse(saved);}}
+  catch(e){}
+  renderList('');
+})();
+</script>
+</body>
+</html>
