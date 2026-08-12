@@ -30,7 +30,8 @@ a{text-decoration:none}
 .brand{display:flex;align-items:center;gap:12px}
 .brand .pepper{font-size:26px;line-height:1}
 .brand .logo{font-family:var(--font-head);color:#fff;font-size:20px;font-weight:700;letter-spacing:.5px}
-.brand .tagline{color:rgba(255,255,255,.75);font-size:12px;margin-top:1px}
+.brand .logo .pepperword{color:#f4c92f}
+.brand .tagline{color:rgba(255,255,255,.9);font-size:12px;margin-top:1px;font-weight:700}
 
 /* ── MAIN COLUMN ── */
 .main{max-width:1080px;margin:0 auto;padding:0 24px 60px}
@@ -100,11 +101,6 @@ a{text-decoration:none}
   .hero h1{font-size:22px}
   .section-head .count{display:none}
 }
-
-.langtxt{font-size:.85em;cursor:pointer;user-select:none;border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:5px 12px}
-.langtxt span{cursor:pointer;padding:0 3px;opacity:.7}
-.langtxt .active{color:#fff;opacity:1;font-weight:700}
-
 </style>
 </head>
 <body>
@@ -114,14 +110,11 @@ a{text-decoration:none}
   <div class="brand">
     <span class="pepper">🌶️</span>
     <div>
-      <div class="logo">SOILPEPPER</div>
+      <div class="logo">SOIL<span class="pepperword">PEPPER</span></div>
       <div class="tagline" data-i18n="brandSmall">Design and run your own permaculture project</div>
     </div>
   </div>
-  <div style="display:flex;align-items:center;gap:12px">
-    <a href="index.html" style="color:#fff;font-size:.85em;text-decoration:none;background:rgba(255,255,255,.14);padding:7px 16px;border-radius:999px;white-space:nowrap">← Home</a>
-    <div class="langtxt" id="langbtn" style="color:#fff"><span class="l-nl" onclick="setLangT('nl',this)">NL</span> <span class="sep" style="opacity:.4">|</span> <span class="l-en" onclick="setLangT('en',this)">EN</span></div>
-  </div>
+  <a href="index.html" style="color:#fff;font-size:.85em;text-decoration:none;background:rgba(255,255,255,.14);padding:7px 16px;border-radius:999px;white-space:nowrap">← Home</a>
 </header>
 
 <div class="main">
@@ -342,6 +335,7 @@ var T = {
     climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
     climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
     climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
+    climateLabel: 'Climate preset:', cliTus: 'Mediterranean · hot dry summers', cliNl: 'Temperate · maritime',
     storyBand: 'Built from real field experience and our own necessity for a tool that works',
     privacyNote: '🔒 <strong>Privacy by design:</strong> everything runs in your browser. Your site plans, water calculations and garden layouts are stored in <strong>your browser\'s localStorage</strong> — they never touch a server. <strong>Back up your work</strong> with the 💾 Backup button in Master Plan, Water Management or Trees and around (one JSON file), and restore it anywhere.',
     secDesign: 'Design Suite', secDesignCount: 'desktop · 5 tools', secField: 'Field Tools', secFieldCount: 'mobile · 4 tools',
@@ -389,6 +383,7 @@ var T = {
     navDesignH: 'Ontwerpsuite (desktop)', navFieldH: 'Tuingereedschap (mobiel)',
     footOpen: '🌍 open-source toolkit', footPrivacy: '🔒 data blijft op je apparaat', footOffline: '📱 werkt offline',
     regionLabel: 'Regiovoorinstelling:', regTus: 'Toscane · Middellands', regNl: 'Nederland · Gematigd',
+    climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
     climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
     climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
     climateLabel: 'Klimaatvoorinstelling:', cliTus: 'Middellands · hete droge zomers', cliNl: 'Gematigd · maritiem',
@@ -559,6 +554,7 @@ function selectRegion(region) {
 })();
 </script>
 </body>
+
 
 
 
