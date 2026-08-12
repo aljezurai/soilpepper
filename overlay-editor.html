@@ -82,6 +82,32 @@ footer{padding:16px 22px;color:var(--muted);font-size:.72em;text-align:center;bo
 .override-row input{border-color:rgba(244,201,47,.4)}
 .override-row input:focus{border-color:var(--gold)}
 @media(max-width:820px){.layout{grid-template-columns:1fr}.splist{max-height:240px}.connections{grid-template-columns:1fr}}
+/* Principle picker modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:60;display:flex;align-items:center;justify-content:center;padding:20px}
+.modal{background:var(--panel);border:1px solid var(--border);border-radius:16px;max-width:760px;width:100%;max-height:86vh;display:flex;flex-direction:column;box-shadow:0 16px 48px rgba(0,0,0,.5)}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border)}
+.modal-head h3{color:var(--accent);font-size:1em}
+.modal-x{background:none;border:none;color:var(--muted);font-size:1.2em;cursor:pointer}
+.modal-body{padding:16px 20px;overflow-y:auto}
+.modal-hint{color:var(--muted);font-size:.8em;margin-bottom:14px}
+.picker-cols{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.picker-col h4{font-size:.75em;text-transform:uppercase;letter-spacing:.8px;color:var(--accent);margin-bottom:10px}
+.picker-col h4 small{text-transform:none;letter-spacing:0;color:var(--muted);font-weight:400}
+.opt-list{display:flex;flex-direction:column;gap:6px;max-height:40vh;overflow-y:auto;padding-right:4px}
+.opt{display:flex;align-items:center;gap:9px;padding:7px 10px;border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:.82em;transition:.12s;background:var(--panel2)}
+.opt:hover{background:#203a2b}
+.opt.sel{background:var(--green);border-color:var(--green2)}
+.opt .box{width:16px;height:16px;border:1.5px solid var(--muted);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:.7em;flex-shrink:0}
+.opt.sel .box{background:var(--gold);border-color:var(--gold);color:#000}
+.modal-foot{display:flex;justify-content:flex-end;gap:10px;padding:14px 20px;border-top:1px solid var(--border)}
+.principles-box{display:flex;flex-direction:column;gap:6px;margin-bottom:8px}
+.principle-row{display:flex;gap:8px;align-items:center;background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-size:.82em}
+.principle-row .pv{flex:1}
+.principle-row .pv .lbl{color:var(--muted);font-size:.68em;text-transform:uppercase}
+.principle-row .pv .val{color:var(--ink)}
+.principle-row .rm{background:none;border:none;color:var(--red);cursor:pointer}
+.save-state{font-size:.72em;color:var(--accent);background:rgba(123,196,138,.1);border:1px solid rgba(123,196,138,.25);border-radius:999px;padding:5px 12px;white-space:nowrap}
+@media(max-width:640px){.picker-cols{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -105,9 +131,17 @@ footer{padding:16px 22px;color:var(--muted);font-size:.72em;text-align:center;bo
   <!-- EDITOR -->
   <div class="panel editor">
     <div class="editor-head" id="editorHead" style="display:none">
-      <h1 id="ehName"></h1>
-      <div class="latin" id="ehLatin"></div>
-      <span class="cat-badge" id="ehCat"></span>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+        <div>
+          <h1 id="ehName"></h1>
+          <div class="latin" id="ehLatin"></div>
+          <span class="cat-badge" id="ehCat"></span>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="save-state" id="saveState"></span>
+          <button class="btn" onclick="saveNext()">Save & next →</button>
+        </div>
+      </div>
     </div>
     <div class="editor-body" id="editorBody" style="display:none">
 
@@ -163,11 +197,11 @@ footer{padding:16px 22px;color:var(--muted);font-size:.72em;text-align:center;bo
         </div>
       </div>
 
-      <!-- Principles -->
+      <!-- Principles (mutual benefit) — popup picker -->
       <div class="field">
         <label>Soil mutual benefit <small>(how it helps soil / how soil helps it)</small></label>
-        <div class="tips-box" id="principlesBox"></div>
-        <button class="add-btn" onclick="addPrinciple()">+ Add a principle</button>
+        <div class="principles-box" id="principlesBox"></div>
+        <button class="add-btn" onclick="openPrinciplePicker()">+ Add / edit soil benefits</button>
       </div>
 
       <!-- Cautions -->
@@ -183,6 +217,33 @@ footer{padding:16px 22px;color:var(--muted);font-size:.72em;text-align:center;bo
 
 <footer>Deep-merges over plants.json — the base stays untouched. Export produces an overlay layer keyed by species.</footer>
 <div class="toast" id="toast"></div>
+
+<!-- Principle picker modal -->
+<div class="modal-overlay" id="principleModal" style="display:none" onclick="if(event.target===this)closePrinciplePicker()">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>🌿 Soil mutual benefit</h3>
+      <button class="modal-x" onclick="closePrinciplePicker()">✕</button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-hint">Select from the standard list so everyone uses the same terms. These are stored on this species only.</p>
+      <div class="picker-cols">
+        <div class="picker-col">
+          <h4>Gives to soil <small>(what this plant contributes)</small></h4>
+          <div class="opt-list" id="givesOpts"></div>
+        </div>
+        <div class="picker-col">
+          <h4>Gets from soil <small>(what this plant needs)</small></h4>
+          <div class="opt-list" id="needsOpts"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn ghost" onclick="closePrinciplePicker()">Cancel</button>
+      <button class="btn gold" onclick="confirmPrinciples()">✓ Apply</button>
+    </div>
+  </div>
+</div>
 
 <script>
 /* ===== SPECIES INDEX (embedded from plants.json) ===== */
@@ -267,18 +328,46 @@ function editVarietyNote(i,v){editing.expertVarieties[i].note=v;markDirty();}
 function delVariety(i){editing.expertVarieties.splice(i,1);renderVarieties();markDirty();}
 
 /* ===== Principles ===== */
+/* Canonical vocabulary (matches plants.json guild terms) */
+const GIVES_VOCAB = ["aromatic-leaves","bee-forage","beneficial-habitat","berries","biomass","canopy","deep-root","deep-shade","dye-plant","erosion-control","evergreen-cover","evergreen-shelter","firewood","fruit","ground-cover","hedge","insectary-flowers","leaf-mould","light-shade","medicinal","minerals-accumulator","mulch","mycorrhizal-host","n-fixer","nitrogen","nut-food","ornamental","pest-repellent","pioneer","pollen","pollinator-attractor","root-aeration","shade","soil-structure","support","timber","trap-crop","water-filtration","weed-suppression","wildlife-habitat","windbreak"];
+const NEEDS_VOCAB = ["acidic-soil","calcareous-soil","deep-soil-prep","full-sun","moist-soil","moisture-retention","mycorrhizal-inoculation","nitrogen","partial-shade","phosphorus","pollination","potassium","rich-soil","shade","shade-as-seedling","shelter","space","sun","support","well-drained-soil","wind-protection"];
+const GIVES_LABEL = {"aromatic-leaves":"Aromatic leaves","bee-forage":"Bee forage","beneficial-habitat":"Beneficial habitat","berries":"Berries","biomass":"Biomass","canopy":"Canopy","deep-root":"Deep root","deep-shade":"Deep shade","dye-plant":"Dye plant","erosion-control":"Erosion control","evergreen-cover":"Evergreen cover","evergreen-shelter":"Evergreen shelter","firewood":"Firewood","fruit":"Fruit","ground-cover":"Ground cover","hedge":"Hedge","insectary-flowers":"Insectary flowers","leaf-mould":"Leaf mould","light-shade":"Light shade","medicinal":"Medicinal","minerals-accumulator":"Minerals accumulator","mulch":"Mulch","mycorrhizal-host":"Mycorrhizal host","n-fixer":"N-fixer","nitrogen":"Nitrogen","nut-food":"Nut food","ornamental":"Ornamental","pest-repellent":"Pest repellent","pioneer":"Pioneer","pollen":"Pollen","pollinator-attractor":"Pollinator attractor","root-aeration":"Root aeration","shade":"Shade","soil-structure":"Soil structure","support":"Support","timber":"Timber","trap-crop":"Trap crop","water-filtration":"Water filtration","weed-suppression":"Weed suppression","wildlife-habitat":"Wildlife habitat","windbreak":"Windbreak"};
+const NEEDS_LABEL = {"acidic-soil":"Acidic soil","calcareous-soil":"Calcareous soil","deep-soil-prep":"Deep soil prep","full-sun":"Full sun","moist-soil":"Moist soil","moisture-retention":"Moisture retention","mycorrhizal-inoculation":"Mycorrhizal inoculation","nitrogen":"Nitrogen","partial-shade":"Partial shade","phosphorus":"Phosphorus","pollination":"Pollination","potassium":"Potassium","rich-soil":"Rich soil","shade":"Shade","shade-as-seedling":"Shade as seedling","shelter":"Shelter","space":"Space","sun":"Sun","support":"Support","well-drained-soil":"Well-drained soil","wind-protection":"Wind protection"};
+
+/* Principles stored as: editing.principles = [{gives:[...], gets:[...]}] (single mutual-benefit row) */
 function renderPrinciples(){
   const b=document.getElementById('principlesBox');
-  b.innerHTML=editing.principles.map((p,i)=>`
-    <div class="tip">
-      <input style="flex:1" placeholder="Gives to soil (e.g. deep roots aerate clay)" value="${p.gives||''}" onchange="editPrinciple(${i},'gives',this.value)">
-      <input style="flex:1" placeholder="Gets from soil (e.g. needs fungal-rich topsoil)" value="${p.gets||''}" onchange="editPrinciple(${i},'gets',this.value)">
-      <button class="rm" onclick="delPrinciple(${i})">✕</button>
+  if(!editing.principles.length){b.innerHTML='<span style="color:var(--muted);font-size:.75em">No soil benefits set yet.</span>';return;}
+  b.innerHTML=editing.principles.map((p,pi)=>`
+    <div class="principle-row">
+      <div class="pv"><span class="lbl">Gives to soil</span><div class="val">${(p.gives||[]).map(g=>GIVES_LABEL[g]||g).join(', ')||'—'}</div></div>
+      <div class="pv"><span class="lbl">Gets from soil</span><div class="val">${(p.gets||[]).map(g=>NEEDS_LABEL[g]||g).join(', ')||'—'}</div></div>
+      <button class="rm" onclick="delPrinciple(${pi})">✕</button>
     </div>`).join('');
 }
-function addPrinciple(){editing.principles.push({gives:'',gets:''});renderPrinciples();}
-function editPrinciple(i,f,v){editing.principles[i][f]=v;markDirty();}
-function delPrinciple(i){editing.principles.splice(i,1);renderPrinciples();markDirty();}
+function openPrinciplePicker(){
+  if(!editing.principles.length)editing.principles=[{gives:[],gets:[]}];
+  const p=editing.principles[0];
+  const go=document.getElementById('givesOpts');
+  const no=document.getElementById('needsOpts');
+  go.innerHTML=GIVES_VOCAB.map(v=>`<div class="opt ${(p.gives||[]).includes(v)?'sel':''}" onclick="togglePrincipleOpt('gives','${v}',this)"><span class="box">✓</span> ${GIVES_LABEL[v]||v}</div>`).join('');
+  no.innerHTML=NEEDS_VOCAB.map(v=>`<div class="opt ${(p.gets||[]).includes(v)?'sel':''}" onclick="togglePrincipleOpt('gets','${v}',this)"><span class="box">✓</span> ${NEEDS_LABEL[v]||v}</div>`).join('');
+  document.getElementById('principleModal').style.display='flex';
+}
+function togglePrincipleOpt(field,val,el){
+  const p=editing.principles[0];
+  p[field]=p[field]||[];
+  const i=p[field].indexOf(val);
+  if(i>=0){p[field].splice(i,1);el.classList.remove('sel');}
+  else{p[field].push(val);el.classList.add('sel');}
+}
+function confirmPrinciples(){
+  const p=editing.principles[0];
+  if(p&&!p.gives.length&&!p.gets.length)editing.principles=[];
+  renderPrinciples();markDirty();closePrinciplePicker();toast('✓ Soil benefits updated');
+}
+function closePrinciplePicker(){document.getElementById('principleModal').style.display='none';}
+function delPrinciple(pi){editing.principles.splice(pi,1);renderPrinciples();markDirty();}
 
 /* ===== Connections ===== */
 function renderChips(){
@@ -319,12 +408,13 @@ function collect(){
   if(sd)editing.soilDepthOverride=Number(sd);else delete editing.soilDepthOverride;
   const caut=document.getElementById('f_caution').value;
   if(caut){editing.flags=editing.flags||{};editing.flags.caution=caut;}
-  // drop empties
-  if(!editing.expertTips.length)delete editing.expertTips;
-  if(!editing.expertVarieties.length)delete editing.expertVarieties;
-  if(!editing.principles.length)delete editing.principles;
-  if(!editing.guildOverrides.companions.length)delete editing.guildOverrides.companions;
-  if(!editing.guildOverrides.antagonists.length)delete editing.guildOverrides.antagonists;
+  // drop empties (defensive: treat missing as empty)
+  if(!(editing.expertTips||[]).length)delete editing.expertTips;
+  if(!(editing.expertVarieties||[]).length)delete editing.expertVarieties;
+  if(!(editing.principles||[]).length)delete editing.principles;
+  editing.guildOverrides=editing.guildOverrides||{};
+  if(!(editing.guildOverrides.companions||[]).length)delete editing.guildOverrides.companions;
+  if(!(editing.guildOverrides.antagonists||[]).length)delete editing.guildOverrides.antagonists;
   if(!Object.keys(editing.guildOverrides).length)delete editing.guildOverrides;
   if(!editing.source)delete editing.source;
   if(!editing.note)delete editing.note;
@@ -332,11 +422,43 @@ function collect(){
   if(Object.keys(editing).length===0){delete overlay[currentKey];}
   else{overlay[currentKey]=editing;}
 }
-function markDirty(){collect();renderList(document.getElementById('spSearch').value);}
-function saveLocal(){
+function markDirty(){
   collect();
-  try{localStorage.setItem('soilpepper.expertOverlay',JSON.stringify(overlay));toast('💾 Draft saved on this device');}
-  catch(e){toast('Could not save (private mode)');}
+  // auto-save on every change so nothing is lost when you move on
+  persistLocal(true);
+  renderList(document.getElementById('spSearch').value);
+  updateSaveState();
+}
+function persistLocal(silent){
+  try{localStorage.setItem('soilpepper.expertOverlay',JSON.stringify(overlay));if(!silent)toast('💾 Saved on this device');}
+  catch(e){if(!silent)toast('Could not save (private mode)');}
+}
+function updateSaveState(){
+  const el=document.getElementById('saveState');
+  if(el){
+    const done=Object.keys(overlay).length;
+    const total=SPECIES_KEYS.length;
+    el.innerHTML=done+'/'+total+' done';
+    el.title=done+' species have expert data';
+  }
+}
+function saveLocal(){
+  collect();persistLocal(false);updateSaveState();
+}
+function saveNext(){
+  collect();persistLocal(false);
+  // find the next species (alphabetically after current) that has no overlay data
+  const cur=currentKey;
+  const idx=SPECIES_KEYS.indexOf(cur);
+  let next=null;
+  for(let i=idx+1;i<SPECIES_KEYS.length;i++){
+    if(!overlay[SPECIES_KEYS[i]]){next=SPECIES_KEYS[i];break;}
+  }
+  if(!next){ // wrap to first undone
+    for(const k of SPECIES_KEYS){if(!overlay[k]){next=k;break;}}
+  }
+  if(next){selectSpecies(next);toast('💾 Saved — editing '+SPECIES_INDEX[next].name);}
+  else{toast('✅ All species done! Export the overlay');}
 }
 function exportJSON(){
   collect();
