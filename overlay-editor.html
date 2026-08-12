@@ -107,6 +107,16 @@ footer{padding:16px 22px;color:var(--muted);font-size:.72em;text-align:center;bo
 .principle-row .pv .val{color:var(--ink)}
 .principle-row .rm{background:none;border:none;color:var(--red);cursor:pointer}
 .save-state{font-size:.72em;color:var(--accent);background:rgba(123,196,138,.1);border:1px solid rgba(123,196,138,.25);border-radius:999px;padding:5px 12px;white-space:nowrap}
+/* Expert attribution / multi-expert */
+.expert-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:rgba(123,196,138,.06);border:1px solid rgba(123,196,138,.2);border-radius:10px;padding:10px 12px;margin-bottom:12px}
+.expert-bar .lbl{font-size:.72em;text-transform:uppercase;letter-spacing:.8px;color:var(--accent);white-space:nowrap}
+.expert-bar select{background:var(--panel2);color:var(--ink);border:1px solid var(--border);border-radius:8px;padding:7px 10px;font-size:.85em;flex:1;min-width:140px}
+.expert-badge{display:inline-flex;align-items:center;gap:4px;font-size:.62em;font-weight:600;color:var(--accent);background:rgba(123,196,138,.12);border:1px solid rgba(123,196,138,.3);border-radius:999px;padding:2px 8px;margin-left:6px;white-space:nowrap}
+.expert-badge b{color:#7bc48a}
+.attr-row{display:flex;align-items:center;gap:8px}
+.attr-row .src{flex:1}
+.expert-pill{font-size:.68em;color:var(--accent);background:rgba(123,196,138,.1);border:1px solid rgba(123,196,138,.25);border-radius:999px;padding:3px 9px;cursor:pointer;white-space:nowrap}
+.expert-pill.sel{background:var(--gold);color:#000;border-color:var(--gold)}
 @media(max-width:640px){.picker-cols{grid-template-columns:1fr}}
 </style>
 </head>
@@ -145,12 +155,20 @@ footer{padding:16px 22px;color:var(--muted);font-size:.72em;text-align:center;bo
     </div>
     <div class="editor-body" id="editorBody" style="display:none">
 
+      <!-- Multi-expert bar -->
+      <div class="expert-bar">
+        <span class="lbl">Contributing expert</span>
+        <select id="activeExpert" onchange="setActiveExpert(this.value)"></select>
+        <button type="button" class="btn ghost" onclick="addExpertPrompt()">+ Add expert</button>
+      </div>
+      <div class="expert-pills" id="expertPills" style="display:none"></div>
+
       <!-- Expert attribution -->
       <div class="expert-box">
-        <h3>Expert attribution</h3>
+        <h3>Expert attribution <small id="attrExpertName"></small></h3>
         <div class="meta-row">
-          <div class="field"><label>Expert name</label><input id="f_source" placeholder="e.g. A. Rossi"></div>
-          <div class="field"><label>Credibility note</label><input id="f_note" placeholder="e.g. 20y Mediterranean food forest"></div>
+          <div class="field"><label>Expert name</label><input id="f_source" placeholder="e.g. A. Rossi" onchange="editExpertName(this.value)"></div>
+          <div class="field"><label>Credibility note</label><input id="f_note" placeholder="e.g. 20y Mediterranean food forest" onchange="editExpertCred(this.value)"></div>
         </div>
       </div>
 
@@ -253,8 +271,53 @@ const SPECIES_INDEX = {"tomato":{"name":"Tomato","nameNL":"Tomaat","category":"v
 let currentKey = null;
 let overlay = {};   // overlay[currentKey] = {...}
 let editing = {};   // current editing buffer
+let experts = {};   // experts[id] = {name, cred}
+let activeExpert = null; // current contributing expert id
 
 const SPECIES_KEYS = Object.keys(SPECIES_INDEX);
+
+/* ===== Experts (Option C multi-expert) ===== */
+function defaultExpertId(){return 'e1';}
+function ensureExpert(){
+  if(!activeExpert && Object.keys(experts).length){activeExpert=Object.keys(experts)[0];}
+  if(!activeExpert){experts['e1']={name:'Expert',cred:''};activeExpert='e1';}
+  return activeExpert;
+}
+function renderExpertBar(){
+  ensureExpert();
+  const sel=document.getElementById('activeExpert');
+  sel.innerHTML=Object.keys(experts).map(id=>`<option value="${id}">${experts[id].name||id}</option>`).join('');
+  sel.value=activeExpert;
+  // pills
+  const pills=document.getElementById('expertPills');
+  pills.innerHTML=Object.keys(experts).map(id=>`<span class="expert-pill ${id===activeExpert?'sel':''}" onclick="setActiveExpert('${id}')">${experts[id].name||id}</span>`).join('');
+  pills.style.display=Object.keys(experts).length>1?'flex':'none';
+  // attribution fields
+  const ex=experts[activeExpert]||{name:'',cred:''};
+  document.getElementById('f_source').value=ex.name||'';
+  document.getElementById('f_note').value=ex.cred||'';
+  document.getElementById('attrExpertName').textContent=ex.name?('· '+ex.name):'';
+}
+function setActiveExpert(id){
+  // save current attribution into the outgoing expert before switching
+  if(activeExpert&&experts[activeExpert]){
+    experts[activeExpert].name=document.getElementById('f_source').value;
+    experts[activeExpert].cred=document.getElementById('f_note').value;
+  }
+  activeExpert=id;renderExpertBar();
+}
+function addExpertPrompt(){
+  const name=prompt('Expert name:');
+  if(!name||!name.trim())return;
+  const id='e'+(Object.keys(experts).length+1);
+  const cred=prompt('Credibility note (optional):')||'';
+  experts[id]={name:name.trim(),cred};
+  activeExpert=id;renderExpertBar();
+}
+function editExpertName(v){experts[activeExpert]=experts[activeExpert]||{};experts[activeExpert].name=v;markDirty();}
+function editExpertCred(v){experts[activeExpert]=experts[activeExpert]||{};experts[activeExpert].cred=v;markDirty();}
+function exName(id){return experts[id]?experts[id].name:'';}
+function exBadge(id){if(!id||!experts[id])return '';return `<span class="expert-badge">✦ ${experts[id].name}</span>`;}
 
 /* ===== List rendering ===== */
 function renderList(q){
@@ -293,8 +356,8 @@ function selectSpecies(key){
   document.getElementById('ehName').textContent=s.icon+' '+s.name;
   document.getElementById('ehLatin').textContent='· '+s.latin+' ·';
   document.getElementById('ehCat').textContent=s.category||'';
-  document.getElementById('f_source').value=editing.source||'';
-  document.getElementById('f_note').value=editing.note||'';
+  // attribution comes from the active expert profile (not per-species source)
+  renderExpertBar();
   document.getElementById('f_spacing').value=editing.spacingOverride||'';
   document.getElementById('f_soilDepth').value=editing.soilDepthOverride||'';
   document.getElementById('f_caution').value=(editing.flags&&editing.flags.caution)||'';
@@ -306,10 +369,14 @@ function selectSpecies(key){
 /* ===== Tips ===== */
 function renderTips(){
   const b=document.getElementById('tipsBox');
-  b.innerHTML=editing.expertTips.map((t,i)=>`<div class="tip"><textarea placeholder="e.g. Pinch suckers weekly" onchange="editTip(${i},this.value)">${t}</textarea><button type="button" class="rm" onclick="delTip(${i})">✕</button></div>`).join('');
+  b.innerHTML=editing.expertTips.map((t,i)=>{
+    const text=typeof t==='string'?t:(t.text||'');
+    const ex=typeof t==='object'?t.expert:null;
+    return `<div class="tip"><textarea placeholder="e.g. Pinch suckers weekly" onchange="editTip(${i},this.value)">${text}</textarea>${exBadge(ex)}<button type="button" class="rm" onclick="delTip(${i})">✕</button></div>`;
+  }).join('');
 }
-function addTip(){editing.expertTips.push('');renderTips();}
-function editTip(i,v){editing.expertTips[i]=v;markDirty();}
+function addTip(){editing.expertTips=editing.expertTips||[];const t={text:'',expert:activeExpert||ensureExpert()};editing.expertTips.push(t);renderTips();markDirty();}
+function editTip(i,v){editing.expertTips[i]=(typeof editing.expertTips[i]==='object')?(editing.expertTips[i].text=v,editing.expertTips[i]):{text:v,expert:activeExpert||ensureExpert()};markDirty();}
 function delTip(i){editing.expertTips.splice(i,1);renderTips();markDirty();}
 
 /* ===== Varieties ===== */
@@ -319,10 +386,10 @@ function renderVarieties(){
     <div class="tip">
       <input style="flex:1" placeholder="Variety name" value="${v.name||''}" onchange="editVarietyName(${i},this.value)">
       <input style="flex:1" placeholder="Note (optional)" value="${v.note||''}" onchange="editVarietyNote(${i},this.value)">
-      <button type="button" class="rm" onclick="delVariety(${i})">✕</button>
+      ${exBadge(v.expert)}<button type="button" class="rm" onclick="delVariety(${i})">✕</button>
     </div>`).join('');
 }
-function addVariety(){editing.expertVarieties.push({name:'',note:''});renderVarieties();}
+function addVariety(){editing.expertVarieties=editing.expertVarieties||[];editing.expertVarieties.push({name:'',note:'',expert:activeExpert||ensureExpert()});renderVarieties();markDirty();}
 function editVarietyName(i,v){editing.expertVarieties[i].name=v;markDirty();}
 function editVarietyNote(i,v){editing.expertVarieties[i].note=v;markDirty();}
 function delVariety(i){editing.expertVarieties.splice(i,1);renderVarieties();markDirty();}
@@ -334,7 +401,7 @@ const NEEDS_VOCAB = ["acidic-soil","calcareous-soil","deep-soil-prep","full-sun"
 const GIVES_LABEL = {"aromatic-leaves":"Aromatic leaves","bee-forage":"Bee forage","beneficial-habitat":"Beneficial habitat","berries":"Berries","biomass":"Biomass","canopy":"Canopy","deep-root":"Deep root","deep-shade":"Deep shade","dye-plant":"Dye plant","erosion-control":"Erosion control","evergreen-cover":"Evergreen cover","evergreen-shelter":"Evergreen shelter","firewood":"Firewood","fruit":"Fruit","ground-cover":"Ground cover","hedge":"Hedge","insectary-flowers":"Insectary flowers","leaf-mould":"Leaf mould","light-shade":"Light shade","medicinal":"Medicinal","minerals-accumulator":"Minerals accumulator","mulch":"Mulch","mycorrhizal-host":"Mycorrhizal host","n-fixer":"N-fixer","nitrogen":"Nitrogen","nut-food":"Nut food","ornamental":"Ornamental","pest-repellent":"Pest repellent","pioneer":"Pioneer","pollen":"Pollen","pollinator-attractor":"Pollinator attractor","root-aeration":"Root aeration","shade":"Shade","soil-structure":"Soil structure","support":"Support","timber":"Timber","trap-crop":"Trap crop","water-filtration":"Water filtration","weed-suppression":"Weed suppression","wildlife-habitat":"Wildlife habitat","windbreak":"Windbreak"};
 const NEEDS_LABEL = {"acidic-soil":"Acidic soil","calcareous-soil":"Calcareous soil","deep-soil-prep":"Deep soil prep","full-sun":"Full sun","moist-soil":"Moist soil","moisture-retention":"Moisture retention","mycorrhizal-inoculation":"Mycorrhizal inoculation","nitrogen":"Nitrogen","partial-shade":"Partial shade","phosphorus":"Phosphorus","pollination":"Pollination","potassium":"Potassium","rich-soil":"Rich soil","shade":"Shade","shade-as-seedling":"Shade as seedling","shelter":"Shelter","space":"Space","sun":"Sun","support":"Support","well-drained-soil":"Well-drained soil","wind-protection":"Wind protection"};
 
-/* Principles stored as: editing.principles = [{gives:[...], gets:[...]}] (single mutual-benefit row) */
+/* Principles stored as: editing.principles = [{gives:[...], gets:[...], expert:id}] (single mutual-benefit row) */
 function renderPrinciples(){
   const b=document.getElementById('principlesBox');
   if(!editing.principles.length){b.innerHTML='<span style="color:var(--muted);font-size:.75em">No soil benefits set yet.</span>';return;}
@@ -342,7 +409,7 @@ function renderPrinciples(){
     <div class="principle-row">
       <div class="pv"><span class="lbl">Gives to soil</span><div class="val">${(p.gives||[]).map(g=>GIVES_LABEL[g]||g).join(', ')||'—'}</div></div>
       <div class="pv"><span class="lbl">Gets from soil</span><div class="val">${(p.gets||[]).map(g=>NEEDS_LABEL[g]||g).join(', ')||'—'}</div></div>
-      <button type="button" class="rm" onclick="delPrinciple(${pi})">✕</button>
+      ${exBadge(p.expert)}<button type="button" class="rm" onclick="delPrinciple(${pi})">✕</button>
     </div>`).join('');
 }
 function openPrinciplePicker(){
@@ -351,7 +418,8 @@ function openPrinciplePicker(){
   if(!editing.principles.length){
     const guild=SPECIES_INDEX[currentKey]?.guild||{gives:[],needs:[]};
     editing.principles=[{gives:(guild.gives||[]).filter(v=>GIVES_VOCAB.includes(v)),
-                         gets:(guild.needs||[]).filter(v=>NEEDS_VOCAB.includes(v))}];
+                         gets:(guild.needs||[]).filter(v=>NEEDS_VOCAB.includes(v)),
+                         expert:activeExpert||ensureExpert()}];
   }
   const p=editing.principles[0];
   const go=document.getElementById('givesOpts');
@@ -381,8 +449,16 @@ function renderChips(){
   const a=editing.guildOverrides.antagonists||[];
   const cg=document.getElementById('companionsChips');
   const ag=document.getElementById('antagonistsChips');
-  cg.innerHTML=c.map(k=>`<span class="chip">${SPECIES_INDEX[k]?SPECIES_INDEX[k].icon:''} ${SPECIES_INDEX[k]?SPECIES_INDEX[k].name:k} <button type="button" onclick="removeConn('companions','${k}')">✕</button></span>`).join('')||'<span style="color:var(--muted);font-size:.75em">None yet</span>';
-  ag.innerHTML=a.map(k=>`<span class="chip antag">${SPECIES_INDEX[k]?SPECIES_INDEX[k].icon:''} ${SPECIES_INDEX[k]?SPECIES_INDEX[k].name:k} <button type="button" onclick="removeConn('antagonists','${k}')">✕</button></span>`).join('')||'<span style="color:var(--muted);font-size:.75em">None yet</span>';
+  cg.innerHTML=c.map(x=>{
+    const k=typeof x==='string'?x:x.key;
+    const ex=typeof x==='object'?x.expert:null;
+    return `<span class="chip">${SPECIES_INDEX[k]?SPECIES_INDEX[k].icon:''} ${SPECIES_INDEX[k]?SPECIES_INDEX[k].name:k}${exBadge(ex)} <button type="button" onclick="removeConn('companions','${k}')">✕</button></span>`;
+  }).join('')||'<span style="color:var(--muted);font-size:.75em">None yet</span>';
+  ag.innerHTML=a.map(x=>{
+    const k=typeof x==='string'?x:x.key;
+    const ex=typeof x==='object'?x.expert:null;
+    return `<span class="chip antag">${SPECIES_INDEX[k]?SPECIES_INDEX[k].icon:''} ${SPECIES_INDEX[k]?SPECIES_INDEX[k].name:k}${exBadge(ex)} <button type="button" onclick="removeConn('antagonists','${k}')">✕</button></span>`;
+  }).join('')||'<span style="color:var(--muted);font-size:.75em">None yet</span>';
 }
 function showResults(q,type){
   q=(q||'').toLowerCase().trim();
@@ -398,26 +474,32 @@ function addConn(type,key){
   editing.guildOverrides=editing.guildOverrides||{};
   editing.guildOverrides[type]=editing.guildOverrides[type]||[];
   const arr=editing.guildOverrides[type];
-  if(!arr.includes(key))arr.push(key);
+  const exists=arr.find(x=>(typeof x==='string'?x:x.key)===key);
+  if(!exists)arr.push({key,expert:activeExpert||ensureExpert()});
   renderChips();markDirty();toast('Added to '+type);
 }
 function removeConn(type,key){
   editing.guildOverrides=editing.guildOverrides||{};
   editing.guildOverrides[type]=editing.guildOverrides[type]||[];
-  editing.guildOverrides[type]=editing.guildOverrides[type].filter(k=>k!==key);
+  editing.guildOverrides[type]=editing.guildOverrides[type].filter(x=>(typeof x==='string'?x:x.key)!==key);
   renderChips();markDirty();
 }
 
 /* ===== Persist ===== */
 function collect(){
-  editing.source=document.getElementById('f_source').value;
-  editing.note=document.getElementById('f_note').value;
+  // save active expert profile into experts map
+  if(activeExpert){
+    experts[activeExpert]=experts[activeExpert]||{};
+    experts[activeExpert].name=document.getElementById('f_source').value;
+    experts[activeExpert].cred=document.getElementById('f_note').value;
+  }
   const sp=document.getElementById('f_spacing').value;
   const sd=document.getElementById('f_soilDepth').value;
   if(sp)editing.spacingOverride=Number(sp);else delete editing.spacingOverride;
   if(sd)editing.soilDepthOverride=Number(sd);else delete editing.soilDepthOverride;
   const caut=document.getElementById('f_caution').value;
   if(caut){editing.flags=editing.flags||{};editing.flags.caution=caut;}
+  else if(editing.flags){delete editing.flags.caution;if(!Object.keys(editing.flags).length)delete editing.flags;}
   // drop empties (defensive: treat missing as empty)
   if(!(editing.expertTips||[]).length)delete editing.expertTips;
   if(!(editing.expertVarieties||[]).length)delete editing.expertVarieties;
@@ -426,8 +508,8 @@ function collect(){
   if(!(editing.guildOverrides.companions||[]).length)delete editing.guildOverrides.companions;
   if(!(editing.guildOverrides.antagonists||[]).length)delete editing.guildOverrides.antagonists;
   if(!Object.keys(editing.guildOverrides).length)delete editing.guildOverrides;
-  if(!editing.source)delete editing.source;
-  if(!editing.note)delete editing.note;
+  // remove legacy per-species attribution (now via experts map + item badges)
+  delete editing.source;delete editing.note;
   // if empty overall, drop the species
   if(Object.keys(editing).length===0){delete overlay[currentKey];}
   else{overlay[currentKey]=editing;}
@@ -440,8 +522,11 @@ function markDirty(){
   updateSaveState();
 }
 function persistLocal(silent){
-  try{localStorage.setItem('soilpepper.expertOverlay',JSON.stringify(overlay));if(!silent)toast('💾 Saved on this device');}
-  catch(e){if(!silent)toast('Could not save (private mode)');}
+  try{
+    const bundle={overlay,experts};
+    localStorage.setItem('soilpepper.expertOverlay',JSON.stringify(bundle));
+    if(!silent)toast('💾 Saved on this device');
+  }catch(e){if(!silent)toast('Could not save (private mode)');}
 }
 function updateSaveState(){
   const el=document.getElementById('saveState');
@@ -472,16 +557,16 @@ function saveNext(){
 }
 function exportJSON(){
   collect();
-  const out={version:1,expert:document.getElementById('f_source').value||'expert',layers:[],species:overlay};
+  const out={version:2,experts,species:overlay};
   const blob=new Blob([JSON.stringify(out,null,2)],{type:'application/json'});
   const a=document.createElement('a');
   a.href=URL.createObjectURL(blob);
   a.download='expert-overlay.json';
   a.click();
-  toast('⬇ Overlay exported — send it back to SOILPEPPER');
+  toast('⬇ Overlay exported — '+Object.keys(experts).length+' expert(s), '+Object.keys(overlay).length+' species');
 }
 function newLayer(){
-  if(confirm('Start a fresh overlay? Unsaved edits are lost.')){overlay={};currentKey=null;
+  if(confirm('Start a fresh overlay? Unsaved edits are lost.')){overlay={};experts={};activeExpert=null;currentKey=null;
     document.getElementById('editorHead').style.display='none';
     document.getElementById('editorBody').style.display='none';
     document.getElementById('editorEmpty').style.display='block';
@@ -492,8 +577,25 @@ function toast(m){const t=document.getElementById('toast');t.textContent=m;t.cla
 
 /* ===== Load saved draft if present ===== */
 (function(){
-  try{const saved=localStorage.getItem('soilpepper.expertOverlay');if(saved){overlay=JSON.parse(saved);}}
-  catch(e){}
+  try{
+    const saved=localStorage.getItem('soilpepper.expertOverlay');
+    if(saved){
+      const data=JSON.parse(saved);
+      if(data&&data.overlay&&data.experts){ // new bundle format
+        overlay=data.overlay;experts=data.experts;
+        if(!activeExpert&&Object.keys(experts).length)activeExpert=Object.keys(experts)[0];
+      }else{ // legacy single-expert format: {speciesKey:{source,note,...}}
+        overlay=data||{};
+        experts={};
+        // migrate: find first species with a source -> create expert e1
+        for(const k in overlay){
+          if(overlay[k]&&overlay[k].source){experts['e1']={name:overlay[k].source,cred:overlay[k].note||''};break;}
+        }
+        if(Object.keys(experts).length)activeExpert='e1';
+        else{ensureExpert();}
+      }
+    }
+  }catch(e){}
   renderList('');
 })();
 </script>
