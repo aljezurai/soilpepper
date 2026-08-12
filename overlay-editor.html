@@ -395,11 +395,15 @@ function showResults(q,type){
 }
 function hideResults(type){setTimeout(()=>{document.getElementById(type+'Results').style.display='none';},150);}
 function addConn(type,key){
+  editing.guildOverrides=editing.guildOverrides||{};
+  editing.guildOverrides[type]=editing.guildOverrides[type]||[];
   const arr=editing.guildOverrides[type];
   if(!arr.includes(key))arr.push(key);
   renderChips();markDirty();toast('Added to '+type);
 }
 function removeConn(type,key){
+  editing.guildOverrides=editing.guildOverrides||{};
+  editing.guildOverrides[type]=editing.guildOverrides[type]||[];
   editing.guildOverrides[type]=editing.guildOverrides[type].filter(k=>k!==key);
   renderChips();markDirty();
 }
