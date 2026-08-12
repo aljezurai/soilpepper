@@ -1491,7 +1491,8 @@
   "sowPattern": "square",
   "seedSpacing": 40,
   "rowSpacing": 90,
-  "seedDepth": 2
+  "seedDepth": 2,
+  "nameNL": "Artisjok"
  },
  "peperoncini": {
   "key": "peperoncini",
@@ -5608,7 +5609,8 @@
   "regions": [
    "tuscany"
   ],
-  "icon": "🍋"
+  "icon": "🍋",
+  "nameNL": "Citroenboom"
  },
  "carob": {
   "key": "carob",
@@ -5698,7 +5700,8 @@
   "regions": [
    "tuscany"
   ],
-  "icon": "🌾"
+  "icon": "🌾",
+  "nameNL": "Johannesbroodboom"
  },
  "almond": {
   "key": "almond",
@@ -5874,7 +5877,8 @@
   "regions": [
    "tuscany"
   ],
-  "icon": "🥜"
+  "icon": "🥜",
+  "nameNL": "Pistache"
  },
  "pomegranate": {
   "key": "pomegranate",
@@ -8699,7 +8703,8 @@
   "regions": [
    "tuscany"
   ],
-  "icon": "🍂"
+  "icon": "🍂",
+  "nameNL": "Olijfboom"
  },
  "cherry": {
   "key": "cherry",
