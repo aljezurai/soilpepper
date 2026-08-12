@@ -9724,8 +9724,8 @@
    "silty",
    "loam"
   ],
-  "sun": "☀️ Full",
-  "water": "💧 Low",
+  "sun": "full",
+  "water": "low",
   "height": 120,
   "function": "food",
   "nFixer": false,
@@ -9790,8 +9790,8 @@
    "silty",
    "loam"
   ],
-  "sun": "☀️ Full",
-  "water": "💧💧 Mod",
+  "sun": "full",
+  "water": "moderate",
   "height": 30,
   "function": "food",
   "nFixer": false,
@@ -9852,8 +9852,8 @@
    "silty",
    "loam"
   ],
-  "sun": "☀️ Full",
-  "water": "💧💧 Mod",
+  "sun": "full",
+  "water": "moderate",
   "height": 60,
   "function": "food",
   "nFixer": false,
@@ -9915,8 +9915,8 @@
    "silty",
    "loam"
   ],
-  "sun": "☀️ Full",
-  "water": "💧 Low",
+  "sun": "full",
+  "water": "low",
   "height": 200,
   "function": "food",
   "nFixer": false,
@@ -9983,8 +9983,8 @@
    "sandy",
    "silty"
   ],
-  "sun": "☀️ Full",
-  "water": "💧💧 Mod",
+  "sun": "full",
+  "water": "moderate",
   "height": 30,
   "function": "food",
   "nFixer": false,
@@ -10054,8 +10054,8 @@
    "sandy",
    "silty"
   ],
-  "sun": "☀️ Full",
-  "water": "💧💧 Mod",
+  "sun": "full",
+  "water": "moderate",
   "height": 40,
   "function": "food",
   "nFixer": false,
@@ -10454,7 +10454,7 @@
    "loam",
    "clay"
   ],
-  "sun": "part",
+  "sun": "partial",
   "water": "high",
   "height": 60,
   "width": 90,
@@ -10582,7 +10582,7 @@
    "silty",
    "loam"
   ],
-  "sun": "part",
+  "sun": "partial",
   "water": "high",
   "height": 120,
   "width": 60,
@@ -11278,7 +11278,7 @@
    "silty",
    "loam"
   ],
-  "sun": "part",
+  "sun": "partial",
   "water": "high",
   "height": 40,
   "width": 30,
