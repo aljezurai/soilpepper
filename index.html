@@ -324,8 +324,8 @@ function onbGo(n){
   // pre-select saved choices when landing on a step
   if(n===1) onbPreselectRegion();
   if(n===2) onbPreselectSoil();
-  var c=document.getElementById('onbWizard');
-  if(c && n>0) c.scrollIntoView({behavior:'smooth',block:'center'});
+  // NOTE: no scrollIntoView here — the card is already centered in the hero,
+  // and auto-scrolling revealed the body background below the hero (page shift).
 }
 /* first step a (returning) visitor still needs: skip answered ones */
 function onbFirstUnanswered(){
