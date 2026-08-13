@@ -1420,6 +1420,9 @@ button.btn.sp-bk-download {
   // every SOILPEPPER key (brief, water, plan, veg garden, guild gd-*, region,
   // expert overlay, future keys) automatically. Restores them all on upload.
   // No hardcoded key list — nothing new can be missed.
+  // NOTE (2026-08-13): the strip and its buttons are styled 100% self-contained
+  // (inline) so they look IDENTICAL on every page, regardless of each page's own
+  // .btn CSS — pages differ (master-plan has a base .btn rule, others don't).
   if (window.__soilpepperBackupLoaded) return; // inject once
   window.__soilpepperBackupLoaded = true;
 
@@ -1464,33 +1467,54 @@ button.btn.sp-bk-download {
       }
     };
     reader.readAsText(file);
-    // allow re-selecting the same file
     event.target.value = '';
   }
+
+  // Self-contained button style — identical on every page. Uses !important so it beats
+  // sage-forte's bare `button { ... !important }` rule (which forces gold on ALL buttons).
+  var BTN = 'display:inline-flex !important;align-items:center !important;gap:6px !important;' +
+    'padding:8px 16px !important;border-radius:999px !important;font-family:inherit !important;' +
+    'font-size:12px !important;font-weight:800 !important;cursor:pointer !important;' +
+    'border:2px solid !important;line-height:1.2 !important;box-shadow:none !important;';
+  var BTN_GOLD = 'background:#f5ead6 !important;color:#8a6420 !important;border-color:#e0d0a8 !important;';   // standard page button (gold)
+  var BTN_YELLOW = 'background:#f4c92f !important;color:#000 !important;border-color:#d9a800 !important;';    // action button (yellow)
 
   function addBackupUI() {
     if (document.getElementById('sp-backup-bar')) return;
     var bar = document.createElement('div');
     bar.id = 'sp-backup-bar';
-    bar.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:8px 12px;margin:8px 0;border:1px solid var(--sf-border,#a8c0a8);border-radius:8px;background:#e4ebdd;font-size:.85rem';
-    bar.innerHTML =
-      '<span style="opacity:.75">💾 Backup</span>' +
-      '<button type="button" class="btn sp-bk-download" onclick="__spBackupAll()">⬇ Download all data</button>' +
-      '<button type="button" class="btn" onclick="document.getElementById(\'sp-restore-file\').click()">📥 Restore</button>' +
-      '<input type="file" id="sp-restore-file" accept=".json,application/json" style="display:none">';
-    // expose handlers on window (restore needs the input, so give it a real id handler)
+    bar.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:8px 12px;margin:8px 0;' +
+      'border:1px solid #a8c0a8;border-radius:8px;background:#e4ebdd;font-size:.85rem;';
+    var dl = document.createElement('button');
+    dl.type = 'button';
+    dl.className = 'sp-bk-download';
+    dl.style.cssText = BTN + BTN_YELLOW;
+    dl.innerHTML = '⬇ Download all data';
+    dl.onclick = backupAll;
+    var rs = document.createElement('button');
+    rs.type = 'button';
+    rs.className = 'sp-bk-restore';
+    rs.style.cssText = BTN + BTN_GOLD;
+    rs.innerHTML = '📥 Restore';
+    var file = document.createElement('input');
+    file.type = 'file';
+    file.id = 'sp-restore-file';
+    file.accept = '.json,application/json';
+    file.style.display = 'none';
+    file.addEventListener('change', restoreBackup);
+    rs.onclick = function () { file.click(); };
+    bar.appendChild(dl);
+    bar.appendChild(rs);
+    bar.appendChild(file);
+
     var host = document.getElementById('sf-masthead') || document.querySelector('header') || document.body;
-    // insert after the masthead if possible, else at top of body
     if (host && host.parentNode) {
       if (host === document.body) { host.insertBefore(bar, host.firstChild); }
       else { host.parentNode.insertBefore(bar, host.nextSibling); }
     } else {
       document.body.insertBefore(bar, document.body.firstChild);
     }
-    document.getElementById('sp-restore-file').addEventListener('change', restoreBackup);
   }
-
-  window.__spBackupAll = backupAll;
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', addBackupUI);
@@ -1499,6 +1523,12 @@ button.btn.sp-bk-download {
   }
 })();
 </script>
+
+
+
+
+
+
 
 
 
