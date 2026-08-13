@@ -57,7 +57,13 @@ body{font-family:-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--sf-
 .region-opt .r-desc{font-size:.82em;color:var(--sf-muted)}
 .next-btn{margin-top:6px}
 .next-btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
-@media(max-width:480px){.region-grid{grid-template-columns:1fr}}
+.soil-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0}
+.soil-opt{padding:14px 12px;background:rgba(255,255,255,.7);border:2px solid var(--sf-border);
+  border-radius:var(--sf-radius);cursor:pointer;transition:all .15s;font-weight:700;color:var(--sf-header);
+  text-align:center}
+.soil-opt:hover{border-color:var(--sf-gold-border);transform:translateY(-1px)}
+.soil-opt.selected{border-color:var(--sf-gold-border);background:rgba(244,201,47,.18);box-shadow:0 0 0 1px var(--sf-gold-border)}
+@media(max-width:480px){.region-grid{grid-template-columns:1fr}.soil-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:640px){.hero{padding:24px}.hero .card{max-width:100%;padding:26px}}
 
 footer{max-width:1180px;margin:30px auto 0;padding:20px 34px;border-top:1px solid var(--sf-border);color:var(--sf-muted);font-size:.82em;text-align:center}
@@ -116,6 +122,24 @@ footer{max-width:1180px;margin:30px auto 0;padding:20px 34px;border-top:1px soli
         </button>
       </div>
 
+      <!-- SCREEN 2 — Step 2/5: Soil type -->
+      <div class="onb-screen" id="onbScreen2" style="display:none">
+        <div class="onb-step" data-i18n="onbStep2">Step 2/5</div>
+        <h1 data-i18n="onbSTitle">What kind of soil do you have?</h1>
+        <p data-i18n="onbSSub">This is the most important piece of information when you are serious about your setup. Before you put in any effort, know your soil — it's a given, you work from here. You can tweak this per 10 m² later.</p>
+        <div class="soil-grid" id="soilGrid">
+          <div class="soil-opt" data-soil="sandy" onclick="onbSoil('sandy',this)"><span data-i18n="sSandy">Sandy</span></div>
+          <div class="soil-opt" data-soil="silty" onclick="onbSoil('silty',this)"><span data-i18n="sSilty">Silty</span></div>
+          <div class="soil-opt" data-soil="loam" onclick="onbSoil('loam',this)"><span data-i18n="sLoam">Loam</span></div>
+          <div class="soil-opt" data-soil="clay" onclick="onbSoil('clay',this)"><span data-i18n="sClay">Clay</span></div>
+          <div class="soil-opt" data-soil="chalky" onclick="onbSoil('chalky',this)"><span data-i18n="sChalky">Chalky</span></div>
+          <div class="soil-opt" data-soil="peaty" onclick="onbSoil('peaty',this)"><span data-i18n="sPeaty">Peaty</span></div>
+        </div>
+        <button class="watch-btn next-btn" onclick="onbNext(3)" disabled id="onbSoilNext">
+          <span data-i18n="onbNext3">Next: your project →</span>
+        </button>
+      </div>
+
     </div>
   </section>
 <!-- full-bleed hero (no column constraint) -->
@@ -144,7 +168,11 @@ var T = {
     onbStep1:'Step 1/5', onbRTitle:'Where is your place?',
     onbRSub:'We wanted a tool for our place in Tuscany. As we are Dutch, we set up one for The Netherlands too. You can tweak any setting for anywhere later.',
     rTuscany:'Tuscany', rTuscanyD:'Mediterranean', rNL:'The Netherlands', rNLD:'Temperate',
-    onbNextLbl:'Next: soil →', onbBack:'← Back'
+    onbNextLbl:'Next: soil →', onbBack:'← Back',
+    onbStep2:'Step 2/5', onbSTitle:'What kind of soil do you have?',
+    onbSSub:'This is the most important piece of information when you are serious about your setup. Before you put in any effort, know your soil — it\'s a given, you work from here. You can tweak this per 10 m² later.',
+    sSandy:'Sandy', sSilty:'Silty', sLoam:'Loam', sClay:'Clay', sChalky:'Chalky', sPeaty:'Peaty',
+    onbNext3:'Next: your project →'
   },
   nl: {
     eyebrow:'Plan je tuin in 3 stappen',
@@ -162,7 +190,11 @@ var T = {
     onbStep1:'Stap 1/5', onbRTitle:'Waar is jouw plek?',
     onbRSub:'Wij wilden een tool voor onze plek in Toscane. Omdat we Nederlands zijn, hebben we er ook één voor Nederland gebouwd. Later kun je elke instelling aanpassen voor elke locatie.',
     rTuscany:'Toscane', rTuscanyD:'Mediterraan', rNL:'Nederland', rNLD:'Gematigd',
-    onbNextLbl:'Volgende: grond →', onbBack:'← Terug'
+    onbNextLbl:'Volgende: grond →', onbBack:'← Terug',
+    onbStep2:'Stap 2/5', onbSTitle:'Welke grondsoort heb je?',
+    onbSSub:'Dit is de belangrijkste informatie als je serieus aan de slag wilt. Voordat je moeite doet, weet wat voor grond je hebt — het is een gegeven, je werkt ermee. Later kun je dit per 10 m² aanpassen.',
+    sSandy:'Zand', sSilty:'Silt', sLoam:'Leem', sClay:'Klei', sChalky:'Kalkrijk', sPeaty:'Veen',
+    onbNext3:'Volgende: jouw project →'
   }
 };
 var LANG='en';
@@ -172,7 +204,7 @@ function applyI18n(){document.querySelectorAll('[data-i18n]').forEach(function(e
 function setLang(l,el){LANG=l;applyI18n();document.querySelectorAll('.langtxt span').forEach(function(f){f.classList.remove('active')});if(el)el.classList.add('active');}
 
 /* ===== Onboarding wizard (in the hero card) ===== */
-var onbState = { region: null };
+var onbState = { region: null, soil: null };
 function onbGo(n){
   // switch the visible hero-card screen
   document.querySelectorAll('.onb-screen').forEach(function(s,i){ s.style.display = (i===n)?'':'none'; });
@@ -194,6 +226,17 @@ function onbRegion(r, el){
 function onbNext(n){
   if(n<=1) return; // need a selection on step 1
   onbGo(n);
+}
+function onbSoil(s, el){
+  onbState.soil = s;
+  document.querySelectorAll('.soil-opt').forEach(function(p){ p.classList.remove('selected'); });
+  el.classList.add('selected');
+  document.getElementById('onbSoilNext').disabled = false;
+  try{
+    var b = JSON.parse(localStorage.getItem('tuscan-brief-v1')||'{}');
+    b.defaultSoil = s;
+    localStorage.setItem('tuscan-brief-v1', JSON.stringify(b));
+  }catch(e){}
 }
 document.addEventListener('DOMContentLoaded', applyI18n);
 </script>
