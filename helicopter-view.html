@@ -1472,7 +1472,7 @@ button.btn.sp-bk-download {
     if (document.getElementById('sp-backup-bar')) return;
     var bar = document.createElement('div');
     bar.id = 'sp-backup-bar';
-    bar.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:8px 12px;margin:8px 0;border:1px solid var(--sf-border,#a8c0a8);border-radius:8px;background:rgba(0,0,0,.15);font-size:.85rem';
+    bar.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:8px 12px;margin:8px 0;border:1px solid var(--sf-border,#a8c0a8);border-radius:8px;background:#e4ebdd;font-size:.85rem';
     bar.innerHTML =
       '<span style="opacity:.75">💾 Backup</span>' +
       '<button type="button" class="btn sp-bk-download" onclick="__spBackupAll()">⬇ Download all data</button>' +
@@ -1499,6 +1499,8 @@ button.btn.sp-bk-download {
   }
 })();
 </script>
+
+
 
 
 
