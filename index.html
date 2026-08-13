@@ -79,6 +79,7 @@ body{font-family:-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--sf-
   cursor:pointer;background:none;border:none;text-decoration:none;padding:0}
 .onb-back:hover{text-decoration:underline}
 .onb-ready{margin-top:22px;font-weight:700;color:var(--sf-header)}
+.onb-ready-italic{font-style:italic;font-weight:600;color:var(--sf-green)}
 .start-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0}
 .start-link{display:flex;flex-direction:column;align-items:center;gap:6px;padding:18px 12px;
   background:rgba(244,201,47,.14);border:2px solid var(--sf-gold-border);border-radius:var(--sf-radius-lg);
@@ -201,8 +202,8 @@ footer{max-width:1180px;margin:30px auto 0;padding:20px 34px;border-top:1px soli
         <h1 data-i18n="onbPTtl">One more thing.</h1>
         <p data-i18n="onbPSub">We like privacy and autonomy. But that comes with responsibilities. Our tool is free, we track nothing and no account is needed (all data are yours).</p>
         <p data-i18n="onbPBackup">This means you have to make a backup after each session just to be sure. The file you download is the file you upload again when needed. Nothing scary, you just need some discipline (as you do for running your plot).</p>
-        <p class="onb-italic" data-i18n="onbPCheers">Hopefully you will enjoy using Soilpepper as much as we do. Cheers!</p>
-        <div class="onb-ready" data-i18n="onbReady">Now I feel ready and want to start exploring:</div>
+        <p data-i18n="onbPCheers">Hopefully you will enjoy using Soilpepper as much as we do. Cheers!</p>
+        <div class="onb-ready onb-ready-italic" data-i18n="onbReady">Now I feel ready and want to start exploring:</div>
         <div class="start-grid">
           <a class="start-link" href="master-plan.html"><span class="t-icon">🧭</span><span class="t-name" data-i18n="lMasterplan">Masterplan</span></a>
           <a class="start-link" href="vegetable-garden-planner.html"><span class="t-icon">🥕</span><span class="t-name" data-i18n="lVeg">Vegetable garden</span></a>
@@ -252,7 +253,7 @@ var T = {
     onbStep4:'Step 4/5', onbWTitle:'Any screen. Anywhere. Even offline.',
     onbWSub:'All our tools work on a big or small screen. For planning we like our tools on a big screen. Going outside we like to use a smaller screen. Even offline, because we are at a place with shaky internet connections. Makes sense, right? That\'s why we made it possible to download your designs. Clickable and offline.',
     onbWTry:'Just try it out, you\'ll see.',
-    fBig:'Big screen', fBigD:'Planning', fSmall:'Small screen', fSmallD:'In the field',
+    fBig:'Big screen', fBigD:'Planning', fSmall:'Small screen', fSmallD:'Outdoor guide',
     fOffline:'Offline', fOfflineD:'No shaky connection',
     onbNext5:'Next: one more thing →',
     onbStep5:'Step 5/5', onbPTtl:'One more thing.',
@@ -292,7 +293,7 @@ var T = {
     onbStep4:'Stap 4/5', onbWTitle:'Elk scherm. Overal. Zelfs offline.',
     onbWSub:'Al onze tools werken op een groot of klein scherm. Voor het plannen gebruiken wij graag een groot scherm. Buiten gebruiken we liever een kleiner scherm. Zelfs offline, want we zitten op een plek met wankele internetverbindingen. Logisch toch? Daarom kun je je ontwerpen downloaden. Klikbaar en offline.',
     onbWTry:'Probeer het gewoon, je zult het zien.',
-    fBig:'Groot scherm', fBigD:'Plannen', fSmall:'Klein scherm', fSmallD:'In het veld',
+    fBig:'Groot scherm', fBigD:'Plannen', fSmall:'Klein scherm', fSmallD:'Buiten-gids',
     fOffline:'Offline', fOfflineD:'Geen wankele verbinding',
     onbNext5:'Volgende: nog één ding →',
     onbStep5:'Stap 5/5', onbPTtl:'Nog één ding.',
