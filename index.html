@@ -40,6 +40,24 @@ body{font-family:-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--sf-
 .hero .skip a{color:var(--sf-green);font-weight:600;text-decoration:none}
 .hero .badge{display:inline-block;margin-top:18px;font-size:.74em;color:var(--sf-muted);background:rgba(255,255,255,.75);
   border:1px solid var(--sf-border);padding:5px 13px;border-radius:999px}
+
+/* ===== Onboarding wizard (in the hero card) ===== */
+.onb-card{max-width:560px}
+.onb-step{font-size:.72em;text-transform:uppercase;letter-spacing:1.2px;color:var(--sf-muted);
+  font-weight:700;margin-bottom:14px;display:inline-block;background:var(--sf-sage-soft);
+  border:1px solid var(--sf-border);padding:4px 12px;border-radius:999px}
+.region-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}
+.region-opt{display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:18px 20px;
+  background:rgba(255,255,255,.7);border:2px solid var(--sf-border);border-radius:var(--sf-radius-lg);
+  cursor:pointer;transition:all .15s;text-align:left}
+.region-opt:hover{border-color:var(--sf-gold-border);transform:translateY(-1px)}
+.region-opt.selected{border-color:var(--sf-gold-border);background:rgba(244,201,47,.18);box-shadow:0 0 0 1px var(--sf-gold-border)}
+.region-opt .r-flag{font-size:1.6em;margin-bottom:4px}
+.region-opt .r-name{font-size:1.05em;font-weight:800;color:var(--sf-header)}
+.region-opt .r-desc{font-size:.82em;color:var(--sf-muted)}
+.next-btn{margin-top:6px}
+.next-btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+@media(max-width:480px){.region-grid{grid-template-columns:1fr}}
 @media(max-width:640px){.hero{padding:24px}.hero .card{max-width:100%;padding:26px}}
 
 footer{max-width:1180px;margin:30px auto 0;padding:20px 34px;border-top:1px solid var(--sf-border);color:var(--sf-muted);font-size:.82em;text-align:center}
@@ -63,17 +81,41 @@ footer{max-width:1180px;margin:30px auto 0;padding:20px 34px;border-top:1px soli
 
 
 <section class="hero">
-    <!-- Welcome IS the landing content (replaces the old watch-the-video hero) -->
-    <div class="card">
-      <div class="eyebrow" data-i18n="onbFoot">🌿 Free · offline · open-source</div>
-      <h1 data-i18n="onbTitle">Soilpepper is a tool.</h1>
-      <p class="lead" data-i18n="onbLead">A tool for planners and people that dare to act. It is not a fancy tool. Our goal is to give everybody an edge. Help you take the first step. And the second.</p>
-      <p data-i18n="onbBody">We designed Soilpepper to help ourselves. Now it is free for everyone to use. We hope you like it.</p>
-      <p data-i18n="onbWizard">This setup wizard helps you take the first steps. After that you are on your own!</p>
-      <a class="watch-btn" href="start.html">
-        <span data-i18n="onbStart">Let's go →</span>
-      </a>
-      <div class="skip"><span data-i18n="onbSkip">Not now</span></div>
+    <!-- Onboarding wizard lives here. Screen 0 = welcome intro, then Step 1/5, 2/5, ... -->
+    <div class="card onb-card" id="onbWizard">
+
+      <!-- SCREEN 0 — Welcome intro -->
+      <div class="onb-screen" id="onbScreen0">
+        <div class="eyebrow" data-i18n="onbFoot">🌿 Free · offline · open-source</div>
+        <h1 data-i18n="onbTitle">Soilpepper is a tool.</h1>
+        <p class="lead" data-i18n="onbLead">A tool for planners and people that dare to act. It is not a fancy tool. Our goal is to give everybody an edge. Help you take the first step. And the second.</p>
+        <p data-i18n="onbBody">We designed Soilpepper to help ourselves. Now it is free for everyone to use. We hope you like it.</p>
+        <p data-i18n="onbWizard">This setup wizard helps you take the first steps. After that you are on your own!</p>
+        <button class="watch-btn" onclick="onbGo(1)"><span data-i18n="onbStart">Let's go →</span></button>
+      </div>
+
+      <!-- SCREEN 1 — Step 1/5: Region -->
+      <div class="onb-screen" id="onbScreen1" style="display:none">
+        <div class="onb-step" data-i18n="onbStep1">Step 1/5</div>
+        <h1 data-i18n="onbRTitle">Where is your place?</h1>
+        <p data-i18n="onbRSub">We wanted a tool for our place in Tuscany. As we are Dutch, we set up one for The Netherlands too. You can tweak any setting for anywhere later.</p>
+        <div class="region-grid">
+          <div class="region-opt" data-region="tuscany" onclick="onbRegion('tuscany',this)">
+            <div class="r-flag">🇮🇹</div>
+            <div class="r-name" data-i18n="rTuscany">Tuscany</div>
+            <div class="r-desc" data-i18n="rTuscanyD">Mediterranean</div>
+          </div>
+          <div class="region-opt" data-region="netherlands" onclick="onbRegion('netherlands',this)">
+            <div class="r-flag">🇳🇱</div>
+            <div class="r-name" data-i18n="rNL">The Netherlands</div>
+            <div class="r-desc" data-i18n="rNLD">Temperate</div>
+          </div>
+        </div>
+        <button class="watch-btn next-btn" onclick="onbNext(2)" disabled id="onbNextBtn">
+          <span data-i18n="onbNextLbl">Next: soil →</span>
+        </button>
+      </div>
+
     </div>
   </section>
 <!-- full-bleed hero (no column constraint) -->
@@ -98,7 +140,11 @@ var T = {
     onbLead:'A tool for planners and people that dare to act. It is not a fancy tool. Our goal is to give everybody an edge. Help you take the first step. And the second.',
     onbBody:'We designed Soilpepper to help ourselves. Now it is free for everyone to use. We hope you like it.',
     onbWizard:'This setup wizard helps you take the first steps. After that you are on your own!',
-    onbStart:"Let's go →", onbSkip:'Not now', onbFoot:'🌿 Free · offline · open-source'
+    onbStart:"Let's go →", onbSkip:'Not now', onbFoot:'🌿 Free · offline · open-source',
+    onbStep1:'Step 1/5', onbRTitle:'Where is your place?',
+    onbRSub:'We wanted a tool for our place in Tuscany. As we are Dutch, we set up one for The Netherlands too. You can tweak any setting for anywhere later.',
+    rTuscany:'Tuscany', rTuscanyD:'Mediterranean', rNL:'The Netherlands', rNLD:'Temperate',
+    onbNextLbl:'Next: soil →', onbBack:'← Back'
   },
   nl: {
     eyebrow:'Plan je tuin in 3 stappen',
@@ -112,7 +158,11 @@ var T = {
     onbLead:'Een tool voor planners en mensen die durven te doen. Het is geen chique tool. Ons doel is om iedereen een voorsprong te geven. Help je de eerste stap te zetten. En de tweede.',
     onbBody:'We ontwierpen Soilpepper om onszelf te helpen. Nu is het gratis voor iedereen. We hopen dat je het leuk vindt.',
     onbWizard:'Deze setup-wizard helpt je de eerste stappen te zetten. Daarna sta je er zelf voor!',
-    onbStart:'Let\'s go →', onbSkip:'Niet nu', onbFoot:'🌿 Gratis · offline · open-source'
+    onbStart:'Let\'s go →', onbSkip:'Niet nu', onbFoot:'🌿 Gratis · offline · open-source',
+    onbStep1:'Stap 1/5', onbRTitle:'Waar is jouw plek?',
+    onbRSub:'Wij wilden een tool voor onze plek in Toscane. Omdat we Nederlands zijn, hebben we er ook één voor Nederland gebouwd. Later kun je elke instelling aanpassen voor elke locatie.',
+    rTuscany:'Toscane', rTuscanyD:'Mediterraan', rNL:'Nederland', rNLD:'Gematigd',
+    onbNextLbl:'Volgende: grond →', onbBack:'← Terug'
   }
 };
 var LANG='en';
@@ -120,6 +170,31 @@ function applyI18n(){document.querySelectorAll('[data-i18n]').forEach(function(e
   var k=el.getAttribute('data-i18n'); var v=(T[LANG]&&T[LANG][k])||T.en[k]; if(v!==undefined) el.textContent=v;
 });}
 function setLang(l,el){LANG=l;applyI18n();document.querySelectorAll('.langtxt span').forEach(function(f){f.classList.remove('active')});if(el)el.classList.add('active');}
+
+/* ===== Onboarding wizard (in the hero card) ===== */
+var onbState = { region: null };
+function onbGo(n){
+  // switch the visible hero-card screen
+  document.querySelectorAll('.onb-screen').forEach(function(s,i){ s.style.display = (i===n)?'':'none'; });
+  // move focus / scroll card into view on small screens
+  var c=document.getElementById('onbWizard');
+  if(c && n>0) c.scrollIntoView({behavior:'smooth',block:'center'});
+}
+function onbRegion(r, el){
+  onbState.region = r;
+  document.querySelectorAll('.region-opt').forEach(function(p){ p.classList.remove('selected'); });
+  el.classList.add('selected');
+  document.getElementById('onbNextBtn').disabled = false;
+  try{
+    var b = JSON.parse(localStorage.getItem('tuscan-brief-v1')||'{}');
+    b.region = r;
+    localStorage.setItem('tuscan-brief-v1', JSON.stringify(b));
+  }catch(e){}
+}
+function onbNext(n){
+  if(n<=1) return; // need a selection on step 1
+  onbGo(n);
+}
 document.addEventListener('DOMContentLoaded', applyI18n);
 </script>
 </body>
