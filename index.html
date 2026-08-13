@@ -64,6 +64,14 @@ body{font-family:-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--sf-
 .soil-opt:hover{border-color:var(--sf-gold-border);transform:translateY(-1px)}
 .soil-opt.selected{border-color:var(--sf-gold-border);background:rgba(244,201,47,.18);box-shadow:0 0 0 1px var(--sf-gold-border)}
 @media(max-width:480px){.region-grid{grid-template-columns:1fr}.soil-grid{grid-template-columns:1fr 1fr}}
+.tool-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0}
+.tool-opt{display:flex;flex-direction:column;align-items:center;gap:6px;padding:18px 12px;
+  background:rgba(255,255,255,.7);border:2px solid var(--sf-border);border-radius:var(--sf-radius-lg);
+  text-align:center}
+.tool-opt .t-icon{font-size:1.5em}
+.tool-opt .t-name{font-weight:800;color:var(--sf-header)}
+.tool-opt .t-desc{font-size:.74em;color:var(--sf-muted)}
+@media(max-width:480px){.tool-grid{grid-template-columns:1fr}}
 @media(max-width:640px){.hero{padding:24px}.hero .card{max-width:100%;padding:26px}}
 
 footer{max-width:1180px;margin:30px auto 0;padding:20px 34px;border-top:1px solid var(--sf-border);color:var(--sf-muted);font-size:.82em;text-align:center}
@@ -140,6 +148,19 @@ footer{max-width:1180px;margin:30px auto 0;padding:20px 34px;border-top:1px soli
         </button>
       </div>
 
+      <!-- SCREEN 3 — Step 3/5: The tools -->
+      <div class="onb-screen" id="onbScreen3" style="display:none">
+        <div class="onb-step" data-i18n="onbStep3">Step 3/5</div>
+        <h1 data-i18n="onbTTtl">So you know the region and your soil type. Great, excellent start.</h1>
+        <p data-i18n="onbTSub">We needed a tool that could help us plan the whole plot. So proper zoning (masterplan), influences like sun and wind (sectors) and water management. And a tool that works in the field and can help us with sowing, planting and harvesting. We planned our whole plot with it. But that is up to you. You can decide to just use the vegetable garden planner or tree planner.</p>
+        <div class="tool-grid">
+          <div class="tool-opt"><span class="t-icon">🧭</span><span class="t-name" data-i18n="tMasterplan">Masterplan</span><span class="t-desc" data-i18n="tMasterplanD">Zoning · sectors · water</span></div>
+          <div class="tool-opt"><span class="t-icon">🥕</span><span class="t-name" data-i18n="tVeg">Veg garden</span><span class="t-desc" data-i18n="tVegD">Sowing · planting · harvesting</span></div>
+          <div class="tool-opt"><span class="t-icon">🌳</span><span class="t-name" data-i18n="tTrees">Tree planner</span><span class="t-desc" data-i18n="tTreesD">Trees & around</span></div>
+        </div>
+        <button class="watch-btn next-btn" onclick="onbGo(4)"><span data-i18n="onbNext4">Next: how it works →</span></button>
+      </div>
+
     </div>
   </section>
 <!-- full-bleed hero (no column constraint) -->
@@ -172,7 +193,13 @@ var T = {
     onbStep2:'Step 2/5', onbSTitle:'What kind of soil do you have?',
     onbSSub:'This is the most important piece of information when you are serious about your setup. Before you put in any effort, know your soil — it\'s a given, you work from here. You can tweak this per 10 m² later.',
     sSandy:'Sandy', sSilty:'Silty', sLoam:'Loam', sClay:'Clay', sChalky:'Chalky', sPeaty:'Peaty',
-    onbNext3:'Next: your project →'
+    onbNext3:'Next: your project →',
+    onbStep3:'Step 3/5', onbTTtl:'So you know the region and your soil type. Great, excellent start.',
+    onbTSub:'We needed a tool that could help us plan the whole plot. So proper zoning (masterplan), influences like sun and wind (sectors) and water management. And a tool that works in the field and can help us with sowing, planting and harvesting. We planned our whole plot with it. But that is up to you. You can decide to just use the vegetable garden planner or tree planner.',
+    tMasterplan:'Masterplan', tMasterplanD:'Zoning · sectors · water',
+    tVeg:'Veg garden', tVegD:'Sowing · planting · harvesting',
+    tTrees:'Tree planner', tTreesD:'Trees & around',
+    onbNext4:'Next: how it works →'
   },
   nl: {
     eyebrow:'Plan je tuin in 3 stappen',
@@ -194,7 +221,13 @@ var T = {
     onbStep2:'Stap 2/5', onbSTitle:'Welke grondsoort heb je?',
     onbSSub:'Dit is de belangrijkste informatie als je serieus aan de slag wilt. Voordat je moeite doet, weet wat voor grond je hebt — het is een gegeven, je werkt ermee. Later kun je dit per 10 m² aanpassen.',
     sSandy:'Zand', sSilty:'Silt', sLoam:'Leem', sClay:'Klei', sChalky:'Kalkrijk', sPeaty:'Veen',
-    onbNext3:'Volgende: jouw project →'
+    onbNext3:'Volgende: jouw project →',
+    onbStep3:'Stap 3/5', onbTTtl:'Dus je kent je regio en grondsoort. Geweldig, uitstekende start.',
+    onbTSub:'Wij hadden een tool nodig om de hele tuin te plannen. Dus goede zonering (masterplan), invloeden zoals zon en wind (sectoren) en waterbeheer. En een tool die buiten werkt en helpt met zaaien, planten en oogsten. Wij planden er onze hele tuin mee. Maar dat is aan jou. Je kunt ook alleen de moestuinplanner of bomenplanner gebruiken.',
+    tMasterplan:'Masterplan', tMasterplanD:'Zonering · sectoren · water',
+    tVeg:'Moestuin', tVegD:'Zaaien · planten · oogsten',
+    tTrees:'Bomenplanner', tTreesD:'Bomen & omgeving',
+    onbNext4:'Volgende: hoe het werkt →'
   }
 };
 var LANG='en';
