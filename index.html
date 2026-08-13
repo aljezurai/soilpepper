@@ -65,13 +65,15 @@ body{font-family:-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--sf-
 .soil-opt.selected{border-color:var(--sf-gold-border);background:rgba(244,201,47,.18);box-shadow:0 0 0 1px var(--sf-gold-border)}
 @media(max-width:480px){.region-grid{grid-template-columns:1fr}.soil-grid{grid-template-columns:1fr 1fr}}
 .tool-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0}
-.tool-opt{display:flex;flex-direction:column;align-items:center;gap:6px;padding:18px 12px;
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0}
+.tool-opt,.feat-opt{display:flex;flex-direction:column;align-items:center;gap:6px;padding:18px 12px;
   background:rgba(255,255,255,.7);border:2px solid var(--sf-border);border-radius:var(--sf-radius-lg);
   text-align:center}
-.tool-opt .t-icon{font-size:1.5em}
-.tool-opt .t-name{font-weight:800;color:var(--sf-header)}
-.tool-opt .t-desc{font-size:.74em;color:var(--sf-muted)}
-@media(max-width:480px){.tool-grid{grid-template-columns:1fr}}
+.tool-opt .t-icon,.feat-opt .t-icon{font-size:1.5em}
+.tool-opt .t-name,.feat-opt .t-name{font-weight:800;color:var(--sf-header)}
+.tool-opt .t-desc,.feat-opt .t-desc{font-size:.74em;color:var(--sf-muted)}
+@media(max-width:480px){.tool-grid{grid-template-columns:1fr}.feat-grid{grid-template-columns:1fr}}
+.onb-italic{font-style:italic;color:var(--sf-green);font-weight:600;font-size:1.05em}
 @media(max-width:640px){.hero{padding:24px}.hero .card{max-width:100%;padding:26px}}
 
 footer{max-width:1180px;margin:30px auto 0;padding:20px 34px;border-top:1px solid var(--sf-border);color:var(--sf-muted);font-size:.82em;text-align:center}
@@ -161,6 +163,20 @@ footer{max-width:1180px;margin:30px auto 0;padding:20px 34px;border-top:1px soli
         <button class="watch-btn next-btn" onclick="onbGo(4)"><span data-i18n="onbNext4">Next: how it works →</span></button>
       </div>
 
+      <!-- SCREEN 4 — Step 4/5: Big screen or small, offline -->
+      <div class="onb-screen" id="onbScreen4" style="display:none">
+        <div class="onb-step" data-i18n="onbStep4">Step 4/5</div>
+        <h1 data-i18n="onbWTitle">Any screen. Anywhere. Even offline.</h1>
+        <p data-i18n="onbWSub">All our tools work on a big or small screen. For planning we like our tools on a big screen. Going outside we like to use a smaller screen. Even offline, because we are at a place with shaky internet connections. Makes sense, right? That's why we made it possible to download your designs. Clickable and offline.</p>
+        <p class="onb-italic" data-i18n="onbWTry">Just try it out, you'll see.</p>
+        <div class="feat-grid">
+          <div class="feat-opt"><span class="t-icon">🖥️</span><span class="t-name" data-i18n="fBig">Big screen</span><span class="t-desc" data-i18n="fBigD">Planning</span></div>
+          <div class="feat-opt"><span class="t-icon">📱</span><span class="t-name" data-i18n="fSmall">Small screen</span><span class="t-desc" data-i18n="fSmallD">In the field</span></div>
+          <div class="feat-opt"><span class="t-icon">📴</span><span class="t-name" data-i18n="fOffline">Offline</span><span class="t-desc" data-i18n="fOfflineD">No shaky connection</span></div>
+        </div>
+        <button class="watch-btn next-btn" onclick="onbGo(5)"><span data-i18n="onbNext5">Next: one more thing →</span></button>
+      </div>
+
     </div>
   </section>
 <!-- full-bleed hero (no column constraint) -->
@@ -199,7 +215,13 @@ var T = {
     tMasterplan:'Masterplan', tMasterplanD:'Zoning · sectors · water',
     tVeg:'Veg garden', tVegD:'Sowing · planting · harvesting',
     tTrees:'Tree planner', tTreesD:'Trees & around',
-    onbNext4:'Next: how it works →'
+    onbNext4:'Next: how it works →',
+    onbStep4:'Step 4/5', onbWTitle:'Any screen. Anywhere. Even offline.',
+    onbWSub:'All our tools work on a big or small screen. For planning we like our tools on a big screen. Going outside we like to use a smaller screen. Even offline, because we are at a place with shaky internet connections. Makes sense, right? That\'s why we made it possible to download your designs. Clickable and offline.',
+    onbWTry:'Just try it out, you\'ll see.',
+    fBig:'Big screen', fBigD:'Planning', fSmall:'Small screen', fSmallD:'In the field',
+    fOffline:'Offline', fOfflineD:'No shaky connection',
+    onbNext5:'Next: one more thing →'
   },
   nl: {
     eyebrow:'Plan je tuin in 3 stappen',
@@ -227,7 +249,13 @@ var T = {
     tMasterplan:'Masterplan', tMasterplanD:'Zonering · sectoren · water',
     tVeg:'Moestuin', tVegD:'Zaaien · planten · oogsten',
     tTrees:'Bomenplanner', tTreesD:'Bomen & omgeving',
-    onbNext4:'Volgende: hoe het werkt →'
+    onbNext4:'Volgende: hoe het werkt →',
+    onbStep4:'Stap 4/5', onbWTitle:'Elk scherm. Overal. Zelfs offline.',
+    onbWSub:'Al onze tools werken op een groot of klein scherm. Voor het plannen gebruiken wij graag een groot scherm. Buiten gebruiken we liever een kleiner scherm. Zelfs offline, want we zitten op een plek met wankele internetverbindingen. Logisch toch? Daarom kun je je ontwerpen downloaden. Klikbaar en offline.',
+    onbWTry:'Probeer het gewoon, je zult het zien.',
+    fBig:'Groot scherm', fBigD:'Plannen', fSmall:'Klein scherm', fSmallD:'In het veld',
+    fOffline:'Offline', fOfflineD:'Geen wankele verbinding',
+    onbNext5:'Volgende: nog één ding →'
   }
 };
 var LANG='en';
