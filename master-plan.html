@@ -2775,10 +2775,15 @@ function onFuncChange() {
   const vegField = document.getElementById('veg-field');
   if (vegField) vegField.style.display = v === 'vegetable' ? 'block' : 'none';
   if (enforceTree) updateGuildPreview();
-  // Zone advice: auto-suggest the standard permaculture zone for this function
+  // Zone advice: auto-suggest the standard permaculture zone for this function.
+  // (2026-08-13 fix: only apply the advice if the cell has no zone yet — previously
+  //  it silently OVERWROTE a user-set zone, making cells appear to "switch" zones.)
   const zoneSel = document.getElementById('zone-select');
   if (zoneSel && ZONE_ADVICE[v] !== undefined) {
-    zoneSel.value = ZONE_ADVICE[v];
+    const currentZone = zoneSel.value;
+    if (!currentZone) {
+      zoneSel.value = ZONE_ADVICE[v];
+    }
     const hint = zoneSel.parentElement.querySelector('.hint');
     if (hint) hint.innerHTML = 'Advised: <strong>' + ZONE_META[ZONE_ADVICE[v]].label + '</strong> — change if you like.';
   }
@@ -2831,9 +2836,13 @@ function commit() {
   const zone = document.getElementById('zone-select').value;
   const soil = document.getElementById('soil-select').value;
   let data = null;
-  if (func !== 'open' || zone || soil) {
+  // func '' means "open/unassigned" — only store a function when a real one is chosen
+  // (2026-08-13 fix: empty string was being saved as function:"", which made zone-only
+  //  cells render as empty '+' in Functions view — the "cells switching" bug)
+  const funcReal = (func && func !== 'open') ? func : null;
+  if (funcReal || zone || soil) {
     data = {};
-    if (func !== 'open') data.function = func;
+    if (funcReal) data.function = funcReal;
     if (label) data.label = label;
     if (func === 'guild' && treeKey) data.treeKey = treeKey;
     if (zone) data.zone = zone;
