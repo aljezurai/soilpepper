@@ -354,92 +354,7 @@ body {
 /* dark table headers = the 'black band' the user sees while scrolling (2026-08-11):
    base theme th{background:#1a2a1a} wins because sector tables sit directly under
    <body>
-<!-- SOILPEPPER BACKUP STRIP (shared — full localStorage backup + restore) -->
-<script>
-(function () {
-  // Complete, zero-maintenance backup: scans ALL of localStorage so it captures
-  // every SOILPEPPER key (brief, water, plan, veg garden, guild gd-*, region,
-  // expert overlay, future keys) automatically. Restores them all on upload.
-  // No hardcoded key list — nothing new can be missed.
-  if (window.__soilpepperBackupLoaded) return; // inject once
-  window.__soilpepperBackupLoaded = true;
 
-  function backupAll() {
-    var data = { app: 'soilpepper', version: 2, exportedAt: new Date().toISOString(), keys: {} };
-    try {
-      for (var i = 0; i < localStorage.length; i++) {
-        var k = localStorage.key(i);
-        if (!k) continue;
-        data.keys[k] = localStorage.getItem(k);
-      }
-    } catch (e) {}
-    var count = Object.keys(data.keys).length;
-    var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    var a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'soilpepper-backup-' + new Date().toISOString().slice(0, 10) + '.json';
-    a.click();
-    URL.revokeObjectURL(a.href);
-    var msg = '💾 Backup downloaded — ' + count + ' item(s), keep it safe';
-    if (window.showToast) showToast(msg); else alert(msg);
-  }
-
-  function restoreBackup(event) {
-    var file = event.target.files && event.target.files[0];
-    if (!file) return;
-    var reader = new FileReader();
-    reader.onload = function (e) {
-      try {
-        var data = JSON.parse(e.target.result);
-        if (!data || !data.keys || typeof data.keys !== 'object') throw new Error('bad format');
-        var count = 0;
-        Object.keys(data.keys).forEach(function (k) {
-          try { localStorage.setItem(k, data.keys[k]); count++; } catch (err) {}
-        });
-        var msg = '📥 Restored ' + count + ' item(s) — reloading…';
-        if (window.showToast) showToast(msg); else alert(msg);
-        setTimeout(function () { location.reload(); }, 900);
-      } catch (err) {
-        var em = '⚠️ Could not restore: file is not a SOILPEPPER backup';
-        if (window.showToast) showToast(em); else alert(em);
-      }
-    };
-    reader.readAsText(file);
-    // allow re-selecting the same file
-    event.target.value = '';
-  }
-
-  function addBackupUI() {
-    if (document.getElementById('sp-backup-bar')) return;
-    var bar = document.createElement('div');
-    bar.id = 'sp-backup-bar';
-    bar.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:8px 12px;margin:8px 0;border:1px solid var(--sf-border,#444);border-radius:8px;background:rgba(0,0,0,.15);font-size:.85rem';
-    bar.innerHTML =
-      '<span style="opacity:.75">💾 Backup</span>' +
-      '<button type="button" class="sf-btn" onclick="__spBackupAll()">⬇ Download all data</button>' +
-      '<button type="button" class="sf-btn" onclick="document.getElementById(\'sp-restore-file\').click()">📥 Restore</button>' +
-      '<input type="file" id="sp-restore-file" accept=".json,application/json" style="display:none">';
-    // expose handlers on window (restore needs the input, so give it a real id handler)
-    var host = document.getElementById('sf-masthead') || document.querySelector('header') || document.body;
-    // insert after the masthead if possible, else at top of body
-    if (host && host.parentNode) {
-      if (host === document.body) { host.insertBefore(bar, host.firstChild); }
-      else { host.parentNode.insertBefore(bar, host.nextSibling); }
-    } else {
-      document.body.insertBefore(bar, document.body.firstChild);
-    }
-    document.getElementById('sp-restore-file').addEventListener('change', restoreBackup);
-  }
-
-  window.__spBackupAll = backupAll;
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', addBackupUI);
-  } else {
-    addBackupUI();
-  }
-})();
-</script>
 , NOT inside .section (the .section table th override never matched).
    Force light headers everywhere — desktop AND mobile. */
 body table th {
@@ -1506,6 +1421,93 @@ body {
 </style>
 </head>
 <body>
+<!-- SOILPEPPER BACKUP STRIP (shared — full localStorage backup + restore) -->
+<script>
+(function () {
+  // Complete, zero-maintenance backup: scans ALL of localStorage so it captures
+  // every SOILPEPPER key (brief, water, plan, veg garden, guild gd-*, region,
+  // expert overlay, future keys) automatically. Restores them all on upload.
+  // No hardcoded key list — nothing new can be missed.
+  if (window.__soilpepperBackupLoaded) return; // inject once
+  window.__soilpepperBackupLoaded = true;
+
+  function backupAll() {
+    var data = { app: 'soilpepper', version: 2, exportedAt: new Date().toISOString(), keys: {} };
+    try {
+      for (var i = 0; i < localStorage.length; i++) {
+        var k = localStorage.key(i);
+        if (!k) continue;
+        data.keys[k] = localStorage.getItem(k);
+      }
+    } catch (e) {}
+    var count = Object.keys(data.keys).length;
+    var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'soilpepper-backup-' + new Date().toISOString().slice(0, 10) + '.json';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    var msg = '💾 Backup downloaded — ' + count + ' item(s), keep it safe';
+    if (window.showToast) showToast(msg); else alert(msg);
+  }
+
+  function restoreBackup(event) {
+    var file = event.target.files && event.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      try {
+        var data = JSON.parse(e.target.result);
+        if (!data || !data.keys || typeof data.keys !== 'object') throw new Error('bad format');
+        var count = 0;
+        Object.keys(data.keys).forEach(function (k) {
+          try { localStorage.setItem(k, data.keys[k]); count++; } catch (err) {}
+        });
+        var msg = '📥 Restored ' + count + ' item(s) — reloading…';
+        if (window.showToast) showToast(msg); else alert(msg);
+        setTimeout(function () { location.reload(); }, 900);
+      } catch (err) {
+        var em = '⚠️ Could not restore: file is not a SOILPEPPER backup';
+        if (window.showToast) showToast(em); else alert(em);
+      }
+    };
+    reader.readAsText(file);
+    // allow re-selecting the same file
+    event.target.value = '';
+  }
+
+  function addBackupUI() {
+    if (document.getElementById('sp-backup-bar')) return;
+    var bar = document.createElement('div');
+    bar.id = 'sp-backup-bar';
+    bar.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:8px 12px;margin:8px 0;border:1px solid var(--sf-border,#444);border-radius:8px;background:rgba(0,0,0,.15);font-size:.85rem';
+    bar.innerHTML =
+      '<span style="opacity:.75">💾 Backup</span>' +
+      '<button type="button" class="sf-btn" onclick="__spBackupAll()">⬇ Download all data</button>' +
+      '<button type="button" class="sf-btn" onclick="document.getElementById(\'sp-restore-file\').click()">📥 Restore</button>' +
+      '<input type="file" id="sp-restore-file" accept=".json,application/json" style="display:none">';
+    // expose handlers on window (restore needs the input, so give it a real id handler)
+    var host = document.getElementById('sf-masthead') || document.querySelector('header') || document.body;
+    // insert after the masthead if possible, else at top of body
+    if (host && host.parentNode) {
+      if (host === document.body) { host.insertBefore(bar, host.firstChild); }
+      else { host.parentNode.insertBefore(bar, host.nextSibling); }
+    } else {
+      document.body.insertBefore(bar, document.body.firstChild);
+    }
+    document.getElementById('sp-restore-file').addEventListener('change', restoreBackup);
+  }
+
+  window.__spBackupAll = backupAll;
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', addBackupUI);
+  } else {
+    addBackupUI();
+  }
+})();
+</script>
+
 <!-- DESIGN BRIEF STRIP (shared reader — injected by design-brief system) -->
 <script>
 (function () {
