@@ -338,9 +338,7 @@ body {
 }
 /* dark table headers = the 'black band' the user sees while scrolling (2026-08-11):
    base theme th{background:#1a2a1a} wins because sector tables sit directly under
-   <body>
-
-, NOT inside .section (the .section table th override never matched).
+   <body>, NOT inside .section (the .section table th override never matched).
    Force light headers everywhere — desktop AND mobile. */
 body table th {
   background: var(--sf-header) !important;
@@ -1403,6 +1401,15 @@ body {
 ::-webkit-scrollbar-track { background: var(--sf-bg); }
 ::-webkit-scrollbar-thumb { background: #8aa88c; border-radius: 5px; }
 ::-webkit-scrollbar-thumb:hover { background: #6a9068; }
+
+/* Backup strip — "Download all data" action button: yellow like the stat-help action pill.
+   Must beat the broad [class*="btn"] !important rule (2026-08-13). */
+button.btn.sp-bk-download {
+  background: #f4c92f !important;
+  color: #000000 !important;
+  border-color: #d9a800 !important;
+  font-weight: 800 !important;
+}
 </style>
 </head>
 <body>
@@ -1465,11 +1472,11 @@ body {
     if (document.getElementById('sp-backup-bar')) return;
     var bar = document.createElement('div');
     bar.id = 'sp-backup-bar';
-    bar.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:8px 12px;margin:8px 0;border:1px solid var(--sf-border,#444);border-radius:8px;background:rgba(0,0,0,.15);font-size:.85rem';
+    bar.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:8px 12px;margin:8px 0;border:1px solid var(--sf-border,#a8c0a8);border-radius:8px;background:rgba(0,0,0,.15);font-size:.85rem';
     bar.innerHTML =
       '<span style="opacity:.75">💾 Backup</span>' +
-      '<button type="button" class="sf-btn" onclick="__spBackupAll()">⬇ Download all data</button>' +
-      '<button type="button" class="sf-btn" onclick="document.getElementById(\'sp-restore-file\').click()">📥 Restore</button>' +
+      '<button type="button" class="btn sp-bk-download" onclick="__spBackupAll()">⬇ Download all data</button>' +
+      '<button type="button" class="btn" onclick="document.getElementById(\'sp-restore-file\').click()">📥 Restore</button>' +
       '<input type="file" id="sp-restore-file" accept=".json,application/json" style="display:none">';
     // expose handlers on window (restore needs the input, so give it a real id handler)
     var host = document.getElementById('sf-masthead') || document.querySelector('header') || document.body;
@@ -1492,6 +1499,10 @@ body {
   }
 })();
 </script>
+
+
+
+
 
 <!-- DESIGN BRIEF STRIP (shared reader — injected by design-brief system) -->
 <script>
@@ -1748,7 +1759,7 @@ body {
     <span class="sf-pepper">🌶️</span>
     <div>
       <h1 class="sf-logo">SOIL<span class="pepperword">PEPPER</span></h1>
-      <div class="sf-tagline"><span data-i18n="title">🌍 Helicopter View</span></div>
+      <div class="sf-tagline"><span data-i18n="title">Helicopter View</span></div>
     </div>
   </div>
   <div class="sf-region" id="sf-region"></div>
@@ -1816,7 +1827,7 @@ var LANG = REGION === 'netherlands' ? 'nl' : 'en';
 var T = {
   en: {
     helpCard: 'Help',
-    title: '🌍 Helicopter View', layers: 'Layers:', sun: '☀️ Sun', wind: '💨 Wind', fire: '🔥 Fire',
+    title: 'Helicopter View', layers: 'Layers:', sun: '☀️ Sun', wind: '💨 Wind', fire: '🔥 Fire',
     frost: '❄️ Frost', water: '💧 Water', wildlife: '🦌 Wildlife', toggleAll: '🔄 Toggle All', resetView: '🏠 Reset View',
     legZ0: 'Z0 House', legZ1: 'Z1 Kitchen', legZ2: 'Z2 Orchard', legZ3: 'Z3 Field', legZ4: 'Z4 Semi-wild', legZ5: 'Z5 Wild',
     legGuild: '🌳 Guild', legWater: '💧 Water', legAccess: '🛣️ Access', legBuilding: '🏠 Building', legSwale: 'Swale',
@@ -1828,7 +1839,7 @@ var T = {
   },
   nl: {
     helpCard: 'Help',
-    title: '🌍 Vogelperspectief', layers: 'Lagen:', sun: '☀️ Zon', wind: '💨 Wind', fire: '🔥 Vuur',
+    title: 'Vogelperspectief', layers: 'Lagen:', sun: '☀️ Zon', wind: '💨 Wind', fire: '🔥 Vuur',
     frost: '❄️ Vorst', water: '💧 Water', wildlife: '🦌 Wild', toggleAll: '🔄 Alles wisselen', resetView: '🏠 Reset weergave',
     legZ0: 'Z0 Huis', legZ1: 'Z1 Keuken', legZ2: 'Z2 Boomgaard', legZ3: 'Z3 Veld', legZ4: 'Z4 Half-wild', legZ5: 'Z5 Wild',
     legGuild: '🌳 Gilde', legWater: '💧 Water', legAccess: '🛣️ Toegang', legBuilding: '🏠 Gebouw', legSwale: 'Swale',

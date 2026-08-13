@@ -383,9 +383,7 @@ body {
 }
 /* dark table headers = the 'black band' the user sees while scrolling (2026-08-11):
    base theme th{background:#1a2a1a} wins because sector tables sit directly under
-   <body>
-
-, NOT inside .section (the .section table th override never matched).
+   <body>, NOT inside .section (the .section table th override never matched).
    Force light headers everywhere — desktop AND mobile. */
 body table th {
   background: var(--sf-header) !important;
@@ -1448,6 +1446,15 @@ body {
 ::-webkit-scrollbar-track { background: var(--sf-bg); }
 ::-webkit-scrollbar-thumb { background: #8aa88c; border-radius: 5px; }
 ::-webkit-scrollbar-thumb:hover { background: #6a9068; }
+
+/* Backup strip — "Download all data" action button: yellow like the stat-help action pill.
+   Must beat the broad [class*="btn"] !important rule (2026-08-13). */
+button.btn.sp-bk-download {
+  background: #f4c92f !important;
+  color: #000000 !important;
+  border-color: #d9a800 !important;
+  font-weight: 800 !important;
+}
 </style>
 </head>
 <body>
@@ -1510,11 +1517,11 @@ body {
     if (document.getElementById('sp-backup-bar')) return;
     var bar = document.createElement('div');
     bar.id = 'sp-backup-bar';
-    bar.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:8px 12px;margin:8px 0;border:1px solid var(--sf-border,#444);border-radius:8px;background:rgba(0,0,0,.15);font-size:.85rem';
+    bar.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:8px 12px;margin:8px 0;border:1px solid var(--sf-border,#a8c0a8);border-radius:8px;background:rgba(0,0,0,.15);font-size:.85rem';
     bar.innerHTML =
       '<span style="opacity:.75">💾 Backup</span>' +
-      '<button type="button" class="sf-btn" onclick="__spBackupAll()">⬇ Download all data</button>' +
-      '<button type="button" class="sf-btn" onclick="document.getElementById(\'sp-restore-file\').click()">📥 Restore</button>' +
+      '<button type="button" class="btn sp-bk-download" onclick="__spBackupAll()">⬇ Download all data</button>' +
+      '<button type="button" class="btn" onclick="document.getElementById(\'sp-restore-file\').click()">📥 Restore</button>' +
       '<input type="file" id="sp-restore-file" accept=".json,application/json" style="display:none">';
     // expose handlers on window (restore needs the input, so give it a real id handler)
     var host = document.getElementById('sf-masthead') || document.querySelector('header') || document.body;
@@ -1538,13 +1545,17 @@ body {
 })();
 </script>
 
+
+
+
+
 <!-- ═══ SAGE FORTE MASTHEAD (2026-08-09, rollout) ═══ -->
 <header class="sf-masthead" id="sf-masthead">
   <div class="sf-brand">
     <span class="sf-pepper">🌶️</span>
     <div>
       <h1 class="sf-logo">SOIL<span class="pepperword">PEPPER</span></h1>
-      <div class="sf-tagline"><span data-i18n="title">🌳 Trees and around</span></div>
+      <div class="sf-tagline"><span data-i18n="title">Trees and around</span></div>
     </div>
   </div>
   <div class="sf-region" id="sf-region"></div>
@@ -1574,7 +1585,7 @@ var LANG = REGION === 'netherlands' ? 'nl' : 'en';
 var T = {
   en: {
     helpCard: 'Help',
-    title: '🌳 Trees and around', subtitle: 'Interactive Guild Builder · 256 species',
+    title: 'Trees and around', subtitle: 'Interactive Guild Builder · 256 species',
     selectTree: '🌿 Select Tree:', regAll: '🌍 All', regTus: '🇮🇹 Tuscany', regNl: '🇳🇱 Netherlands',
     reset: '↺ Reset to suggestion', backupAll: '💾 Backup all', restoreAll: '📥 Restore all', backupDone: '💾 Backup downloaded — keep it safe', legInner: 'Inner (trunk zone)', legMid: 'Mid (drip line)', legOuter: 'Outer (canopy edge)',
     legNfix: '🔄 N-fixer', legAcc: '⛏️ Accumulator', legMulch: '🌿 Mulcher', legPoll: '🐝 Pollinator',
@@ -1605,7 +1616,7 @@ var T = {
   },
   nl: {
     helpCard: 'Help',
-    title: '🌳 Bomen en eromheen', subtitle: 'Interactieve Gilde-bouwer · 256 soorten',
+    title: 'Bomen en eromheen', subtitle: 'Interactieve Gilde-bouwer · 256 soorten',
     selectTree: '🌿 Kies boom:', regAll: '🌍 Alles', regTus: '🇮🇹 Toscane', regNl: '🇳🇱 Nederland',
     reset: '↺ Reset naar suggestie', backupAll: '💾 Backup alles', restoreAll: '📥 Herstel alles', backupDone: '💾 Backup gedownload — bewaar hem goed', legInner: 'Binnen (stamzone)', legMid: 'Midden (druppellijn)', legOuter: 'Buiten (kroonrand)',
     legNfix: '🔄 Stikstofbinder', legAcc: '⛏️ Accumulator', legMulch: '🌿 Mulcher', legPoll: '🐝 Bestuiver',

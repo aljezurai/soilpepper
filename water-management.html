@@ -368,9 +368,7 @@ body {
 }
 /* dark table headers = the 'black band' the user sees while scrolling (2026-08-11):
    base theme th{background:#1a2a1a} wins because sector tables sit directly under
-   <body>
-
-, NOT inside .section (the .section table th override never matched).
+   <body>, NOT inside .section (the .section table th override never matched).
    Force light headers everywhere — desktop AND mobile. */
 body table th {
   background: var(--sf-header) !important;
@@ -1433,6 +1431,15 @@ body {
 ::-webkit-scrollbar-track { background: var(--sf-bg); }
 ::-webkit-scrollbar-thumb { background: #8aa88c; border-radius: 5px; }
 ::-webkit-scrollbar-thumb:hover { background: #6a9068; }
+
+/* Backup strip — "Download all data" action button: yellow like the stat-help action pill.
+   Must beat the broad [class*="btn"] !important rule (2026-08-13). */
+button.btn.sp-bk-download {
+  background: #f4c92f !important;
+  color: #000000 !important;
+  border-color: #d9a800 !important;
+  font-weight: 800 !important;
+}
 </style>
 </head>
 <body>
@@ -1495,11 +1502,11 @@ body {
     if (document.getElementById('sp-backup-bar')) return;
     var bar = document.createElement('div');
     bar.id = 'sp-backup-bar';
-    bar.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:8px 12px;margin:8px 0;border:1px solid var(--sf-border,#444);border-radius:8px;background:rgba(0,0,0,.15);font-size:.85rem';
+    bar.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:8px 12px;margin:8px 0;border:1px solid var(--sf-border,#a8c0a8);border-radius:8px;background:rgba(0,0,0,.15);font-size:.85rem';
     bar.innerHTML =
       '<span style="opacity:.75">💾 Backup</span>' +
-      '<button type="button" class="sf-btn" onclick="__spBackupAll()">⬇ Download all data</button>' +
-      '<button type="button" class="sf-btn" onclick="document.getElementById(\'sp-restore-file\').click()">📥 Restore</button>' +
+      '<button type="button" class="btn sp-bk-download" onclick="__spBackupAll()">⬇ Download all data</button>' +
+      '<button type="button" class="btn" onclick="document.getElementById(\'sp-restore-file\').click()">📥 Restore</button>' +
       '<input type="file" id="sp-restore-file" accept=".json,application/json" style="display:none">';
     // expose handlers on window (restore needs the input, so give it a real id handler)
     var host = document.getElementById('sf-masthead') || document.querySelector('header') || document.body;
@@ -1522,6 +1529,10 @@ body {
   }
 })();
 </script>
+
+
+
+
 
 <!-- DESIGN BRIEF STRIP (shared reader — injected by design-brief system) -->
 <script>
@@ -1778,7 +1789,7 @@ body {
     <span class="sf-pepper">🌶️</span>
     <div>
       <h1 class="sf-logo">SOIL<span class="pepperword">PEPPER</span></h1>
-      <div class="sf-tagline"><span data-i18n="title">💧 Water Management</span></div>
+      <div class="sf-tagline"><span data-i18n="title">Water Management</span></div>
     </div>
   </div>
   <div class="sf-region" id="sf-region"></div>
@@ -1847,7 +1858,7 @@ var REGION = (WQ.get('region') === 'netherlands' || WQ.get('region') === 'tuscan
 var LANG = REGION === 'netherlands' ? 'nl' : 'en';
 var T = {
   en: {
-    title: '💧 Water Management', subtitle: '4 water sources · Gravity-fed drip · ', helpCard: 'Help',
+    title: 'Water Management', subtitle: '4 water sources · Gravity-fed drip · ', helpCard: 'Help',
     params: '⚙️ Water Parameters', balance: '⚖️ Water Balance', updateDiagram: '🔄 Update diagram',
     saveDefaults: '💾 Save as defaults', resetDefaults: '↩️ Reset to defaults', backupAll: '💾 Backup all', restoreAll: '📥 Restore all', backupDone: '💾 Backup downloaded — keep it safe',
     roofArea: 'Roof area (m²)', rainfall: 'Rainfall (mm/yr)', efficiency: 'Efficiency',
@@ -1883,7 +1894,7 @@ var T = {
     maint: '✅ Maintenance:', maintText: 'Minimal. Check berms after heavy rain in year 1-2. By year 3, tree roots hold everything together. Leaf litter filling the ditch is fine — it acts as mulch.'
   },
   nl: {
-    title: '💧 Waterbeheer', subtitle: '4 waterbronnen · Zwaartekracht-druppelirrigatie · ', helpCard: 'Help',
+    title: 'Waterbeheer', subtitle: '4 waterbronnen · Zwaartekracht-druppelirrigatie · ', helpCard: 'Help',
     params: '⚙️ Waterparameters', balance: '⚖️ Waterbalans', updateDiagram: '🔄 Diagram bijwerken',
     saveDefaults: '💾 Opslaan als standaard', resetDefaults: '↩️ Terug naar standaard', backupAll: '💾 Backup alles', restoreAll: '📥 Herstel alles', backupDone: '💾 Backup gedownload — bewaar hem goed',
     roofArea: 'Dakoppervlak (m²)', rainfall: 'Neerslag (mm/jaar)', efficiency: 'Efficiëntie',
