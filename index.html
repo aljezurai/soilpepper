@@ -205,7 +205,7 @@ footer{max-width:1180px;margin:30px auto 0;padding:20px 34px;border-top:1px soli
         <p data-i18n="onbPBackup">This means you have to make a backup after each session just to be sure. The file you download is the file you upload again when needed. Nothing scary, you just need some discipline (as you do for running your plot).</p>
         <p class="onb-cheers" data-i18n="onbPCheers">Hopefully you will enjoy using Soilpepper as much as we do. Cheers!</p>
         <div class="onb-ready onb-ready-italic" data-i18n="onbReady">Now I feel ready and want to start exploring:</div>
-        <div class="start-grid">
+        <div class="start-grid" id="onbStartGrid">
           <a class="start-link" href="master-plan.html"><span class="t-icon">🧭</span><span class="t-name" data-i18n="lMasterplan">Masterplan</span></a>
           <a class="start-link" href="vegetable-garden-planner.html"><span class="t-icon">🥕</span><span class="t-name" data-i18n="lVeg">Vegetable garden</span></a>
           <a class="start-link" href="trees-and-around.html"><span class="t-icon">🌳</span><span class="t-name" data-i18n="lTrees">Trees and around</span></a>
@@ -326,8 +326,24 @@ function onbGo(n){
   // pre-select saved choices when landing on a step
   if(n===1) onbPreselectRegion();
   if(n===2) onbPreselectSoil();
+  if(n===5) onbWireLinks();
   // NOTE: no scrollIntoView here — the card is already centered in the hero,
   // and auto-scrolling revealed the body background below the hero (page shift).
+}
+/* Step 5 links carry the chosen region (and soil) so every tool page lands correctly,
+   including trees-and-around which reads only the URL, not the brief. */
+function onbWireLinks(){
+  var r = onbState.region === 'netherlands' ? 'netherlands' : 'tuscany';
+  var s = onbState.soil || '';
+  var grid = document.getElementById('onbStartGrid');
+  if(!grid) return;
+  grid.querySelectorAll('a').forEach(function(a){
+    var base = a.getAttribute('href').split('?')[0];
+    var q = [];
+    if(r) q.push('region='+r);
+    if(s) q.push('soil='+s);
+    a.setAttribute('href', base + (q.length ? ('?'+q.join('&')) : ''));
+  });
 }
 /* first step a (returning) visitor still needs: skip answered ones */
 function onbFirstUnanswered(){
