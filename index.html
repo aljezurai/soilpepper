@@ -85,16 +85,12 @@ footer{max-width:1180px;margin:30px auto 0;padding:20px 34px;border-top:1px soli
 
 
 <section class="hero">
-    <div class="card">
-      <div class="eyebrow" data-i18n="eyebrow">Plan your garden in 3 steps</div>
-      <h1 data-i18n="title">From bare land to a living garden plan.</h1>
-      <p data-i18n="sub">Watch a 90-second intro — then choose your depth, your region and your soil, and start planning. Fully on your device.</p>
-      <a class="watch-btn" onclick="watchVideo()">
+    <!-- Welcome modal is the landing content; hero keeps only the background image. -->
+    <div class="hero-fallback" id="heroFallback">
+      <button class="watch-btn" onclick="onbOpen()">
         <span class="play">▶</span>
-        <span data-i18n="watchBtn">Watch the intro <small data-i18n="watchDur">· 90 sec</small></span>
-      </a>
-      <div class="skip" data-i18n="skip">Prefer to jump straight in? <a href="start.html" data-i18n="skipLink">Skip to planning →</a></div>
-      <div><span class="badge" data-i18n="badge">🌿 Free · offline · open-source</span></div>
+        <span data-i18n="watchBtn">Welcome · Let's get started</span>
+      </button>
     </div>
   </section>
 <!-- full-bleed hero (no column constraint) -->
@@ -127,7 +123,7 @@ var T = {
     eyebrow:'Plan your garden in 3 steps',
     title:'From bare land to a living garden plan.',
     sub:'Watch a 90-second intro — then choose your depth, your region and your soil, and start planning. Fully on your device.',
-    watchBtn:'Watch the intro', watchDur:'· 90 sec',
+    watchBtn:"Welcome · Let's get started", watchDur:'·',
     skip:'Prefer to jump straight in?', skipLink:'Skip to planning →',
     badge:'🌿 Free · offline · open-source',
     foot:'SOILPEPPER · open-source permaculture toolkit — free · no account · offline',
@@ -141,7 +137,7 @@ var T = {
     eyebrow:'Plan je tuin in 3 stappen',
     title:'Van kale grond naar een levendig tuinplan.',
     sub:'Bekijk een intro van 90 seconden — kies daarna je niveau, regio en grondsoort, en begin met plannen. Volledig op je apparaat.',
-    watchBtn:'Bekijk de intro', watchDur:'· 90 sec',
+    watchBtn:'Welkom · Laten we beginnen', watchDur:'·',
     skip:'Liever direct beginnen?', skipLink:'Naar het plannen →',
     badge:'🌿 Gratis · offline · open-source',
     foot:'SOILPEPPER · open-source permacultuur-toolkit — gratis · geen account · offline',
