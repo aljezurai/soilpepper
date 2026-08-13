@@ -41,6 +41,30 @@ body{font-family:-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--sf-
   border:1px solid var(--sf-border);padding:5px 13px;border-radius:999px}
 @media(max-width:640px){.hero{padding:24px}.hero .card{max-width:100%;padding:26px}}
 
+/* ===== ONBOARDING MODAL (step 1 — intro) ===== */
+.onb-overlay{position:fixed;inset:0;background:rgba(20,35,22,.55);backdrop-filter:blur(3px);
+  display:flex;align-items:center;justify-content:center;padding:20px;z-index:1000;opacity:0;pointer-events:none;transition:opacity .18s}
+.onb-overlay.open{opacity:1;pointer-events:auto}
+.onb-modal{background:var(--sf-card);border:1px solid rgba(255,255,255,.6);border-radius:var(--sf-radius-lg);
+  max-width:540px;width:100%;max-height:90vh;overflow:auto;padding:34px 38px;box-shadow:var(--sf-shadow-lg);
+  position:relative;transform:translateY(8px);transition:transform .18s}
+.onb-overlay.open .onb-modal{transform:translateY(0)}
+.onb-close{position:absolute;top:16px;right:18px;background:none;border:none;font-size:1.3em;color:var(--sf-muted);
+  cursor:pointer;line-height:1}
+.onb-kicker{font-size:.78em;text-transform:uppercase;letter-spacing:1px;color:var(--sf-green);font-weight:700;margin-bottom:12px}
+.onb-modal h2{font-size:1.6em;line-height:1.2;color:var(--sf-header);margin-bottom:14px;font-weight:800}
+.onb-modal p{font-size:1em;color:var(--sf-ink-soft);line-height:1.6;margin-bottom:14px}
+.onb-modal p.lead{font-size:1.1em;color:var(--sf-ink);font-weight:600}
+.onb-actions{display:flex;align-items:center;gap:14px;margin-top:24px;flex-wrap:wrap}
+.onb-start{display:flex;align-items:center;gap:10px;background:var(--sf-gold);color:#000;border:1px solid var(--sf-gold-border);
+  border-radius:999px;padding:12px 24px;font-weight:800;font-size:1em;cursor:pointer;transition:transform .15s}
+.onb-start:hover{transform:translateY(-1px)}
+.onb-skip{font-size:.86em;color:var(--sf-muted);cursor:pointer;background:none;border:none}
+.onb-skip a{color:var(--sf-green);font-weight:600;text-decoration:none}
+.onb-foot{margin-top:22px;padding-top:14px;border-top:1px solid var(--sf-border);font-size:.8em;color:var(--sf-muted);display:flex;gap:8px;align-items:center}
+.onb-foot .dot{opacity:.5}
+@media(max-width:480px){.onb-modal{padding:26px 22px}}
+
 footer{max-width:1180px;margin:30px auto 0;padding:20px 34px;border-top:1px solid var(--sf-border);color:var(--sf-muted);font-size:.82em;text-align:center}
 
 
@@ -77,7 +101,23 @@ footer{max-width:1180px;margin:30px auto 0;padding:20px 34px;border-top:1px soli
 <!-- full-bleed hero (no column constraint) -->
 
   <!-- HERO C — clean glass card, watch-video CTA -->
-  
+
+  <!-- ONBOARDING MODAL — Step 1: intro -->
+  <div class="onb-overlay" id="onbOverlay" onclick="if(event.target===this)onbClose()">
+    <div class="onb-modal" role="dialog" aria-modal="true" aria-labelledby="onbTitle">
+      <button class="onb-close" onclick="onbClose()" aria-label="Close">✕</button>
+      <div class="onb-kicker" data-i18n="onbKicker">Welcome</div>
+      <h2 id="onbTitle" data-i18n="onbTitle">Soilpepper is a tool.</h2>
+      <p class="lead" data-i18n="onbLead">A tool for planners and people that dare to act. It is not a fancy tool. Our goal is to give everybody an edge. Help you take the first step. And the second.</p>
+      <p data-i18n="onbBody">We designed Soilpepper to help ourselves. Now it is free for everyone to use. We hope you like it.</p>
+      <p data-i18n="onbWizard">This setup wizard helps you take the first steps. After that you are on your own!</p>
+      <div class="onb-actions">
+        <button class="onb-start" onclick="onbNext()"><span data-i18n="onbStart">Start →</span></button>
+        <button class="onb-skip" onclick="onbClose()"><span data-i18n="onbSkip">Not now</span></button>
+      </div>
+      <div class="onb-foot"><span data-i18n="onbFoot">🌿 Free · offline · open-source</span></div>
+    </div>
+  </div>
 
 <footer>
   <span data-i18n="foot">SOILPEPPER · open-source permaculture toolkit — free · no account · offline</span>
@@ -92,7 +132,12 @@ var T = {
     watchBtn:'Watch the intro', watchDur:'· 90 sec',
     skip:'Prefer to jump straight in?', skipLink:'Skip to planning →',
     badge:'🌿 Free · offline · open-source',
-    foot:'SOILPEPPER · open-source permaculture toolkit — free · no account · offline'
+    foot:'SOILPEPPER · open-source permaculture toolkit — free · no account · offline',
+    onbKicker:'Welcome', onbTitle:'Soilpepper is a tool.',
+    onbLead:'A tool for planners and people that dare to act. It is not a fancy tool. Our goal is to give everybody an edge. Help you take the first step. And the second.',
+    onbBody:'We designed Soilpepper to help ourselves. Now it is free for everyone to use. We hope you like it.',
+    onbWizard:'This setup wizard helps you take the first steps. After that you are on your own!',
+    onbStart:'Start →', onbSkip:'Not now', onbFoot:'🌿 Free · offline · open-source'
   },
   nl: {
     eyebrow:'Plan je tuin in 3 stappen',
@@ -101,7 +146,12 @@ var T = {
     watchBtn:'Bekijk de intro', watchDur:'· 90 sec',
     skip:'Liever direct beginnen?', skipLink:'Naar het plannen →',
     badge:'🌿 Gratis · offline · open-source',
-    foot:'SOILPEPPER · open-source permacultuur-toolkit — gratis · geen account · offline'
+    foot:'SOILPEPPER · open-source permacultuur-toolkit — gratis · geen account · offline',
+    onbKicker:'Welkom', onbTitle:'Soilpepper is een tool.',
+    onbLead:'Een tool voor planners en mensen die durven te doen. Het is geen chique tool. Ons doel is om iedereen een voorsprong te geven. Help je de eerste stap te zetten. En de tweede.',
+    onbBody:'We ontwierpen Soilpepper om onszelf te helpen. Nu is het gratis voor iedereen. We hopen dat je het leuk vindt.',
+    onbWizard:'Deze setup-wizard helpt je de eerste stappen te zetten. Daarna sta je er zelf voor!',
+    onbStart:'Start →', onbSkip:'Niet nu', onbFoot:'🌿 Gratis · offline · open-source'
   }
 };
 var LANG='en';
@@ -110,8 +160,19 @@ function applyI18n(){document.querySelectorAll('[data-i18n]').forEach(function(e
 });}
 function setLang(l,el){LANG=l;applyI18n();document.querySelectorAll('.langtxt span').forEach(function(f){f.classList.remove('active')});if(el)el.classList.add('active');}
 function watchVideo(){
-  try{ localStorage.setItem('soilpepper.videoSeen','1'); }catch(e){}
-  // after the intro, flow to the setup-gate page
+  // step 1: open the intro modal instead of jumping straight to the setup gate
+  onbOpen();
+}
+/* ===== ONBOARDING MODAL — step 1 (intro) ===== */
+function onbOpen(){
+  document.getElementById('onbOverlay').classList.add('open');
+  try{ localStorage.setItem('soilpepper.introSeen','1'); }catch(e){}
+}
+function onbClose(){
+  document.getElementById('onbOverlay').classList.remove('open');
+}
+function onbNext(){
+  // step 1 -> step 2 (region/soil setup gate). Future: advance within the wizard.
   window.location.href = 'start.html';
 }
 document.addEventListener('DOMContentLoaded', applyI18n);
