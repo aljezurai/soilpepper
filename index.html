@@ -212,6 +212,19 @@ footer{max-width:1180px;margin:30px auto 0;padding:20px 34px;border-top:1px soli
         </div>
       </div>
 
+      <!-- SCREEN 6 — Welcome back (returning visitor who finished onboarding) -->
+      <div class="onb-screen" id="onbScreen6" style="display:none">
+        <div class="eyebrow" data-i18n="onbBackEyebrow">🌿 Your plan is saved · ready when you are</div>
+        <h1 data-i18n="onbBackTitle">Welcome back.</h1>
+        <p data-i18n="onbBackSub">Your region and soil are saved. Pick up where you left off — open a tool to keep planning.</p>
+        <div class="start-grid" id="onbBackGrid">
+          <a class="start-link" href="master-plan.html"><span class="t-icon">🧭</span><span class="t-name" data-i18n="lMasterplan">Masterplan</span></a>
+          <a class="start-link" href="vegetable-garden-planner.html"><span class="t-icon">🥕</span><span class="t-name" data-i18n="lVeg">Vegetable garden</span></a>
+          <a class="start-link" href="trees-and-around.html"><span class="t-icon">🌳</span><span class="t-name" data-i18n="lTrees">Trees and around</span></a>
+        </div>
+        <button class="onb-back" onclick="onbGo(1)" style="margin-top:14px"><span data-i18n="onbRestart">↺ Restart the setup</span></button>
+      </div>
+
     </div>
   </section>
 <!-- full-bleed hero (no column constraint) -->
@@ -262,7 +275,11 @@ var T = {
     onbPBackup:'This means you have to make a backup after each session just to be sure. The file you download is the file you upload again when needed. Nothing scary, you just need some discipline (as you do for running your plot).',
     onbPCheers:'Hopefully you will enjoy using Soilpepper as much as we do. Cheers!',
     onbReady:'Now I feel ready and want to start exploring:',
-    lMasterplan:'Masterplan', lVeg:'Vegetable garden', lTrees:'Trees and around'
+    lMasterplan:'Masterplan', lVeg:'Vegetable garden', lTrees:'Trees and around',
+    onbBackEyebrow:'🌿 Your plan is saved · ready when you are',
+    onbBackTitle:'Welcome back.',
+    onbBackSub:'Your region and soil are saved. Pick up where you left off — open a tool to keep planning.',
+    onbRestart:'↺ Restart the setup'
   },
   nl: {
     eyebrow:'Plan je tuin in 3 stappen',
@@ -302,7 +319,11 @@ var T = {
     onbPBackup:'Dat betekent dat je na elke sessie een back-up moet maken om zeker te zijn. Het bestand dat je downloadt, is het bestand dat je uploadt wanneer nodig. Niets engs, je hebt alleen wat discipline nodig (net als bij het runnen van je tuin).',
     onbPCheers:'Hopelijk geniet je net zoveel van Soilpepper als wij. Cheers!',
     onbReady:'Nu voel ik me klaar en wil ik beginnen met verkennen:',
-    lMasterplan:'Masterplan', lVeg:'Moestuin', lTrees:'Bomen & omgeving'
+    lMasterplan:'Masterplan', lVeg:'Moestuin', lTrees:'Bomen & omgeving',
+    onbBackEyebrow:'🌿 Je plan is opgeslagen · klaar wanneer jij bent',
+    onbBackTitle:'Welkom terug.',
+    onbBackSub:'Je regio en grondsoort zijn opgeslagen. Pak op waar je gebleven was — open een tool om verder te plannen.',
+    onbRestart:'↺ Setup opnieuw starten'
   }
 };
 var LANG='en';
@@ -326,7 +347,7 @@ function onbGo(n){
   // pre-select saved choices when landing on a step
   if(n===1) onbPreselectRegion();
   if(n===2) onbPreselectSoil();
-  if(n===5) onbWireLinks();
+  if(n===5 || n===6) onbWireLinks();
   // NOTE: no scrollIntoView here — the card is already centered in the hero,
   // and auto-scrolling revealed the body background below the hero (page shift).
 }
@@ -335,14 +356,15 @@ function onbGo(n){
 function onbWireLinks(){
   var r = onbState.region === 'netherlands' ? 'netherlands' : 'tuscany';
   var s = onbState.soil || '';
-  var grid = document.getElementById('onbStartGrid');
-  if(!grid) return;
-  grid.querySelectorAll('a').forEach(function(a){
-    var base = a.getAttribute('href').split('?')[0];
-    var q = [];
-    if(r) q.push('region='+r);
-    if(s) q.push('soil='+s);
-    a.setAttribute('href', base + (q.length ? ('?'+q.join('&')) : ''));
+  [document.getElementById('onbStartGrid'), document.getElementById('onbBackGrid')].forEach(function(grid){
+    if(!grid) return;
+    grid.querySelectorAll('a').forEach(function(a){
+      var base = a.getAttribute('href').split('?')[0];
+      var q = [];
+      if(r) q.push('region='+r);
+      if(s) q.push('soil='+s);
+      a.setAttribute('href', base + (q.length ? ('?'+q.join('&')) : ''));
+    });
   });
 }
 /* first step a (returning) visitor still needs: skip answered ones */
@@ -351,6 +373,11 @@ function onbFirstUnanswered(){
   if(!ONB.region && !ONB.defaultSoil) return 1;   // need region + soil
   if(ONB.region && !ONB.defaultSoil) return 2;    // have region, need soil
   return 3;                                       // both done -> tools
+}
+/* True if this visitor has already set region + soil (i.e. completed onboarding). */
+function onbCompleted(){
+  onbReadBrief();
+  return !!(ONB.region && ONB.defaultSoil);
 }
 function onbPreselectRegion(){
   if(!onbState.region) return;
@@ -392,7 +419,12 @@ function onbSoil(s, el){
     localStorage.setItem('tuscan-brief-v1', JSON.stringify(b));
   }catch(e){}
 }
-document.addEventListener('DOMContentLoaded', function(){ applyI18n(); onbReadBrief(); });
+document.addEventListener('DOMContentLoaded', function(){
+  applyI18n(); onbReadBrief();
+  // Returning visitor who already completed onboarding (region + soil saved):
+  // skip the welcome + region/soil steps and land on the welcome-back screen.
+  if(onbCompleted()) onbGo(6);
+});
 </script>
 </body>
 </html>
