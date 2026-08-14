@@ -3558,6 +3558,12 @@ function boot() {
     // legacy plan: apply the preferred (brief or region) default
     plan.defaultSoil = preferredSoil;
     save();
+  } else if (explicitSoil && plan.defaultSoil !== explicitSoil) {
+    // The visitor changed the soil in the onboarding wizard (brief) after the
+    // plan already existed. The brief is the shared source of truth for region +
+    // soil, so adopt the wizard's latest choice into the plan (don't keep the old one).
+    plan.defaultSoil = explicitSoil;
+    save();
   }
   // Keep the shared brief in sync with the current plan.
   // IMPORTANT: never clobber the visitor's chosen soil — only write the brief
