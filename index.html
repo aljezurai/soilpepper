@@ -47,6 +47,13 @@ body{font-family:-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--sf-
 .onb-step{font-size:.72em;text-transform:uppercase;letter-spacing:1.2px;color:var(--sf-muted);
   font-weight:700;margin-bottom:14px;display:inline-block;float:right;background:var(--sf-sage-soft);
   border:1px solid var(--sf-border);padding:4px 12px;border-radius:999px}
+/* Progress dots — steps 1–5 */
+.onb-dots{display:flex;gap:8px;align-items:center;justify-content:center;margin:0 0 16px}
+.onb-dot{width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,.6);
+  border:2px solid var(--sf-border-strong);cursor:default;transition:all .2s}
+.onb-dot.done{background:var(--sf-green);border-color:var(--sf-green)}
+.onb-dot.current{background:var(--sf-gold);border-color:var(--sf-gold-border);transform:scale(1.25);
+  box-shadow:0 0 0 3px rgba(244,201,47,.25)}
 .region-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}
 .region-opt{display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:18px 20px;
   background:rgba(255,255,255,.7);border:2px solid var(--sf-border);border-radius:var(--sf-radius-lg);
@@ -114,6 +121,15 @@ footer{max-width:1180px;margin:30px auto 0;padding:20px 34px;border-top:1px soli
 <section class="hero">
     <!-- Onboarding wizard lives here. Screen 0 = welcome intro, then Step 1/5, 2/5, ... -->
     <div class="card onb-card" id="onbWizard">
+
+      <!-- Progress dots (Steps 1–5); hidden on welcome + welcome-back -->
+      <div class="onb-dots" id="onbDots" style="display:none">
+        <span class="onb-dot" data-dot="1"></span>
+        <span class="onb-dot" data-dot="2"></span>
+        <span class="onb-dot" data-dot="3"></span>
+        <span class="onb-dot" data-dot="4"></span>
+        <span class="onb-dot" data-dot="5"></span>
+      </div>
 
       <!-- SCREEN 0 — Welcome intro -->
       <div class="onb-screen" id="onbScreen0">
@@ -344,6 +360,16 @@ function onbReadBrief(){
 function onbGo(n){
   // switch the visible hero-card screen
   document.querySelectorAll('.onb-screen').forEach(function(s,i){ s.style.display = (i===n)?'':'none'; });
+  // update progress dots: visible on steps 1–5, hidden on welcome(0) + welcome-back(6)
+  var dots = document.getElementById('onbDots');
+  if(dots){
+    dots.style.display = (n>=1 && n<=5) ? 'flex' : 'none';
+    dots.querySelectorAll('.onb-dot').forEach(function(d){
+      var dn = parseInt(d.getAttribute('data-dot'),10);
+      d.classList.toggle('done', dn < n);
+      d.classList.toggle('current', dn === n);
+    });
+  }
   // pre-select saved choices when landing on a step
   if(n===1) onbPreselectRegion();
   if(n===2) onbPreselectSoil();
