@@ -2774,7 +2774,9 @@ function syncPanel() {
   const zoneSel = document.getElementById('zone-select');
   if (zoneSel) zoneSel.value = (cell && cell.zone !== undefined && cell.zone !== null) ? String(cell.zone) : '';
   const soilSel = document.getElementById('soil-select');
-  if (soilSel) soilSel.value = (cell && cell.soil) || '';
+  // Show the EFFECTIVE soil in the dropdown: the cell's own soil if set,
+  // else the plan's site default (which is what the cell actually uses).
+  if (soilSel) soilSel.value = (cell && cell.soil) ? cell.soil : (plan.defaultSoil || '');
   updateSoilHint(cell);
   // label field
   const labelField = document.getElementById('label-field');
