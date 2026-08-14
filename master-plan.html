@@ -3523,6 +3523,18 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 function boot() {
   plan = load();
+  // Read the shared brief FIRST so a newly-created plan honours the soil (and
+  // region) the visitor chose in the onboarding wizard, not just the region default.
+  // IMPORTANT: loadBrief() merges DEFAULT_BRIEF, which ships defaultSoil:'silty'.
+  // So detect an EXPLICIT user choice from the raw stored brief, else use region default.
+  let rawBrief = null;
+  try { rawBrief = localStorage.getItem(BRIEF_KEY); } catch (e) {}
+  let explicitSoil = null;
+  if (rawBrief) { try { explicitSoil = (JSON.parse(rawBrief) || {}).defaultSoil || null; } catch (e) {} }
+  const region0 = getRegionParam();
+  const regionDef = region0 === 'netherlands' ? 'sandy' : 'silty';
+  const preferredSoil = explicitSoil || regionDef;
+  const brief0 = loadBrief();
   if (!plan) {
     // No saved plan: check whether this key EVER existed. If it did but failed
     // to parse, do NOT overwrite the user's data with an empty default
@@ -3532,25 +3544,22 @@ function boot() {
     if (hadData) {
       // Stored data exists but failed to parse: keep it for the user instead of
       // clobbering. Create an in-memory default to show the grid, but DON'T save.
-      const region = getRegionParam();
-      const defSoil = region === 'netherlands' ? 'sandy' : 'silty';
-      plan = { width: 100, height: 100, cellSize: 10, cols: 10, rows: 10, defaultSoil: defSoil, cells: {} };
+      plan = { width: 100, height: 100, cellSize: 10, cols: 10, rows: 10, defaultSoil: preferredSoil, cells: {} };
       showToast(tt('planLoadFail'));
     } else {
       // Genuine first visit: default 1ha plot, show setup
-      const region = getRegionParam();
-      const defSoil = region === 'netherlands' ? 'sandy' : 'silty';
-      plan = { width: 100, height: 100, cellSize: 10, cols: 10, rows: 10, defaultSoil: defSoil, cells: {} };
+      plan = { width: 100, height: 100, cellSize: 10, cols: 10, rows: 10, defaultSoil: preferredSoil, cells: {} };
       save();
       openSetup();
     }
   } else if (!plan.defaultSoil) {
-    // legacy plan: apply region default
-    const region = getRegionParam();
-    plan.defaultSoil = region === 'netherlands' ? 'sandy' : 'silty';
+    // legacy plan: apply the preferred (brief or region) default
+    plan.defaultSoil = preferredSoil;
     save();
   }
-  // Keep the shared brief in sync with the current plan
+  // Keep the shared brief in sync with the current plan.
+  // IMPORTANT: never clobber the visitor's chosen soil — only write the brief
+  // from the plan when the plan wasn't itself initialised from that brief soil.
   const brief = loadBrief();
   if (brief.plotW !== plan.width || brief.plotH !== plan.height || brief.cellSize !== plan.cellSize || brief.defaultSoil !== plan.defaultSoil || brief.region !== getRegionParam()) {
     const b = briefFromPlan(plan);
