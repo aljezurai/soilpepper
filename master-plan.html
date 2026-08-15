@@ -1612,6 +1612,296 @@ button.btn.sp-bk-download {
   var BTN_YELLOW = 'background:#f4c92f !important;color:#000 !important;border-color:#d9a800 !important;';    // action button (yellow)
 
   /* ===== SMART REMINDER ===== */
+  /* Is this a genuinely ENGAGED user (not a first-time visitor)? We only want to
+     nudge people who have a real plan. Some tools auto-create a data key on load
+     (e.g. tuscanVegGarden, masterplan-v1), which would otherwise make a brand-new
+     visitor look "overdue" instantly. So require one of:
+       - the visitor completed onboarding (brief has region + soil), OR
+       - they've backed up before (LAST_BK set). */
+  function isEngaged() {
+    if (read(LAST_BK)) return true;                 // backed up before
+    try {
+      var b = JSON.parse(localStorage.getItem('tuscan-brief-v1') || '{}');
+      return !!(b && b.region && b.defaultSoil);     // completed onboarding
+    } catch (e) { return false; }
+  }
+  function shouldRemind() {
+    if (!hasRealData()) return false;              // nothing to protect yet
+    if (!isEngaged()) return false;                // brand-new visitor — don't nag
+    var sinceBk = daysSince(read(LAST_BK));
+    var sinceDismiss = daysSince(read(DISMISS));
+    if (sinceDismiss < DISMISS_FOR_DAYS) return false; // user said "later" recently
+    return sinceBk >= REMIND_AFTER_DAYS;           // overdue
+  }
+  function dismissLater() { write(DISMISS, now()); hideReminder(); closePopup(); }
+  function hideReminder() {
+    var el = document.getElementById('sp-bk-reminder');
+    if (el) { el.style.display = 'none'; }
+  }
+  /* ===== CENTERED POPUP (stronger nudge, like the homepage welcome) ===== */
+  var __popupShownThisSession = false;
+  function openPopup() {
+    if (__popupShownThisSession) return;            // once per session
+    if (document.getElementById('sp-bk-popup')) return;
+    if (!shouldRemind() && !bkDemo()) return;       // only nudge when overdue (or demo)
+    __popupShownThisSession = true;
+    var days = Math.round(daysSince(read(LAST_BK)));
+    if (bkDemo() && days >= 999) days = 10;         // demo: show a believable "10 days"
+    // backdrop
+    var ov = document.createElement('div');
+    ov.id = 'sp-bk-popup';
+    ov.style.cssText = 'position:fixed;inset:0;background:rgba(20,35,22,.55);backdrop-filter:blur(3px);' +
+      'display:flex;align-items:center;justify-content:center;padding:20px;z-index:99999;';
+    ov.onclick = function (e) { if (e.target === ov) closePopup(); };
+    // card
+    var card = document.createElement('div');
+    card.style.cssText = 'background:#edf2e6;border:1px solid rgba(255,255,255,.6);border-radius:16px;' +
+      'max-width:480px;width:100%;padding:32px 34px;box-shadow:0 8px 30px rgba(20,40,25,.3);position:relative;';
+    var close = document.createElement('button');
+    close.type = 'button';
+    close.textContent = '✕';
+    close.setAttribute('aria-label','Close');
+    close.style.cssText = 'position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3em;color:#5a6a5e;cursor:pointer;';
+    close.onclick = closePopup;
+    var icon = document.createElement('div');
+    icon.textContent = '💾';
+    icon.style.cssText = 'width:44px;height:44px;border-radius:12px;background:#f4c92f;color:#000;display:flex;' +
+      'align-items:center;justify-content:center;font-size:22px;margin-bottom:14px;';
+    var kicker = document.createElement('div');
+    kicker.textContent = 'Keep your plan safe';
+    kicker.style.cssText = 'font-size:.74em;text-transform:uppercase;letter-spacing:1px;color:#3e6a46;font-weight:700;margin-bottom:8px;';
+    var h = document.createElement('h2');
+    h.textContent = days >= 999 ? 'Your plan lives only on this device.' : 'It\'s been ' + days + ' days since your last backup.';
+    h.style.cssText = 'font-size:1.5em;line-height:1.25;color:#2c4a32;margin-bottom:12px;font-weight:800;';
+    var p = document.createElement('p');
+    p.textContent = 'Everything you plan is stored only here — that keeps it private and yours alone. A quick download means you won\'t lose it if your browser is cleared or you switch devices.';
+    p.style.cssText = 'font-size:1em;color:#3a4a3e;line-height:1.6;margin-bottom:20px;';
+    var actions = document.createElement('div');
+    actions.style.cssText = 'display:flex;gap:10px;flex-wrap:wrap;align-items:center;';
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.style.cssText = BTN + BTN_YELLOW;
+    btn.textContent = '⬇ Back up now';
+    btn.onclick = backupAll;
+    var later = document.createElement('button');
+    later.type = 'button';
+    later.textContent = 'Remind me later';
+    later.style.cssText = 'background:none;border:none;font-size:.84em;color:#5a6a5e;cursor:pointer;text-decoration:underline;';
+    later.onclick = dismissLater;
+    actions.appendChild(btn); actions.appendChild(later);
+    card.appendChild(close); card.appendChild(icon); card.appendChild(kicker);
+    card.appendChild(h); card.appendChild(p); card.appendChild(actions);
+    ov.appendChild(card);
+    document.body.appendChild(ov);
+  }
+  function closePopup() {
+    var ov = document.getElementById('sp-bk-popup');
+    if (ov) ov.remove();
+  }
+  function addReminder() {
+    if (document.getElementById('sp-bk-reminder')) return;
+    if (!shouldRemind() && !bkDemo()) return;
+    var bar = document.getElementById('sp-backup-bar');
+    var host = bar || document.getElementById('sf-masthead') || document.querySelector('header') || document.body;
+    var el = document.createElement('div');
+    el.id = 'sp-bk-reminder';
+    el.style.cssText = 'display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:8px 0;' +
+      'padding:12px 14px;border:2px solid #d9a800;border-radius:10px;background:rgba(244,201,47,.12);font-size:.86rem;';
+    var icon = document.createElement('span');
+    icon.textContent = '💾';
+    icon.style.cssText = 'font-size:1.3em;flex-shrink:0';
+    var body = document.createElement('div');
+    body.style.cssText = 'flex:1;min-width:200px';
+    var title = document.createElement('div');
+    title.style.cssText = 'font-weight:800;color:#2c4a32;margin-bottom:2px';
+    var days = Math.round(daysSince(read(LAST_BK)));
+    if (bkDemo() && days >= 999) days = 10;
+    title.textContent = days >= 999 ? 'Your plan lives only on this device.' : 'It\'s been ' + days + ' days since your last backup.';
+    var sub = document.createElement('div');
+    sub.textContent = 'A quick download keeps your whole plan safe — on any device, any time.';
+    sub.style.cssText = 'color:#3a4a3e';
+    body.appendChild(title); body.appendChild(sub);
+    var act = document.createElement('div');
+    act.style.cssText = 'display:flex;gap:8px;align-items:center;flex-wrap:wrap';
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.style.cssText = BTN + BTN_YELLOW;
+    btn.textContent = '⬇ Back up now';
+    btn.onclick = backupAll;
+    var later = document.createElement('button');
+    later.type = 'button';
+    later.textContent = 'Remind me later';
+    later.style.cssText = 'background:none;border:none;font-size:.82em;color:#5a6a5e;cursor:pointer;text-decoration:underline';
+    later.onclick = dismissLater;
+    act.appendChild(btn); act.appendChild(later);
+    el.appendChild(icon); el.appendChild(body); el.appendChild(act);
+    if (host && host.parentNode) {
+      if (host === document.body) { host.insertBefore(el, host.firstChild); }
+      else { host.parentNode.insertBefore(el, host.nextSibling); }
+    } else { document.body.insertBefore(el, document.body.firstChild); }
+  }
+
+  function addBackupUI() {
+    if (document.getElementById('sp-backup-bar')) return;
+    var bar = document.createElement('div');
+    bar.id = 'sp-backup-bar';
+    bar.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:8px 12px;margin:8px 0;' +
+      'border:1px solid #a8c0a8;border-radius:8px;background:#e4ebdd;font-size:.85rem;';
+    var dl = document.createElement('button');
+    dl.type = 'button';
+    dl.className = 'sp-bk-download';
+    dl.style.cssText = BTN + BTN_YELLOW;
+    dl.innerHTML = '⬇ Download all data';
+    dl.onclick = backupAll;
+    var rs = document.createElement('button');
+    rs.type = 'button';
+    rs.className = 'sp-bk-restore';
+    rs.style.cssText = BTN + BTN_GOLD;
+    rs.innerHTML = '📥 Restore';
+    var file = document.createElement('input');
+    file.type = 'file';
+    file.id = 'sp-restore-file';
+    file.accept = '.json,application/json';
+    file.style.display = 'none';
+    file.addEventListener('change', restoreBackup);
+    rs.onclick = function () { file.click(); };
+    bar.appendChild(dl);
+    bar.appendChild(rs);
+    bar.appendChild(file);
+
+    var host = document.getElementById('sf-masthead') || document.querySelector('header') || document.body;
+    if (host && host.parentNode) {
+      if (host === document.body) { host.insertBefore(bar, host.firstChild); }
+      else { host.parentNode.insertBefore(bar, host.nextSibling); }
+    } else {
+      document.body.insertBefore(bar, document.body.firstChild);
+    }
+  }
+
+  function init() {
+    addBackupUI();
+    // The strip reminder lives on every tool page.
+    addReminder();
+    // The centered popup is the stronger nudge — open once per session, slightly
+    // after load so the page has settled and it doesn't feel abrupt.
+    setTimeout(openPopup, 700);
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+
+<!-- SOILPEPPER BACKUP STRIP + SMART REMINDER (shared — full localStorage backup + restore) -->
+<script>
+(function () {
+  // Complete, zero-maintenance backup: scans ALL of localStorage so it captures
+  // every SOILPEPPER key (brief, water, plan, veg garden, guild gd-*, region,
+  // expert overlay, future keys) automatically. Restores them all on upload.
+  // No hardcoded key list — nothing new can be missed.
+  // NOTE (2026-08-13): the strip and its buttons are styled 100% self-contained
+  // (inline) so they look IDENTICAL on every page, regardless of each page's own
+  // .btn CSS — pages differ (master-plan has a base .btn rule, others don't).
+  // NOTE (2026-08-14): added the SMART BACKUP REMINDER — stamps a timestamp on
+  // every backup, and shows a calm, non-blocking nudge on tool pages when the
+  // plan hasn't been backed up for a while. Honest tone, never forced.
+  if (window.__soilpepperBackupLoaded) return; // inject once
+  window.__soilpepperBackupLoaded = true;
+
+  var LAST_BK = 'soilpepper.lastBackup';          // ISO date of last backup
+  var DISMISS = 'soilpepper.bkRemindLater';       // ISO date when dismissed
+  var REMIND_AFTER_DAYS = 3;                      // nudge if last backup older than this
+  var DISMISS_FOR_DAYS = 7;                       // stay quiet this long after "later"
+
+  function now() { return new Date().toISOString(); }
+  function daysSince(iso) {
+    if (!iso) return 999;
+    var d = (Date.now() - new Date(iso).getTime()) / 86400000;
+    return d >= 0 ? d : 0;
+  }
+  // A plan worth protecting = at least one real SOILPEPPER data key present.
+  // (Excludes the reminder's own bookkeeping keys so they don't count as data.)
+  function hasRealData() {
+    var REAL = ['tuscan-brief-v1','tuscan-water-v1','masterplan-v1','tuscanVegGarden','soilpepper.expertOverlay'];
+    for (var i = 0; i < localStorage.length; i++) {
+      var k = localStorage.key(i);
+      if (!k) continue;
+      if (REAL.indexOf(k) !== -1) return true;
+      if (/^gd-/.test(k)) return true;   // guild overlay data
+      if (/^(tuscan-|masterplan-)/.test(k)) return true;
+    }
+    return false;
+  }
+  function read(iso) { try { return localStorage.getItem(iso); } catch (e) { return null; } }
+  function write(iso, v) { try { localStorage.setItem(iso, v); } catch (e) {} }
+
+  // Demo trigger for testing / showing the popup without real data:
+  // append ?bkdemo=1 to any tool URL to force the reminder (and the strip).
+  function bkDemo() {
+    try { return /[?&]bkdemo=1/.test(window.location.search); } catch (e) { return false; }
+  }
+
+  function stampBackup() { write(LAST_BK, now()); }
+
+  function backupAll() {
+    var data = { app: 'soilpepper', version: 2, exportedAt: now(), keys: {} };
+    try {
+      for (var i = 0; i < localStorage.length; i++) {
+        var k = localStorage.key(i);
+        if (!k) continue;
+        data.keys[k] = localStorage.getItem(k);
+      }
+    } catch (e) {}
+    var count = Object.keys(data.keys).length;
+    var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'soilpepper-backup-' + new Date().toISOString().slice(0, 10) + '.json';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    stampBackup();
+    hideReminder();
+    var msg = '💾 Backup downloaded — ' + count + ' item(s), keep it safe';
+    if (window.showToast) showToast(msg); else alert(msg);
+  }
+
+  function restoreBackup(event) {
+    var file = event.target.files && event.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      try {
+        var data = JSON.parse(e.target.result);
+        if (!data || !data.keys || typeof data.keys !== 'object') throw new Error('bad format');
+        var count = 0;
+        Object.keys(data.keys).forEach(function (k) {
+          try { localStorage.setItem(k, data.keys[k]); count++; } catch (err) {}
+        });
+        stampBackup();
+        var msg = '📥 Restored ' + count + ' item(s) — reloading…';
+        if (window.showToast) showToast(msg); else alert(msg);
+        setTimeout(function () { location.reload(); }, 900);
+      } catch (err) {
+        var em = '⚠️ Could not restore: file is not a SOILPEPPER backup';
+        if (window.showToast) showToast(em); else alert(em);
+      }
+    };
+    reader.readAsText(file);
+    event.target.value = '';
+  }
+
+  // Self-contained button style — identical on every page. Uses !important so it beats
+  // sage-forte's bare `button { ... !important }` rule (which forces gold on ALL buttons).
+  var BTN = 'display:inline-flex !important;align-items:center !important;gap:6px !important;' +
+    'padding:8px 16px !important;border-radius:999px !important;font-family:inherit !important;' +
+    'font-size:12px !important;font-weight:800 !important;cursor:pointer !important;' +
+    'border:2px solid !important;line-height:1.2 !important;box-shadow:none !important;';
+  var BTN_GOLD = 'background:#f5ead6 !important;color:#8a6420 !important;border-color:#e0d0a8 !important;';   // standard page button (gold)
+  var BTN_YELLOW = 'background:#f4c92f !important;color:#000 !important;border-color:#d9a800 !important;';    // action button (yellow)
+
+  /* ===== SMART REMINDER ===== */
   function shouldRemind() {
     if (!hasRealData()) return false;              // nothing to protect yet
     var sinceBk = daysSince(read(LAST_BK));
