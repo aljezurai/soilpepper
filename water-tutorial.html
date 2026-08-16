@@ -10,17 +10,28 @@
   --sf-header:#2c4a32; --sf-header-2:#3e6a46; --sf-ink:#1e2c22; --sf-ink-soft:#4a5c4e;
   --sf-border:#d0dac8; --sf-border-strong:#8aa88c; --sf-accent:#c8492e;
   --sf-gold:#f5ead6; --sf-gold-ink:#8a6420; --sf-gold-border:#e0d0a8;
+  --sf-radius-lg:16px; --sf-shadow-lg:0 6px 24px rgba(20,40,25,.16);
   --font-head:'Fraunces','Palatino',Georgia,serif; --font-body:'Nunito','Segoe UI',system-ui,sans-serif;
   --radius:16px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:var(--font-body);background:var(--sf-bg);color:var(--sf-ink);line-height:1.5;min-height:100vh}
 .wrap{max-width:980px;margin:0 auto;padding:20px}
-.masthead{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--sf-header);border:2px solid #1e3624;border-radius:var(--radius);padding:14px 20px;margin-bottom:18px;box-shadow:0 2px 8px rgba(20,50,24,.2)}
-.brand{display:flex;align-items:center;gap:10px}
-.logo{font-family:var(--font-head);color:#fff;font-size:1.4em;font-weight:700}
-.tagline{color:var(--sf-sage-soft);font-size:0.75em}
-.tut-badge{background:var(--sf-gold);color:var(--sf-gold-ink);border:2px solid var(--sf-gold-border);border-radius:999px;padding:4px 14px;font-size:0.78em;font-weight:700}
+/* ═══ Sage Forte masthead — same as the tool pages ═══ */
+.sf-masthead{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;
+  background:var(--sf-header)!important;border:2px solid #1e3624!important;
+  border-radius:var(--sf-radius-lg)!important;padding:14px 20px!important;
+  margin:0 auto 12px!important;max-width:1180px!important;box-shadow:var(--sf-shadow-lg)!important}
+.sf-brand{display:flex;align-items:center;gap:10px}
+.sf-pepper{font-size:1.6rem}
+.sf-logo{font-family:var(--font-head)!important;font-size:1.3rem!important;font-weight:700!important;
+  color:#ffffff!important;margin:0!important;letter-spacing:.5px!important;text-align:left!important;line-height:1.2!important}
+.sf-logo a{text-decoration:none;color:inherit}
+.sf-tagline{font-size:.78rem;color:#c8e4cc!important;font-weight:800!important;letter-spacing:.2px;text-align:left!important}
+.sf-region{display:flex;gap:6px}
+.sf-region .sf-pill{background:#fff;color:var(--sf-header-2);border:1px solid var(--sf-border-strong);
+  border-radius:999px;padding:4px 12px;font-size:.75em;font-weight:700}
+/* ═══ tutorial content ═══ */
 h1{font-family:var(--font-head);color:var(--sf-header);text-align:center;margin:6px 0 2px}
 .sub{text-align:center;color:var(--sf-ink-soft);font-size:0.9em;margin-bottom:22px}
 .step{background:var(--sf-card);border:1.5px solid var(--sf-border);border-radius:14px;padding:16px 20px;margin-bottom:16px}
@@ -34,7 +45,6 @@ h1{font-family:var(--font-head);color:var(--sf-header);text-align:center;margin:
 .mbtn.hi{outline:3px solid var(--sf-accent);outline-offset:2px;font-weight:700}
 .mbtn.lbl{background:var(--sf-card-alt);border-style:dashed;cursor:default}
 .tagnote{font-size:0.72em;color:var(--sf-accent);font-weight:700}
-/* water sources */
 .sources{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-top:12px}
 .src{display:flex;align-items:center;gap:8px;background:var(--sf-card-alt);border:1.5px solid var(--sf-border);border-radius:10px;padding:8px 12px}
 .src .ico{font-size:1.2em}
@@ -48,52 +58,116 @@ footer{text-align:center;color:var(--sf-ink-soft);font-size:0.75em;margin-top:26
 </head>
 <body>
 <div class="wrap">
-  <header class="masthead">
-    <div class="brand"><span style="font-size:1.5em">💧</span>
-      <div><div class="logo">SOILPEPPER</div><div class="tagline">Water Management — tutorial</div></div>
+  <header class="sf-masthead" id="sf-masthead">
+    <div class="sf-brand">
+      <span class="sf-pepper">🌶️</span>
+      <div>
+        <h1 class="sf-logo"><a href="tools.html">SOIL<span style="color:#f4c92f">PEPPER</span></a></h1>
+        <div class="sf-tagline" data-i18n="tagline">Water Management — tutorial</div>
+      </div>
     </div>
-    <span class="tut-badge">4 steps</span>
+    <div class="sf-region" id="sf-region"></div>
   </header>
 
-  <h1>Design your water in 4 steps</h1>
-  <p class="sub">Swales, ponds, drip — how water moves across your land. It reads your Master Plan and lets you fine-tune the numbers.</p>
+  <h1 data-i18n="title">Design your water in 4 steps</h1>
+  <p class="sub" data-i18n="subtitle">Swales, ponds, drip — how water moves across your land. It reads your Master Plan and lets you fine-tune the numbers.</p>
 
   <div class="step">
-    <div class="step-h"><span class="step-n">1</span><span class="step-ico">💧</span><div class="step-t">See your water sources</div></div>
-    <p>Your plot's water story: roof harvest, pond, pool, well — and how they feed the garden.</p>
+    <div class="step-h"><span class="step-n">1</span><span class="step-ico">💧</span><div class="step-t" data-i18n="s1t">See your water sources</div></div>
+    <p data-i18n="s1p">Your plot's water story: roof harvest, pond, pool, well — and how they feed the garden.</p>
     <div class="sources">
-      <div class="src"><span class="ico">🫧</span><div><div class="nm">Irrigation pond</div><div class="dg">gravity-fed</div></div></div>
-      <div class="src"><span class="ico">💧</span><div><div class="nm">Rainwater</div><div class="dg">roof + gutters</div></div></div>
-      <div class="src"><span class="ico">🌀</span><div><div class="nm">Well</div><div class="dg">drought top-up</div></div></div>
-      <div class="src"><span class="ico">🏊</span><div><div class="nm">Natural pool</div><div class="dg">swimming + storage</div></div></div>
+      <div class="src"><span class="ico">🫧</span><div><div class="nm" data-i18n="s1a">Irrigation pond</div><div class="dg" data-i18n="s1aD">gravity-fed</div></div></div>
+      <div class="src"><span class="ico">💧</span><div><div class="nm" data-i18n="s1b">Rainwater</div><div class="dg" data-i18n="s1bD">roof + gutters</div></div></div>
+      <div class="src"><span class="ico">🌀</span><div><div class="nm" data-i18n="s1c">Well</div><div class="dg" data-i18n="s1cD">drought top-up</div></div></div>
+      <div class="src"><span class="ico">🏊</span><div><div class="nm" data-i18n="s1d">Natural pool</div><div class="dg" data-i18n="s1dD">swimming + storage</div></div></div>
     </div>
   </div>
 
   <div class="step">
-    <div class="step-h"><span class="step-n">2</span><span class="step-ico">⚙️</span><div class="step-t">Tune the numbers</div></div>
-    <p>Adjust roof area, rainfall, pond size, tanks or gravity head — see the balance update instantly.</p>
+    <div class="step-h"><span class="step-n">2</span><span class="step-ico">⚙️</span><div class="step-t" data-i18n="s2t">Tune the numbers</div></div>
+    <p data-i18n="s2p">Adjust roof area, rainfall, pond size, tanks or gravity head — see the balance update instantly.</p>
     <div class="btnrow">
-      <span class="mbtn hi">⚙️ Water Parameters</span>
-      <span class="mbtn">🔄 Update diagram</span>
-      <span class="mbtn">💾 Save as defaults</span>
-      <span class="tagnote">← explore, then save what you like</span>
+      <span class="mbtn hi">⚙️ <span data-i18n="s2a">Water Parameters</span></span>
+      <span class="mbtn">🔄 <span data-i18n="s2b">Update diagram</span></span>
+      <span class="mbtn">💾 <span data-i18n="s2c">Save as defaults</span></span>
+      <span class="tagnote" data-i18n="s2D">← explore, then save what you like</span>
     </div>
   </div>
 
   <div class="step">
-    <div class="step-h"><span class="step-n">3</span><span class="step-ico">⚖️</span><div class="step-t">Check the balance</div></div>
-    <p>Annual supply vs demand. If it's short, the water bar tells you — that's your cue to add a swale or a bigger pond.</p>
-    <div class="btnrow"><span class="mbtn hi">⚖️ Water Balance</span></div>
+    <div class="step-h"><span class="step-n">3</span><span class="step-ico">⚖️</span><div class="step-t" data-i18n="s3t">Check the balance</div></div>
+    <p data-i18n="s3p">Annual supply vs demand. If it's short, the water bar tells you — that's your cue to add a swale or a bigger pond.</p>
+    <div class="btnrow"><span class="mbtn hi">⚖️ <span data-i18n="s3a">Water Balance</span></span></div>
   </div>
 
   <div class="step">
-    <div class="step-h"><span class="step-n">4</span><span class="step-ico">📐</span><div class="step-t">Place your swales</div></div>
-    <p>Swales on contour catch the rain. The spec card tells you exactly where each one goes — which rows, how far apart, what to dig.</p>
-    <div class="btnrow"><span class="mbtn">📐 Swale Layout</span></div>
-    <div class="tip"><span class="i">💡</span><span><b>Tip:</b> your water plan flows into the Design Proposal automatically — one source, synced everywhere.</span></div>
+    <div class="step-h"><span class="step-n">4</span><span class="step-ico">📐</span><div class="step-t" data-i18n="s4t">Place your swales</div></div>
+    <p data-i18n="s4p">Swales on contour catch the rain. The spec card tells you exactly where each one goes — which rows, how far apart, what to dig.</p>
+    <div class="btnrow"><span class="mbtn">📐 <span data-i18n="s4a">Swale Layout</span></span></div>
+    <div class="tip"><span class="i">💡</span><span><b data-i18n="tipL">Tip:</b> <span data-i18n="tip">your water plan flows into the Design Proposal automatically — one source, synced everywhere.</span></span></div>
   </div>
 
-  <footer>SOILPEPPER · Water Management tutorial · your data stays yours</footer>
+  <footer data-i18n="foot">SOILPEPPER · Water Management tutorial · your data stays yours</footer>
 </div>
+
+<script>
+(function(){
+  // Same region→language logic as the tool pages
+  var REGION = 'tuscany';
+  try {
+    var q = new URLSearchParams(window.location.search);
+    if (q.get('region')==='netherlands' || q.get('region')==='tuscany') REGION = q.get('region');
+    else {
+      var b = JSON.parse(localStorage.getItem('tuscan-brief-v1')||'{}');
+      if (b.region==='netherlands' || b.region==='tuscany') REGION = b.region;
+    }
+  } catch(e){}
+  var LANG = REGION === 'netherlands' ? 'nl' : 'en';
+  var T = {
+    en: {
+      tagline:'Water Management — tutorial', title:'Design your water in 4 steps',
+      subtitle:'Swales, ponds, drip — how water moves across your land. It reads your Master Plan and lets you fine-tune the numbers.',
+      s1t:'See your water sources', s1p:"Your plot's water story: roof harvest, pond, pool, well — and how they feed the garden.",
+      s1a:'Irrigation pond', s1aD:'gravity-fed', s1b:'Rainwater', s1bD:'roof + gutters',
+      s1c:'Well', s1cD:'drought top-up', s1d:'Natural pool', s1dD:'swimming + storage',
+      s2t:'Tune the numbers', s2p:'Adjust roof area, rainfall, pond size, tanks or gravity head — see the balance update instantly.',
+      s2a:'Water Parameters', s2b:'Update diagram', s2c:'Save as defaults', s2D:'← explore, then save what you like',
+      s3t:'Check the balance', s3p:"Annual supply vs demand. If it's short, the water bar tells you — that's your cue to add a swale or a bigger pond.",
+      s3a:'Water Balance',
+      s4t:'Place your swales', s4p:'Swales on contour catch the rain. The spec card tells you exactly where each one goes — which rows, how far apart, what to dig.',
+      s4a:'Swale Layout', tipL:'Tip:', tip:'your water plan flows into the Design Proposal automatically — one source, synced everywhere.',
+      foot:'SOILPEPPER · Water Management tutorial · your data stays yours',
+      region:'Water Management', regionNL:'Nederland', regionIT:'Tuscany'
+    },
+    nl: {
+      tagline:'Waterbeheer — handleiding', title:'Ontwerp je water in 4 stappen',
+      subtitle:'Swales, vijvers, druppelirrigatie — hoe water over je land beweegt. Het leest je Masterplan en laat je de cijfers fijn afstellen.',
+      s1t:'Bekijk je waterbronnen', s1p:'Het waterverhaal van je perceel: dakopvang, vijver, zwembad, put — en hoe ze de tuin voeden.',
+      s1a:'Irrigatievijver', s1aD:'zwaartekracht gevoed', s1b:'Regenwater', s1bD:'dak + goten',
+      s1c:'Put', s1cD:'droogte-aanvulling', s1d:'Natuurlijk zwembad', s1dD:'zwemmen + opslag',
+      s2t:'Stel de cijfers af', s2p:'Pas dakoppervlak, regenval, vijvergrootte, tanks of zwaartekrachtkop aan — zie de balans meteen veranderen.',
+      s2a:'Waterparameters', s2b:'Diagram bijwerken', s2c:'Opslaan als standaard', s2D:'← verken eerst, sla daarna op wat je wilt',
+      s3t:'Controleer de balans', s3p:'Jaarlijkse aanvoer vs. vraag. Is er te weinig, dan zegt de waterbalk het je — jouw signaal om een swale of een grotere vijver toe te voegen.',
+      s3a:'Waterbalans',
+      s4t:'Plaats je swales', s4p:'Swales op de hoogtelijn vangen de regen. De specificatiekaart vertelt je precies waar elke swale komt — welke rijen, hoe ver uit elkaar, wat te graven.',
+      s4a:'Swale-indeling', tipL:'Tip:', tip:'je waterplan vloeit automatisch door naar het Ontwerpvoorstel — één bron, overal gesynchroniseerd.',
+      foot:'SOILPEPPER · Waterbeheer handleiding · jouw data blijft van jou',
+      region:'Waterbeheer', regionNL:'Nederland', regionIT:'Toscane'
+    }
+  };
+  document.querySelectorAll('[data-i18n]').forEach(function(el){
+    var k=el.getAttribute('data-i18n');
+    var v=(T[LANG]&&T[LANG][k])||T.en[k];
+    if(v!==undefined) el.textContent=v;
+  });
+  var rg=document.getElementById('sf-region');
+  if(rg){
+    var pill=document.createElement('span');
+    pill.className='sf-pill';
+    pill.textContent = REGION==='netherlands' ? '🇳🇱 ' + (T[LANG].regionNL || 'Nederland') : '🇮🇹 ' + (T[LANG].regionIT || 'Tuscany');
+    rg.appendChild(pill);
+  }
+})();
+</script>
 </body>
 </html>
