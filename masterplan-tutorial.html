@@ -3,154 +3,133 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>SOILPEPPER — Master Plan tutorial</title>
+<title>SOILPEPPER — Master Plan — tutorial</title>
 <style>
 :root{
   --sf-bg:#cdd8c8; --sf-card:#edf2e6; --sf-card-alt:#eef4ec; --sf-sage-soft:#dcead8;
   --sf-header:#2c4a32; --sf-header-2:#3e6a46; --sf-ink:#1e2c22; --sf-ink-soft:#4a5c4e;
   --sf-border:#d0dac8; --sf-border-strong:#8aa88c; --sf-accent:#c8492e;
   --sf-gold:#f5ead6; --sf-gold-ink:#8a6420; --sf-gold-border:#e0d0a8;
+  --sf-radius-lg:16px; --sf-shadow-lg:0 6px 24px rgba(20,40,25,.16);
   --font-head:'Fraunces','Palatino',Georgia,serif; --font-body:'Nunito','Segoe UI',system-ui,sans-serif;
   --radius:16px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:var(--font-body);background:var(--sf-bg);color:var(--sf-ink);line-height:1.5;min-height:100vh}
 .wrap{max-width:980px;margin:0 auto;padding:20px}
-
-.masthead{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--sf-header);border:2px solid #1e3624;border-radius:var(--radius);padding:14px 20px;margin-bottom:18px;box-shadow:0 2px 8px rgba(20,50,24,.2)}
-.brand{display:flex;align-items:center;gap:10px}
-.logo{font-family:var(--font-head);color:#fff;font-size:1.4em;font-weight:700}
-.tagline{color:var(--sf-sage-soft);font-size:0.75em}
-.tut-badge{background:var(--sf-gold);color:var(--sf-gold-ink);border:2px solid var(--sf-gold-border);border-radius:999px;padding:4px 14px;font-size:0.78em;font-weight:700}
-
+/* Sage Forte masthead — same as the tool pages */
+.sf-masthead{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;
+  background:var(--sf-header)!important;border:2px solid #1e3624!important;
+  border-radius:var(--sf-radius-lg)!important;padding:14px 20px!important;
+  margin:0 auto 12px!important;max-width:1180px!important;box-shadow:var(--sf-shadow-lg)!important}
+.sf-brand{display:flex;align-items:center;gap:10px}
+.sf-pepper{font-size:1.6rem}
+.sf-logo{font-family:var(--font-head)!important;font-size:1.3rem!important;font-weight:700!important;
+  color:#ffffff!important;margin:0!important;letter-spacing:.5px!important;text-align:left!important;line-height:1.2!important}
+.sf-logo a{text-decoration:none;color:inherit}
+.sf-tagline{font-size:.78rem;color:#c8e4cc!important;font-weight:800!important;letter-spacing:.2px;text-align:left!important}
+.sf-region{display:flex;gap:6px}
+.sf-region .sf-pill{background:#fff;color:var(--sf-header-2);border:1px solid var(--sf-border-strong);
+  border-radius:999px;padding:4px 12px;font-size:.75em;font-weight:700}
+/* tutorial content */
 h1{font-family:var(--font-head);color:var(--sf-header);text-align:center;margin:6px 0 2px}
 .sub{text-align:center;color:var(--sf-ink-soft);font-size:0.9em;margin-bottom:22px}
-
-/* steps */
 .step{background:var(--sf-card);border:1.5px solid var(--sf-border);border-radius:14px;padding:16px 20px;margin-bottom:16px}
 .step-h{display:flex;align-items:center;gap:12px;margin-bottom:10px}
 .step-n{background:var(--sf-header-2);color:#fff;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.9em;flex-shrink:0}
 .step-t{font-family:var(--font-head);color:var(--sf-header);font-size:1.05em}
 .step-ico{font-size:1.3em}
 .step p{font-size:0.85em;color:var(--sf-ink-soft);margin-bottom:10px}
-
-/* a row of button mockups */
 .btnrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .mbtn{font-size:0.78em;padding:7px 14px;border-radius:10px;border:1.5px solid var(--sf-border-strong);background:var(--sf-card);color:var(--sf-ink);cursor:pointer;display:inline-flex;align-items:center;gap:5px}
 .mbtn.hi{outline:3px solid var(--sf-accent);outline-offset:2px;font-weight:700}
 .mbtn.lbl{background:var(--sf-card-alt);border-style:dashed;cursor:default}
 .tagnote{font-size:0.72em;color:var(--sf-accent);font-weight:700}
-.grid-pic{display:grid;grid-template-columns:repeat(10,1fr);gap:3px;max-width:420px;margin:10px 0}
-.cell{aspect-ratio:1;border-radius:4px;border:1px solid var(--sf-border-strong);background:var(--sf-card-alt);display:flex;align-items:center;justify-content:center;font-size:0.9em}
-.cell.hi{outline:3px solid var(--sf-accent);outline-offset:1px;background:var(--sf-sage-soft)}
-.cell.house{background:var(--sf-accent)}
-.legend-func{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 12px}
-.ficon{font-size:0.75em;padding:4px 11px;border-radius:999px;background:var(--sf-card-alt);border:1px solid var(--sf-border-strong);font-weight:600;color:var(--sf-ink)}
-.zones{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:12px}
-.zone{display:flex;align-items:center;gap:10px;background:var(--sf-card-alt);border:1.5px solid var(--sf-border);border-radius:10px;padding:8px 12px}
-.zone .z{background:var(--sf-header-2);color:#fff;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.8em;flex-shrink:0}
-.zone .zd{font-size:0.78em;font-weight:600;color:var(--sf-ink)}
-
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-top:12px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:12px}
+.tile{background:var(--sf-card-alt);border:1.5px solid var(--sf-border);border-radius:10px;padding:8px 12px}
+.tile.center{text-align:center;padding:10px 12px}
+.tile .ico{font-size:1.2em;display:block;margin-bottom:3px}
+.tile .nm{font-size:0.76em;font-weight:700;color:var(--sf-header)}
+.tile .dg{font-size:0.68em;color:var(--sf-ink-soft)}
+.tile.swatch{display:flex;align-items:center;gap:8px}
+.sw{width:14px;height:14px;border-radius:3px;flex-shrink:0}
+.notes{margin-top:10px;display:flex;flex-direction:column;gap:8px}
+.note{display:flex;gap:10px;align-items:flex-start;background:var(--sf-card-alt);border:1px solid var(--sf-border);border-radius:10px;padding:9px 12px;font-size:0.8em;color:var(--sf-ink-soft)}
+.note .i{font-size:1.05em;flex-shrink:0}
+.note b{color:var(--sf-header)}
 .tip{display:flex;gap:10px;align-items:flex-start;background:var(--sf-gold);border:1px solid var(--sf-gold-border);border-radius:10px;padding:10px 14px;font-size:0.8em;color:var(--sf-gold-ink);margin-top:8px}
 .tip .i{font-size:1.1em}
-
-/* views */
-.views{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:8px}
-.view{background:var(--sf-card-alt);border:1.5px solid var(--sf-border);border-radius:12px;padding:12px;text-align:center}
-.view .ico{font-size:1.6em;display:block;margin-bottom:5px}
-.view .t{font-size:0.8em;font-weight:700;color:var(--sf-header)}
-.view .d{font-size:0.68em;color:var(--sf-ink-soft);margin-top:3px;line-height:1.35}
-
 footer{text-align:center;color:var(--sf-ink-soft);font-size:0.75em;margin-top:26px}
-@media(max-width:600px){.views{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.grid2,.grid3{grid-template-columns:1fr 1fr}}
+
 </style>
 </head>
 <body>
 <div class="wrap">
-
-  <header class="masthead">
-    <div class="brand"><span style="font-size:1.5em">🗺️</span>
-      <div><div class="logo">SOILPEPPER</div><div class="tagline">Master Plan — tutorial</div></div>
+  <header class="sf-masthead" id="sf-masthead">
+    <div class="sf-brand">
+      <span class="sf-pepper">🌶️</span>
+      <div>
+        <h1 class="sf-logo"><a href="tools.html">SOIL<span style="color:#f4c92f">PEPPER</span></a></h1>
+        <div class="sf-tagline" data-i18n="tagline">Master Plan — tutorial</div>
+      </div>
     </div>
-    <span class="tut-badge">5 steps</span>
+    <div class="sf-region" id="sf-region"></div>
   </header>
 
-  <h1>Draw your whole plot in 5 steps</h1>
-  <p class="sub">Master Plan is the hub — everything else in SOILPEPPER reads from here. Do this once, and it flows everywhere.</p>
-
-  <!-- STEP 1 -->
-  <div class="step">
-    <div class="step-h"><span class="step-n">1</span><span class="step-ico">⚙️</span><div class="step-t">Set up your plot</div></div>
-    <p>Tell Master Plan about your land once — size, cells, soil, altitude, zone, aspect. This becomes your site brief.</p>
-    <div class="btnrow">
-      <span class="mbtn hi">⚙️ Plot Setup</span>
-      <span class="mbtn">💧 Water Setup</span>
-      <span class="tagnote">← click this first</span>
-    </div>
-  </div>
-
-  <!-- STEP 2 -->
-  <div class="step">
-    <div class="step-h"><span class="step-n">2</span><span class="step-ico">🎨</span><div class="step-t">Paint functions on the grid</div></div>
-    <p>Each cell gets a job: guild, vegetable, water, road, building, or open. Tap a cell, pick a function. The grid fills in like a map.</p>
-    <div class="grid-pic">
-      <div class="cell house">🏠</div><div class="cell">🌿</div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
-      <div class="cell"></div><div class="cell hi">🌳</div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
-      <div class="cell"></div><div class="cell"></div><div class="cell">🥕</div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
-      <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell">💧</div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
-      <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell">🛣️</div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
-    </div>
-    <div class="legend-func">
-      <span class="ficon">🏠 Construction</span><span class="ficon">🌳 Guild</span><span class="ficon">🥕 Vegetable</span>
-      <span class="ficon">💧 Water</span><span class="ficon">🛣️ Road</span><span class="ficon">🌿 Open</span>
-    </div>
-    <div class="btnrow">
-      <span class="mbtn hi">🎨 Functions</span><span class="mbtn">🧭 Zones</span><span class="mbtn">🪨 Soil</span><span class="mbtn">🌪️ Sectors</span>
-    </div>
-  </div>
-
-  <!-- STEP 3 -->
-  <div class="step">
-    <div class="step-h"><span class="step-n">3</span><span class="step-ico">🧭</span><div class="step-t">Set the zones</div></div>
-    <p>Let SOILPEPPER lay the Z0–Z5 rings for you, then fine-tune by painting.</p>
-    <div class="btnrow">
-      <span class="mbtn hi">✨ Suggest Zones</span>
-      <span class="tagnote">one click — rings around your house</span>
-    </div>
-    <div class="zones">
-      <div class="zone"><span class="z">Z0</span><span class="zd">House &amp; immediate</span></div>
-      <div class="zone"><span class="z">Z1</span><span class="zd">Kitchen garden</span></div>
-      <div class="zone"><span class="z">Z2</span><span class="zd">Orchard / coop</span></div>
-      <div class="zone"><span class="z">Z3</span><span class="zd">Field crops</span></div>
-      <div class="zone"><span class="z">Z4</span><span class="zd">Semi-managed</span></div>
-      <div class="zone"><span class="z">Z5</span><span class="zd">Wild</span></div>
-    </div>
-  </div>
-
-  <!-- STEP 4: the 4 views -->
-  <div class="step">
-    <div class="step-h"><span class="step-n">4</span><span class="step-ico">🔄</span><div class="step-t">Switch views to check your work</div></div>
-    <p>Four lenses on the same map. Paint in each one; the layers stack.</p>
-    <div class="views">
-      <div class="view"><span class="ico">🎨</span><div class="t">Functions</div><div class="d">what each cell does</div></div>
-      <div class="view"><span class="ico">🧭</span><div class="t">Zones</div><div class="d">Z0 house → Z5 wild</div></div>
-      <div class="view"><span class="ico">🪨</span><div class="t">Soil</div><div class="d">match plants to soil</div></div>
-      <div class="view"><span class="ico">🌪️</span><div class="t">Sectors</div><div class="d">sun · wind · fire · frost</div></div>
-    </div>
-  </div>
-
-  <!-- STEP 5 -->
-  <div class="step">
-    <div class="step-h"><span class="step-n">5</span><span class="step-ico">💾</span><div class="step-t">Save &amp; share</div></div>
-    <p>Your plan saves automatically in the browser. Back up to one JSON file — and the rest of SOILPEPPER reads it instantly.</p>
-    <div class="btnrow">
-      <span class="mbtn hi">📤 Download design</span><span class="mbtn">📥 Upload design</span>
-      <span class="mbtn">⬇ Download all data</span><span class="mbtn">📥 Restore</span>
-    </div>
-    <div class="tip"><span class="i">💡</span><span><b>Pro tip:</b> back up once a week. One JSON file restores your whole design on any device.</span></div>
-  </div>
-
-  <footer>SOILPEPPER · Master Plan tutorial · your data stays yours</footer>
+<h1 data-i18n="title">Draw your whole plot in 5 steps</h1>
+<p class="sub" data-i18n="subtitle">Master Plan is the hub — everything else in SOILPEPPER reads from here. Do this once, and it flows everywhere.</p>
+<div class="step"><div class="step-h"><span class="step-n">1</span><span class="step-ico">⚙️</span><div class="step-t" data-i18n="s1t">Set up your plot</div></div>
+<p data-i18n="s1p">Tell Master Plan about your land once — size, cells, soil, altitude, zone, aspect. This becomes your site brief.</p>
+<div class="btnrow"><span class="mbtn hi">⚙️ <span data-i18n="s1b0">Plot Setup</span></span><span class="mbtn">💧 <span data-i18n="s1b1">Water Setup</span></span></div>
 </div>
+<div class="step"><div class="step-h"><span class="step-n">2</span><span class="step-ico">🎨</span><div class="step-t" data-i18n="s2t">Paint functions on the grid</div></div>
+<p data-i18n="s2p">Each cell gets a job: guild, vegetable, water, road, building, or open. Tap a cell, pick a function. The grid fills in like a map.</p>
+<div class="btnrow"><span class="mbtn hi">🎨 <span data-i18n="s2b0">Functions</span></span><span class="mbtn">🧭 <span data-i18n="s2b1">Zones</span></span><span class="mbtn">🪨 <span data-i18n="s2b2">Soil</span></span><span class="mbtn">🌪️ <span data-i18n="s2b3">Sectors</span></span></div>
+</div>
+<div class="step"><div class="step-h"><span class="step-n">3</span><span class="step-ico">🧭</span><div class="step-t" data-i18n="s3t">Set the zones</div></div>
+<p data-i18n="s3p">Let SOILPEPPER lay the Z0–Z5 rings for you, then fine-tune by painting.</p>
+<div class="btnrow"><span class="mbtn hi">✨ <span data-i18n="s3b0">Suggest Zones</span></span></div>
+</div>
+<div class="step"><div class="step-h"><span class="step-n">4</span><span class="step-ico">🔄</span><div class="step-t" data-i18n="s4t">Switch views to check your work</div></div>
+<p data-i18n="s4p">Four lenses on the same map. Paint in each one; the layers stack.</p>
+<div class="grid3"><div class="tile center"><span class="ico">🎨</span><span class="nm" data-i18n="s4g_func">Functions</span></div><div class="tile center"><span class="ico">🧭</span><span class="nm" data-i18n="s4g_zones">Zones</span></div><div class="tile center"><span class="ico">🪨</span><span class="nm" data-i18n="s4g_soil">Soil</span></div><div class="tile center"><span class="ico">🌪️</span><span class="nm" data-i18n="s4g_sec">Sectors</span></div></div>
+</div>
+<div class="step"><div class="step-h"><span class="step-n">5</span><span class="step-ico">💾</span><div class="step-t" data-i18n="s5t">Save &amp; share</div></div>
+<p data-i18n="s5p">Your plan saves automatically in the browser. Back up to one JSON file — and the rest of SOILPEPPER reads it instantly.</p>
+<div class="btnrow"><span class="mbtn hi">📤 <span data-i18n="s5b0">Download design</span></span><span class="mbtn">📥 <span data-i18n="s5b1">Upload design</span></span><span class="mbtn">⬇ <span data-i18n="s5b2">Download all data</span></span><span class="mbtn">📥 <span data-i18n="s5b3">Restore</span></span></div>
+</div>
+
+  <footer data-i18n="foot">SOILPEPPER · Master Plan tutorial · your data stays yours</footer>
+</div>
+<script>
+(function(){
+  var REGION = 'tuscany';
+  try {
+    var q = new URLSearchParams(window.location.search);
+    if (q.get('region')==='netherlands' || q.get('region')==='tuscany') REGION = q.get('region');
+    else {
+      var b = JSON.parse(localStorage.getItem('tuscan-brief-v1')||'{}');
+      if (b.region==='netherlands' || b.region==='tuscany') REGION = b.region;
+    }
+  } catch(e){}
+  var LANG = REGION === 'netherlands' ? 'nl' : 'en';
+  var T = {"en": {"tagline": "Master Plan — tutorial", "title": "Draw your whole plot in 5 steps", "subtitle": "Master Plan is the hub — everything else in SOILPEPPER reads from here. Do this once, and it flows everywhere.", "foot": "SOILPEPPER · Master Plan tutorial · your data stays yours", "regionNL": "Nederland", "regionIT": "Tuscany", "s1t": "Set up your plot", "s1p": "Tell Master Plan about your land once — size, cells, soil, altitude, zone, aspect. This becomes your site brief.", "s1b0": "Plot Setup", "s1b1": "Water Setup", "s2t": "Paint functions on the grid", "s2p": "Each cell gets a job: guild, vegetable, water, road, building, or open. Tap a cell, pick a function. The grid fills in like a map.", "s2b0": "Functions", "s2b1": "Zones", "s2b2": "Soil", "s2b3": "Sectors", "s3t": "Set the zones", "s3p": "Let SOILPEPPER lay the Z0–Z5 rings for you, then fine-tune by painting.", "s3b0": "Suggest Zones", "s4t": "Switch views to check your work", "s4p": "Four lenses on the same map. Paint in each one; the layers stack.", "s4g_func": "Functions", "s4g_zones": "Zones", "s4g_soil": "Soil", "s4g_sec": "Sectors", "s5t": "Save & share", "s5p": "Your plan saves automatically in the browser. Back up to one JSON file — and the rest of SOILPEPPER reads it instantly.", "s5b0": "Download design", "s5b1": "Upload design", "s5b2": "Download all data", "s5b3": "Restore"}, "nl": {"tagline": "Masterplan — handleiding", "title": "Teken je hele perceel in 5 stappen", "subtitle": "De Masterplan is het middelpunt — alles in SOILPEPPER leest hieruit. Doe dit één keer en het stroomt overal heen.", "foot": "SOILPEPPER · Masterplan handleiding · jouw data blijft van jou", "regionNL": "Nederland", "regionIT": "Toscane", "s1t": "Stel je perceel in", "s1p": "Vertel de Masterplan één keer over je land — grootte, cellen, grondsoort, hoogte, zone, ligging. Dit wordt je locatie-brief.", "s1b0": "Perceel instellen", "s1b1": "Water instellen", "s2t": "Schilder functies op het raster", "s2p": "Elke cel krijgt een functie: gilde, groente, water, weg, bouwwerk of open. Tik een cel, kies een functie. Het raster vult zich als een kaart.", "s2b0": "Functies", "s2b1": "Zones", "s2b2": "Grond", "s2b3": "Sectoren", "s3t": "Stel de zones in", "s3p": "Laat SOILPEPPER de Z0–Z5 ringen voor je leggen en verfijn daarna door te schilderen.", "s3b0": "Stel zones voor", "s4t": "Wissel van weergave om je werk te controleren", "s4p": "Vier lenzen op dezelfde kaart. Schilder in elke weergave; de lagen stapelen zich.", "s4g_func": "Functies", "s4g_zones": "Zones", "s4g_soil": "Grond", "s4g_sec": "Sectoren", "s5t": "Opslaan en delen", "s5p": "Je plan slaat automatisch op in de browser. Maak een back-up naar één JSON-bestand — en de rest van SOILPEPPER leest het direct.", "s5b0": "Download ontwerp", "s5b1": "Upload ontwerp", "s5b2": "Download alle data", "s5b3": "Herstel"}};
+  document.querySelectorAll('[data-i18n]').forEach(function(el){
+    var k=el.getAttribute('data-i18n');
+    var v=(T[LANG]&&T[LANG][k])||T.en[k];
+    if(v!==undefined) el.textContent=v;
+  });
+  var rg=document.getElementById('sf-region');
+  if(rg){
+    var pill=document.createElement('span');
+    pill.className='sf-pill';
+    pill.textContent = REGION==='netherlands' ? '🇳🇱 ' + (T[LANG].regionNL || 'Nederland') : '🇮🇹 ' + (T[LANG].regionIT || 'Tuscany');
+    rg.appendChild(pill);
+  }
+})();
+</script>
+
 </body>
 </html>

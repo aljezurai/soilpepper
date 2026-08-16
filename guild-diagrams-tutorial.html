@@ -3,17 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>SOILPEPPER — Trees and around tutorial</title>
+<title>SOILPEPPER — Trees and around — tutorial</title>
 <style>
-:root{--sf-bg:#cdd8c8;--sf-card:#edf2e6;--sf-card-alt:#eef4ec;--sf-sage-soft:#dcead8;--sf-header:#2c4a32;--sf-header-2:#3e6a46;--sf-ink:#1e2c22;--sf-ink-soft:#4a5c4e;--sf-border:#d0dac8;--sf-border-strong:#8aa88c;--sf-accent:#c8492e;--sf-gold:#f5ead6;--sf-gold-ink:#8a6420;--sf-gold-border:#e0d0a8;--font-head:'Fraunces','Palatino',Georgia,serif;--font-body:'Nunito','Segoe UI',system-ui,sans-serif;--radius:16px}
+:root{
+  --sf-bg:#cdd8c8; --sf-card:#edf2e6; --sf-card-alt:#eef4ec; --sf-sage-soft:#dcead8;
+  --sf-header:#2c4a32; --sf-header-2:#3e6a46; --sf-ink:#1e2c22; --sf-ink-soft:#4a5c4e;
+  --sf-border:#d0dac8; --sf-border-strong:#8aa88c; --sf-accent:#c8492e;
+  --sf-gold:#f5ead6; --sf-gold-ink:#8a6420; --sf-gold-border:#e0d0a8;
+  --sf-radius-lg:16px; --sf-shadow-lg:0 6px 24px rgba(20,40,25,.16);
+  --font-head:'Fraunces','Palatino',Georgia,serif; --font-body:'Nunito','Segoe UI',system-ui,sans-serif;
+  --radius:16px;
+}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:var(--font-body);background:var(--sf-bg);color:var(--sf-ink);line-height:1.5;min-height:100vh}
 .wrap{max-width:980px;margin:0 auto;padding:20px}
-.masthead{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--sf-header);border:2px solid #1e3624;border-radius:var(--radius);padding:14px 20px;margin-bottom:18px;box-shadow:0 2px 8px rgba(20,50,24,.2)}
-.brand{display:flex;align-items:center;gap:10px}
-.logo{font-family:var(--font-head);color:#fff;font-size:1.4em;font-weight:700}
-.tagline{color:var(--sf-sage-soft);font-size:0.75em}
-.tut-badge{background:var(--sf-gold);color:var(--sf-gold-ink);border:2px solid var(--sf-gold-border);border-radius:999px;padding:4px 14px;font-size:0.78em;font-weight:700}
+/* Sage Forte masthead — same as the tool pages */
+.sf-masthead{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;
+  background:var(--sf-header)!important;border:2px solid #1e3624!important;
+  border-radius:var(--sf-radius-lg)!important;padding:14px 20px!important;
+  margin:0 auto 12px!important;max-width:1180px!important;box-shadow:var(--sf-shadow-lg)!important}
+.sf-brand{display:flex;align-items:center;gap:10px}
+.sf-pepper{font-size:1.6rem}
+.sf-logo{font-family:var(--font-head)!important;font-size:1.3rem!important;font-weight:700!important;
+  color:#ffffff!important;margin:0!important;letter-spacing:.5px!important;text-align:left!important;line-height:1.2!important}
+.sf-logo a{text-decoration:none;color:inherit}
+.sf-tagline{font-size:.78rem;color:#c8e4cc!important;font-weight:800!important;letter-spacing:.2px;text-align:left!important}
+.sf-region{display:flex;gap:6px}
+.sf-region .sf-pill{background:#fff;color:var(--sf-header-2);border:1px solid var(--sf-border-strong);
+  border-radius:999px;padding:4px 12px;font-size:.75em;font-weight:700}
+/* tutorial content */
 h1{font-family:var(--font-head);color:var(--sf-header);text-align:center;margin:6px 0 2px}
 .sub{text-align:center;color:var(--sf-ink-soft);font-size:0.9em;margin-bottom:22px}
 .step{background:var(--sf-card);border:1.5px solid var(--sf-border);border-radius:14px;padding:16px 20px;margin-bottom:16px}
@@ -25,53 +43,85 @@ h1{font-family:var(--font-head);color:var(--sf-header);text-align:center;margin:
 .btnrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .mbtn{font-size:0.78em;padding:7px 14px;border-radius:10px;border:1.5px solid var(--sf-border-strong);background:var(--sf-card);color:var(--sf-ink);cursor:pointer;display:inline-flex;align-items:center;gap:5px}
 .mbtn.hi{outline:3px solid var(--sf-accent);outline-offset:2px;font-weight:700}
-.rings{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;margin-top:12px}
-.ring{background:var(--sf-card-alt);border:1.5px solid var(--sf-border);border-radius:10px;padding:10px 12px;text-align:center}
-.ring .ico{font-size:1.3em;display:block;margin-bottom:3px}
-.ring .nm{font-size:0.76em;font-weight:700;color:var(--sf-header)}
-.ring .dg{font-size:0.68em;color:var(--sf-ink-soft)}
+.mbtn.lbl{background:var(--sf-card-alt);border-style:dashed;cursor:default}
+.tagnote{font-size:0.72em;color:var(--sf-accent);font-weight:700}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-top:12px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:12px}
+.tile{background:var(--sf-card-alt);border:1.5px solid var(--sf-border);border-radius:10px;padding:8px 12px}
+.tile.center{text-align:center;padding:10px 12px}
+.tile .ico{font-size:1.2em;display:block;margin-bottom:3px}
+.tile .nm{font-size:0.76em;font-weight:700;color:var(--sf-header)}
+.tile .dg{font-size:0.68em;color:var(--sf-ink-soft)}
+.tile.swatch{display:flex;align-items:center;gap:8px}
+.sw{width:14px;height:14px;border-radius:3px;flex-shrink:0}
+.notes{margin-top:10px;display:flex;flex-direction:column;gap:8px}
+.note{display:flex;gap:10px;align-items:flex-start;background:var(--sf-card-alt);border:1px solid var(--sf-border);border-radius:10px;padding:9px 12px;font-size:0.8em;color:var(--sf-ink-soft)}
+.note .i{font-size:1.05em;flex-shrink:0}
+.note b{color:var(--sf-header)}
 .tip{display:flex;gap:10px;align-items:flex-start;background:var(--sf-gold);border:1px solid var(--sf-gold-border);border-radius:10px;padding:10px 14px;font-size:0.8em;color:var(--sf-gold-ink);margin-top:8px}
 .tip .i{font-size:1.1em}
 footer{text-align:center;color:var(--sf-ink-soft);font-size:0.75em;margin-top:26px}
-@media(max-width:600px){.rings{grid-template-columns:1fr}}
+@media(max-width:600px){.grid2,.grid3{grid-template-columns:1fr 1fr}}
+
 </style>
 </head>
 <body>
 <div class="wrap">
-  <header class="masthead">
-    <div class="brand"><span style="font-size:1.5em">🌳</span>
-      <div><div class="logo">SOILPEPPER</div><div class="tagline">Trees and around — tutorial</div></div>
+  <header class="sf-masthead" id="sf-masthead">
+    <div class="sf-brand">
+      <span class="sf-pepper">🌶️</span>
+      <div>
+        <h1 class="sf-logo"><a href="tools.html">SOIL<span style="color:#f4c92f">PEPPER</span></a></h1>
+        <div class="sf-tagline" data-i18n="tagline">Trees and around — tutorial</div>
+      </div>
     </div>
-    <span class="tut-badge">3 steps</span>
+    <div class="sf-region" id="sf-region"></div>
   </header>
 
-  <h1>Design a tree guild in 3 steps</h1>
-  <p class="sub">The companions that help each tree thrive — arranged in rings from trunk to canopy edge.</p>
-
-  <div class="step">
-    <div class="step-h"><span class="step-n">1</span><span class="step-ico">🌿</span><div class="step-t">Pick your tree</div></div>
-    <p>Choose the central tree. Its guild diagram appears with companions around it.</p>
-    <div class="btnrow"><span class="mbtn hi">🌿 Select Tree</span><span class="tagnote">e.g. Walnut</span></div>
-  </div>
-
-  <div class="step">
-    <div class="step-h"><span class="step-n">2</span><span class="step-ico">⭕</span><div class="step-t">Read the rings</div></div>
-    <p>Plants are placed by how close they should grow to the tree.</p>
-    <div class="rings">
-      <div class="ring"><span class="ico">🟫</span><div class="nm">Inner — trunk zone</div><div class="dg">close companions</div></div>
-      <div class="ring"><span class="ico">🟢</span><div class="nm">Mid — drip line</div><div class="dg">under the canopy</div></div>
-      <div class="ring"><span class="ico">🔵</span><div class="nm">Outer — canopy edge</div><div class="dg">edge &amp; beyond</div></div>
-    </div>
-  </div>
-
-  <div class="step">
-    <div class="step-h"><span class="step-n">3</span><span class="step-ico">💾</span><div class="step-t">Save your guild</div></div>
-    <p>Each tree's guild is saved separately — build them up over time and back them up with one file.</p>
-    <div class="btnrow"><span class="mbtn">⬇ Download all data</span><span class="mbtn">📥 Restore</span></div>
-    <div class="tip"><span class="i">💡</span><span><b>Tip:</b> open a guild from the Master Plan to keep everything in sync.</span></div>
-  </div>
-
-  <footer>SOILPEPPER · Trees and around tutorial · your data stays yours</footer>
+<h1 data-i18n="title">Design a tree guild in 3 steps</h1>
+<p class="sub" data-i18n="subtitle">The companions that help each tree thrive — arranged in rings from trunk to canopy edge.</p>
+<div class="step"><div class="step-h"><span class="step-n">1</span><span class="step-ico">🌿</span><div class="step-t" data-i18n="s1t">Pick your tree</div></div>
+<p data-i18n="s1p">Choose the central tree. Its guild diagram appears with companions around it.</p>
+<div class="btnrow"><span class="mbtn hi">🌿 <span data-i18n="s1b0">Select Tree</span></span></div>
 </div>
+<div class="step"><div class="step-h"><span class="step-n">2</span><span class="step-ico">⭕</span><div class="step-t" data-i18n="s2t">Read the rings</div></div>
+<p data-i18n="s2p">Plants are placed by how close they should grow to the tree.</p>
+<div class="grid3"><div class="tile center"><span class="ico">🟫</span><span class="nm" data-i18n="s2g_inner">Inner — trunk zone</span><span class="dg" data-i18n="s2g_innerD">close companions</span></div><div class="tile center"><span class="ico">🟢</span><span class="nm" data-i18n="s2g_mid">Mid — drip line</span><span class="dg" data-i18n="s2g_midD">under the canopy</span></div><div class="tile center"><span class="ico">🔵</span><span class="nm" data-i18n="s2g_outer">Outer — canopy edge</span><span class="dg" data-i18n="s2g_outerD">edge &amp; beyond</span></div></div>
+</div>
+<div class="step"><div class="step-h"><span class="step-n">3</span><span class="step-ico">💾</span><div class="step-t" data-i18n="s3t">Save your guild</div></div>
+<p data-i18n="s3p">Each tree&#x27;s guild is saved separately — build them up over time and back them up with one file.</p>
+<div class="btnrow"><span class="mbtn">⬇ <span data-i18n="s3b0">Download all data</span></span><span class="mbtn">📥 <span data-i18n="s3b1">Restore</span></span></div>
+</div>
+
+  <footer data-i18n="foot">SOILPEPPER · Trees and around tutorial · your data stays yours</footer>
+</div>
+<script>
+(function(){
+  var REGION = 'tuscany';
+  try {
+    var q = new URLSearchParams(window.location.search);
+    if (q.get('region')==='netherlands' || q.get('region')==='tuscany') REGION = q.get('region');
+    else {
+      var b = JSON.parse(localStorage.getItem('tuscan-brief-v1')||'{}');
+      if (b.region==='netherlands' || b.region==='tuscany') REGION = b.region;
+    }
+  } catch(e){}
+  var LANG = REGION === 'netherlands' ? 'nl' : 'en';
+  var T = {"en": {"tagline": "Trees and around — tutorial", "title": "Design a tree guild in 3 steps", "subtitle": "The companions that help each tree thrive — arranged in rings from trunk to canopy edge.", "foot": "SOILPEPPER · Trees and around tutorial · your data stays yours", "regionNL": "Nederland", "regionIT": "Tuscany", "s1t": "Pick your tree", "s1p": "Choose the central tree. Its guild diagram appears with companions around it.", "s1b0": "Select Tree", "s2t": "Read the rings", "s2p": "Plants are placed by how close they should grow to the tree.", "s2g_inner": "Inner — trunk zone", "s2g_innerD": "close companions", "s2g_mid": "Mid — drip line", "s2g_midD": "under the canopy", "s2g_outer": "Outer — canopy edge", "s2g_outerD": "edge & beyond", "s3t": "Save your guild", "s3p": "Each tree's guild is saved separately — build them up over time and back them up with one file.", "s3b0": "Download all data", "s3b1": "Restore"}, "nl": {"tagline": "Bomen en omgeving — handleiding", "title": "Ontwerp een boomgilde in 3 stappen", "subtitle": "De gezelschapsplanten die elke boom helpen gedijen — gerangschikt in ringen van stam tot kroonrand.", "foot": "SOILPEPPER · Bomen en omgeving handleiding · jouw data blijft van jou", "regionNL": "Nederland", "regionIT": "Toscane", "s1t": "Kies je boom", "s1p": "Kies de centrale boom. Zijn gildediagram verschijnt met gezelschapsplanten eromheen.", "s1b0": "Selecteer boom", "s2t": "Lees de ringen", "s2p": "Planten worden geplaatst op hoe dicht ze bij de boom mogen groeien.", "s2g_inner": "Binnen — stamzone", "s2g_innerD": "dichtbij gelegen planten", "s2g_mid": "Midden — druppellijn", "s2g_midD": "onder de kroon", "s2g_outer": "Buiten — kroonrand", "s2g_outerD": "aan de rand en daarbuiten", "s3t": "Sla je gilde op", "s3p": "Elk boomgilde wordt apart opgeslagen — bouw ze in de loop der tijd op en maak er één back-up van.", "s3b0": "Download alle data", "s3b1": "Herstel"}};
+  document.querySelectorAll('[data-i18n]').forEach(function(el){
+    var k=el.getAttribute('data-i18n');
+    var v=(T[LANG]&&T[LANG][k])||T.en[k];
+    if(v!==undefined) el.textContent=v;
+  });
+  var rg=document.getElementById('sf-region');
+  if(rg){
+    var pill=document.createElement('span');
+    pill.className='sf-pill';
+    pill.textContent = REGION==='netherlands' ? '🇳🇱 ' + (T[LANG].regionNL || 'Nederland') : '🇮🇹 ' + (T[LANG].regionIT || 'Tuscany');
+    rg.appendChild(pill);
+  }
+})();
+</script>
+
 </body>
 </html>

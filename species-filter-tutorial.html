@@ -3,17 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>SOILPEPPER — Species Database tutorial</title>
+<title>SOILPEPPER — Species Database — tutorial</title>
 <style>
-:root{--sf-bg:#cdd8c8;--sf-card:#edf2e6;--sf-card-alt:#eef4ec;--sf-sage-soft:#dcead8;--sf-header:#2c4a32;--sf-header-2:#3e6a46;--sf-ink:#1e2c22;--sf-ink-soft:#4a5c4e;--sf-border:#d0dac8;--sf-border-strong:#8aa88c;--sf-accent:#c8492e;--sf-gold:#f5ead6;--sf-gold-ink:#8a6420;--sf-gold-border:#e0d0a8;--font-head:'Fraunces','Palatino',Georgia,serif;--font-body:'Nunito','Segoe UI',system-ui,sans-serif;--radius:16px}
+:root{
+  --sf-bg:#cdd8c8; --sf-card:#edf2e6; --sf-card-alt:#eef4ec; --sf-sage-soft:#dcead8;
+  --sf-header:#2c4a32; --sf-header-2:#3e6a46; --sf-ink:#1e2c22; --sf-ink-soft:#4a5c4e;
+  --sf-border:#d0dac8; --sf-border-strong:#8aa88c; --sf-accent:#c8492e;
+  --sf-gold:#f5ead6; --sf-gold-ink:#8a6420; --sf-gold-border:#e0d0a8;
+  --sf-radius-lg:16px; --sf-shadow-lg:0 6px 24px rgba(20,40,25,.16);
+  --font-head:'Fraunces','Palatino',Georgia,serif; --font-body:'Nunito','Segoe UI',system-ui,sans-serif;
+  --radius:16px;
+}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:var(--font-body);background:var(--sf-bg);color:var(--sf-ink);line-height:1.5;min-height:100vh}
 .wrap{max-width:980px;margin:0 auto;padding:20px}
-.masthead{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--sf-header);border:2px solid #1e3624;border-radius:var(--radius);padding:14px 20px;margin-bottom:18px;box-shadow:0 2px 8px rgba(20,50,24,.2)}
-.brand{display:flex;align-items:center;gap:10px}
-.logo{font-family:var(--font-head);color:#fff;font-size:1.4em;font-weight:700}
-.tagline{color:var(--sf-sage-soft);font-size:0.75em}
-.tut-badge{background:var(--sf-gold);color:var(--sf-gold-ink);border:2px solid var(--sf-gold-border);border-radius:999px;padding:4px 14px;font-size:0.78em;font-weight:700}
+/* Sage Forte masthead — same as the tool pages */
+.sf-masthead{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;
+  background:var(--sf-header)!important;border:2px solid #1e3624!important;
+  border-radius:var(--sf-radius-lg)!important;padding:14px 20px!important;
+  margin:0 auto 12px!important;max-width:1180px!important;box-shadow:var(--sf-shadow-lg)!important}
+.sf-brand{display:flex;align-items:center;gap:10px}
+.sf-pepper{font-size:1.6rem}
+.sf-logo{font-family:var(--font-head)!important;font-size:1.3rem!important;font-weight:700!important;
+  color:#ffffff!important;margin:0!important;letter-spacing:.5px!important;text-align:left!important;line-height:1.2!important}
+.sf-logo a{text-decoration:none;color:inherit}
+.sf-tagline{font-size:.78rem;color:#c8e4cc!important;font-weight:800!important;letter-spacing:.2px;text-align:left!important}
+.sf-region{display:flex;gap:6px}
+.sf-region .sf-pill{background:#fff;color:var(--sf-header-2);border:1px solid var(--sf-border-strong);
+  border-radius:999px;padding:4px 12px;font-size:.75em;font-weight:700}
+/* tutorial content */
 h1{font-family:var(--font-head);color:var(--sf-header);text-align:center;margin:6px 0 2px}
 .sub{text-align:center;color:var(--sf-ink-soft);font-size:0.9em;margin-bottom:22px}
 .step{background:var(--sf-card);border:1.5px solid var(--sf-border);border-radius:14px;padding:16px 20px;margin-bottom:16px}
@@ -25,54 +43,84 @@ h1{font-family:var(--font-head);color:var(--sf-header);text-align:center;margin:
 .btnrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .mbtn{font-size:0.78em;padding:7px 14px;border-radius:10px;border:1.5px solid var(--sf-border-strong);background:var(--sf-card);color:var(--sf-ink);cursor:pointer;display:inline-flex;align-items:center;gap:5px}
 .mbtn.hi{outline:3px solid var(--sf-accent);outline-offset:2px;font-weight:700}
-.dims{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-top:12px}
-.dim{background:var(--sf-card-alt);border:1.5px solid var(--sf-border);border-radius:10px;padding:8px 10px;text-align:center}
-.dim .ico{font-size:1.2em;display:block;margin-bottom:3px}
-.dim .nm{font-size:0.72em;font-weight:700;color:var(--sf-header)}
+.mbtn.lbl{background:var(--sf-card-alt);border-style:dashed;cursor:default}
+.tagnote{font-size:0.72em;color:var(--sf-accent);font-weight:700}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-top:12px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:12px}
+.tile{background:var(--sf-card-alt);border:1.5px solid var(--sf-border);border-radius:10px;padding:8px 12px}
+.tile.center{text-align:center;padding:10px 12px}
+.tile .ico{font-size:1.2em;display:block;margin-bottom:3px}
+.tile .nm{font-size:0.76em;font-weight:700;color:var(--sf-header)}
+.tile .dg{font-size:0.68em;color:var(--sf-ink-soft)}
+.tile.swatch{display:flex;align-items:center;gap:8px}
+.sw{width:14px;height:14px;border-radius:3px;flex-shrink:0}
+.notes{margin-top:10px;display:flex;flex-direction:column;gap:8px}
+.note{display:flex;gap:10px;align-items:flex-start;background:var(--sf-card-alt);border:1px solid var(--sf-border);border-radius:10px;padding:9px 12px;font-size:0.8em;color:var(--sf-ink-soft)}
+.note .i{font-size:1.05em;flex-shrink:0}
+.note b{color:var(--sf-header)}
 .tip{display:flex;gap:10px;align-items:flex-start;background:var(--sf-gold);border:1px solid var(--sf-gold-border);border-radius:10px;padding:10px 14px;font-size:0.8em;color:var(--sf-gold-ink);margin-top:8px}
 .tip .i{font-size:1.1em}
 footer{text-align:center;color:var(--sf-ink-soft);font-size:0.75em;margin-top:26px}
-@media(max-width:600px){.dims{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.grid2,.grid3{grid-template-columns:1fr 1fr}}
+
 </style>
 </head>
 <body>
 <div class="wrap">
-  <header class="masthead">
-    <div class="brand"><span style="font-size:1.5em">🔍</span>
-      <div><div class="logo">SOILPEPPER</div><div class="tagline">Species Database — tutorial</div></div>
+  <header class="sf-masthead" id="sf-masthead">
+    <div class="sf-brand">
+      <span class="sf-pepper">🌶️</span>
+      <div>
+        <h1 class="sf-logo"><a href="tools.html">SOIL<span style="color:#f4c92f">PEPPER</span></a></h1>
+        <div class="sf-tagline" data-i18n="tagline">Species Database — tutorial</div>
+      </div>
     </div>
-    <span class="tut-badge">3 steps</span>
+    <div class="sf-region" id="sf-region"></div>
   </header>
 
-  <h1>Find the right plant in 3 steps</h1>
-  <p class="sub">Search all 256 species across 11 dimensions — soil, sun, water, function and more.</p>
-
-  <div class="step">
-    <div class="step-h"><span class="step-n">1</span><span class="step-ico">⌨️</span><div class="step-t">Search by name</div></div>
-    <p>Type any name — English or Dutch — to jump straight to a species.</p>
-    <div class="btnrow"><span class="mbtn hi">🔍 Search</span></div>
-  </div>
-
-  <div class="step">
-    <div class="step-h"><span class="step-n">2</span><span class="step-ico">🎛️</span><div class="step-t">Filter by what you need</div></div>
-    <p>Narrow by soil, sunlight, water needs, function, season, perennial, nitrogen-fixing, fire-resistant, native — combine as many as you like.</p>
-    <div class="dims">
-      <div class="dim"><span class="ico">🪨</span><div class="nm">Soil</div></div>
-      <div class="dim"><span class="ico">☀️</span><div class="nm">Sun</div></div>
-      <div class="dim"><span class="ico">💧</span><div class="nm">Water</div></div>
-      <div class="dim"><span class="ico">🎯</span><div class="nm">Function</div></div>
-      <div class="dim"><span class="ico">🍂</span><div class="nm">Season</div></div>
-      <div class="dim"><span class="ico">🌱</span><div class="nm">Perennial</div></div>
-    </div>
-  </div>
-
-  <div class="step">
-    <div class="step-h"><span class="step-n">3</span><span class="step-ico">🖱️</span><div class="step-t">Read a species card</div></div>
-    <p>Open any result to see its full profile — guild roles, minerals, spacing, sowing.</p>
-    <div class="tip"><span class="i">💡</span><span><b>Tip:</b> switch region to see only plants suited to Tuscany or The Netherlands.</span></div>
-  </div>
-
-  <footer>SOILPEPPER · Species Database tutorial · your data stays yours</footer>
+<h1 data-i18n="title">Find the right plant in 3 steps</h1>
+<p class="sub" data-i18n="subtitle">Search all 256 species across 11 dimensions — soil, sun, water, function and more.</p>
+<div class="step"><div class="step-h"><span class="step-n">1</span><span class="step-ico">⌨️</span><div class="step-t" data-i18n="s1t">Search by name</div></div>
+<p data-i18n="s1p">Type any name — English or Dutch — to jump straight to a species.</p>
+<div class="btnrow"><span class="mbtn hi">🔍 <span data-i18n="s1b0">Search</span></span></div>
 </div>
+<div class="step"><div class="step-h"><span class="step-n">2</span><span class="step-ico">🎛️</span><div class="step-t" data-i18n="s2t">Filter by what you need</div></div>
+<p data-i18n="s2p">Narrow by soil, sunlight, water needs, function, season, perennial, nitrogen-fixing, fire-resistant, native — combine as many as you like.</p>
+<div class="grid3"><div class="tile center"><span class="ico">🪨</span><span class="nm" data-i18n="s2g_soil">Soil</span></div><div class="tile center"><span class="ico">☀️</span><span class="nm" data-i18n="s2g_sun">Sun</span></div><div class="tile center"><span class="ico">💧</span><span class="nm" data-i18n="s2g_water">Water</span></div><div class="tile center"><span class="ico">🎯</span><span class="nm" data-i18n="s2g_func">Function</span></div><div class="tile center"><span class="ico">🍂</span><span class="nm" data-i18n="s2g_season">Season</span></div><div class="tile center"><span class="ico">🌱</span><span class="nm" data-i18n="s2g_per">Perennial</span></div></div>
+</div>
+<div class="step"><div class="step-h"><span class="step-n">3</span><span class="step-ico">🖱️</span><div class="step-t" data-i18n="s3t">Read a species card</div></div>
+<p data-i18n="s3p">Open any result to see its full profile — guild roles, minerals, spacing, sowing.</p>
+</div>
+
+  <footer data-i18n="foot">SOILPEPPER · Species Database tutorial · your data stays yours</footer>
+</div>
+<script>
+(function(){
+  var REGION = 'tuscany';
+  try {
+    var q = new URLSearchParams(window.location.search);
+    if (q.get('region')==='netherlands' || q.get('region')==='tuscany') REGION = q.get('region');
+    else {
+      var b = JSON.parse(localStorage.getItem('tuscan-brief-v1')||'{}');
+      if (b.region==='netherlands' || b.region==='tuscany') REGION = b.region;
+    }
+  } catch(e){}
+  var LANG = REGION === 'netherlands' ? 'nl' : 'en';
+  var T = {"en": {"tagline": "Species Database — tutorial", "title": "Find the right plant in 3 steps", "subtitle": "Search all 256 species across 11 dimensions — soil, sun, water, function and more.", "foot": "SOILPEPPER · Species Database tutorial · your data stays yours", "regionNL": "Nederland", "regionIT": "Tuscany", "s1t": "Search by name", "s1p": "Type any name — English or Dutch — to jump straight to a species.", "s1b0": "Search", "s2t": "Filter by what you need", "s2p": "Narrow by soil, sunlight, water needs, function, season, perennial, nitrogen-fixing, fire-resistant, native — combine as many as you like.", "s2g_soil": "Soil", "s2g_sun": "Sun", "s2g_water": "Water", "s2g_func": "Function", "s2g_season": "Season", "s2g_per": "Perennial", "s3t": "Read a species card", "s3p": "Open any result to see its full profile — guild roles, minerals, spacing, sowing."}, "nl": {"tagline": "Soortendatabase — handleiding", "title": "Vind de juiste plant in 3 stappen", "subtitle": "Zoek alle 256 soorten op 11 kenmerken — grond, zon, water, functie en meer.", "foot": "SOILPEPPER · Soortendatabase handleiding · jouw data blijft van jou", "regionNL": "Nederland", "regionIT": "Toscane", "s1t": "Zoek op naam", "s1p": "Typ een naam — Engels of Nederlands — om direct naar een soort te springen.", "s1b0": "Zoeken", "s2t": "Filter op wat je nodig hebt", "s2p": "Verfijn op grond, zon, waterbehoefte, functie, seizoen, meerjarig, stikstofbindend, brandwerend, inheems — combineer zoveel als je wilt.", "s2g_soil": "Grond", "s2g_sun": "Zon", "s2g_water": "Water", "s2g_func": "Functie", "s2g_season": "Seizoen", "s2g_per": "Meerjarig", "s3t": "Lees een soortenkaart", "s3p": "Open elk resultaat om het volledige profiel te zien — gilderollen, mineralen, afstanden, zaaien."}};
+  document.querySelectorAll('[data-i18n]').forEach(function(el){
+    var k=el.getAttribute('data-i18n');
+    var v=(T[LANG]&&T[LANG][k])||T.en[k];
+    if(v!==undefined) el.textContent=v;
+  });
+  var rg=document.getElementById('sf-region');
+  if(rg){
+    var pill=document.createElement('span');
+    pill.className='sf-pill';
+    pill.textContent = REGION==='netherlands' ? '🇳🇱 ' + (T[LANG].regionNL || 'Nederland') : '🇮🇹 ' + (T[LANG].regionIT || 'Tuscany');
+    rg.appendChild(pill);
+  }
+})();
+</script>
+
 </body>
 </html>

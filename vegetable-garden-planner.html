@@ -4795,5 +4795,21 @@ fetch('plants.json').then(function (r) { return r.json(); }).then(function (db) 
   render();
 }).catch(function () { /* offline — keep embedded snapshot */ });
 </script>
+
+<!-- Pass current region to help/tutorial links so the help page opens in the right language -->
+<script>
+(function(){
+  try{
+    var r='tuscany';
+    var q=new URLSearchParams(window.location.search);
+    if(q.get('region')==='netherlands'||q.get('region')==='tuscany') r=q.get('region');
+    else{ var b=JSON.parse(localStorage.getItem('tuscan-brief-v1')||'{}'); if(b.region==='netherlands'||b.region==='tuscany') r=b.region; }
+    document.querySelectorAll('a[href$="-tutorial.html"], a[href*="tutorial.html"]').forEach(function(a){
+      var base=a.getAttribute('href').split('?')[0];
+      a.setAttribute('href', base + '?region=' + r);
+    });
+  }catch(e){}
+})();
+</script>
 </body>
 </html>

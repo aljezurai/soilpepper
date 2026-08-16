@@ -3,24 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>SOILPEPPER — Sector Analysis tutorial</title>
+<title>SOILPEPPER — Sector Analysis — tutorial</title>
 <style>
 :root{
   --sf-bg:#cdd8c8; --sf-card:#edf2e6; --sf-card-alt:#eef4ec; --sf-sage-soft:#dcead8;
   --sf-header:#2c4a32; --sf-header-2:#3e6a46; --sf-ink:#1e2c22; --sf-ink-soft:#4a5c4e;
   --sf-border:#d0dac8; --sf-border-strong:#8aa88c; --sf-accent:#c8492e;
   --sf-gold:#f5ead6; --sf-gold-ink:#8a6420; --sf-gold-border:#e0d0a8;
+  --sf-radius-lg:16px; --sf-shadow-lg:0 6px 24px rgba(20,40,25,.16);
   --font-head:'Fraunces','Palatino',Georgia,serif; --font-body:'Nunito','Segoe UI',system-ui,sans-serif;
   --radius:16px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:var(--font-body);background:var(--sf-bg);color:var(--sf-ink);line-height:1.5;min-height:100vh}
 .wrap{max-width:980px;margin:0 auto;padding:20px}
-.masthead{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--sf-header);border:2px solid #1e3624;border-radius:var(--radius);padding:14px 20px;margin-bottom:18px;box-shadow:0 2px 8px rgba(20,50,24,.2)}
-.brand{display:flex;align-items:center;gap:10px}
-.logo{font-family:var(--font-head);color:#fff;font-size:1.4em;font-weight:700}
-.tagline{color:var(--sf-sage-soft);font-size:0.75em}
-.tut-badge{background:var(--sf-gold);color:var(--sf-gold-ink);border:2px solid var(--sf-gold-border);border-radius:999px;padding:4px 14px;font-size:0.78em;font-weight:700}
+/* Sage Forte masthead — same as the tool pages */
+.sf-masthead{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;
+  background:var(--sf-header)!important;border:2px solid #1e3624!important;
+  border-radius:var(--sf-radius-lg)!important;padding:14px 20px!important;
+  margin:0 auto 12px!important;max-width:1180px!important;box-shadow:var(--sf-shadow-lg)!important}
+.sf-brand{display:flex;align-items:center;gap:10px}
+.sf-pepper{font-size:1.6rem}
+.sf-logo{font-family:var(--font-head)!important;font-size:1.3rem!important;font-weight:700!important;
+  color:#ffffff!important;margin:0!important;letter-spacing:.5px!important;text-align:left!important;line-height:1.2!important}
+.sf-logo a{text-decoration:none;color:inherit}
+.sf-tagline{font-size:.78rem;color:#c8e4cc!important;font-weight:800!important;letter-spacing:.2px;text-align:left!important}
+.sf-region{display:flex;gap:6px}
+.sf-region .sf-pill{background:#fff;color:var(--sf-header-2);border:1px solid var(--sf-border-strong);
+  border-radius:999px;padding:4px 12px;font-size:.75em;font-weight:700}
+/* tutorial content */
 h1{font-family:var(--font-head);color:var(--sf-header);text-align:center;margin:6px 0 2px}
 .sub{text-align:center;color:var(--sf-ink-soft);font-size:0.9em;margin-bottom:22px}
 .step{background:var(--sf-card);border:1.5px solid var(--sf-border);border-radius:14px;padding:16px 20px;margin-bottom:16px}
@@ -32,64 +43,89 @@ h1{font-family:var(--font-head);color:var(--sf-header);text-align:center;margin:
 .btnrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .mbtn{font-size:0.78em;padding:7px 14px;border-radius:10px;border:1.5px solid var(--sf-border-strong);background:var(--sf-card);color:var(--sf-ink);cursor:pointer;display:inline-flex;align-items:center;gap:5px}
 .mbtn.hi{outline:3px solid var(--sf-accent);outline-offset:2px;font-weight:700}
+.mbtn.lbl{background:var(--sf-card-alt);border-style:dashed;cursor:default}
 .tagnote{font-size:0.72em;color:var(--sf-accent);font-weight:700}
-/* sector chips example */
-.sectors{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-top:12px}
-.sec{display:flex;align-items:center;gap:8px;background:var(--sf-card-alt);border:1.5px solid var(--sf-border);border-radius:10px;padding:8px 12px}
-.sec .ico{font-size:1.2em}
-.sec .nm{font-size:0.78em;font-weight:700;color:var(--sf-ink)}
-.sec .dg{font-size:0.68em;color:var(--sf-ink-soft)}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-top:12px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:12px}
+.tile{background:var(--sf-card-alt);border:1.5px solid var(--sf-border);border-radius:10px;padding:8px 12px}
+.tile.center{text-align:center;padding:10px 12px}
+.tile .ico{font-size:1.2em;display:block;margin-bottom:3px}
+.tile .nm{font-size:0.76em;font-weight:700;color:var(--sf-header)}
+.tile .dg{font-size:0.68em;color:var(--sf-ink-soft)}
+.tile.swatch{display:flex;align-items:center;gap:8px}
+.sw{width:14px;height:14px;border-radius:3px;flex-shrink:0}
+.notes{margin-top:10px;display:flex;flex-direction:column;gap:8px}
+.note{display:flex;gap:10px;align-items:flex-start;background:var(--sf-card-alt);border:1px solid var(--sf-border);border-radius:10px;padding:9px 12px;font-size:0.8em;color:var(--sf-ink-soft)}
+.note .i{font-size:1.05em;flex-shrink:0}
+.note b{color:var(--sf-header)}
 .tip{display:flex;gap:10px;align-items:flex-start;background:var(--sf-gold);border:1px solid var(--sf-gold-border);border-radius:10px;padding:10px 14px;font-size:0.8em;color:var(--sf-gold-ink);margin-top:8px}
 .tip .i{font-size:1.1em}
 footer{text-align:center;color:var(--sf-ink-soft);font-size:0.75em;margin-top:26px}
-@media(max-width:600px){.sectors{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.grid2,.grid3{grid-template-columns:1fr 1fr}}
+
 </style>
 </head>
 <body>
 <div class="wrap">
-  <header class="masthead">
-    <div class="brand"><span style="font-size:1.5em">🧭</span>
-      <div><div class="logo">SOILPEPPER</div><div class="tagline">Sector Analysis — tutorial</div></div>
+  <header class="sf-masthead" id="sf-masthead">
+    <div class="sf-brand">
+      <span class="sf-pepper">🌶️</span>
+      <div>
+        <h1 class="sf-logo"><a href="tools.html">SOIL<span style="color:#f4c92f">PEPPER</span></a></h1>
+        <div class="sf-tagline" data-i18n="tagline">Sector Analysis — tutorial</div>
+      </div>
     </div>
-    <span class="tut-badge">4 steps</span>
+    <div class="sf-region" id="sf-region"></div>
   </header>
 
-  <h1>Read your land in 4 steps</h1>
-  <p class="sub">What the land gives you — sun, wind, frost, fire, water, wildlife. This tells you where things should go.</p>
-
-  <div class="step">
-    <div class="step-h"><span class="step-n">1</span><span class="step-ico">⚙️</span><div class="step-t">Check your site</div></div>
-    <p>Sector Analysis reads your plot automatically from the Master Plan brief. Your latitude, aspect, altitude, rainfall and slope are prefilled.</p>
-    <div class="btnrow"><span class="mbtn lbl">📐 Latitude 43°N</span><span class="mbtn lbl">🧭 South (180°)</span><span class="mbtn lbl">⛰️ 300m</span><span class="mbtn lbl">🌧️ 800mm</span></div>
-  </div>
-
-  <div class="step">
-    <div class="step-h"><span class="step-n">2</span><span class="step-ico">📋</span><div class="step-t">Read the sectors</div></div>
-    <p>Each sector shows where that energy comes from and what it means for your design.</p>
-    <div class="sectors">
-      <div class="sec"><span class="ico">☀️</span><div><div class="nm">Sun</div><div class="dg">solar gain</div></div></div>
-      <div class="sec"><span class="ico">💨</span><div><div class="nm">Wind</div><div class="dg">prevailing + cold</div></div></div>
-      <div class="sec"><span class="ico">💧</span><div><div class="nm">Water</div><div class="dg">rain + runoff</div></div></div>
-      <div class="sec"><span class="ico">❄️</span><div><div class="nm">Frost</div><div class="dg">cold-air drainage</div></div></div>
-      <div class="sec"><span class="ico">🔥</span><div><div class="nm">Fire</div><div class="dg">Sirocco risk</div></div></div>
-      <div class="sec"><span class="ico">🦌</span><div><div class="nm">Wildlife</div><div class="dg">forest edge</div></div></div>
-    </div>
-  </div>
-
-  <div class="step">
-    <div class="step-h"><span class="step-n">3</span><span class="step-ico">🎯</span><div class="step-t">Apply it to the zones</div></div>
-    <p>The tool connects each sector to your zones: tender plants up high, windbreak on the SW edge, firebreak on the SE boundary.</p>
-    <div class="btnrow"><span class="mbtn hi">🌪️ Sectors</span><span class="mbtn">🧭 Zones</span><span class="mbtn">📋 All sectors</span></div>
-  </div>
-
-  <div class="step">
-    <div class="step-h"><span class="step-n">4</span><span class="step-ico">🔄</span><div class="step-t">Adjust if your land differs</div></div>
-    <p>Change latitude, aspect or slope and hit <strong>Update sectors</strong> — the analysis recomputes for any plot, anywhere.</p>
-    <div class="btnrow"><span class="mbtn">🔄 Update sectors</span></div>
-    <div class="tip"><span class="i">💡</span><span><b>Tip:</b> this is the tool to use when you're adapting the design for another plot or region.</span></div>
-  </div>
-
-  <footer>SOILPEPPER · Sector Analysis tutorial · your data stays yours</footer>
+<h1 data-i18n="title">Read your land in 4 steps</h1>
+<p class="sub" data-i18n="subtitle">What the land gives you — sun, wind, frost, fire, water, wildlife. This tells you where things should go.</p>
+<div class="step"><div class="step-h"><span class="step-n">1</span><span class="step-ico">⚙️</span><div class="step-t" data-i18n="s1t">Check your site</div></div>
+<p data-i18n="s1p">Sector Analysis reads your plot automatically from the Master Plan brief. Your latitude, aspect, altitude, rainfall and slope are prefilled.</p>
+<div class="btnrow"><span class="mbtn">📐 <span data-i18n="s1b0">Latitude 43°N</span></span><span class="mbtn">🧭 <span data-i18n="s1b1">South (180°)</span></span><span class="mbtn">⛰️ <span data-i18n="s1b2">300m</span></span><span class="mbtn">🌧️ <span data-i18n="s1b3">800mm</span></span></div>
 </div>
+<div class="step"><div class="step-h"><span class="step-n">2</span><span class="step-ico">📋</span><div class="step-t" data-i18n="s2t">Read the sectors</div></div>
+<p data-i18n="s2p">Each sector shows where that energy comes from and what it means for your design.</p>
+<div class="grid3"><div class="tile center"><span class="ico">☀️</span><span class="nm" data-i18n="s2g_sun">Sun</span><span class="dg" data-i18n="s2g_sunD">solar gain</span></div><div class="tile center"><span class="ico">💨</span><span class="nm" data-i18n="s2g_wind">Wind</span><span class="dg" data-i18n="s2g_windD">prevailing + cold</span></div><div class="tile center"><span class="ico">💧</span><span class="nm" data-i18n="s2g_water">Water</span><span class="dg" data-i18n="s2g_waterD">rain + runoff</span></div><div class="tile center"><span class="ico">❄️</span><span class="nm" data-i18n="s2g_frost">Frost</span><span class="dg" data-i18n="s2g_frostD">cold-air drainage</span></div><div class="tile center"><span class="ico">🔥</span><span class="nm" data-i18n="s2g_fire">Fire</span><span class="dg" data-i18n="s2g_fireD">Sirocco risk</span></div><div class="tile center"><span class="ico">🦌</span><span class="nm" data-i18n="s2g_wild">Wildlife</span><span class="dg" data-i18n="s2g_wildD">forest edge</span></div></div>
+</div>
+<div class="step"><div class="step-h"><span class="step-n">3</span><span class="step-ico">🎯</span><div class="step-t" data-i18n="s3t">Apply it to the zones</div></div>
+<p data-i18n="s3p">The tool connects each sector to your zones: tender plants up high, windbreak on the SW edge, firebreak on the SE boundary.</p>
+<div class="btnrow"><span class="mbtn hi">🌪️ <span data-i18n="s3b0">Sectors</span></span><span class="mbtn">🧭 <span data-i18n="s3b1">Zones</span></span><span class="mbtn">📋 <span data-i18n="s3b2">All sectors</span></span></div>
+</div>
+<div class="step"><div class="step-h"><span class="step-n">4</span><span class="step-ico">🔄</span><div class="step-t" data-i18n="s4t">Adjust if your land differs</div></div>
+<p data-i18n="s4p">Change latitude, aspect or slope and hit Update sectors — the analysis recomputes for any plot, anywhere.</p>
+<div class="btnrow"><span class="mbtn">🔄 <span data-i18n="s4b0">Update sectors</span></span></div>
+</div>
+
+  <footer data-i18n="foot">SOILPEPPER · Sector Analysis tutorial · your data stays yours</footer>
+</div>
+<script>
+(function(){
+  var REGION = 'tuscany';
+  try {
+    var q = new URLSearchParams(window.location.search);
+    if (q.get('region')==='netherlands' || q.get('region')==='tuscany') REGION = q.get('region');
+    else {
+      var b = JSON.parse(localStorage.getItem('tuscan-brief-v1')||'{}');
+      if (b.region==='netherlands' || b.region==='tuscany') REGION = b.region;
+    }
+  } catch(e){}
+  var LANG = REGION === 'netherlands' ? 'nl' : 'en';
+  var T = {"en": {"tagline": "Sector Analysis — tutorial", "title": "Read your land in 4 steps", "subtitle": "What the land gives you — sun, wind, frost, fire, water, wildlife. This tells you where things should go.", "foot": "SOILPEPPER · Sector Analysis tutorial · your data stays yours", "regionNL": "Nederland", "regionIT": "Tuscany", "s1t": "Check your site", "s1p": "Sector Analysis reads your plot automatically from the Master Plan brief. Your latitude, aspect, altitude, rainfall and slope are prefilled.", "s1b0": "Latitude 43°N", "s1b1": "South (180°)", "s1b2": "300m", "s1b3": "800mm", "s2t": "Read the sectors", "s2p": "Each sector shows where that energy comes from and what it means for your design.", "s2g_sun": "Sun", "s2g_sunD": "solar gain", "s2g_wind": "Wind", "s2g_windD": "prevailing + cold", "s2g_water": "Water", "s2g_waterD": "rain + runoff", "s2g_frost": "Frost", "s2g_frostD": "cold-air drainage", "s2g_fire": "Fire", "s2g_fireD": "Sirocco risk", "s2g_wild": "Wildlife", "s2g_wildD": "forest edge", "s3t": "Apply it to the zones", "s3p": "The tool connects each sector to your zones: tender plants up high, windbreak on the SW edge, firebreak on the SE boundary.", "s3b0": "Sectors", "s3b1": "Zones", "s3b2": "All sectors", "s4t": "Adjust if your land differs", "s4p": "Change latitude, aspect or slope and hit Update sectors — the analysis recomputes for any plot, anywhere.", "s4b0": "Update sectors"}, "nl": {"tagline": "Sectoranalyse — handleiding", "title": "Lees je land in 4 stappen", "subtitle": "Wat het land je geeft — zon, wind, vorst, vuur, water, wildleven. Dit vertelt je waar dingen moeten komen.", "foot": "SOILPEPPER · Sectoranalyse handleiding · jouw data blijft van jou", "regionNL": "Nederland", "regionIT": "Toscane", "s1t": "Controleer je locatie", "s1p": "Sectoranalyse leest je perceel automatisch uit de Masterplan-brief. Je breedtegraad, ligging, hoogte, neerslag en helling zijn vooraf ingevuld.", "s1b0": "Breedtegraad 43°N", "s1b1": "Zuid (180°)", "s1b2": "300m", "s1b3": "800mm", "s2t": "Lees de sectoren", "s2p": "Elke sector toont waar die kracht vandaan komt en wat het betekent voor je ontwerp.", "s2g_sun": "Zon", "s2g_sunD": "zonnewinst", "s2g_wind": "Wind", "s2g_windD": "overheersend + koud", "s2g_water": "Water", "s2g_waterD": "regen + afvoer", "s2g_frost": "Vorst", "s2g_frostD": "koude lucht-afvoer", "s2g_fire": "Vuur", "s2g_fireD": "Sirocco-risico", "s2g_wild": "Wildleven", "s2g_wildD": "bosrand", "s3t": "Pas het toe op de zones", "s3p": "De tool verbindt elke sector met je zones: tere planten hoog, windscherm aan de ZW-rand, brandgang aan de ZO-grens.", "s3b0": "Sectoren", "s3b1": "Zones", "s3b2": "Alle sectoren", "s4t": "Pas aan als je land afwijkt", "s4p": "Verander breedtegraad, ligging of helling en druk op Sectoren bijwerken — de analyse herberekent voor elk perceel, overal.", "s4b0": "Sectoren bijwerken"}};
+  document.querySelectorAll('[data-i18n]').forEach(function(el){
+    var k=el.getAttribute('data-i18n');
+    var v=(T[LANG]&&T[LANG][k])||T.en[k];
+    if(v!==undefined) el.textContent=v;
+  });
+  var rg=document.getElementById('sf-region');
+  if(rg){
+    var pill=document.createElement('span');
+    pill.className='sf-pill';
+    pill.textContent = REGION==='netherlands' ? '🇳🇱 ' + (T[LANG].regionNL || 'Nederland') : '🇮🇹 ' + (T[LANG].regionIT || 'Tuscany');
+    rg.appendChild(pill);
+  }
+})();
+</script>
+
 </body>
 </html>

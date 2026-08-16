@@ -3,17 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>SOILPEPPER — Guild Matrix tutorial</title>
+<title>SOILPEPPER — Plantrelations — tutorial</title>
 <style>
-:root{--sf-bg:#cdd8c8;--sf-card:#edf2e6;--sf-card-alt:#eef4ec;--sf-sage-soft:#dcead8;--sf-header:#2c4a32;--sf-header-2:#3e6a46;--sf-ink:#1e2c22;--sf-ink-soft:#4a5c4e;--sf-border:#d0dac8;--sf-border-strong:#8aa88c;--sf-accent:#c8492e;--sf-gold:#f5ead6;--sf-gold-ink:#8a6420;--sf-gold-border:#e0d0a8;--font-head:'Fraunces','Palatino',Georgia,serif;--font-body:'Nunito','Segoe UI',system-ui,sans-serif;--radius:16px}
+:root{
+  --sf-bg:#cdd8c8; --sf-card:#edf2e6; --sf-card-alt:#eef4ec; --sf-sage-soft:#dcead8;
+  --sf-header:#2c4a32; --sf-header-2:#3e6a46; --sf-ink:#1e2c22; --sf-ink-soft:#4a5c4e;
+  --sf-border:#d0dac8; --sf-border-strong:#8aa88c; --sf-accent:#c8492e;
+  --sf-gold:#f5ead6; --sf-gold-ink:#8a6420; --sf-gold-border:#e0d0a8;
+  --sf-radius-lg:16px; --sf-shadow-lg:0 6px 24px rgba(20,40,25,.16);
+  --font-head:'Fraunces','Palatino',Georgia,serif; --font-body:'Nunito','Segoe UI',system-ui,sans-serif;
+  --radius:16px;
+}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:var(--font-body);background:var(--sf-bg);color:var(--sf-ink);line-height:1.5;min-height:100vh}
 .wrap{max-width:980px;margin:0 auto;padding:20px}
-.masthead{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--sf-header);border:2px solid #1e3624;border-radius:var(--radius);padding:14px 20px;margin-bottom:18px;box-shadow:0 2px 8px rgba(20,50,24,.2)}
-.brand{display:flex;align-items:center;gap:10px}
-.logo{font-family:var(--font-head);color:#fff;font-size:1.4em;font-weight:700}
-.tagline{color:var(--sf-sage-soft);font-size:0.75em}
-.tut-badge{background:var(--sf-gold);color:var(--sf-gold-ink);border:2px solid var(--sf-gold-border);border-radius:999px;padding:4px 14px;font-size:0.78em;font-weight:700}
+/* Sage Forte masthead — same as the tool pages */
+.sf-masthead{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;
+  background:var(--sf-header)!important;border:2px solid #1e3624!important;
+  border-radius:var(--sf-radius-lg)!important;padding:14px 20px!important;
+  margin:0 auto 12px!important;max-width:1180px!important;box-shadow:var(--sf-shadow-lg)!important}
+.sf-brand{display:flex;align-items:center;gap:10px}
+.sf-pepper{font-size:1.6rem}
+.sf-logo{font-family:var(--font-head)!important;font-size:1.3rem!important;font-weight:700!important;
+  color:#ffffff!important;margin:0!important;letter-spacing:.5px!important;text-align:left!important;line-height:1.2!important}
+.sf-logo a{text-decoration:none;color:inherit}
+.sf-tagline{font-size:.78rem;color:#c8e4cc!important;font-weight:800!important;letter-spacing:.2px;text-align:left!important}
+.sf-region{display:flex;gap:6px}
+.sf-region .sf-pill{background:#fff;color:var(--sf-header-2);border:1px solid var(--sf-border-strong);
+  border-radius:999px;padding:4px 12px;font-size:.75em;font-weight:700}
+/* tutorial content */
 h1{font-family:var(--font-head);color:var(--sf-header);text-align:center;margin:6px 0 2px}
 .sub{text-align:center;color:var(--sf-ink-soft);font-size:0.9em;margin-bottom:22px}
 .step{background:var(--sf-card);border:1.5px solid var(--sf-border);border-radius:14px;padding:16px 20px;margin-bottom:16px}
@@ -25,52 +43,84 @@ h1{font-family:var(--font-head);color:var(--sf-header);text-align:center;margin:
 .btnrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .mbtn{font-size:0.78em;padding:7px 14px;border-radius:10px;border:1.5px solid var(--sf-border-strong);background:var(--sf-card);color:var(--sf-ink);cursor:pointer;display:inline-flex;align-items:center;gap:5px}
 .mbtn.hi{outline:3px solid var(--sf-accent);outline-offset:2px;font-weight:700}
-.legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-top:12px}
-.leg{background:var(--sf-card-alt);border:1.5px solid var(--sf-border);border-radius:10px;padding:8px 12px;display:flex;align-items:center;gap:8px}
-.leg .sw{width:14px;height:14px;border-radius:3px;flex-shrink:0}
-.leg .nm{font-size:0.76em;font-weight:700;color:var(--sf-header)}
+.mbtn.lbl{background:var(--sf-card-alt);border-style:dashed;cursor:default}
+.tagnote{font-size:0.72em;color:var(--sf-accent);font-weight:700}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-top:12px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:12px}
+.tile{background:var(--sf-card-alt);border:1.5px solid var(--sf-border);border-radius:10px;padding:8px 12px}
+.tile.center{text-align:center;padding:10px 12px}
+.tile .ico{font-size:1.2em;display:block;margin-bottom:3px}
+.tile .nm{font-size:0.76em;font-weight:700;color:var(--sf-header)}
+.tile .dg{font-size:0.68em;color:var(--sf-ink-soft)}
+.tile.swatch{display:flex;align-items:center;gap:8px}
+.sw{width:14px;height:14px;border-radius:3px;flex-shrink:0}
+.notes{margin-top:10px;display:flex;flex-direction:column;gap:8px}
+.note{display:flex;gap:10px;align-items:flex-start;background:var(--sf-card-alt);border:1px solid var(--sf-border);border-radius:10px;padding:9px 12px;font-size:0.8em;color:var(--sf-ink-soft)}
+.note .i{font-size:1.05em;flex-shrink:0}
+.note b{color:var(--sf-header)}
 .tip{display:flex;gap:10px;align-items:flex-start;background:var(--sf-gold);border:1px solid var(--sf-gold-border);border-radius:10px;padding:10px 14px;font-size:0.8em;color:var(--sf-gold-ink);margin-top:8px}
 .tip .i{font-size:1.1em}
 footer{text-align:center;color:var(--sf-ink-soft);font-size:0.75em;margin-top:26px}
-@media(max-width:600px){.legend{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.grid2,.grid3{grid-template-columns:1fr 1fr}}
+
 </style>
 </head>
 <body>
 <div class="wrap">
-  <header class="masthead">
-    <div class="brand"><span style="font-size:1.5em">🔗</span>
-      <div><div class="logo">SOILPEPPER</div><div class="tagline">Plantrelations — tutorial</div></div>
+  <header class="sf-masthead" id="sf-masthead">
+    <div class="sf-brand">
+      <span class="sf-pepper">🌶️</span>
+      <div>
+        <h1 class="sf-logo"><a href="tools.html">SOIL<span style="color:#f4c92f">PEPPER</span></a></h1>
+        <div class="sf-tagline" data-i18n="tagline">Plantrelations — tutorial</div>
+      </div>
     </div>
-    <span class="tut-badge">3 steps</span>
+    <div class="sf-region" id="sf-region"></div>
   </header>
 
-  <h1>Find companion plants in 3 steps</h1>
-  <p class="sub">Which plants help each other — a companion-planting explorer across all 256 species.</p>
-
-  <div class="step">
-    <div class="step-h"><span class="step-n">1</span><span class="step-ico">🔎</span><div class="step-t">Pick a plant</div></div>
-    <p>Choose any species. The matrix scores every other plant against it — mutual benefit, companions and antagonists.</p>
-    <div class="btnrow"><span class="mbtn hi">🌿 Select a species</span><span class="mbtn">🔄 Mix &amp; Match</span></div>
-  </div>
-
-  <div class="step">
-    <div class="step-h"><span class="step-n">2</span><span class="step-ico">📊</span><div class="step-t">Read the scores</div></div>
-    <p>Green = strong companion, amber = neutral, red = antagonist. The "why" tells you the relationship.</p>
-    <div class="legend">
-      <div class="leg"><span class="sw" style="background:#3e6a46"></span><div class="nm">Strong companion</div></div>
-      <div class="leg"><span class="sw" style="background:#e0a800"></span><div class="nm">Moderate</div></div>
-      <div class="leg"><span class="sw" style="background:#c8492e"></span><div class="nm">Antagonist</div></div>
-      <div class="leg"><span class="sw" style="background:#8aa88c"></span><div class="nm">Neutral</div></div>
-    </div>
-  </div>
-
-  <div class="step">
-    <div class="step-h"><span class="step-n">3</span><span class="step-ico">🌱</span><div class="step-t">Plan your guild</div></div>
-    <p>Use the results to build a guild — or check two plants before you put them in the same bed.</p>
-    <div class="tip"><span class="i">💡</span><span><b>Tip:</b> pairs well with the Guild Diagrams tool for the full picture around a tree.</span></div>
-  </div>
-
-  <footer>SOILPEPPER · Plantrelations tutorial · your data stays yours</footer>
+<h1 data-i18n="title">Find companion plants in 3 steps</h1>
+<p class="sub" data-i18n="subtitle">Which plants help each other — a companion-planting explorer across all 256 species.</p>
+<div class="step"><div class="step-h"><span class="step-n">1</span><span class="step-ico">🔎</span><div class="step-t" data-i18n="s1t">Pick a plant</div></div>
+<p data-i18n="s1p">Choose any species. The matrix scores every other plant against it — mutual benefit, companions and antagonists.</p>
+<div class="btnrow"><span class="mbtn hi">🌿 <span data-i18n="s1b0">Select a species</span></span><span class="mbtn">🔄 <span data-i18n="s1b1">Mix &amp; Match</span></span></div>
 </div>
+<div class="step"><div class="step-h"><span class="step-n">2</span><span class="step-ico">📊</span><div class="step-t" data-i18n="s2t">Read the scores</div></div>
+<p data-i18n="s2p">Green = strong companion, amber = moderate, red = antagonist. The &quot;why&quot; tells you the relationship.</p>
+<div class="grid3"><div class="tile swatch"><span class="sw" style="background:#3e6a46"></span><span class="nm" data-i18n="s2g_strong">Strong companion</span></div><div class="tile swatch"><span class="sw" style="background:#e0a800"></span><span class="nm" data-i18n="s2g_mod">Moderate</span></div><div class="tile swatch"><span class="sw" style="background:#c8492e"></span><span class="nm" data-i18n="s2g_ant">Antagonist</span></div><div class="tile swatch"><span class="sw" style="background:#8aa88c"></span><span class="nm" data-i18n="s2g_neu">Neutral</span></div></div>
+</div>
+<div class="step"><div class="step-h"><span class="step-n">3</span><span class="step-ico">🌱</span><div class="step-t" data-i18n="s3t">Plan your guild</div></div>
+<p data-i18n="s3p">Use the results to build a guild — or check two plants before you put them in the same bed.</p>
+</div>
+
+  <footer data-i18n="foot">SOILPEPPER · Plantrelations tutorial · your data stays yours</footer>
+</div>
+<script>
+(function(){
+  var REGION = 'tuscany';
+  try {
+    var q = new URLSearchParams(window.location.search);
+    if (q.get('region')==='netherlands' || q.get('region')==='tuscany') REGION = q.get('region');
+    else {
+      var b = JSON.parse(localStorage.getItem('tuscan-brief-v1')||'{}');
+      if (b.region==='netherlands' || b.region==='tuscany') REGION = b.region;
+    }
+  } catch(e){}
+  var LANG = REGION === 'netherlands' ? 'nl' : 'en';
+  var T = {"en": {"tagline": "Plantrelations — tutorial", "title": "Find companion plants in 3 steps", "subtitle": "Which plants help each other — a companion-planting explorer across all 256 species.", "foot": "SOILPEPPER · Plantrelations tutorial · your data stays yours", "regionNL": "Nederland", "regionIT": "Tuscany", "s1t": "Pick a plant", "s1p": "Choose any species. The matrix scores every other plant against it — mutual benefit, companions and antagonists.", "s1b0": "Select a species", "s1b1": "Mix & Match", "s2t": "Read the scores", "s2p": "Green = strong companion, amber = moderate, red = antagonist. The \"why\" tells you the relationship.", "s2g_strong": "Strong companion", "s2g_mod": "Moderate", "s2g_ant": "Antagonist", "s2g_neu": "Neutral", "s3t": "Plan your guild", "s3p": "Use the results to build a guild — or check two plants before you put them in the same bed."}, "nl": {"tagline": "Plantrelaties — handleiding", "title": "Vind gezelschapsplanten in 3 stappen", "subtitle": "Welke planten helpen elkaar — een verkenner voor gezelschapsbeplanting over alle 256 soorten.", "foot": "SOILPEPPER · Plantrelaties handleiding · jouw data blijft van jou", "regionNL": "Nederland", "regionIT": "Toscane", "s1t": "Kies een plant", "s1p": "Kies een soort. De matrix scoort elke andere plant ertegenover — wederzijds voordeel, gezelschap en antagonisten.", "s1b0": "Selecteer een soort", "s1b1": "Mix & match", "s2t": "Lees de scores", "s2p": "Groen = sterke gezelschapsplant, amber = matig, rood = antagonist. Het \"waarom\" vertelt je de relatie.", "s2g_strong": "Sterke gezelschapsplant", "s2g_mod": "Matig", "s2g_ant": "Antagonist", "s2g_neu": "Neutraal", "s3t": "Plan je gilde", "s3p": "Gebruik de resultaten om een gilde te bouwen — of controleer twee planten voordat je ze in hetzelfde bed zet."}};
+  document.querySelectorAll('[data-i18n]').forEach(function(el){
+    var k=el.getAttribute('data-i18n');
+    var v=(T[LANG]&&T[LANG][k])||T.en[k];
+    if(v!==undefined) el.textContent=v;
+  });
+  var rg=document.getElementById('sf-region');
+  if(rg){
+    var pill=document.createElement('span');
+    pill.className='sf-pill';
+    pill.textContent = REGION==='netherlands' ? '🇳🇱 ' + (T[LANG].regionNL || 'Nederland') : '🇮🇹 ' + (T[LANG].regionIT || 'Tuscany');
+    rg.appendChild(pill);
+  }
+})();
+</script>
+
 </body>
 </html>

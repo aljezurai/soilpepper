@@ -3,17 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>SOILPEPPER — Vegetable Garden Planner tutorial</title>
+<title>SOILPEPPER — Vegetable Garden Planner — tutorial</title>
 <style>
-:root{--sf-bg:#cdd8c8;--sf-card:#edf2e6;--sf-card-alt:#eef4ec;--sf-sage-soft:#dcead8;--sf-header:#2c4a32;--sf-header-2:#3e6a46;--sf-ink:#1e2c22;--sf-ink-soft:#4a5c4e;--sf-border:#d0dac8;--sf-border-strong:#8aa88c;--sf-accent:#c8492e;--sf-gold:#f5ead6;--sf-gold-ink:#8a6420;--sf-gold-border:#e0d0a8;--font-head:'Fraunces','Palatino',Georgia,serif;--font-body:'Nunito','Segoe UI',system-ui,sans-serif;--radius:16px}
+:root{
+  --sf-bg:#cdd8c8; --sf-card:#edf2e6; --sf-card-alt:#eef4ec; --sf-sage-soft:#dcead8;
+  --sf-header:#2c4a32; --sf-header-2:#3e6a46; --sf-ink:#1e2c22; --sf-ink-soft:#4a5c4e;
+  --sf-border:#d0dac8; --sf-border-strong:#8aa88c; --sf-accent:#c8492e;
+  --sf-gold:#f5ead6; --sf-gold-ink:#8a6420; --sf-gold-border:#e0d0a8;
+  --sf-radius-lg:16px; --sf-shadow-lg:0 6px 24px rgba(20,40,25,.16);
+  --font-head:'Fraunces','Palatino',Georgia,serif; --font-body:'Nunito','Segoe UI',system-ui,sans-serif;
+  --radius:16px;
+}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:var(--font-body);background:var(--sf-bg);color:var(--sf-ink);line-height:1.5;min-height:100vh}
 .wrap{max-width:980px;margin:0 auto;padding:20px}
-.masthead{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--sf-header);border:2px solid #1e3624;border-radius:var(--radius);padding:14px 20px;margin-bottom:18px;box-shadow:0 2px 8px rgba(20,50,24,.2)}
-.brand{display:flex;align-items:center;gap:10px}
-.logo{font-family:var(--font-head);color:#fff;font-size:1.4em;font-weight:700}
-.tagline{color:var(--sf-sage-soft);font-size:0.75em}
-.tut-badge{background:var(--sf-gold);color:var(--sf-gold-ink);border:2px solid var(--sf-gold-border);border-radius:999px;padding:4px 14px;font-size:0.78em;font-weight:700}
+/* Sage Forte masthead — same as the tool pages */
+.sf-masthead{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;
+  background:var(--sf-header)!important;border:2px solid #1e3624!important;
+  border-radius:var(--sf-radius-lg)!important;padding:14px 20px!important;
+  margin:0 auto 12px!important;max-width:1180px!important;box-shadow:var(--sf-shadow-lg)!important}
+.sf-brand{display:flex;align-items:center;gap:10px}
+.sf-pepper{font-size:1.6rem}
+.sf-logo{font-family:var(--font-head)!important;font-size:1.3rem!important;font-weight:700!important;
+  color:#ffffff!important;margin:0!important;letter-spacing:.5px!important;text-align:left!important;line-height:1.2!important}
+.sf-logo a{text-decoration:none;color:inherit}
+.sf-tagline{font-size:.78rem;color:#c8e4cc!important;font-weight:800!important;letter-spacing:.2px;text-align:left!important}
+.sf-region{display:flex;gap:6px}
+.sf-region .sf-pill{background:#fff;color:var(--sf-header-2);border:1px solid var(--sf-border-strong);
+  border-radius:999px;padding:4px 12px;font-size:.75em;font-weight:700}
+/* tutorial content */
 h1{font-family:var(--font-head);color:var(--sf-header);text-align:center;margin:6px 0 2px}
 .sub{text-align:center;color:var(--sf-ink-soft);font-size:0.9em;margin-bottom:22px}
 .step{background:var(--sf-card);border:1.5px solid var(--sf-border);border-radius:14px;padding:16px 20px;margin-bottom:16px}
@@ -25,10 +43,17 @@ h1{font-family:var(--font-head);color:var(--sf-header);text-align:center;margin:
 .btnrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .mbtn{font-size:0.78em;padding:7px 14px;border-radius:10px;border:1.5px solid var(--sf-border-strong);background:var(--sf-card);color:var(--sf-ink);cursor:pointer;display:inline-flex;align-items:center;gap:5px}
 .mbtn.hi{outline:3px solid var(--sf-accent);outline-offset:2px;font-weight:700}
-.bedrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;margin-top:12px}
-.bed{background:var(--sf-card-alt);border:1.5px solid var(--sf-border);border-radius:10px;padding:10px 12px;text-align:center}
-.bed .ico{font-size:1.2em;display:block;margin-bottom:3px}
-.bed .nm{font-size:0.76em;font-weight:700;color:var(--sf-header)}
+.mbtn.lbl{background:var(--sf-card-alt);border-style:dashed;cursor:default}
+.tagnote{font-size:0.72em;color:var(--sf-accent);font-weight:700}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-top:12px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:12px}
+.tile{background:var(--sf-card-alt);border:1.5px solid var(--sf-border);border-radius:10px;padding:8px 12px}
+.tile.center{text-align:center;padding:10px 12px}
+.tile .ico{font-size:1.2em;display:block;margin-bottom:3px}
+.tile .nm{font-size:0.76em;font-weight:700;color:var(--sf-header)}
+.tile .dg{font-size:0.68em;color:var(--sf-ink-soft)}
+.tile.swatch{display:flex;align-items:center;gap:8px}
+.sw{width:14px;height:14px;border-radius:3px;flex-shrink:0}
 .notes{margin-top:10px;display:flex;flex-direction:column;gap:8px}
 .note{display:flex;gap:10px;align-items:flex-start;background:var(--sf-card-alt);border:1px solid var(--sf-border);border-radius:10px;padding:9px 12px;font-size:0.8em;color:var(--sf-ink-soft)}
 .note .i{font-size:1.05em;flex-shrink:0}
@@ -36,59 +61,73 @@ h1{font-family:var(--font-head);color:var(--sf-header);text-align:center;margin:
 .tip{display:flex;gap:10px;align-items:flex-start;background:var(--sf-gold);border:1px solid var(--sf-gold-border);border-radius:10px;padding:10px 14px;font-size:0.8em;color:var(--sf-gold-ink);margin-top:8px}
 .tip .i{font-size:1.1em}
 footer{text-align:center;color:var(--sf-ink-soft);font-size:0.75em;margin-top:26px}
-@media(max-width:600px){.bedrow{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.grid2,.grid3{grid-template-columns:1fr 1fr}}
+
 </style>
 </head>
 <body>
 <div class="wrap">
-  <header class="masthead">
-    <div class="brand"><span style="font-size:1.5em">🥕</span>
-      <div><div class="logo">SOILPEPPER</div><div class="tagline">Moestuinplanner — tutorial</div></div>
+  <header class="sf-masthead" id="sf-masthead">
+    <div class="sf-brand">
+      <span class="sf-pepper">🌶️</span>
+      <div>
+        <h1 class="sf-logo"><a href="tools.html">SOIL<span style="color:#f4c92f">PEPPER</span></a></h1>
+        <div class="sf-tagline" data-i18n="tagline">Vegetable Garden Planner — tutorial</div>
+      </div>
     </div>
-    <span class="tut-badge">4 steps</span>
+    <div class="sf-region" id="sf-region"></div>
   </header>
 
-  <h1>Plan your vegetable beds in 4 steps</h1>
-  <p class="sub">Real 75cm beds in 10m cells — modules, sowing calendar, and a field view for the garden.</p>
-
-  <div class="step">
-    <div class="step-h"><span class="step-n">1</span><span class="step-ico">⚙️</span><div class="step-t">Set your beds</div></div>
-    <p>Choose how many modules (rows) and the bed width. The plan builds the beds automatically.</p>
-    <div class="bedrow">
-      <div class="bed"><span class="ico">🧱</span><div class="nm">Modules 1–3</div></div>
-      <div class="bed"><span class="ico">📏</span><div class="nm">75cm beds</div></div>
-      <div class="bed"><span class="ico">🛤️</span><div class="nm">10m slots</div></div>
-    </div>
-  </div>
-
-  <div class="step">
-    <div class="step-h"><span class="step-n">2</span><span class="step-ico">🖐️</span><div class="step-t">Drag plants into beds</div></div>
-    <p>Drag from the palette onto a bed. The planner watches for companion conflicts and warns you.</p>
-    <div class="btnrow"><span class="mbtn hi">🥕 Drag plants</span></div>
-    <div class="notes">
-      <div class="note"><span class="i">🔄</span><span><b>Move vegetables around</b> — drag any plant already in a bed to another bed (or another spot) to rearrange. Hover/tap a plant and use the ✕ to remove it. Your layout stays in sync everywhere.</span></div>
-      <div class="note"><span class="i">🟰</span><span><b>10m vs 20m beds</b> — each slot is a 10m bed. Tap the <b>join</b> toggle on a row to merge two 10m beds into one 20m bed, or split it back. Handy for long rows like beans or squash.</span></div>
-    </div>
-  </div>
-
-  <div class="step">
-    <div class="step-h"><span class="step-n">3</span><span class="step-ico">🌱</span><div class="step-t">Know what to sow now</div></div>
-    <p>Use <b>Sow this month</b> to see exactly what's ready to plant in the current month.</p>
-    <div class="btnrow"><span class="mbtn hi">🌱 Sow this month</span><span class="mbtn">📅 Sow / harvest</span></div>
-    <div class="notes">
-      <div class="note"><span class="i">🗓️</span><span><b>Sow this month</b> highlights the plants whose sowing window is open right now — nothing to sow? It says so, so you're never guessing.</span></div>
-      <div class="note"><span class="i">📐</span><span><b>Spacing &amp; distance in the popup</b> — tap any plant to open its card: it shows the sowing pattern (square / row / hill), exact seed spacing, row distance, seed depth, thinning and how many plants fit one 7.5 m² slot.</span></div>
-    </div>
-  </div>
-
-  <div class="step">
-    <div class="step-h"><span class="step-n">4</span><span class="step-ico">📤</span><div class="step-t">Take it to the field</div></div>
-    <p>Export the field view — a compact, offline page with every bed, spacing and sowing recipe for the garden.</p>
-    <div class="btnrow"><span class="mbtn hi">📤 Export Field View</span></div>
-    <div class="tip"><span class="i">💡</span><span><b>Tip:</b> link a veg cell from the Master Plan to keep the garden in your whole design.</span></div>
-  </div>
-
-  <footer>SOILPEPPER · Moestuinplanner tutorial · your data stays yours</footer>
+<h1 data-i18n="title">Plan your vegetable beds in 4 steps</h1>
+<p class="sub" data-i18n="subtitle">Real 75cm beds in 10m cells — modules, sowing calendar, and a field view for the garden.</p>
+<div class="step"><div class="step-h"><span class="step-n">1</span><span class="step-ico">⚙️</span><div class="step-t" data-i18n="s1t">Set your beds</div></div>
+<p data-i18n="s1p">Choose how many modules (rows) and the bed width. The plan builds the beds automatically.</p>
+<div class="grid3"><div class="tile center"><span class="ico">🧱</span><span class="nm" data-i18n="s1g_mod">Modules 1–3</span></div><div class="tile center"><span class="ico">📏</span><span class="nm" data-i18n="s1g_bed">75cm beds</span></div><div class="tile center"><span class="ico">🛤️</span><span class="nm" data-i18n="s1g_slot">10m slots</span></div></div>
 </div>
+<div class="step"><div class="step-h"><span class="step-n">2</span><span class="step-ico">🖐️</span><div class="step-t" data-i18n="s2t">Drag plants into beds</div></div>
+<p data-i18n="s2p">Drag from the palette onto a bed. The planner watches for companion conflicts and warns you.</p>
+<div class="btnrow"><span class="mbtn hi">🥕 <span data-i18n="s2b0">Drag plants</span></span></div>
+<div class="notes"><div class="note"><span class="i">🔄</span><span><b data-i18n="s2nt0">Move vegetables around</b> <span data-i18n="s2np0">drag any plant already in a bed to another bed (or another spot) to rearrange. Hover/tap a plant and use the ✕ to remove it. Your layout stays in sync everywhere.</span></span></div><div class="note"><span class="i">🟰</span><span><b data-i18n="s2nt1">10m vs 20m beds</b> <span data-i18n="s2np1">each slot is a 10m bed. Tap the join toggle on a row to merge two 10m beds into one 20m bed, or split it back. Handy for long rows like beans or squash.</span></span></div></div>
+</div>
+<div class="step"><div class="step-h"><span class="step-n">3</span><span class="step-ico">🌱</span><div class="step-t" data-i18n="s3t">Know what to sow now</div></div>
+<p data-i18n="s3p">Use Sow this month to see exactly what is ready to plant in the current month.</p>
+<div class="btnrow"><span class="mbtn hi">🌱 <span data-i18n="s3b0">Sow this month</span></span><span class="mbtn">📅 <span data-i18n="s3b1">Sow / harvest</span></span></div>
+<div class="notes"><div class="note"><span class="i">🗓️</span><span><b data-i18n="s3nt0">Sow this month</b> <span data-i18n="s3np0">highlights the plants whose sowing window is open right now — nothing to sow? It says so, so you are never guessing.</span></span></div><div class="note"><span class="i">📐</span><span><b data-i18n="s3nt1">Spacing &amp; distance in the popup</b> <span data-i18n="s3np1">tap any plant to open its card: it shows the sowing pattern (square / row / hill), exact seed spacing, row distance, seed depth, thinning and how many plants fit one 7.5 m² slot.</span></span></div></div>
+</div>
+<div class="step"><div class="step-h"><span class="step-n">4</span><span class="step-ico">📤</span><div class="step-t" data-i18n="s4t">Take it to the field</div></div>
+<p data-i18n="s4p">Export the field view — a compact, offline page with every bed, spacing and sowing recipe for the garden.</p>
+<div class="btnrow"><span class="mbtn hi">📤 <span data-i18n="s4b0">Export Field View</span></span></div>
+</div>
+
+  <footer data-i18n="foot">SOILPEPPER · Vegetable Garden Planner tutorial · your data stays yours</footer>
+</div>
+<script>
+(function(){
+  var REGION = 'tuscany';
+  try {
+    var q = new URLSearchParams(window.location.search);
+    if (q.get('region')==='netherlands' || q.get('region')==='tuscany') REGION = q.get('region');
+    else {
+      var b = JSON.parse(localStorage.getItem('tuscan-brief-v1')||'{}');
+      if (b.region==='netherlands' || b.region==='tuscany') REGION = b.region;
+    }
+  } catch(e){}
+  var LANG = REGION === 'netherlands' ? 'nl' : 'en';
+  var T = {"en": {"tagline": "Vegetable Garden Planner — tutorial", "title": "Plan your vegetable beds in 4 steps", "subtitle": "Real 75cm beds in 10m cells — modules, sowing calendar, and a field view for the garden.", "foot": "SOILPEPPER · Vegetable Garden Planner tutorial · your data stays yours", "regionNL": "Nederland", "regionIT": "Tuscany", "s1t": "Set your beds", "s1p": "Choose how many modules (rows) and the bed width. The plan builds the beds automatically.", "s1g_mod": "Modules 1–3", "s1g_bed": "75cm beds", "s1g_slot": "10m slots", "s2t": "Drag plants into beds", "s2p": "Drag from the palette onto a bed. The planner watches for companion conflicts and warns you.", "s2b0": "Drag plants", "s2nt0": "Move vegetables around", "s2np0": "drag any plant already in a bed to another bed (or another spot) to rearrange. Hover/tap a plant and use the ✕ to remove it. Your layout stays in sync everywhere.", "s2nt1": "10m vs 20m beds", "s2np1": "each slot is a 10m bed. Tap the join toggle on a row to merge two 10m beds into one 20m bed, or split it back. Handy for long rows like beans or squash.", "s3t": "Know what to sow now", "s3p": "Use Sow this month to see exactly what is ready to plant in the current month.", "s3b0": "Sow this month", "s3b1": "Sow / harvest", "s3nt0": "Sow this month", "s3np0": "highlights the plants whose sowing window is open right now — nothing to sow? It says so, so you are never guessing.", "s3nt1": "Spacing & distance in the popup", "s3np1": "tap any plant to open its card: it shows the sowing pattern (square / row / hill), exact seed spacing, row distance, seed depth, thinning and how many plants fit one 7.5 m² slot.", "s4t": "Take it to the field", "s4p": "Export the field view — a compact, offline page with every bed, spacing and sowing recipe for the garden.", "s4b0": "Export Field View"}, "nl": {"tagline": "Moestuinplanner — handleiding", "title": "Plan je moestuinbedden in 4 stappen", "subtitle": "Echte 75cm-bedden in 10m-cellen — modules, zaaikalender en een veldweergave voor de tuin.", "foot": "SOILPEPPER · Moestuinplanner handleiding · jouw data blijft van jou", "regionNL": "Nederland", "regionIT": "Toscane", "s1t": "Stel je bedden in", "s1p": "Kies het aantal modules (rijen) en de bedbreedte. Het plan bouwt de bedden automatisch.", "s1g_mod": "Modules 1–3", "s1g_bed": "75cm-bedden", "s1g_slot": "10m-vakken", "s2t": "Sleep planten naar bedden", "s2p": "Sleep vanuit het palet naar een bed. De planner let op conflicten tussen gezelschapsplanten en waarschuwt je.", "s2b0": "Sleep planten", "s2nt0": "Verplaats groenten", "s2np0": "sleep een plant die al in een bed staat naar een ander bed (of een andere plek) om te herschikken. Hover/tik een plant en gebruik de ✕ om hem te verwijderen. Je indeling blijft overal gesynchroniseerd.", "s2nt1": "10m vs 20m-bedden", "s2np1": "elk vak is een 10m-bed. Tik de samenvoeg-schakelaar op een rij om twee 10m-bedden te combineren tot één 20m-bed, of splits ze weer. Handig voor lange rijen zoals bonen of pompoen.", "s3t": "Weet wat je nu kunt zaaien", "s3p": "Gebruik Zaai deze maand om precies te zien wat er deze maand geplant kan worden.", "s3b0": "Zaai deze maand", "s3b1": "Zaaien / oogsten", "s3nt0": "Zaai deze maand", "s3np0": "markeert de planten waarvan het zaaivenster nu open is — niets te zaaien? Dat zegt hij, zodat je nooit hoeft te gokken.", "s3nt1": "Afstanden in de pop-up", "s3np1": "tik elke plant om zijn kaart te openen: die toont het zaaipatroon (vierkant / rij / heuvel), exacte zaadafstand, rijafstand, zaaddiepte, dunnen en hoeveel planten er in één 7,5 m²-vak passen.", "s4t": "Neem het mee naar buiten", "s4p": "Exporteer de veldweergave — een compacte, offline pagina met elk bed, afstand en zaairecept voor de tuin.", "s4b0": "Exporteer veldweergave"}};
+  document.querySelectorAll('[data-i18n]').forEach(function(el){
+    var k=el.getAttribute('data-i18n');
+    var v=(T[LANG]&&T[LANG][k])||T.en[k];
+    if(v!==undefined) el.textContent=v;
+  });
+  var rg=document.getElementById('sf-region');
+  if(rg){
+    var pill=document.createElement('span');
+    pill.className='sf-pill';
+    pill.textContent = REGION==='netherlands' ? '🇳🇱 ' + (T[LANG].regionNL || 'Nederland') : '🇮🇹 ' + (T[LANG].regionIT || 'Tuscany');
+    rg.appendChild(pill);
+  }
+})();
+</script>
+
 </body>
 </html>
