@@ -4233,13 +4233,13 @@ function onFuncChange() {
   // (2026-08-13 fix: only apply the advice if the cell has no zone yet — previously
   //  it silently OVERWROTE a user-set zone, making cells appear to "switch" zones.)
   const zoneSel = document.getElementById('zone-select');
-  if (zoneSel && ZONE_ADVICE[v] !== undefined) {
+  if (zoneSel && ZONE_ADVICE[v]) {
     const currentZone = zoneSel.value;
     if (!currentZone) {
       zoneSel.value = ZONE_ADVICE[v];
     }
     const hint = zoneSel.parentElement.querySelector('.hint');
-    if (hint) hint.innerHTML = 'Advised: <strong>' + ZONE_META[ZONE_ADVICE[v]].label + '</strong> — change if you like.';
+    if (hint && ZONE_META[ZONE_ADVICE[v]]) hint.innerHTML = 'Advised: <strong>' + ZONE_META[ZONE_ADVICE[v]].label + '</strong> — change if you like.';
   }
   commit();
 }
