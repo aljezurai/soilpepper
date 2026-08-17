@@ -2570,7 +2570,7 @@
   "soilDepth": 40,
   "sun": "full",
   "water": "moderate",
-  "height": 20,
+  "height": 30,
   "width": 15,
   "sowMonths": [
    2,
@@ -10835,100 +10835,6 @@
    "netherlands"
   ],
   "nameNL": "Echte valeriaan"
- },
- "zucchini": {
-  "name": "Zucchini",
-  "italian": "Zucchina",
-  "latin": "Cucurbita pepo",
-  "category": "vegetable",
-  "subcategory": "medium",
-  "icon": "🥒",
-  "soilType": [
-   "silty",
-   "loam"
-  ],
-  "sun": "full",
-  "water": "high",
-  "height": 40,
-  "width": 90,
-  "sowMonths": [
-   4,
-   5
-  ],
-  "harvestMonths": [
-   7,
-   8,
-   9
-  ],
-  "daysToMaturity": 50,
-  "season": "warm",
-  "perennial": false,
-  "native": false,
-  "family": "Cucurbitaceae",
-  "familyNL": "Kalebasfamilie",
-  "guild": {
-   "gives": [
-    "ground-cover",
-    "weed-suppression",
-    "biomass"
-   ],
-   "needs": [
-    "nitrogen",
-    "rich-soil",
-    "moisture-retention",
-    "potassium"
-   ],
-   "companions": [
-    "peas",
-    "pole-beans",
-    "fava-beans",
-    "tomato",
-    "basil",
-    "borage",
-    "calendula",
-    "nasturtium",
-    "chamomile",
-    "dill",
-    "oregano",
-    "garlic-veg",
-    "onions",
-    "sunflower",
-    "corn",
-    "radish"
-   ],
-   "antagonists": [
-    "potatoes"
-   ],
-   "rootForm": "fibrous",
-   "rootZone": "shallow",
-   "accumulates": [
-    "potassium",
-    "calcium",
-    "iron"
-   ]
-  },
-  "regions": [
-   "tuscany",
-   "netherlands"
-  ],
-  "spacing": 50,
-  "sowPattern": "hill",
-  "seedSpacing": 40,
-  "rowSpacing": 50,
-  "seedDepth": 2.5,
-  "seedsPerHole": 2,
-  "thinTo": 50,
-  "sowMonthsNL": [
-   5,
-   6
-  ],
-  "harvestMonthsNL": [
-   7,
-   8,
-   9,
-   10
-  ],
-  "nameNL": "Courgette"
  },
  "cucumber": {
   "name": "Cucumber",
