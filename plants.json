@@ -202,11 +202,15 @@
   "seedsPerHole": 4,
   "thinTo": 20,
   "sowMonthsNL": [
-   5
+   5,
+   6,
+   7
   ],
   "harvestMonthsNL": [
+   7,
    8,
-   9
+   9,
+   10
   ],
   "nameNL": "Stokbonen"
  },
@@ -296,10 +300,12 @@
   "seedDepth": 3,
   "thinTo": 25,
   "sowMonthsNL": [
-   5
+   5,
+   6
   ],
   "harvestMonthsNL": [
-   9
+   9,
+   10
   ],
   "nameNL": "Suikermaïs"
  },
@@ -888,10 +894,12 @@
   "seedDepth": 1,
   "thinTo": 25,
   "sowMonthsNL": [
+   5,
    6,
    7
   ],
   "harvestMonthsNL": [
+   8,
    9,
    10
   ],
@@ -989,10 +997,12 @@
   "seedDepth": 1,
   "thinTo": 40,
   "sowMonthsNL": [
+   3,
    4,
    5
   ],
   "harvestMonthsNL": [
+   7,
    8,
    9,
    10
@@ -1086,7 +1096,8 @@
   "thinTo": 40,
   "sowMonthsNL": [
    4,
-   5
+   5,
+   6
   ],
   "harvestMonthsNL": [
    8,
@@ -1190,16 +1201,20 @@
   "seedDepth": 1,
   "thinTo": 40,
   "sowMonthsNL": [
+   4,
+   5,
    6,
    7,
    8
   ],
   "harvestMonthsNL": [
-   11,
-   12,
    1,
    2,
-   3
+   3,
+   9,
+   10,
+   11,
+   12
   ],
   "nameNL": "Boerenkool"
  },
@@ -1290,11 +1305,15 @@
   "seedDepth": 2,
   "thinTo": 20,
   "sowMonthsNL": [
+   3,
    4,
    5,
-   6
+   6,
+   7,
+   8
   ],
   "harvestMonthsNL": [
+   5,
    6,
    7,
    8,
@@ -1396,15 +1415,19 @@
   "seedDepth": 1,
   "thinTo": 40,
   "sowMonthsNL": [
+   6,
    7,
    8
   ],
   "harvestMonthsNL": [
-   11,
-   12,
    1,
    2,
-   3
+   3,
+   8,
+   9,
+   10,
+   11,
+   12
   ],
   "nameNL": "Broccoli"
  },
@@ -1682,10 +1705,12 @@
   "seedDepth": 1,
   "thinTo": 45,
   "sowMonthsNL": [
+   5,
    6,
    7
   ],
   "harvestMonthsNL": [
+   9,
    10,
    11,
    12
@@ -1888,12 +1913,15 @@
    3,
    4,
    5,
+   6,
+   7,
    8
   ],
   "harvestMonthsNL": [
    5,
    6,
    7,
+   8,
    9,
    10,
    11
@@ -1988,16 +2016,23 @@
   "seedDepth": 1.5,
   "thinTo": 10,
   "sowMonthsNL": [
+   2,
    3,
    4,
+   5,
+   6,
+   7,
    8,
-   9
+   9,
+   10
   ],
   "harvestMonthsNL": [
    5,
    6,
+   9,
    10,
-   11
+   11,
+   12
   ],
   "nameNL": "Spinazie"
  },
@@ -2188,12 +2223,14 @@
   "sowMonthsNL": [
    4,
    5,
+   6,
    9
   ],
   "harvestMonthsNL": [
    6,
    7,
    8,
+   9,
    10,
    11
   ],
@@ -2398,8 +2435,12 @@
   "seedDepth": 1,
   "thinTo": 15,
   "sowMonthsNL": [
+   3,
    4,
-   5
+   5,
+   6,
+   7,
+   8
   ],
   "harvestMonthsNL": [
    5,
@@ -2705,12 +2746,14 @@
   "thinTo": 10,
   "sowMonthsNL": [
    3,
-   4
+   4,
+   5
   ],
   "harvestMonthsNL": [
    7,
    8,
-   9
+   9,
+   10
   ],
   "nameNL": "Ui"
  },
@@ -2886,10 +2929,12 @@
   "seedDepth": 1,
   "thinTo": 25,
   "sowMonthsNL": [
+   5,
    6,
    7
   ],
   "harvestMonthsNL": [
+   9,
    10,
    11,
    12
@@ -2996,6 +3041,7 @@
    6,
    7,
    8,
+   9,
    10,
    11
   ],
@@ -3092,16 +3138,20 @@
   "seedDepth": 1,
   "thinTo": 3,
   "sowMonthsNL": [
+   3,
    4,
    5,
    6,
+   7,
    8,
    9
   ],
   "harvestMonthsNL": [
+   4,
    5,
    6,
    7,
+   8,
    9,
    10,
    11
@@ -3203,11 +3253,13 @@
    5
   ],
   "harvestMonthsNL": [
+   1,
    7,
    8,
+   9,
+   10,
    11,
-   12,
-   1
+   12
   ],
   "nameNL": "Prei"
  },
@@ -3493,7 +3545,8 @@
   "thinTo": 25,
   "sowMonthsNL": [
    4,
-   5
+   5,
+   6
   ],
   "harvestMonthsNL": [
    8,
@@ -3684,7 +3737,8 @@
   "seedsPerHole": 2,
   "thinTo": 50,
   "sowMonthsNL": [
-   5
+   5,
+   6
   ],
   "harvestMonthsNL": [
    7,
@@ -3779,6 +3833,7 @@
   "seedDepth": 1,
   "thinTo": 25,
   "sowMonthsNL": [
+   3,
    4,
    5,
    7,
@@ -3787,6 +3842,7 @@
   "harvestMonthsNL": [
    6,
    7,
+   8,
    9,
    10,
    11
@@ -4363,6 +4419,11 @@
   "sowMonthsNL": [
    3,
    4,
+   5,
+   6,
+   7,
+   8,
+   9,
    10,
    11
   ],
@@ -4752,8 +4813,11 @@
    "netherlands"
   ],
   "sowMonthsNL": [
+   3,
    4,
    5,
+   6,
+   7,
    8,
    9
   ],
@@ -7351,7 +7415,16 @@
    "netherlands"
   ],
   "icon": "🌿",
-  "nameNL": "Lavendel"
+  "nameNL": "Lavendel",
+  "sowMonthsNL": [
+   5,
+   6
+  ],
+  "harvestMonthsNL": [
+   7,
+   8,
+   9
+  ]
  },
  "sage": {
   "key": "sage",
@@ -7424,7 +7497,12 @@
    "netherlands"
   ],
   "icon": "🌿",
-  "nameNL": "Salie"
+  "nameNL": "Salie",
+  "sowMonthsNL": [
+   4,
+   5
+  ],
+  "harvestMonthsNL": []
  },
  "thyme": {
   "key": "thyme",
@@ -7495,7 +7573,15 @@
    "netherlands"
   ],
   "icon": "🌿",
-  "nameNL": "Tijm"
+  "nameNL": "Tijm",
+  "sowMonthsNL": [
+   5,
+   6
+  ],
+  "harvestMonthsNL": [
+   7,
+   8
+  ]
  },
  "oregano": {
   "key": "oregano",
@@ -7647,7 +7733,17 @@
    "netherlands"
   ],
   "icon": "🌿",
-  "nameNL": "Marjolein"
+  "nameNL": "Marjolein",
+  "sowMonthsNL": [
+   5,
+   6,
+   7
+  ],
+  "harvestMonthsNL": [
+   7,
+   8,
+   9
+  ]
  },
  "nasturtium": {
   "key": "nasturtium",
@@ -8536,14 +8632,16 @@
   ],
   "icon": "🌾",
   "sowMonthsNL": [
-   10,
-   11,
    2,
-   3
+   3,
+   4,
+   10,
+   11
   ],
   "harvestMonthsNL": [
    5,
-   6
+   6,
+   7
   ],
   "nameNL": "Tuinderwt / veldboon"
  },
@@ -9469,7 +9567,12 @@
   ],
   "icon": "🌾",
   "nameNL": "Incarnaatklaver",
-  "season": "cool"
+  "season": "cool",
+  "sowMonthsNL": [
+   8,
+   9
+  ],
+  "harvestMonthsNL": []
  },
  "white-lupin": {
   "key": "white-lupin",
@@ -9533,7 +9636,14 @@
   ],
   "icon": "🌾",
   "nameNL": "Witte lupine",
-  "season": "cool"
+  "season": "cool",
+  "sowMonthsNL": [
+   4,
+   5,
+   6,
+   7
+  ],
+  "harvestMonthsNL": []
  },
  "tree-medic": {
   "key": "tree-medic",
@@ -9784,7 +9894,14 @@
   "thinTo": 60,
   "nameNL": "Kardoen",
   "season": "cool",
-  "width": 90
+  "width": 90,
+  "sowMonthsNL": [
+   5
+  ],
+  "harvestMonthsNL": [
+   9,
+   10
+  ]
  },
  "endive": {
   "key": "endive",
@@ -9848,7 +9965,18 @@
   "thinTo": 25,
   "nameNL": "Andijvie",
   "season": "cool",
-  "width": 40
+  "width": 40,
+  "sowMonthsNL": [
+   5,
+   6,
+   7,
+   8
+  ],
+  "harvestMonthsNL": [
+   8,
+   9,
+   10
+  ]
  },
  "catalogna-chicory": {
   "key": "catalogna-chicory",
@@ -10057,7 +10185,16 @@
   "thinTo": 8,
   "nameNL": "Zwarte schorseneer",
   "season": "cool",
-  "width": 30
+  "width": 30,
+  "sowMonthsNL": [
+   4,
+   5
+  ],
+  "harvestMonthsNL": [
+   9,
+   10,
+   11
+  ]
  },
  "parsnip": {
   "key": "parsnip",
@@ -10125,7 +10262,16 @@
   "thinTo": 10,
   "nameNL": "Pastinaak",
   "season": "cool",
-  "width": 40
+  "width": 40,
+  "sowMonthsNL": [
+   4,
+   5
+  ],
+  "harvestMonthsNL": [
+   9,
+   10,
+   11
+  ]
  },
  "chamomile": {
   "name": "Chamomile",
@@ -10261,7 +10407,17 @@
    "tuscany",
    "netherlands"
   ],
-  "nameNL": "Dille"
+  "nameNL": "Dille",
+  "sowMonthsNL": [
+   4,
+   5,
+   6
+  ],
+  "harvestMonthsNL": [
+   7,
+   8,
+   9
+  ]
  },
  "echinacea": {
   "name": "Echinacea",
@@ -10394,7 +10550,16 @@
    "tuscany",
    "netherlands"
   ],
-  "nameNL": "Hysop"
+  "nameNL": "Hysop",
+  "sowMonthsNL": [
+   4,
+   5,
+   6
+  ],
+  "harvestMonthsNL": [
+   7,
+   8
+  ]
  },
  "lovage": {
   "name": "Lovage",
@@ -10460,7 +10625,17 @@
    "tuscany",
    "netherlands"
   ],
-  "nameNL": "Lavas"
+  "nameNL": "Lavas",
+  "sowMonthsNL": [
+   4,
+   5,
+   6
+  ],
+  "harvestMonthsNL": [
+   7,
+   8,
+   9
+  ]
  },
  "mint": {
   "name": "Mint",
@@ -10744,7 +10919,8 @@
   "seedsPerHole": 2,
   "thinTo": 50,
   "sowMonthsNL": [
-   5
+   5,
+   6
   ],
   "harvestMonthsNL": [
    7,
@@ -10837,7 +11013,8 @@
   "seedsPerHole": 2,
   "thinTo": 40,
   "sowMonthsNL": [
-   5
+   5,
+   6
   ],
   "harvestMonthsNL": [
    8,
@@ -10922,10 +11099,14 @@
   "seedsPerHole": 3,
   "thinTo": 100,
   "sowMonthsNL": [
-   5
+   4,
+   5,
+   6
   ],
   "harvestMonthsNL": [
-   9
+   8,
+   9,
+   10
   ],
   "nameNL": "Watermeloen"
  },
@@ -11009,7 +11190,8 @@
   "seedsPerHole": 3,
   "thinTo": 100,
   "sowMonthsNL": [
-   5
+   5,
+   6
   ],
   "harvestMonthsNL": [
    9,
@@ -11108,11 +11290,14 @@
   "sowMonthsNL": [
    4,
    5,
+   6,
+   7,
    8
   ],
   "harvestMonthsNL": [
    6,
    7,
+   9,
    10,
    11
   ],
@@ -11363,7 +11548,21 @@
   "seedDepth": 0.5,
   "thinTo": 25,
   "nameNL": "Veldzuring",
-  "season": "cool"
+  "season": "cool",
+  "sowMonthsNL": [
+   4,
+   5,
+   6,
+   7,
+   8
+  ],
+  "harvestMonthsNL": [
+   6,
+   7,
+   8,
+   9,
+   10
+  ]
  },
  "buckwheat": {
   "name": "Buckwheat",
@@ -11455,7 +11654,8 @@
   "sowMonthsNL": [
    5,
    6,
-   7
+   7,
+   8
   ],
   "harvestMonthsNL": [
    7,
@@ -11547,8 +11747,11 @@
    "netherlands"
   ],
   "sowMonthsNL": [
+   3,
    4,
    5,
+   6,
+   7,
    8,
    9
   ],
@@ -11628,6 +11831,7 @@
    "netherlands"
   ],
   "sowMonthsNL": [
+   8,
    9,
    10
   ],
@@ -11706,6 +11910,10 @@
   "sowMonthsNL": [
    3,
    4,
+   5,
+   6,
+   7,
+   8,
    9
   ],
   "harvestMonthsNL": [
@@ -15725,7 +15933,15 @@
    "rootForm": "",
    "rootZone": ""
   },
-  "nameNL": "Citroenmelisse"
+  "nameNL": "Citroenmelisse",
+  "sowMonthsNL": [
+   5,
+   6
+  ],
+  "harvestMonthsNL": [
+   4,
+   5
+  ]
  },
  "sweet-cicely": {
   "key": "sweet-cicely",
@@ -18166,5 +18382,1169 @@
    "rootZone": ""
   },
   "nameNL": "Speenkruid"
+ },
+ "augurk": {
+  "key": "augurk",
+  "name": "Gherkin",
+  "italian": "Augurk",
+  "latin": "Cucumis sativus",
+  "category": "vegetable",
+  "subcategory": "climbing",
+  "soilType": [
+   "sandy",
+   "silty",
+   "loam"
+  ],
+  "soilDepth": 40,
+  "sun": "full",
+  "water": "moderate",
+  "height": 40,
+  "width": 150,
+  "sowMonths": [
+   4,
+   5,
+   6
+  ],
+  "harvestMonths": [
+   7,
+   8,
+   9
+  ],
+  "daysToMaturity": 70,
+  "season": "warm",
+  "function": [
+   "food"
+  ],
+  "nFixer": false,
+  "perennial": false,
+  "native": false,
+  "fireResistant": false,
+  "notes": "Bolster NL variety. Sun: Zon. Spacing: 150x40 cm.",
+  "spacing": 40,
+  "sowMethod": "Direct",
+  "icon": "🥒",
+  "family": "Cucurbitaceae",
+  "familyNL": "Komkommerfamilie",
+  "guild": {
+   "gives": [
+    "biomass"
+   ],
+   "needs": [
+    "nitrogen",
+    "moisture-retention"
+   ],
+   "companions": [],
+   "antagonists": [],
+   "rootForm": "fibrous",
+   "rootZone": "moderate",
+   "accumulates": []
+  },
+  "regions": [
+   "tuscany",
+   "netherlands"
+  ],
+  "sowMonthsNL": [
+   4,
+   5,
+   6
+  ],
+  "harvestMonthsNL": [
+   7,
+   8,
+   9
+  ],
+  "nameNL": "Augurk"
+ },
+ "bladmosterd": {
+  "key": "bladmosterd",
+  "name": "Leaf mustard",
+  "italian": "Bladmosterd",
+  "latin": "Brassica juncea",
+  "category": "vegetable",
+  "subcategory": "leaf",
+  "soilType": [
+   "sandy",
+   "silty",
+   "loam",
+   "clay"
+  ],
+  "soilDepth": 40,
+  "sun": "full",
+  "water": "moderate",
+  "height": 30,
+  "width": 15,
+  "sowMonths": [
+   5,
+   6,
+   7,
+   8
+  ],
+  "harvestMonths": [
+   7,
+   8,
+   9,
+   10
+  ],
+  "daysToMaturity": 70,
+  "season": "warm",
+  "function": [
+   "food"
+  ],
+  "nFixer": false,
+  "perennial": false,
+  "native": false,
+  "fireResistant": false,
+  "notes": "Bolster NL variety. Sun: Zon/halfschaduw. Spacing: 15x2 cm.",
+  "spacing": 2,
+  "sowMethod": "Direct",
+  "icon": "🥬",
+  "family": "Brassicaceae",
+  "familyNL": "Kruisbloemenfamilie",
+  "guild": {
+   "gives": [
+    "biomass"
+   ],
+   "needs": [
+    "nitrogen",
+    "moisture-retention"
+   ],
+   "companions": [],
+   "antagonists": [],
+   "rootForm": "fibrous",
+   "rootZone": "moderate",
+   "accumulates": []
+  },
+  "regions": [
+   "tuscany",
+   "netherlands"
+  ],
+  "sowMonthsNL": [
+   5,
+   6,
+   7,
+   8
+  ],
+  "harvestMonthsNL": [
+   7,
+   8,
+   9,
+   10
+  ],
+  "nameNL": "Bladmosterd"
+ },
+ "bonenkruid": {
+  "key": "bonenkruid",
+  "name": "Summer savory",
+  "italian": "Bonenkruid",
+  "latin": "Satureja hortensis",
+  "category": "herb",
+  "subcategory": "herb",
+  "soilType": [
+   "sandy",
+   "silty",
+   "loam"
+  ],
+  "soilDepth": 20,
+  "sun": "full",
+  "water": "moderate",
+  "height": 30,
+  "width": 20,
+  "sowMonths": [
+   5,
+   6
+  ],
+  "harvestMonths": [
+   7,
+   8
+  ],
+  "daysToMaturity": 70,
+  "season": "warm",
+  "function": [
+   "food"
+  ],
+  "nFixer": false,
+  "perennial": false,
+  "native": false,
+  "fireResistant": false,
+  "notes": "Bolster NL variety. Sun: Zon. Spacing: 20x20 cm.",
+  "spacing": 20,
+  "sowMethod": "Direct",
+  "icon": "🌿",
+  "family": "Lamiaceae",
+  "familyNL": "Lipbloemenfamilie",
+  "guild": {
+   "gives": [
+    "biomass"
+   ],
+   "needs": [
+    "nitrogen",
+    "moisture-retention"
+   ],
+   "companions": [],
+   "antagonists": [],
+   "rootForm": "fibrous",
+   "rootZone": "moderate",
+   "accumulates": []
+  },
+  "regions": [
+   "tuscany",
+   "netherlands"
+  ],
+  "sowMonthsNL": [
+   5,
+   6
+  ],
+  "harvestMonthsNL": [
+   7,
+   8
+  ],
+  "nameNL": "Bonenkruid"
+ },
+ "bosui": {
+  "key": "bosui",
+  "name": "Bunching onion",
+  "italian": "Bosui",
+  "latin": "Allium fistulosum",
+  "category": "vegetable",
+  "subcategory": "root",
+  "soilType": [
+   "sandy",
+   "silty",
+   "loam"
+  ],
+  "soilDepth": 40,
+  "sun": "full",
+  "water": "moderate",
+  "height": 30,
+  "width": 25,
+  "sowMonths": [
+   3,
+   4,
+   5
+  ],
+  "harvestMonths": [
+   7,
+   8,
+   9
+  ],
+  "daysToMaturity": 70,
+  "season": "warm",
+  "function": [
+   "food"
+  ],
+  "nFixer": false,
+  "perennial": false,
+  "native": false,
+  "fireResistant": false,
+  "notes": "Bolster NL variety. Sun: Zon/halfschaduw. Spacing: 25x2,5 cm.",
+  "spacing": 2,
+  "sowMethod": "Direct",
+  "icon": "🌱",
+  "family": "Amaryllidaceae",
+  "familyNL": "Narcisfamilie",
+  "guild": {
+   "gives": [
+    "biomass"
+   ],
+   "needs": [
+    "nitrogen",
+    "moisture-retention"
+   ],
+   "companions": [],
+   "antagonists": [],
+   "rootForm": "fibrous",
+   "rootZone": "moderate",
+   "accumulates": []
+  },
+  "regions": [
+   "tuscany",
+   "netherlands"
+  ],
+  "sowMonthsNL": [
+   3,
+   4,
+   5
+  ],
+  "harvestMonthsNL": [
+   7,
+   8,
+   9
+  ],
+  "nameNL": "Bosui"
+ },
+ "chinese-kool": {
+  "key": "chinese-kool",
+  "name": "Chinese cabbage",
+  "italian": "Chinese kool",
+  "latin": "Brassica rapa subsp. pekinensis",
+  "category": "vegetable",
+  "subcategory": "medium",
+  "soilType": [
+   "sandy",
+   "silty",
+   "loam",
+   "clay"
+  ],
+  "soilDepth": 40,
+  "sun": "full",
+  "water": "moderate",
+  "height": 35,
+  "width": 50,
+  "sowMonths": [
+   4,
+   5,
+   6,
+   7,
+   8
+  ],
+  "harvestMonths": [
+   7,
+   8,
+   9,
+   10
+  ],
+  "daysToMaturity": 70,
+  "season": "warm",
+  "function": [
+   "food"
+  ],
+  "nFixer": false,
+  "perennial": false,
+  "native": false,
+  "fireResistant": false,
+  "notes": "Bolster NL variety. Sun: Zon. Spacing: 50x40 cm.",
+  "spacing": 40,
+  "sowMethod": "Direct",
+  "icon": "🥬",
+  "family": "Brassicaceae",
+  "familyNL": "Kruisbloemenfamilie",
+  "guild": {
+   "gives": [
+    "biomass"
+   ],
+   "needs": [
+    "nitrogen",
+    "moisture-retention"
+   ],
+   "companions": [],
+   "antagonists": [],
+   "rootForm": "fibrous",
+   "rootZone": "moderate",
+   "accumulates": []
+  },
+  "regions": [
+   "tuscany",
+   "netherlands"
+  ],
+  "sowMonthsNL": [
+   4,
+   5,
+   6,
+   7,
+   8
+  ],
+  "harvestMonthsNL": [
+   7,
+   8,
+   9,
+   10
+  ],
+  "nameNL": "Chinese kool"
+ },
+ "groenlof": {
+  "key": "groenlof",
+  "name": "Sugarloaf chicory",
+  "italian": "Groenlof",
+  "latin": "Cichorium intybus",
+  "category": "vegetable",
+  "subcategory": "medium",
+  "soilType": [
+   "sandy",
+   "silty",
+   "loam"
+  ],
+  "soilDepth": 40,
+  "sun": "full",
+  "water": "moderate",
+  "height": 40,
+  "width": 30,
+  "sowMonths": [
+   6,
+   7
+  ],
+  "harvestMonths": [
+   8,
+   9,
+   10,
+   11
+  ],
+  "daysToMaturity": 70,
+  "season": "warm",
+  "function": [
+   "food"
+  ],
+  "nFixer": false,
+  "perennial": false,
+  "native": false,
+  "fireResistant": false,
+  "notes": "Bolster NL variety. Sun: Zon/halfschaduw. Spacing: 30x30 cm.",
+  "spacing": 30,
+  "sowMethod": "Direct",
+  "icon": "🥬",
+  "family": "Asteraceae",
+  "familyNL": "Composietenfamilie",
+  "guild": {
+   "gives": [
+    "biomass"
+   ],
+   "needs": [
+    "nitrogen",
+    "moisture-retention"
+   ],
+   "companions": [],
+   "antagonists": [],
+   "rootForm": "fibrous",
+   "rootZone": "moderate",
+   "accumulates": []
+  },
+  "regions": [
+   "tuscany",
+   "netherlands"
+  ],
+  "sowMonthsNL": [
+   6,
+   7
+  ],
+  "harvestMonthsNL": [
+   8,
+   9,
+   10,
+   11
+  ],
+  "nameNL": "Groenlof"
+ },
+ "kapucijner": {
+  "key": "kapucijner",
+  "name": "Marrowfat pea",
+  "italian": "Kapucijner",
+  "latin": "Pisum sativum",
+  "category": "vegetable",
+  "subcategory": "climbing",
+  "soilType": [
+   "sandy",
+   "silty",
+   "loam"
+  ],
+  "soilDepth": 40,
+  "sun": "full",
+  "water": "moderate",
+  "height": 150,
+  "width": 150,
+  "sowMonths": [
+   3,
+   4
+  ],
+  "harvestMonths": [
+   7,
+   8,
+   9
+  ],
+  "daysToMaturity": 70,
+  "season": "warm",
+  "function": [
+   "food"
+  ],
+  "nFixer": true,
+  "perennial": false,
+  "native": false,
+  "fireResistant": false,
+  "notes": "Bolster NL variety. Sun: Zon. Spacing: 150x5 cm.",
+  "spacing": 5,
+  "sowMethod": "Direct",
+  "icon": "🫛",
+  "family": "Fabaceae",
+  "familyNL": "Vlinderbloemenfamilie",
+  "guild": {
+   "gives": [
+    "biomass"
+   ],
+   "needs": [
+    "nitrogen",
+    "moisture-retention"
+   ],
+   "companions": [],
+   "antagonists": [],
+   "rootForm": "fibrous",
+   "rootZone": "moderate",
+   "accumulates": []
+  },
+  "regions": [
+   "tuscany",
+   "netherlands"
+  ],
+  "sowMonthsNL": [
+   3,
+   4
+  ],
+  "harvestMonthsNL": [
+   7,
+   8,
+   9
+  ],
+  "nameNL": "Kapucijner"
+ },
+ "knolselderij": {
+  "key": "knolselderij",
+  "name": "Celeriac",
+  "italian": "Knolselderij",
+  "latin": "Apium graveolens var. rapaceum",
+  "category": "vegetable",
+  "subcategory": "root",
+  "soilType": [
+   "sandy",
+   "silty",
+   "loam"
+  ],
+  "soilDepth": 40,
+  "sun": "full",
+  "water": "moderate",
+  "height": 40,
+  "width": 50,
+  "sowMonths": [
+   3,
+   4,
+   5
+  ],
+  "harvestMonths": [
+   8,
+   9,
+   10
+  ],
+  "daysToMaturity": 70,
+  "season": "warm",
+  "function": [
+   "food"
+  ],
+  "nFixer": false,
+  "perennial": false,
+  "native": false,
+  "fireResistant": false,
+  "notes": "Bolster NL variety. Sun: Zon/halfschaduw. Spacing: 50x40 cm.",
+  "spacing": 40,
+  "sowMethod": "Transplant",
+  "icon": "🥔",
+  "family": "Apiaceae",
+  "familyNL": "Schermbloemenfamilie",
+  "guild": {
+   "gives": [
+    "biomass"
+   ],
+   "needs": [
+    "nitrogen",
+    "moisture-retention"
+   ],
+   "companions": [],
+   "antagonists": [],
+   "rootForm": "fibrous",
+   "rootZone": "moderate",
+   "accumulates": []
+  },
+  "regions": [
+   "tuscany",
+   "netherlands"
+  ],
+  "sowMonthsNL": [
+   3,
+   4,
+   5
+  ],
+  "harvestMonthsNL": [
+   8,
+   9,
+   10
+  ],
+  "nameNL": "Knolselderij"
+ },
+ "koolraap": {
+  "key": "koolraap",
+  "name": "Rutabaga / Swede",
+  "italian": "Koolraap",
+  "latin": "Brassica napus",
+  "category": "vegetable",
+  "subcategory": "root",
+  "soilType": [
+   "sandy",
+   "silty",
+   "loam",
+   "clay"
+  ],
+  "soilDepth": 40,
+  "sun": "full",
+  "water": "moderate",
+  "height": 35,
+  "width": 30,
+  "sowMonths": [
+   5,
+   6
+  ],
+  "harvestMonths": [
+   8,
+   9,
+   10,
+   11
+  ],
+  "daysToMaturity": 70,
+  "season": "warm",
+  "function": [
+   "food"
+  ],
+  "nFixer": false,
+  "perennial": false,
+  "native": false,
+  "fireResistant": false,
+  "notes": "Bolster NL variety. Sun: Zon/halfschaduw. Spacing: 30x30 cm.",
+  "spacing": 30,
+  "sowMethod": "Direct",
+  "icon": "🥬",
+  "family": "Brassicaceae",
+  "familyNL": "Kruisbloemenfamilie",
+  "guild": {
+   "gives": [
+    "biomass"
+   ],
+   "needs": [
+    "nitrogen",
+    "moisture-retention"
+   ],
+   "companions": [],
+   "antagonists": [],
+   "rootForm": "fibrous",
+   "rootZone": "moderate",
+   "accumulates": []
+  },
+  "regions": [
+   "tuscany",
+   "netherlands"
+  ],
+  "sowMonthsNL": [
+   5,
+   6
+  ],
+  "harvestMonthsNL": [
+   8,
+   9,
+   10,
+   11
+  ],
+  "nameNL": "Koolraap"
+ },
+ "mesclun": {
+  "key": "mesclun",
+  "name": "Mesclun (mixed salad)",
+  "italian": "Mesclun",
+  "latin": "Lactuca sativa mix",
+  "category": "vegetable",
+  "subcategory": "leaf",
+  "soilType": [
+   "sandy",
+   "silty",
+   "loam"
+  ],
+  "soilDepth": 40,
+  "sun": "full",
+  "water": "moderate",
+  "height": 20,
+  "width": 15,
+  "sowMonths": [
+   5,
+   6,
+   7,
+   8
+  ],
+  "harvestMonths": [
+   7,
+   8,
+   9,
+   10
+  ],
+  "daysToMaturity": 70,
+  "season": "warm",
+  "function": [
+   "food"
+  ],
+  "nFixer": false,
+  "perennial": false,
+  "native": false,
+  "fireResistant": false,
+  "notes": "Bolster NL variety. Sun: Zon/halfschaduw. Spacing: 15x2 cm.",
+  "spacing": 2,
+  "sowMethod": "Direct",
+  "icon": "🥬",
+  "family": "Asteraceae",
+  "familyNL": "Composietenfamilie",
+  "guild": {
+   "gives": [
+    "biomass"
+   ],
+   "needs": [
+    "nitrogen",
+    "moisture-retention"
+   ],
+   "companions": [],
+   "antagonists": [],
+   "rootForm": "fibrous",
+   "rootZone": "moderate",
+   "accumulates": []
+  },
+  "regions": [
+   "tuscany",
+   "netherlands"
+  ],
+  "sowMonthsNL": [
+   5,
+   6,
+   7,
+   8
+  ],
+  "harvestMonthsNL": [
+   7,
+   8,
+   9,
+   10
+  ],
+  "nameNL": "Mesclun"
+ },
+ "paksoi": {
+  "key": "paksoi",
+  "name": "Pak choi",
+  "italian": "Paksoi",
+  "latin": "Brassica rapa subsp. chinensis",
+  "category": "vegetable",
+  "subcategory": "medium",
+  "soilType": [
+   "sandy",
+   "silty",
+   "loam",
+   "clay"
+  ],
+  "soilDepth": 40,
+  "sun": "full",
+  "water": "moderate",
+  "height": 30,
+  "width": 30,
+  "sowMonths": [
+   6,
+   7,
+   8
+  ],
+  "harvestMonths": [
+   8,
+   9,
+   10
+  ],
+  "daysToMaturity": 70,
+  "season": "warm",
+  "function": [
+   "food"
+  ],
+  "nFixer": false,
+  "perennial": false,
+  "native": false,
+  "fireResistant": false,
+  "notes": "Bolster NL variety. Sun: Zon. Spacing: 30x25 cm.",
+  "spacing": 25,
+  "sowMethod": "Direct",
+  "icon": "🥬",
+  "family": "Brassicaceae",
+  "familyNL": "Kruisbloemenfamilie",
+  "guild": {
+   "gives": [
+    "biomass"
+   ],
+   "needs": [
+    "nitrogen",
+    "moisture-retention"
+   ],
+   "companions": [],
+   "antagonists": [],
+   "rootForm": "fibrous",
+   "rootZone": "moderate",
+   "accumulates": []
+  },
+  "regions": [
+   "tuscany",
+   "netherlands"
+  ],
+  "sowMonthsNL": [
+   6,
+   7,
+   8
+  ],
+  "harvestMonthsNL": [
+   8,
+   9,
+   10
+  ],
+  "nameNL": "Paksoi"
+ },
+ "pronkboon": {
+  "key": "pronkboon",
+  "name": "Scarlet runner bean",
+  "italian": "Pronkboon",
+  "latin": "Phaseolus coccineus",
+  "category": "vegetable",
+  "subcategory": "climbing",
+  "soilType": [
+   "sandy",
+   "silty",
+   "loam"
+  ],
+  "soilDepth": 40,
+  "sun": "full",
+  "water": "moderate",
+  "height": 250,
+  "width": 75,
+  "sowMonths": [
+   5,
+   6
+  ],
+  "harvestMonths": [
+   7,
+   8,
+   9,
+   10
+  ],
+  "daysToMaturity": 70,
+  "season": "warm",
+  "function": [
+   "food"
+  ],
+  "nFixer": true,
+  "perennial": false,
+  "native": false,
+  "fireResistant": false,
+  "notes": "Bolster NL variety. Sun: Zon. Spacing: 75x15 cm.",
+  "spacing": 15,
+  "sowMethod": "Direct",
+  "icon": "🫛",
+  "family": "Fabaceae",
+  "familyNL": "Vlinderbloemenfamilie",
+  "guild": {
+   "gives": [
+    "biomass"
+   ],
+   "needs": [
+    "nitrogen",
+    "moisture-retention"
+   ],
+   "companions": [],
+   "antagonists": [],
+   "rootForm": "fibrous",
+   "rootZone": "moderate",
+   "accumulates": []
+  },
+  "regions": [
+   "tuscany",
+   "netherlands"
+  ],
+  "sowMonthsNL": [
+   5,
+   6
+  ],
+  "harvestMonthsNL": [
+   7,
+   8,
+   9,
+   10
+  ],
+  "nameNL": "Pronkboon"
+ },
+ "physalis": {
+  "key": "physalis",
+  "name": "Ground cherry / Physalis",
+  "italian": "Ananaskers",
+  "latin": "Physalis pruinosa",
+  "category": "vegetable",
+  "subcategory": "medium",
+  "soilType": [
+   "sandy",
+   "silty",
+   "loam"
+  ],
+  "soilDepth": 40,
+  "sun": "full",
+  "water": "moderate",
+  "height": 60,
+  "width": 40,
+  "sowMonths": [
+   3,
+   4,
+   5
+  ],
+  "harvestMonths": [
+   8,
+   9
+  ],
+  "daysToMaturity": 70,
+  "season": "warm",
+  "function": [
+   "food"
+  ],
+  "nFixer": false,
+  "perennial": false,
+  "native": false,
+  "fireResistant": false,
+  "notes": "Bolster NL variety. Sun: Zon. Spacing: 40x40 cm.",
+  "spacing": 40,
+  "sowMethod": "Transplant",
+  "icon": "🍒",
+  "family": "Solanaceae",
+  "familyNL": "Nachtschadefamilie",
+  "guild": {
+   "gives": [
+    "biomass"
+   ],
+   "needs": [
+    "nitrogen",
+    "moisture-retention"
+   ],
+   "companions": [],
+   "antagonists": [],
+   "rootForm": "fibrous",
+   "rootZone": "moderate",
+   "accumulates": []
+  },
+  "regions": [
+   "tuscany",
+   "netherlands"
+  ],
+  "sowMonthsNL": [
+   3,
+   4,
+   5
+  ],
+  "harvestMonthsNL": [
+   8,
+   9
+  ],
+  "nameNL": "Ananaskers"
+ },
+ "serradelle": {
+  "key": "serradelle",
+  "name": "Serradella",
+  "italian": "Serradelle",
+  "latin": "Ornithopus sativus",
+  "category": "cover-crop",
+  "subcategory": "cover",
+  "soilType": [
+   "sandy",
+   "silty",
+   "loam"
+  ],
+  "soilDepth": 20,
+  "sun": "full",
+  "water": "moderate",
+  "height": 30,
+  "width": 30,
+  "sowMonths": [
+   3,
+   4,
+   5
+  ],
+  "harvestMonths": [
+   6,
+   7,
+   8
+  ],
+  "daysToMaturity": 70,
+  "season": "cool",
+  "function": [
+   "food"
+  ],
+  "nFixer": true,
+  "perennial": false,
+  "native": false,
+  "fireResistant": false,
+  "notes": "Bolster NL variety (cover crop). Sow as green manure; mow/incorporate at flowering.",
+  "spacing": 5,
+  "sowMethod": "Direct",
+  "icon": "🌸",
+  "family": "Fabaceae",
+  "familyNL": "Vlinderbloemenfamilie",
+  "guild": {
+   "gives": [
+    "biomass",
+    "weed-suppression"
+   ],
+   "needs": [
+    "nitrogen",
+    "moisture-retention"
+   ],
+   "companions": [],
+   "antagonists": [],
+   "rootForm": "fibrous",
+   "rootZone": "moderate",
+   "accumulates": []
+  },
+  "regions": [
+   "tuscany",
+   "netherlands"
+  ],
+  "sowMonthsNL": [
+   3,
+   4,
+   5
+  ],
+  "harvestMonthsNL": [
+   6,
+   7,
+   8
+  ],
+  "nameNL": "Serradelle"
+ },
+ "stengelui": {
+  "key": "stengelui",
+  "name": "Welsh onion",
+  "italian": "Stengelui",
+  "latin": "Allium fistulosum",
+  "category": "vegetable",
+  "subcategory": "root",
+  "soilType": [
+   "sandy",
+   "silty",
+   "loam"
+  ],
+  "soilDepth": 40,
+  "sun": "full",
+  "water": "moderate",
+  "height": 40,
+  "width": 25,
+  "sowMonths": [
+   3,
+   4,
+   5,
+   6
+  ],
+  "harvestMonths": [
+   7,
+   8,
+   9,
+   10
+  ],
+  "daysToMaturity": 70,
+  "season": "warm",
+  "function": [
+   "food"
+  ],
+  "nFixer": false,
+  "perennial": false,
+  "native": false,
+  "fireResistant": false,
+  "notes": "Bolster NL variety. Sun: Zon/halfschaduw. Spacing: 25x2,5 cm.",
+  "spacing": 2,
+  "sowMethod": "Direct",
+  "icon": "🌱",
+  "family": "Amaryllidaceae",
+  "familyNL": "Narcisfamilie",
+  "guild": {
+   "gives": [
+    "biomass"
+   ],
+   "needs": [
+    "nitrogen",
+    "moisture-retention"
+   ],
+   "companions": [],
+   "antagonists": [],
+   "rootForm": "fibrous",
+   "rootZone": "moderate",
+   "accumulates": []
+  },
+  "regions": [
+   "tuscany",
+   "netherlands"
+  ],
+  "sowMonthsNL": [
+   3,
+   4,
+   5,
+   6
+  ],
+  "harvestMonthsNL": [
+   7,
+   8,
+   9,
+   10
+  ],
+  "nameNL": "Stengelui"
+ },
+ "veldboon": {
+  "key": "veldboon",
+  "name": "Broad bean",
+  "italian": "Veldboon",
+  "latin": "Vicia faba",
+  "category": "cover-crop",
+  "subcategory": "cover",
+  "soilType": [
+   "sandy",
+   "silty",
+   "loam"
+  ],
+  "soilDepth": 20,
+  "sun": "full",
+  "water": "moderate",
+  "height": 100,
+  "width": 60,
+  "sowMonths": [
+   3,
+   4
+  ],
+  "harvestMonths": [
+   6,
+   7
+  ],
+  "daysToMaturity": 70,
+  "season": "warm",
+  "function": [
+   "food"
+  ],
+  "nFixer": true,
+  "perennial": false,
+  "native": false,
+  "fireResistant": false,
+  "notes": "Bolster NL variety. Sun: Zon. Spacing: 60x20 cm.",
+  "spacing": 20,
+  "sowMethod": "Direct",
+  "icon": "🫛",
+  "family": "Fabaceae",
+  "familyNL": "Vlinderbloemenfamilie",
+  "guild": {
+   "gives": [
+    "biomass",
+    "weed-suppression"
+   ],
+   "needs": [
+    "nitrogen",
+    "moisture-retention"
+   ],
+   "companions": [],
+   "antagonists": [],
+   "rootForm": "fibrous",
+   "rootZone": "moderate",
+   "accumulates": []
+  },
+  "regions": [
+   "tuscany",
+   "netherlands"
+  ],
+  "sowMonthsNL": [
+   3,
+   4
+  ],
+  "harvestMonthsNL": [
+   6,
+   7
+  ],
+  "nameNL": "Veldboon"
  }
 }
