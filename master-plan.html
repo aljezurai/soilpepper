@@ -4294,13 +4294,22 @@ function commit() {
   // (2026-08-13 fix: empty string was being saved as function:"", which made zone-only
   //  cells render as empty '+' in Functions view — the "cells switching" bug)
   const funcReal = (func && func !== 'open') ? func : null;
-  if (funcReal || zone || soil) {
+  // 'open/unassigned' clears the function AND the zone — an open cell has no
+  // function or zone assignment. (2026-08-17: zone was left set when clearing.)
+  const open = (func === 'open');
+  if (funcReal || (!open && zone) || (!open && soil)) {
     data = {};
     if (funcReal) data.function = funcReal;
     if (label) data.label = label;
     if (func === 'guild' && treeKey) data.treeKey = treeKey;
-    if (zone) data.zone = zone;
-    if (soil) data.soil = soil;
+    if (!open && zone) data.zone = zone;
+    if (!open && soil) data.soil = soil;
+  }
+  if (open) {
+    const zs = document.getElementById('zone-select');
+    if (zs) zs.value = '';
+    const ss = document.getElementById('soil-select');
+    if (ss) ss.value = '';
   }
   setCell(r, c, data);
 }
