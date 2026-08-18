@@ -19452,5 +19452,98 @@
    7
   ],
   "nameNL": "Veldboon"
+ },
+ "naakte-haver": {
+  "key": "naakte-haver",
+  "name": "Hulless oats",
+  "nameNL": "Naakte haver",
+  "italian": "Avena nuda",
+  "latin": "Avena nuda",
+  "category": "cover-crop",
+  "subcategory": "cover",
+  "soilType": [
+   "sandy",
+   "loam",
+   "clay",
+   "silty"
+  ],
+  "soilDepth": 20,
+  "sun": "full",
+  "water": "moderate",
+  "height": 90,
+  "width": 15,
+  "sowMonths": [
+   2,
+   3,
+   4
+  ],
+  "harvestMonths": [
+   7,
+   8
+  ],
+  "daysToMaturity": 120,
+  "season": "cool",
+  "function": [
+   "food",
+   "biomass"
+  ],
+  "nFixer": false,
+  "perennial": false,
+  "native": false,
+  "fireResistant": false,
+  "notes": "Oeroud gewas (Avena nuda). Kaf laat bij rijpheid vanzelf los — geen pellen nodig. Rijk aan vezels, eiwit en onverzadigde vetten. Goed rustgewas: verbetert bodemstructuur. Verdraagt natte en licht zure grond (pH 5.5-7.5). Zaaidiepte 2-3 cm, rijafstand 15-25 cm. Lager rendement dan gewone haver (4-5 ton/ha) maar bespaart pellen (25-40% verlies bij gewone haver). Zaai niet te dicht en bemest matig tegen legering. Verkrijgbaar als 'naaktzadige haver'/'hulless oats' (bijv. ras Streaker Hulless).",
+  "spacing": 15,
+  "sowMethod": "Direct",
+  "icon": "🌾",
+  "family": "Poaceae",
+  "familyNL": "Grassenfamilie",
+  "guild": {
+   "gives": [
+    "biomass",
+    "erosion-control",
+    "weed-suppression",
+    "ground-cover",
+    "mycorrhizal-host"
+   ],
+   "needs": [
+    "moisture-retention"
+   ],
+   "companions": [
+    "peas",
+    "fava-beans",
+    "vetch",
+    "white-clover",
+    "alfalfa",
+    "crimson-clover",
+    "berseem-clover"
+   ],
+   "antagonists": [],
+   "rootForm": "fibrous",
+   "rootZone": "moderate",
+   "accumulates": [
+    "potassium",
+    "calcium",
+    "iron",
+    "silica"
+   ]
+  },
+  "regions": [
+   "tuscany",
+   "netherlands"
+  ],
+  "sowPattern": "row",
+  "seedSpacing": 2,
+  "rowSpacing": 20,
+  "seedDepth": 3,
+  "thinTo": 5,
+  "sowMonthsNL": [
+   2,
+   3,
+   4
+  ],
+  "harvestMonthsNL": [
+   7,
+   8
+  ]
  }
 }
