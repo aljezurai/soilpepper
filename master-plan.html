@@ -244,6 +244,16 @@ h1{font-family:var(--font-head);color:var(--accent-emerald);text-align:center;
 .sector-layer.hidden{opacity:0;}
 .sector-layer svg{position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible;}
 
+/* ===== COMPASS (cardinal directions on the grid) ===== */
+.compass{position:absolute;pointer-events:none;z-index:6;font-family:var(--font-mono,monospace);font-weight:700;font-size:13px;color:var(--text-dim);}
+.compass-n{position:absolute;top:4px;left:50%;transform:translateX(-50%);color:#e57373;text-shadow:0 0 3px rgba(0,0,0,.6);}
+.compass-s{position:absolute;bottom:4px;left:50%;transform:translateX(-50%);color:var(--text-dim);text-shadow:0 0 3px rgba(0,0,0,.6);}
+.compass-e{position:absolute;right:4px;top:50%;transform:translateY(-50%);color:var(--text-dim);text-shadow:0 0 3px rgba(0,0,0,.6);}
+.compass-w{position:absolute;left:4px;top:50%;transform:translateY(-50%);color:var(--text-dim);text-shadow:0 0 3px rgba(0,0,0,.6);}
+
+/* ===== SUN SECTOR ROTATION (per plot aspect) ===== */
+#layer-sun svg{transform-origin:50% 50%;}
+
 /* ===== STATS ===== */
 .stats{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:14px}
 .stats-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:stretch;margin-bottom:14px}
@@ -3108,6 +3118,13 @@ button.btn.sp-bk-download {
       <div class="sector-layer" id="layer-water"></div>
       <div class="sector-layer" id="layer-wildlife"></div>
     </div>
+    <!-- Compass (cardinal directions) -->
+    <div class="compass" id="compass">
+      <span class="compass-n">N</span>
+      <span class="compass-e">E</span>
+      <span class="compass-s">S</span>
+      <span class="compass-w">W</span>
+    </div>
   </div>
 </div>
 
@@ -3846,6 +3863,17 @@ function buildSectorLayers() {
       el.dataset.built = '1';
     }
   });
+  // Rotate the sun wedge to match the plot's aspect (slope direction).
+  // The sun SVG's wedge points toward the TOP of the map; we rotate it so the
+  // wedge points toward the aspect compass bearing. Default 'South (180°)' => 180°.
+  const sun = document.getElementById('layer-sun');
+  if (sun) {
+    const brief = typeof loadBrief === 'function' ? loadBrief() : null;
+    const asp = brief && brief.aspect ? brief.aspect : 'South (180°)';
+    const deg = parseInt(String(asp).match(/\d+/), 10) || 180;
+    const svg = sun.querySelector('svg');
+    if (svg) svg.style.transform = 'rotate(' + deg + 'deg)';
+  }
 }
 function toggleSectorLayer(key) {
   const el = document.getElementById('layer-' + key);
