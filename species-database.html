@@ -3673,7 +3673,7 @@ function renderCards() {
   count.innerHTML = T[LANG].count.replace('%1', filtered.length).replace('%2', total);
 
   if (filtered.length === 0) {
-    grid.innerHTML = '<div class="empty-state">🌱 No species match your filters. Try adjusting.</div>';
+    grid.innerHTML = '<div class="empty-state">🌱 ' + tt('noMatches') + '</div>';
     return;
   }
 
@@ -3702,35 +3702,35 @@ function renderCards() {
 
     // Badges
     html += '<div class="card-badges">';
-    html += `<span class="badge badge-category">${CATEGORY_ICONS[s.category]||''} ${CATEGORY_NAMES[s.category]||s.category}</span>`;
+    html += `<span class="badge badge-category">${CATEGORY_ICONS[s.category]||''} ${tval('catV', s.category) || CATEGORY_NAMES[s.category] || s.category}</span>`;
 
     // Soil badges
     if (s.soilType) {
       for (const st of s.soilType) {
-        html += `<span class="badge badge-soil badge-soil-${st}">${SOIL_EMOJI[st]||''} ${st.charAt(0).toUpperCase()+st.slice(1)}</span>`;
+        html += `<span class="badge badge-soil badge-soil-${st}">${SOIL_EMOJI[st]||''} ${tval('soilV', st)}</span>`;
       }
     }
 
     // Function badges
     if (s.function) {
       for (const fn of s.function.slice(0, 3)) {
-        html += `<span class="badge badge-function">${FUNCTION_ICONS[fn]||''} ${fn.replace('-',' ')}</span>`;
+        html += `<span class="badge badge-function">${FUNCTION_ICONS[fn]||''} ${tval('funcV', fn)}</span>`;
       }
       if (s.function.length > 3) html += `<span class="badge badge-function">+${s.function.length-3}</span>`;
     }
 
     // Special badges
-    if (s.nFixer) html += `<span class="badge badge-nfixer">🔄 N-fixer</span>`;
-    if (s.perennial) html += `<span class="badge badge-perennial">➕ Perennial</span>`;
-    if (s.fireResistant) html += `<span class="badge badge-fire">🔥 Fire-resist</span>`;
-    if (s.native) html += `<span class="badge badge-native">🇮🇹 Native</span>`;
+    if (s.nFixer) html += `<span class="badge badge-nfixer">🔄 ${tt('nFixer')}</span>`;
+    if (s.perennial) html += `<span class="badge badge-perennial">➕ ${tt('perennial')}</span>`;
+    if (s.fireResistant) html += `<span class="badge badge-fire">🔥 ${tt('fireResistant')}</span>`;
+    if (s.native) html += `<span class="badge badge-native">🇮🇹 ${tt('native')}</span>`;
 
     html += '</div>';
 
     // Meta
     html += '<div class="card-meta">';
-    html += `<span class="badge-sun">${s.sun === 'full' ? '☀️' : s.sun === 'partial' ? '⛅' : '🌑'} ${s.sun}</span>`;
-    html += `<span class="badge-water">${s.water === 'low' ? '💧' : s.water === 'moderate' ? '💧💧' : '💧💧💧'} ${s.water}</span>`;
+    html += `<span class="badge-sun">${s.sun === 'full' ? '☀️' : s.sun === 'partial' ? '⛅' : '🌑'} ${tval('sunV', s.sun)}</span>`;
+    html += `<span class="badge-water">${s.water === 'low' ? '💧' : s.water === 'moderate' ? '💧💧' : '💧💧💧'} ${tval('waterV', s.water)}</span>`;
     if (s.height) html += `<span>📏 ${s.height}cm</span>`;
     html += '</div>';
 
