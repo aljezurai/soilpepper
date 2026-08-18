@@ -2925,12 +2925,13 @@ document.addEventListener('DOMContentLoaded', function() {
   // Sector Analysis persists its own adjustable inputs (lat/aspect/wind/…).
   // (2026-08-18 fix: updateSectors used to redraw without saving, so edits were lost on reload.)
   var SECTOR_KEY = 'tuscan-sector-v1';
-  function loadSectorSettings() {
+  // Expose globally so updateSectors (in a separate <script> block) can save.
+  window.loadSectorSettings = function() {
     try { return JSON.parse(localStorage.getItem(SECTOR_KEY) || 'null'); } catch (e) { return null; }
-  }
-  function saveSectorSettings(settings) {
+  };
+  window.saveSectorSettings = function(settings) {
     try { localStorage.setItem(SECTOR_KEY, JSON.stringify(settings)); } catch (e) {}
-  }
+  };
 
   // Region from URL first (tools pass ?region=), else the stored brief, else tuscany
   var urlRegion = null;
