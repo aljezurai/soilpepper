@@ -3048,6 +3048,11 @@ document.addEventListener('DOMContentLoaded', function() {
   // Sector Analysis: prefill params from the brief once the page is ready
   // (one-way: brief is the source of truth; user can still override locally)
   function prefillSectorParams() {
+    // Capture the saved sector settings FIRST, before any updateSectors() call
+    // (an early one runs when altitude is set) could overwrite tuscan-sector-v1
+    // with the brief/default values. (2026-08-18 fix: reading saved here means the
+    // restore at the end re-applies the user's lat/wind/coldwind, not defaults.)
+    var savedSector = loadSectorSettings();
     // Aspect: match degrees (e.g. "South (180°)" → 180) to the select options
     var aspEl = document.getElementById('aspect');
     if (aspEl && b.aspect) {
@@ -3163,7 +3168,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // (Masterplan) and always come from it, so Masterplan changes propagate here.
     // (2026-08-18 fix: the earlier restore also overrode slope/altitude with stale
     // saved values, which broke Masterplan→Sector slope propagation.)
-    var saved = loadSectorSettings();
+    var saved = savedSector;
     if (saved) {
       var sf = function(id, val) {
         var el = document.getElementById(id);
