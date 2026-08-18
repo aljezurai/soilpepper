@@ -3142,6 +3142,11 @@ document.addEventListener('DOMContentLoaded', function() {
     var dpRain = document.getElementById('dp-rain');
     var waterForRain = null;
     try { waterForRain = JSON.parse(localStorage.getItem('tuscan-water-v1') || 'null'); } catch (e) {}
+    // Set the Rainfall input (read-only) from the water store so it reflects what's
+    // set in the Masterplan → Water Setup. (2026-08-18 fix: it was left at the
+    // hardcoded 800 default instead of loading the saved value.)
+    var rainInp = document.getElementById('rainfall');
+    if (rainInp && waterForRain && waterForRain.rainfall) rainInp.value = waterForRain.rainfall;
     if (dpRain && waterForRain && waterForRain.rainfall) dpRain.textContent = waterForRain.rainfall;
     // Summary cards: site area + swales
     var cardArea = document.getElementById('card-area');
