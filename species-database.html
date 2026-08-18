@@ -3356,7 +3356,12 @@ var T = {
     funcV: {food:'🍎 Food','n-fixer':'🔄 N-fixer','dynamic-accumulator':'⛏️ Accumulator','ground-cover':'🌱 Ground Cover',pollinator:'🐝 Pollinator','pest-repellent':'🚫 Pest Repellent',biomass:'🌿 Biomass',firebreak:'🔥 Firebreak'},
     regV: {tuscany:'🇮🇹 Tuscany',netherlands:'🇳🇱 Netherlands',either:'🌿 Either'},
     height: 'Height', width: 'Width', native: '🇮🇹 Native', family_: 'Family',
-    perennial: '🌿 Perennial', nFixer: '🔄 N-fixer', fireResistant: '🔥 Fire Resistant'
+    perennial: '🌿 Perennial', nFixer: '🔄 N-fixer', fireResistant: '🔥 Fire Resistant',
+    quickInfo: '📋 Quick Info', soilDepth: '🌱 Soil depth', maturity: '📅 Maturity',
+    days: 'days', traits: '🏷️ Traits', nonNFixer: 'Non N-fixer',
+    annualBiennial: 'Annual / Biennial', introduced: 'Introduced',
+    seasonalCalendar: '📅 Seasonal Calendar', sow: 'Sow', harvest: 'Harvest', notes: '📝 Notes',
+    seasonV: {warm:'☀️ Warm',cool:'❄️ Cool'}
   },
   nl: {
     helpCard: 'Help',
@@ -3371,7 +3376,12 @@ var T = {
     funcV: {food:'🍎 Voedsel','n-fixer':'🔄 Stikstofbinder','dynamic-accumulator':'⛏️ Accumulator','ground-cover':'🌱 Bodembedekker',pollinator:'🐝 Bestuiver','pest-repellent':'🚫 Plaagwerend',biomass:'🌿 Biomassa',firebreak:'🔥 Brandgang'},
     regV: {tuscany:'🇮🇹 Toscane',netherlands:'🇳🇱 Nederland',either:'🌿 Beide'},
     height: 'Hoogte', width: 'Breedte', native: 'Inheems', family_: 'Familie',
-    perennial: '🌿 Overblijvend', nFixer: '🔄 Stikstofbinder', fireResistant: '🔥 Brandwerend'
+    perennial: '🌿 Overblijvend', nFixer: '🔄 Stikstofbinder', fireResistant: '🔥 Brandwerend',
+    quickInfo: '📋 Snelle info', soilDepth: '🌱 Bodemdiepte', maturity: '📅 Volwassen',
+    days: 'dagen', traits: '🏷️ Kenmerken', nonNFixer: 'Geen stikstofbinder',
+    annualBiennial: 'Eenjarig / Tweejarig', introduced: 'Geïntroduceerd',
+    seasonalCalendar: '📅 Seizoenskalender', sow: 'Zaaien', harvest: 'Oogsten', notes: '📝 Notities',
+    seasonV: {warm:'☀️ Warm',cool:'❄️ Koel'}
   }
 };
 function tt(k) { return (T[LANG] && T[LANG][k] !== undefined) ? T[LANG][k] : (T.en[k] !== undefined ? T.en[k] : k); }
@@ -3775,53 +3785,52 @@ function showDetail(key) {
   if (s.familyNL && s.family) html += `<div style="font-size:0.7em;color:${FAMILY_GREEN};margin-bottom:8px;">🌿 ${s.familyNL} (${s.family})</div>`;
 
   // Quick stats
-  html += '<div class="detail-section"><h3>📋 Quick Info</h3><div class="detail-row">';
-  html += `<span class="detail-stat">📏 <strong>Category:</strong> ${CATEGORY_NAMES[s.category]||s.category}</span>`;
-  if (s.sun) html += `<span class="detail-stat">${s.sun === 'full' ? '☀️' : s.sun === 'partial' ? '⛅' : '🌑'} <strong>Sun:</strong> ${s.sun}</span>`;
-  if (s.water) html += `<span class="detail-stat">${s.water === 'low' ? '💧' : s.water === 'moderate' ? '💧💧' : '💧💧💧'} <strong>Water:</strong> ${s.water}</span>`;
-  if (s.height) html += `<span class="detail-stat">📏 <strong>Height:</strong> ${s.height}cm</span>`;
-  if (s.width) html += `<span class="detail-stat">↔️ <strong>Width:</strong> ${s.width}cm</span>`;
-  if (s.soilDepth) html += `<span class="detail-stat">🌱 <strong>Soil depth:</strong> ${s.soilDepth}cm</span>`;
-  if (s.season) html += `<span class="detail-stat">${s.season === 'warm' ? '☀️' : '❄️'} <strong>Season:</strong> ${s.season}</span>`;
-  if (s.daysToMaturity) html += `<span class="detail-stat">📅 <strong>Maturity:</strong> ${s.daysToMaturity} days</span>`;
+  html += '<div class="detail-section"><h3>📋 ' + tt('quickInfo') + '</h3><div class="detail-row">';
+  html += `<span class="detail-stat">📏 <strong>${tt('category')}:</strong> ${tval('catV', s.category) || CATEGORY_NAMES[s.category] || s.category}</span>`;
+  if (s.sun) html += `<span class="detail-stat">${s.sun === 'full' ? '☀️' : s.sun === 'partial' ? '⛅' : '🌑'} <strong>${tt('sun')}:</strong> ${tval('sunV', s.sun)}</span>`;
+  if (s.water) html += `<span class="detail-stat">${s.water === 'low' ? '💧' : s.water === 'moderate' ? '💧💧' : '💧💧💧'} <strong>${tt('water')}:</strong> ${tval('waterV', s.water)}</span>`;
+  if (s.height) html += `<span class="detail-stat">📏 <strong>${tt('height')}:</strong> ${s.height}cm</span>`;
+  if (s.width) html += `<span class="detail-stat">↔️ <strong>${tt('width')}:</strong> ${s.width}cm</span>`;
+  if (s.soilDepth) html += `<span class="detail-stat">🌱 <strong>${tt('soilDepth')}:</strong> ${s.soilDepth}cm</span>`;
+  if (s.season) html += `<span class="detail-stat">${s.season === 'warm' ? '☀️' : '❄️'} <strong>${tt('season')}:</strong> ${tval('seasonV', s.season)}</span>`;
+  if (s.daysToMaturity) html += `<span class="detail-stat">📅 <strong>${tt('maturity')}:</strong> ${s.daysToMaturity} ${tt('days')}</span>`;
   html += '</div></div>';
 
   // Soil tolerance
-  html += '<div class="detail-section"><h3>🌍 Soil Tolerance</h3><div class="soil-table">';
+  html += '<div class="detail-section"><h3>🌍 ' + tt('soilType') + '</h3><div class="soil-table">';
   const allSoils = ['sandy','silty','loam','clay','chalky','peaty'];
-  const soilNames = { sandy:'Sandy', silty:'Silty', loam:'Loam', clay:'Clay', chalky:'Chalky', peaty:'Peaty' };
   for (const st of allSoils) {
     const has = s.soilType && s.soilType.includes(st);
     const tick = has ? '<span class="tick ok">✅</span>' : '<span class="tick no">❌</span>';
     const color = SOIL_COLORS[st] || '#888';
-    html += `<div class="soil-cell" style="border-left:3px solid ${color}">${tick} ${soilNames[st]}</div>`;
+    html += `<div class="soil-cell" style="border-left:3px solid ${color}">${tick} ${tval('soilV', st)}</div>`;
   }
   html += '</div></div>';
 
   // Function
   if (s.function && s.function.length > 0) {
-    html += '<div class="detail-section"><h3>🌿 Functions</h3><div class="detail-row">';
+    html += '<div class="detail-section"><h3>🌿 ' + tt('function') + '</h3><div class="detail-row">';
     for (const fn of s.function) {
-      html += `<span class="tag">${FUNCTION_ICONS[fn]||''} ${fn.replace(/-/g,' ')}</span>`;
+      html += `<span class="tag">${FUNCTION_ICONS[fn]||''} ${tval('funcV', fn)}</span>`;
     }
     html += '</div></div>';
   }
 
   // Flags
-  html += '<div class="detail-section"><h3>🏷️ Traits</h3><div class="detail-row">';
-  if (s.nFixer) html += '<span class="tag" style="border-color:rgba(129,199,132,0.3);color:#81c784;">🔄 Nitrogen-fixing</span>';
-  else html += '<span class="tag">❌ Non N-fixer</span>';
-  if (s.perennial) html += '<span class="tag" style="border-color:rgba(255,183,77,0.3);color:#ffb74d;">➕ Perennial</span>';
-  else html += '<span class="tag">🌱 Annual/Biennial</span>';
-  if (s.fireResistant) html += '<span class="tag" style="border-color:rgba(244,67,54,0.3);color:#ef5350;">🔥 Fire-resistant</span>';
-  if (s.native) html += '<span class="tag" style="border-color:rgba(66,165,245,0.3);color:#42a5f5;">🇮🇹 Native to Italy</span>';
-  else html += '<span class="tag">🌍 Introduced</span>';
+  html += '<div class="detail-section"><h3>🏷️ ' + tt('traits') + '</h3><div class="detail-row">';
+  if (s.nFixer) html += `<span class="tag" style="border-color:rgba(129,199,132,0.3);color:#81c784;">🔄 ${tt('nFixer')}</span>`;
+  else html += `<span class="tag">❌ ${tt('nonNFixer')}</span>`;
+  if (s.perennial) html += `<span class="tag" style="border-color:rgba(255,183,77,0.3);color:#ffb74d;">➕ ${tt('perennial')}</span>`;
+  else html += `<span class="tag">🌱 ${tt('annualBiennial')}</span>`;
+  if (s.fireResistant) html += `<span class="tag" style="border-color:rgba(244,67,54,0.3);color:#ef5350;">🔥 ${tt('fireResistant')}</span>`;
+  if (s.native) html += `<span class="tag" style="border-color:rgba(66,165,245,0.3);color:#42a5f5;">🇮🇹 ${tt('native')}</span>`;
+  else html += `<span class="tag">🌍 ${tt('introduced')}</span>`;
   html += '</div></div>';
 
   // Sow/harvest calendar
   if (s.sowMonths || s.harvestMonths) {
-    html += '<div class="detail-section"><h3>📅 Seasonal Calendar</h3>';
-    html += '<div class="month-legend"><span><span class="dot" style="background:rgba(129,199,132,0.4);"></span>Sow</span><span><span class="dot" style="background:rgba(255,213,79,0.35);"></span>Harvest</span></div>';
+    html += '<div class="detail-section"><h3>📅 ' + tt('seasonalCalendar') + '</h3>';
+    html += '<div class="month-legend"><span><span class="dot" style="background:rgba(129,199,132,0.4);"></span>' + tt('sow') + '</span><span><span class="dot" style="background:rgba(255,213,79,0.35);"></span>' + tt('harvest') + '</span></div>';
     html += '<div class="month-bar">';
     for (let m = 1; m <= 12; m++) {
       const isSow = s.sowMonths && s.sowMonths.includes(m);
@@ -3839,7 +3848,7 @@ function showDetail(key) {
 
   // Notes
   if (s.notes) {
-    html += '<div class="detail-section"><h3>📝 Notes</h3>';
+    html += '<div class="detail-section"><h3>📝 ' + tt('notes') + '</h3>';
     html += `<div class="detail-desc">${s.notes}</div></div>`;
   }
 
@@ -3930,40 +3939,40 @@ function buildMobileDetailHtml(s, content) {
   html += `<h2 style="color:#c5e1a5;margin-bottom:2px;font-size:1.2em;">${s.icon||'🌿'} ${spName(s)}</h2>`;
   html += `<div style="color:rgba(255,255,255,0.4);font-size:0.8em;margin-bottom:10px;font-style:italic;">${s.latin||''}${s.family ? ' · ' + s.family : ''}</div>`;
   // Category
-  html += `<div style="margin-bottom:6px;"><span class="badge badge-category">${s.category||''}</span></div>`;
+  html += `<div style="margin-bottom:6px;"><span class="badge badge-category">${tval('catV', s.category) || CATEGORY_NAMES[s.category] || s.category}</span></div>`;
   // Quick stats
   html += `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;">`;
-  html += `<span class="detail-stat"><strong>☀️</strong> ${s.sun||'—'}</span>`;
-  html += `<span class="detail-stat"><strong>💧</strong> ${s.water||'—'}</span>`;
+  html += `<span class="detail-stat"><strong>☀️</strong> ${tval('sunV', s.sun)||'—'}</span>`;
+  html += `<span class="detail-stat"><strong>💧</strong> ${tval('waterV', s.water)||'—'}</span>`;
   html += `<span class="detail-stat"><strong>📏</strong> ${s.height||'?'}cm</span>`;
   html += `<span class="detail-stat"><strong>↔️</strong> ${s.width||'?'}cm</span>`;
   html += `<span class="detail-stat"><strong>🌱</strong> ${s.soilDepth||'?'}cm</span>`;
   html += `</div>`;
   // Soil tolerance
   if (s.soilType) {
-    html += '<div style="margin-bottom:8px;"><div style="color:#aed581;font-size:0.85em;margin-bottom:4px;">🌍 Soil Tolerance</div><div style="display:flex;flex-wrap:wrap;gap:4px;">';
+    html += '<div style="margin-bottom:8px;"><div style="color:#aed581;font-size:0.85em;margin-bottom:4px;">🌍 ' + tt('soilType') + '</div><div style="display:flex;flex-wrap:wrap;gap:4px;">';
     const allSoils = ['sandy','silty','loam','clay','chalky','peaty'];
     const soilIcon = {sandy:'🏖️',silty:'🌾',loam:'🟫',clay:'🧱',chalky:'🪨',peaty:'🌿'};
     for (const st of allSoils) {
       const has = s.soilType && s.soilType.includes(st);
-      html += `<span style="padding:3px 8px;border-radius:4px;font-size:0.7em;background:#0d1b2a;border:1px solid ${has?'rgba(129,199,132,0.3)':'rgba(255,255,255,0.06)'};color:${has?'#81c784':'rgba(255,255,255,0.4)'};">${has?'✅':'❌'} ${soilIcon[st]||''} ${st}</span>`;
+      html += `<span style="padding:3px 8px;border-radius:4px;font-size:0.7em;background:#0d1b2a;border:1px solid ${has?'rgba(129,199,132,0.3)':'rgba(255,255,255,0.06)'};color:${has?'#81c784':'rgba(255,255,255,0.4)'};">${has?'✅':'❌'} ${soilIcon[st]||''} ${tval('soilV', st)}</span>`;
     }
     html += '</div></div>';
   }
   // Functions
   if (s.function && s.function.length) {
-    html += '<div style="margin-bottom:8px;"><div style="color:#aed581;font-size:0.85em;margin-bottom:4px;">🌿 Functions</div><div style="display:flex;flex-wrap:wrap;gap:4px;">';
+    html += '<div style="margin-bottom:8px;"><div style="color:#aed581;font-size:0.85em;margin-bottom:4px;">🌿 ' + tt('function') + '</div><div style="display:flex;flex-wrap:wrap;gap:4px;">';
     for (const fn of s.function) {
-      html += `<span class="tag">${fn.replace(/-/g,' ')}</span>`;
+      html += `<span class="tag">${tval('funcV', fn)}</span>`;
     }
     html += '</div></div>';
   }
   // Flags
   html += '<div style="margin-bottom:8px;"><div style="display:flex;flex-wrap:wrap;gap:4px;">';
-  if (s.nFixer) html += `<span class="tag" style="border-color:rgba(129,199,132,0.3);color:#81c784;">🔄 N-fixer</span>`;
-  if (s.perennial) html += `<span class="tag" style="border-color:rgba(255,183,77,0.3);color:#ffb74d;">➕ Perennial</span>`;
-  if (s.fireResistant) html += `<span class="tag" style="border-color:rgba(244,67,54,0.3);color:#ef5350;">🔥 Fire-resistant</span>`;
-  if (s.native) html += `<span class="tag" style="border-color:rgba(66,165,245,0.3);color:#42a5f5;">🇮🇹 Native</span>`;
+  if (s.nFixer) html += `<span class="tag" style="border-color:rgba(129,199,132,0.3);color:#81c784;">🔄 ${tt('nFixer')}</span>`;
+  if (s.perennial) html += `<span class="tag" style="border-color:rgba(255,183,77,0.3);color:#ffb74d;">➕ ${tt('perennial')}</span>`;
+  if (s.fireResistant) html += `<span class="tag" style="border-color:rgba(244,67,54,0.3);color:#ef5350;">🔥 ${tt('fireResistant')}</span>`;
+  if (s.native) html += `<span class="tag" style="border-color:rgba(66,165,245,0.3);color:#42a5f5;">🇮🇹 ${tt('native')}</span>`;
   html += '</div></div>';
   // Notes
   if (s.notes) {
