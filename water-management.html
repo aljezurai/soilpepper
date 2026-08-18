@@ -3976,6 +3976,11 @@ function showInfo(id) {
     applyAll();
     var r = document.getElementById('wp-result');
     if (r) r.innerHTML = tt('diagUpdated') + roofHarvestM3() + tt('m3yr') + pressureBar() + tt('bar') + w.swales + '</strong>';
+    // Persist to tuscan-water-v1 so the Masterplan (and other readers) see the
+    // change too. (2026-08-18 fix: only saveWaterDefaults used to write, so
+    // 'Update diagram' changes were lost on reload / not seen by the Masterplan.)
+    w.updatedAt = new Date().toISOString();
+    try { localStorage.setItem(KEY, JSON.stringify(w)); } catch (e) {}
   };
   window.saveWaterDefaults = function () {
     w.updatedAt = new Date().toISOString();
