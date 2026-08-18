@@ -3668,12 +3668,12 @@ function applyI18nSA() {
   <h3>⚙️ Plot Parameters <span style="font-weight:normal;font-size:0.8em;color:#888;">(adjust and the sector plot updates)</span></h3>
   <div class="param-row">
     <label data-i18n="latitude">Latitude</label>
-    <input type="number" id="lat" value="43" step="1" min="0" max="90">
+    <input type="number" id="lat" value="43" step="1" min="0" max="90" onchange="updateSectors()">
     <span class="note">°N (Tuscany ~43°N)</span>
   </div>
   <div class="param-row">
     <label data-i18n="aspect">Aspect</label>
-    <select id="aspect">
+    <select id="aspect" onchange="updateSectors()">
       <option value="180">South (180°)</option>
       <option value="135">SE (135°)</option>
       <option value="225">SW (225°)</option>
@@ -3685,7 +3685,7 @@ function applyI18nSA() {
   </div>
   <div class="param-row">
     <label data-i18n="wind">Prevailing wind</label>
-    <select id="wind">
+    <select id="wind" onchange="updateSectors()">
       <option value="225">SW (225°) — Mediterranean</option>
       <option value="270">W (270°)</option>
       <option value="135">SE (135°) — Sirocco</option>
@@ -3694,7 +3694,7 @@ function applyI18nSA() {
   </div>
   <div class="param-row">
     <label data-i18n="coldwind">Cold wind</label>
-    <select id="coldwind">
+    <select id="coldwind" onchange="updateSectors()">
       <option value="330">NW (330°) — Tramontana</option>
       <option value="0">N (0°)</option>
       <option value="360">N (360°)</option>
@@ -3702,17 +3702,17 @@ function applyI18nSA() {
   </div>
   <div class="param-row">
     <label data-i18n="altitude">Altitude</label>
-    <input type="number" id="altitude" value="300" step="50" min="0" max="2000">
+    <input type="number" id="altitude" value="300" step="50" min="0" max="2000" onchange="updateSectors()">
     <span class="note">m</span>
   </div>
   <div class="param-row">
     <label data-i18n="rainfall">Rainfall</label>
-    <input type="number" id="rainfall" value="800" step="50" min="200" max="2000">
+    <input type="number" id="rainfall" value="800" step="50" min="200" max="2000" onchange="updateSectors()">
     <span class="note">mm/year</span>
   </div>
   <div class="param-row">
     <label data-i18n="slope">Slope gradient</label>
-    <select id="slope">
+    <select id="slope" onchange="updateSectors()">
       <option value="5">Gentle (5%)</option>
       <option value="10" selected>Moderate (10%)</option>
       <option value="15">Steep (15%)</option>
@@ -4040,7 +4040,7 @@ function updateSectors() {
   }).join('');
 
   // Persist the current sector inputs so edits survive a reload (2026-08-18).
-  saveSectorSettings({
+  window.saveSectorSettings({
     lat: lat, aspect: aspect, wind: wind, coldwind: coldwind,
     altitude: altitude, rainfall: rainfall, slope: slope,
     updatedAt: new Date().toISOString()
