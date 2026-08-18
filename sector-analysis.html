@@ -4085,7 +4085,8 @@ function populateWindOptions() {
     var prev = sel.value;
     sel.innerHTML = '';
     opts.forEach(function (o) {
-      var label = isNLregion ? (o.nl || o.tu) : (o.tu || o.nl);
+      // Show ONLY this region's options — no fallback to the other region's list.
+      var label = isNLregion ? o.nl : o.tu;
       if (!label) return;
       var opt = document.createElement('option');
       opt.value = o.v; opt.textContent = label;
