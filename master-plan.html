@@ -248,8 +248,8 @@ h1{font-family:var(--font-head);color:var(--accent-emerald);text-align:center;
 .compass{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:6;font-family:var(--font-mono,monospace);font-weight:700;font-size:12px;color:var(--text-dim);}
 .compass-n{position:absolute;top:-15px;left:50%;transform:translateX(-50%);color:#e57373;text-shadow:0 0 3px rgba(0,0,0,.7);}
 .compass-s{position:absolute;bottom:-15px;left:50%;transform:translateX(-50%);color:var(--text-dim);text-shadow:0 0 3px rgba(0,0,0,.7);}
-.compass-e{position:absolute;right:-18px;top:50%;transform:translateY(-50%);color:var(--text-dim);text-shadow:0 0 3px rgba(0,0,0,.7);}
-.compass-w{position:absolute;left:-18px;top:50%;transform:translateY(-50%);color:var(--text-dim);text-shadow:0 0 3px rgba(0,0,0,.7);}
+.compass-e{position:absolute;right:-20px;top:50%;transform:translateY(-50%);color:var(--text-dim);text-shadow:0 0 3px rgba(0,0,0,.7);text-align:center;line-height:1;}
+.compass-w{position:absolute;left:-20px;top:50%;transform:translateY(-50%);color:var(--text-dim);text-shadow:0 0 3px rgba(0,0,0,.7);text-align:center;line-height:1;}
 
 /* ===== SUN SECTOR ROTATION (per plot aspect) ===== */
 #layer-sun svg{transform-origin:50% 50%;}
@@ -3121,9 +3121,9 @@ button.btn.sp-bk-download {
     <!-- Compass (cardinal directions) -->
     <div class="compass" id="compass">
       <span class="compass-n">north</span>
-      <span class="compass-e">east</span>
+      <span class="compass-e">e<br>a<br>s<br>t</span>
       <span class="compass-s">south</span>
-      <span class="compass-w">west</span>
+      <span class="compass-w">w<br>e<br>s<br>t</span>
     </div>
   </div>
 </div>
