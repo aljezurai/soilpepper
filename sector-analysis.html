@@ -2922,6 +2922,15 @@ document.addEventListener('DOMContentLoaded', function() {
   // READ it — they never write. Falls back to region-appropriate defaults:
   // Tuscan defaults for tuscany, Dutch defaults for netherlands (2026-08-07).
   var KEY = 'tuscan-brief-v1';
+  // Sector Analysis persists its own adjustable inputs (lat/aspect/wind/…).
+  // (2026-08-18 fix: updateSectors used to redraw without saving, so edits were lost on reload.)
+  var SECTOR_KEY = 'tuscan-sector-v1';
+  function loadSectorSettings() {
+    try { return JSON.parse(localStorage.getItem(SECTOR_KEY) || 'null'); } catch (e) { return null; }
+  }
+  function saveSectorSettings(settings) {
+    try { localStorage.setItem(SECTOR_KEY, JSON.stringify(settings)); } catch (e) {}
+  }
 
   // Region from URL first (tools pass ?region=), else the stored brief, else tuscany
   var urlRegion = null;
@@ -3148,6 +3157,18 @@ document.addEventListener('DOMContentLoaded', function() {
     if (subZone && b.climateZone) subZone.textContent = b.climateZone;
     var subLoc = document.getElementById('sub-loc');
     if (subLoc) subLoc.textContent = NL ? 'Nederland' : 'Tuscany, Italy';
+    // Restore any saved sector inputs (user's own edits) LAST so they override the
+    // brief defaults — changed wind/rainfall/etc. survive a reload. (2026-08-18)
+    var saved = loadSectorSettings();
+    if (saved) {
+      var sf = function(id, val) {
+        var el = document.getElementById(id);
+        if (el && val !== undefined && val !== null && val !== '') el.value = val;
+      };
+      sf('lat', saved.lat); sf('aspect', saved.aspect); sf('wind', saved.wind);
+      sf('coldwind', saved.coldwind); sf('altitude', saved.altitude);
+      sf('rainfall', saved.rainfall); sf('slope', saved.slope);
+    }
     if (typeof updateSectors === 'function') updateSectors();
   }
   if (document.readyState === 'loading') {
@@ -4010,6 +4031,13 @@ function updateSectors() {
     const color = s.color || 'rgba(255,255,255,0.1)';
     return `<div class="legend-item"><span class="legend-swatch" style="background:${s.color};border-color:${s.border}"></span>${s.label}</div>`;
   }).join('');
+
+  // Persist the current sector inputs so edits survive a reload (2026-08-18).
+  saveSectorSettings({
+    lat: lat, aspect: aspect, wind: wind, coldwind: coldwind,
+    altitude: altitude, rainfall: rainfall, slope: slope,
+    updatedAt: new Date().toISOString()
+  });
 }
 
 function showSector(id, btn) {
