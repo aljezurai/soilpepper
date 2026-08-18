@@ -3912,7 +3912,7 @@ function calcSunAngles(lat) {
   };
 }
 
-function updateSectors() {
+function updateSectors(noSave) {
   const lat = parseFloat(document.getElementById('lat').value) || 43;
   const aspect = parseInt(document.getElementById('aspect').value);
   const wind = parseInt(document.getElementById('wind').value);
@@ -4040,11 +4040,15 @@ function updateSectors() {
   }).join('');
 
   // Persist the current sector inputs so edits survive a reload (2026-08-18).
-  window.saveSectorSettings({
-    lat: lat, aspect: aspect, wind: wind, coldwind: coldwind,
-    altitude: altitude, rainfall: rainfall, slope: slope,
-    updatedAt: new Date().toISOString()
-  });
+  // Skip on the initial render call (noSave=true) — that would clobber the user's
+  // saved tuscan-sector-v1 with default values before prefill can restore them.
+  if (!noSave) {
+    window.saveSectorSettings({
+      lat: lat, aspect: aspect, wind: wind, coldwind: coldwind,
+      altitude: altitude, rainfall: rainfall, slope: slope,
+      updatedAt: new Date().toISOString()
+    });
+  }
 }
 
 function showSector(id, btn) {
@@ -4058,7 +4062,7 @@ function showSector(id, btn) {
 applyI18nSA();
 applyI18nSA();
 applyNLLogic();
-updateSectors();
+updateSectors(true);  // initial render only — do NOT save (would clobber saved sector settings)
 </script>
 
 <!-- Pass current region to help/tutorial links so the help page opens in the right language -->
