@@ -3158,17 +3158,18 @@ document.addEventListener('DOMContentLoaded', function() {
     if (subZone && b.climateZone) subZone.textContent = b.climateZone;
     var subLoc = document.getElementById('sub-loc');
     if (subLoc) subLoc.textContent = NL ? 'Nederland' : 'Tuscany, Italy';
-    // Restore any saved sector inputs (user's own edits) LAST so they override the
-    // brief defaults — changed wind/rainfall/etc. survive a reload. (2026-08-18)
+    // Restore the sector-specific inputs that the brief does NOT provide
+    // (lat/wind/coldwind). Aspect/slope/altitude/rainfall are OWNED by the brief
+    // (Masterplan) and always come from it, so Masterplan changes propagate here.
+    // (2026-08-18 fix: the earlier restore also overrode slope/altitude with stale
+    // saved values, which broke Masterplan→Sector slope propagation.)
     var saved = loadSectorSettings();
     if (saved) {
       var sf = function(id, val) {
         var el = document.getElementById(id);
         if (el && val !== undefined && val !== null && val !== '') el.value = val;
       };
-      sf('lat', saved.lat); sf('aspect', saved.aspect); sf('wind', saved.wind);
-      sf('coldwind', saved.coldwind); sf('altitude', saved.altitude);
-      sf('rainfall', saved.rainfall); sf('slope', saved.slope);
+      sf('lat', saved.lat); sf('wind', saved.wind); sf('coldwind', saved.coldwind);
     }
     if (typeof updateSectors === 'function') updateSectors();
   }
