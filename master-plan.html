@@ -5039,6 +5039,11 @@ function boot() {
       var base=a.getAttribute('href').split('?')[0];
       a.setAttribute('href', base + '?region=' + r);
     });
+    // Logo/brand → tools page: carry the current region so a Dutch user lands on the
+    // Netherlands tools page, not the Tuscany default. (2026-08-18 fix)
+    document.querySelectorAll('a[href="tools.html"]').forEach(function(a){
+      a.setAttribute('href', 'tools.html?region=' + r);
+    });
   }catch(e){}
 })();
 </script>
