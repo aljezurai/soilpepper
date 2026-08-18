@@ -3693,18 +3693,11 @@ function applyI18nSA() {
   <div class="param-row">
     <label data-i18n="wind">Prevailing wind</label>
     <select id="wind" onchange="updateSectors()">
-      <option value="225">SW (225°) — Mediterranean</option>
-      <option value="270">W (270°)</option>
-      <option value="135">SE (135°) — Sirocco</option>
-      <option value="180">S (180°)</option>
     </select>
   </div>
   <div class="param-row">
     <label data-i18n="coldwind">Cold wind</label>
     <select id="coldwind" onchange="updateSectors()">
-      <option value="330">NW (330°) — Tramontana</option>
-      <option value="0">N (0°)</option>
-      <option value="360">N (360°)</option>
     </select>
   </div>
   <div class="param-row">
@@ -4064,10 +4057,52 @@ function showSector(id, btn) {
   btn.classList.add('active');
 }
 
+// Region-aware wind/cold-wind dropdown options (2026-08-18).
+// Tuscany: Mediterranean winds (SW prevailing, SE Sirocco, NW Tramontana cold).
+// Netherlands: Atlantic winds (SW/W prevailing, NE/E cold).
+function populateWindOptions() {
+  var nl = LANG === 'nl';
+  var isNLregion = nl;
+  var windOpts = [
+    // value, Tuscany-label, NL-label  (label chosen by current region)
+    { v: 225, tu: (nl ? 'ZW (225°) — Middellandse Zee' : 'SW (225°) — Mediterranean'), nl: (nl ? 'ZW (225°) — Atlantisch' : 'SW (225°) — Atlantic') },
+    { v: 270, tu: (nl ? 'W (270°)' : 'W (270°)'),                                        nl: (nl ? 'W (270°)' : 'W (270°)') },
+    { v: 247, tu: null, nl: (nl ? 'WZW (247°)' : 'WSW (247°)') },
+    { v: 202, tu: null, nl: (nl ? 'ZZW (202°)' : 'SSW (202°)') },
+    { v: 135, tu: (nl ? 'ZO (135°) — Sirocco' : 'SE (135°) — Sirocco'), nl: null },
+    { v: 180, tu: (nl ? 'Z (180°)' : 'S (180°)'), nl: null }
+  ];
+  var coldOpts = [
+    { v: 330, tu: (nl ? 'NW (330°) — Tramontana' : 'NW (330°) — Tramontana'), nl: null },
+    { v: 45,  tu: null, nl: (nl ? 'NO (45°)' : 'NE (45°)') },
+    { v: 90,  tu: null, nl: (nl ? 'O (90°)' : 'E (90°)') },
+    { v: 0,   tu: (nl ? 'N (0°)' : 'N (0°)'), nl: (nl ? 'N (0°)' : 'N (0°)') },
+    { v: 360, tu: (nl ? 'N (360°)' : 'N (360°)'), nl: null }
+  ];
+  function fill(selId, opts) {
+    var sel = document.getElementById(selId);
+    if (!sel) return;
+    var prev = sel.value;
+    sel.innerHTML = '';
+    opts.forEach(function (o) {
+      var label = isNLregion ? (o.nl || o.tu) : (o.tu || o.nl);
+      if (!label) return;
+      var opt = document.createElement('option');
+      opt.value = o.v; opt.textContent = label;
+      sel.appendChild(opt);
+    });
+    // try to keep previous selection if it's still valid, else first option
+    sel.value = (prev && Array.prototype.some.call(sel.options, function (o) { return o.value === prev; })) ? prev : sel.options[0] && sel.options[0].value;
+  }
+  fill('wind', windOpts);
+  fill('coldwind', coldOpts);
+}
+
 // Initialize on load
 applyI18nSA();
 applyI18nSA();
 applyNLLogic();
+populateWindOptions();
 updateSectors(true);  // initial render only — do NOT save (would clobber saved sector settings)
 </script>
 
