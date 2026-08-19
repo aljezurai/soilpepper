@@ -3772,9 +3772,18 @@ function renderCards() {
     //      shows results — never a dead page, since Dutch articles use Dutch names).
     const _latin2 = (s.latin || s.key).replace(/\b(var\.|subsp\.|ssp\.|f\.|sp\.|x)\b/gi, '').split(/\s+/).filter(w => /^[A-Za-z]+$/.test(w)).slice(0,2).map((w,i) => i === 0 ? w[0].toUpperCase()+w.slice(1).toLowerCase() : w.toLowerCase()).join('_');
     const _nlterm = (s.nameNL || s.latin || s.key).replace(/\s+/g, ' ');
-    const wikiUrl = (LANG === 'nl')
-      ? 'https://nl.wikipedia.org/w/index.php?search=' + encodeURIComponent(_nlterm) + '&title=Speciaal:Zoeken&fulltext=0'
-      : 'https://en.wikipedia.org/wiki/' + _latin2;
+    // Wikipedia link. If the user set a wiki override in the image editor
+    // (soilpepper.imageOverlay.wiki), use it; else auto-generate. (2026-08-19)
+    let _wikiOverride = null;
+    try {
+      const _wo = JSON.parse(localStorage.getItem('soilpepper.imageOverlay') || '{}');
+      if (_wo && _wo[s.key] && _wo[s.key].wiki) _wikiOverride = _wo[s.key].wiki;
+    } catch(e) {}
+    const wikiUrl = _wikiOverride
+      ? _wikiOverride
+      : (LANG === 'nl'
+          ? 'https://nl.wikipedia.org/w/index.php?search=' + encodeURIComponent(_nlterm) + '&title=Speciaal:Zoeken&fulltext=0'
+          : 'https://en.wikipedia.org/wiki/' + _latin2);
     html += `<a class="card-wiki" href="${wikiUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">📖 ${tt('wiki')}</a>`;
 
     card.innerHTML = html;

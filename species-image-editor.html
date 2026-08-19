@@ -75,17 +75,21 @@ function status(s){
 function toast(m){ var t=document.getElementById('toast'); t.textContent=m; t.classList.add('show'); setTimeout(function(){t.classList.remove('show');},1600); }
 function saveOverlay(){ try{ localStorage.setItem(OVERLAY_KEY, JSON.stringify(overlay)); }catch(e){} }
 
-function setImage(key, val){
+function setField(key, field, val){
   val = (val||'').trim();
-  if (!val) { delete overlay[key]; }
+  if (!val) { if (overlay[key]) delete overlay[key][field]; if (overlay[key] && !Object.keys(overlay[key]).length) delete overlay[key]; }
   else {
     if (!overlay[key]) overlay[key] = {};
-    overlay[key].image = val;
+    overlay[key][field] = val;
   }
   saveOverlay(); render();
   toast(val ? 'Saved ✓' : 'Removed (back to default)');
 }
-function useDefault(key){ delete overlay[key]; saveOverlay(); render(); toast('Reset to default'); }
+function useDefault(key, field){
+  if (overlay[key]) delete overlay[key][field];
+  if (overlay[key] && !Object.keys(overlay[key]).length) delete overlay[key];
+  saveOverlay(); render(); toast('Reset to default');
+}
 
 function render(){
   var q = (document.getElementById('q').value||'').toLowerCase().trim();
@@ -103,15 +107,22 @@ function render(){
                     : '<div class="noimg">'+(s.icon||'🌱')+'</div>';
     var statusCls = st.t==='custom'?'custom':st.t==='has'?'has':'missing';
     var val = (overlay[k]&&overlay[k].image) ? overlay[k].image : '';
+    var wval = (overlay[k]&&overlay[k].wiki) ? overlay[k].wiki : '';
+    var wcur = (overlay[k]&&overlay[k].wiki) ? overlay[k].wiki : (s.wiki || '');
     row.innerHTML =
       thumb +
       '<div class="info"><div class="name">'+(s.icon||'')+' '+(s.name||k)+'</div>'+
       '<div class="latin">'+(s.latin||'')+'</div>'+
       '<div class="status '+statusCls+'">'+st.txt+'</div></div>'+
-      '<input type="url" placeholder="Paste image URL (or empty to use default)" value="'+val+'" onchange="setImage(\''+k+'\',this.value)">'+
+      '<div style="flex:2;min-width:120px;display:flex;flex-direction:column;gap:6px;">'+
+        '<input type="url" placeholder="Image URL (empty = default)" value="'+val+'" onchange="setField(\''+k+'\',\'image\',this.value)">'+
+        '<input type="url" placeholder="Wikipedia page URL (empty = auto)" value="'+wval+'" onchange="setField(\''+k+'\',\'wiki\',this.value)">'+
+      '</div>'+
       '<div class="actions">'+
-        (overlay[k] && overlay[k].image ? '<button class="mini" onclick="useDefault(\''+k+'\')">↩️ default</button>' : '')+
-        (img ? '<button class="mini rem" onclick="setImage(\''+k+'\',\'\')">✕ clear</button>' : '<button class="mini add" onclick="document.querySelector(\'input[data-k=\\"'+k+'\\"]\').focus()">➕ add</button>')+
+        (overlay[k] && overlay[k].image ? '<button class="mini" onclick="useDefault(\''+k+'\',\'image\')">↩️ img</button>' : '')+
+        (overlay[k] && overlay[k].wiki ? '<button class="mini" onclick="useDefault(\''+k+'\',\'wiki\')">↩️ wiki</button>' : '')+
+        (img ? '<button class="mini rem" onclick="setField(\''+k+'\',\'image\',\'\')">✕ img</button>' : '')+
+        (wcur ? '<a class="mini" href="'+wcur+'" target="_blank" rel="noopener">🌐</a>' : '')+
       '</div>';
     // link the "add" button to the input for focus
     var inp = row.querySelector('input');
