@@ -43,6 +43,11 @@
 </header>
 <div class="controls">
   <input type="search" id="q" placeholder="Search species…" oninput="render()">
+  <select id="regionSel" class="btn" style="padding:8px 10px;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:8px;cursor:pointer;" onchange="setRegion(this.value)">
+    <option value="all">🌐 All regions</option>
+    <option value="netherlands">🇳🇱 Netherlands</option>
+    <option value="tuscany">🇮🇹 Tuscany</option>
+  </select>
   <button class="btn" onclick="filterMissing()">Only missing</button>
   <button class="btn" onclick="filterAll()">All</button>
   <button class="btn primary" onclick="downloadOverlay()">📥 Download overlay</button>
@@ -62,6 +67,12 @@ const OVERLAY_KEY = 'soilpepper.imageOverlay';
 let overlay = {};
 try { overlay = JSON.parse(localStorage.getItem(OVERLAY_KEY) || '{}'); } catch(e) {}
 let onlyMissing = false;
+let regionFilter = 'all';
+try {
+  const _rp = new URLSearchParams(window.location.search).get('region');
+  if (_rp === 'netherlands' || _rp === 'tuscany') regionFilter = _rp;
+} catch(e) {}
+function setRegion(v){ regionFilter = v; var sel=document.getElementById('regionSel'); if(sel) sel.value=v; render(); }
 
 // NOTE: some species lack a `key` field in their data (s.key === null), so we
 // must key the overlay by the OBJECT key (k from Object.keys(SPECIES)), not s.key.
@@ -107,9 +118,15 @@ function useDefault(key, field){
 }
 
 function render(){
+  var sel = document.getElementById('regionSel');
+  if (sel && sel.value !== regionFilter) sel.value = regionFilter;
   var q = (document.getElementById('q').value||'').toLowerCase().trim();
   var keys = Object.keys(SPECIES).filter(function(k){
     if (onlyMissing && !isUnhandled(SPECIES[k], k)) return false;
+    if (regionFilter !== 'all') {
+      var regs = SPECIES[k].regions || [];
+      if (regs.indexOf(regionFilter) < 0) return false;
+    }
     if (q){ var s=SPECIES[k]; var hay=[s.name,s.nameNL,s.latin,s.key,k].filter(Boolean).join(' ').toLowerCase(); if(hay.indexOf(q)<0) return false; }
     return true;
   });

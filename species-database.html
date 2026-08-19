@@ -3318,7 +3318,7 @@ document.addEventListener('DOMContentLoaded', function() {
   <span class="count" id="count-display"></span>
   <input type="text" id="search-input" placeholder="🔍 Search…" data-i18n="search" oninput="renderCards()" style="padding:6px 10px;border-radius:6px;border:1px solid #2a3a2a;background:#0d1b2a;color:#e0e0d0;font-size:0.75em;width:180px;outline:none;max-width:100%;">
   <button class="btn btn-danger" onclick="clearAllFilters()"><span data-i18n="clearFilters">🗑️ Clear all filters</span></button>
-  <a class="btn" href="species-image-editor.html?region=tuscany" target="_blank" style="text-decoration:none;color:#8ab4f8;">🖼️ <span data-i18n="editImages">Edit images</span></a>
+  <a class="btn" id="editImagesLink" href="species-image-editor.html?region=tuscany" target="_blank" style="text-decoration:none;color:#8ab4f8;">🖼️ <span data-i18n="editImages">Edit images</span></a>
 </div>
 
 <!-- Mobile filter button -->
@@ -4071,6 +4071,12 @@ function clearAllFilters() {
 
 // ============ INIT ============
 function init() {
+  // Point the "Edit images" link at the current region (2026-08-19)
+  var _eidl = document.getElementById('editImagesLink');
+  if (_eidl) {
+    var _r = (typeof REGION !== 'undefined' && REGION) ? REGION : 'tuscany';
+    _eidl.setAttribute('href', 'species-image-editor.html?region=' + _r);
+  }
   // Read region from URL param
   var urlParams = new URLSearchParams(window.location.search);
   var region = urlParams.get('region');
