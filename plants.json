@@ -806,7 +806,8 @@
    2,
    3
   ],
-  "nameNL": "Zwarte kool"
+  "nameNL": "Zwarte kool",
+  "image": "https://www.rootsplants.co.uk/cdn/shop/files/VEG0560-3_1d2317d8-4105-4123-93a8-a5413a836ec4.jpg?v=1704897100"
  },
  "fennel": {
   "key": "fennel",
@@ -910,7 +911,8 @@
    9,
    10
   ],
-  "nameNL": "Venkel"
+  "nameNL": "Venkel",
+  "image": "https://inspiratie-tuinen.nl/wp-content/uploads/venkel.jpg"
  },
  "peppers": {
   "key": "peppers",
@@ -1111,7 +1113,8 @@
    8,
    9
   ],
-  "nameNL": "Aubergine"
+  "nameNL": "Aubergine",
+  "image": "https://www.rootsplants.co.uk/cdn/shop/products/VEG0266-1.jpg?v=1677069455"
  },
  "kale": {
   "key": "kale",
@@ -1224,7 +1227,8 @@
    11,
    12
   ],
-  "nameNL": "Boerenkool"
+  "nameNL": "Boerenkool",
+  "image": "https://www.rootsplants.co.uk/cdn/shop/products/VEG0109-2_f23d125b-5fde-4f5e-b1e3-c13cadff6de0.jpg?v=1722420769"
  },
  "swiss-chard": {
   "key": "swiss-chard",
@@ -1438,7 +1442,8 @@
    11,
    12
   ],
-  "nameNL": "Broccoli"
+  "nameNL": "Broccoli",
+  "image": "https://www.rootsplants.co.uk/cdn/shop/products/VEG0203-1.jpg?crop=center&height=620&v=1676565460&width=620"
  },
  "artichoke": {
   "key": "artichoke",
@@ -1726,7 +1731,9 @@
    11,
    12
   ],
-  "nameNL": "Bloemkool"
+  "nameNL": "Bloemkool",
+  "image": "https://www.rootsplants.co.uk/cdn/shop/files/tirza_cauliflower_943f48b1-e36e-4420-87a4-753046dcf737.jpg?v=1721946779",
+  "wiki": "https://en.wikipedia.org/wiki/Cauliflower"
  },
  "potatoes": {
   "key": "potatoes",
@@ -2249,7 +2256,8 @@
    10,
    11
   ],
-  "nameNL": "Koriander"
+  "nameNL": "Koriander",
+  "image": "https://www.rootsplants.co.uk/cdn/shop/files/VEG0591-1_bc2fd722-0584-4036-b3cb-19de78cd6530.jpg?v=1704897110"
  },
  "parsley": {
   "key": "parsley",
@@ -3383,7 +3391,9 @@
    7,
    8
   ],
-  "nameNL": "Sjalot"
+  "nameNL": "Sjalot",
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/A._cepa_var._aggregatum_conreu.JPG/1280px-A._cepa_var._aggregatum_conreu.JPG?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "wiki": "https://en.wikipedia.org/wiki/Shallot"
  },
  "turnip": {
   "key": "turnip",
