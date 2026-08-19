@@ -186,6 +186,9 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:3px;font-size:1.5em;}
 .badge-fire{background:rgba(244,67,54,0.12);color:#ef5350;border:1px solid rgba(244,67,54,0.2);}
 .badge-native{background:rgba(66,165,245,0.12);color:#42a5f5;border:1px solid rgba(66,165,245,0.2);}
 .card .card-meta{display:flex;gap:8px;font-size:0.65em;color:rgba(255,255,255,0.4);}
+/* Wikipedia link at the bottom-centre of each card (2026-08-19) */
+.card-wiki{display:block;text-align:center;margin-top:8px;font-size:0.62em;color:#8ab4f8;text-decoration:none;opacity:0.8;border-top:1px solid rgba(255,255,255,0.08);padding-top:6px;}
+.card-wiki:hover{opacity:1;text-decoration:underline;color:#a8c8ff;}
 
 /* Detail panel */
 .detail-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:100;backdrop-filter:blur(2px);}
@@ -3357,7 +3360,8 @@ var T = {
     regV: {tuscany:'🇮🇹 Tuscany',netherlands:'🇳🇱 Netherlands',either:'🌿 Either'},
     height: 'Height', width: 'Width', native: '🇮🇹 Native', family_: 'Family',
     perennial: '🌿 Perennial', nFixer: '🔄 N-fixer', fireResistant: '🔥 Fire Resistant',
-    quickInfo: '📋 Quick Info', soilDepth: '🌱 Soil depth', maturity: '📅 Maturity',
+    quickInfo: '📋 Quick Info',
+    wiki: 'Wikipedia', soilDepth: '🌱 Soil depth', maturity: '📅 Maturity',
     days: 'days', traits: '🏷️ Traits', nonNFixer: 'Non N-fixer',
     annualBiennial: 'Annual / Biennial', introduced: 'Introduced',
     seasonalCalendar: '📅 Seasonal Calendar', sow: 'Sow', harvest: 'Harvest', notes: '📝 Notes',
@@ -3377,7 +3381,8 @@ var T = {
     regV: {tuscany:'🇮🇹 Toscane',netherlands:'🇳🇱 Nederland',either:'🌿 Beide'},
     height: 'Hoogte', width: 'Breedte', native: 'Inheems', family_: 'Familie',
     perennial: '🌿 Overblijvend', nFixer: '🔄 Stikstofbinder', fireResistant: '🔥 Brandwerend',
-    quickInfo: '📋 Snelle info', soilDepth: '🌱 Bodemdiepte', maturity: '📅 Volwassen',
+    quickInfo: '📋 Snelle info',
+    wiki: 'Wikipedia', soilDepth: '🌱 Bodemdiepte', maturity: '📅 Volwassen',
     days: 'dagen', traits: '🏷️ Kenmerken', nonNFixer: 'Geen stikstofbinder',
     annualBiennial: 'Eenjarig / Tweejarig', introduced: 'Geïntroduceerd',
     seasonalCalendar: '📅 Seizoenskalender', sow: 'Zaaien', harvest: 'Oogsten', notes: '📝 Notities',
@@ -3733,6 +3738,10 @@ function renderCards() {
     html += `<span class="badge-water">${s.water === 'low' ? '💧' : s.water === 'moderate' ? '💧💧' : '💧💧💧'} ${tval('waterV', s.water)}</span>`;
     if (s.height) html += `<span>📏 ${s.height}cm</span>`;
     html += '</div>';
+
+    // Wikipedia link (bottom-centre). Auto-generated from the latin name.
+    const wikiUrl = 'https://en.wikipedia.org/wiki/' + (s.latin || s.key).replace(/\b(var\.|subsp\.|ssp\.|f\.|sp\.|x)\b/gi, '').split(/\s+/).filter(w => /^[A-Za-z]+$/.test(w)).slice(0,2).map(w => w[0].toUpperCase()+w.slice(1)).join('_');
+    html += `<a class="card-wiki" href="${wikiUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">📖 ${tt('wiki')}</a>`;
 
     card.innerHTML = html;
     grid.appendChild(card);

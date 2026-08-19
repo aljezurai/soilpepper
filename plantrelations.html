@@ -195,6 +195,10 @@ h1 .sub { color: var(--text2); font-size: 0.6em; margin-left: 12px; font-style: 
 
 .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
 .tag-row .label { font-size: 0.78em; text-transform: uppercase; letter-spacing: 0.5px; color: rgba(255,255,255,0.3); width: 100%; margin-top: 6px; }
+/* Wikipedia link row above the "gives to neighbors" section (2026-08-19) */
+.wiki-row { margin: 4px 0 12px; }
+.wiki-link { font-size: 0.8em; color: #8ab4f8; text-decoration: none; }
+.wiki-link:hover { text-decoration: underline; color: #a8c8ff; }
 .gives-tags .tag, .needs-tags .tag, .mineral-tags .tag {
   display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 6px;
   font-size: 0.8em; cursor: default;
@@ -3372,7 +3376,8 @@ var T = {
     emptyState: 'Select a species to see its companion relationships',
     all: 'All', trees: 'Trees', shrubs: 'Shrubs', veg: 'Veg', herbs: 'Herbs',
     regAll: '🌍 All', regTus: '🇮🇹 Tuscany', regNl: '🇳🇱 Netherlands',
-    givesTo: '✅ Gives to neighbors', needsFrom: '📥 Needs from neighbors', accumulates: '💎 Accumulates',
+    givesTo: '✅ Gives to neighbors',
+    wiki: 'Wikipedia', needsFrom: '📥 Needs from neighbors', accumulates: '💎 Accumulates',
     rootSystem: '🌱 Root system', zone: 'Zone',
     unmetTitle: '⚠️ Unmet needs — no companion in the database currently covers these',
     unmetNeeds: 'Needs', unmetConsider: 'Consider adding species that give:',
@@ -3392,7 +3397,8 @@ var T = {
     emptyState: 'Selecteer een soort om de compagnons-relaties te zien',
     all: 'Alles', trees: 'Bomen', shrubs: 'Struiken', veg: 'Groente', herbs: 'Kruiden',
     regAll: '🌍 Alles', regTus: '🇮🇹 Toscane', regNl: '🇳🇱 Nederland',
-    givesTo: '✅ Geeft aan buren', needsFrom: '📥 Heeft nodig van buren', accumulates: '💎 Accumuleert',
+    givesTo: '✅ Geeft aan buren',
+    wiki: 'Wikipedia', needsFrom: '📥 Heeft nodig van buren', accumulates: '💎 Accumuleert',
     rootSystem: '🌱 Wortelstelsel', zone: 'Zone',
     unmetTitle: '⚠️ Onvervulde behoeften — geen compagnon in de database dekt deze',
     unmetNeeds: 'Behoeften', unmetConsider: 'Overweeg soorten die geven:',
@@ -3661,6 +3667,13 @@ function renderMain() {
       <h2>${s.icon || '🌱'} ${spName(s)}</h2>
       <div class="sub">${s.italian || ''} ${s.latin ? '· <em>' + s.latin + '</em>' : ''} · ${s.familyNL || ''} (${s.family || ''})</div>
   `;
+
+  // Wikipedia link (just above the "gives to neighbors" section). Auto-generated
+  // from the latin name. (2026-08-19)
+  if (s.latin) {
+    const _wikiUrl = 'https://en.wikipedia.org/wiki/' + s.latin.replace(/\b(var\.|subsp\.|ssp\.|f\.|sp\.|x)\b/gi, '').split(/\s+/).filter(w => /^[A-Za-z]+$/.test(w)).slice(0,2).map(w => w[0].toUpperCase()+w.slice(1)).join('_');
+    html += `<div class="wiki-row"><a class="wiki-link" href="${_wikiUrl}" target="_blank" rel="noopener">📖 ${tt('wiki')}</a></div>`;
+  }
 
   // Gives tags
   if (g.gives && g.gives.length) {

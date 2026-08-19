@@ -4065,6 +4065,15 @@ function renderGrid() {
           lb.className = 'cell-label';
           lb.textContent = cell.label;
           div.appendChild(lb);
+        } else if (cell.function === 'guild' && cell.treeKey && SPECIES[cell.treeKey]) {
+          // Fall back to the tree/shrub name so guild cells show their species even
+          // if placed before auto-labels existed. (2026-08-19, mirrors export)
+          const _sp = SPECIES[cell.treeKey];
+          const nm = (LANG === 'nl') ? (_sp.nameNL || _sp.name) : _sp.name;
+          const lb = document.createElement('div');
+          lb.className = 'cell-label';
+          lb.textContent = nm;
+          div.appendChild(lb);
         }
       } else {
         const icon = document.createElement('div');
@@ -4329,7 +4338,14 @@ function commit() {
   if (funcReal || (!open && zone) || (!open && soil)) {
     data = {};
     if (funcReal) data.function = funcReal;
-    if (label) data.label = label;
+    // Auto-fill the cell label with the tree/shrub name when a guild is placed,
+    // unless the user typed their own label. (2026-08-19)
+    let effLabel = label;
+    if (func === 'guild' && treeKey && !effLabel) {
+      const _sp = SPECIES[treeKey];
+      if (_sp) effLabel = (LANG === 'nl') ? (_sp.nameNL || _sp.name) : _sp.name;
+    }
+    if (effLabel) data.label = effLabel;
     if (func === 'guild' && treeKey) data.treeKey = treeKey;
     if (!open && zone) data.zone = zone;
     if (!open && soil) data.soil = soil;
