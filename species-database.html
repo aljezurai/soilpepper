@@ -3728,7 +3728,9 @@ function renderCards() {
     if (s.nFixer) html += `<span class="badge badge-nfixer">🔄 ${tt('nFixer')}</span>`;
     if (s.perennial) html += `<span class="badge badge-perennial">➕ ${tt('perennial')}</span>`;
     if (s.fireResistant) html += `<span class="badge badge-fire">🔥 ${tt('fireResistant')}</span>`;
-    if (s.native) html += `<span class="badge badge-native">🇮🇹 ${tt('native')}</span>`;
+    // 'Native/Introduced' is a Tuscany-centric flag (native-to-Italy) — misleading
+    // for the NL preset, so hide it there. (2026-08-19)
+    if (s.native && LANG !== 'nl') html += `<span class="badge badge-native">🇮🇹 ${tt('native')}</span>`;
 
     html += '</div>';
 
@@ -3839,8 +3841,11 @@ function showDetail(key) {
   if (s.perennial) html += `<span class="tag" style="border-color:rgba(255,183,77,0.3);color:#ffb74d;">➕ ${tt('perennial')}</span>`;
   else html += `<span class="tag">🌱 ${tt('annualBiennial')}</span>`;
   if (s.fireResistant) html += `<span class="tag" style="border-color:rgba(244,67,54,0.3);color:#ef5350;">🔥 ${tt('fireResistant')}</span>`;
-  if (s.native) html += `<span class="tag" style="border-color:rgba(66,165,245,0.3);color:#42a5f5;">🇮🇹 ${tt('native')}</span>`;
-  else html += `<span class="tag">🌍 ${tt('introduced')}</span>`;
+  // 'Native/Introduced' is Tuscany-centric (native-to-Italy) — hide in NL preset. (2026-08-19)
+  if (LANG !== 'nl') {
+    if (s.native) html += `<span class="tag" style="border-color:rgba(66,165,245,0.3);color:#42a5f5;">🇮🇹 ${tt('native')}</span>`;
+    else html += `<span class="tag">🌍 ${tt('introduced')}</span>`;
+  }
   html += '</div></div>';
 
   // Sow/harvest calendar
@@ -3864,7 +3869,7 @@ function showDetail(key) {
 
   // Notes
   if (s.notes) {
-    html += '<div class="detail-section"><h3>📝 ' + tt('notes') + '</h3>';
+    html += '<div class="detail-section"><h3>📝 ' + tt('notes') + (LANG === 'nl' ? ' <span style="color:#b0bec5;font-size:0.7em;font-weight:normal;">🇮🇹 Toscane</span>' : '') + '</h3>';
     html += `<div class="detail-desc">${s.notes}</div></div>`;
   }
 
@@ -3988,11 +3993,12 @@ function buildMobileDetailHtml(s, content) {
   if (s.nFixer) html += `<span class="tag" style="border-color:rgba(129,199,132,0.3);color:#81c784;">🔄 ${tt('nFixer')}</span>`;
   if (s.perennial) html += `<span class="tag" style="border-color:rgba(255,183,77,0.3);color:#ffb74d;">➕ ${tt('perennial')}</span>`;
   if (s.fireResistant) html += `<span class="tag" style="border-color:rgba(244,67,54,0.3);color:#ef5350;">🔥 ${tt('fireResistant')}</span>`;
-  if (s.native) html += `<span class="tag" style="border-color:rgba(66,165,245,0.3);color:#42a5f5;">🇮🇹 ${tt('native')}</span>`;
+  // 'Native' is Tuscany-centric — hide in NL preset. (2026-08-19)
+  if (s.native && LANG !== 'nl') html += `<span class="tag" style="border-color:rgba(66,165,245,0.3);color:#42a5f5;">🇮🇹 ${tt('native')}</span>`;
   html += '</div></div>';
   // Notes
   if (s.notes) {
-    html += `<div style="background:#0d1b2a;padding:8px 10px;border-radius:6px;border-left:3px solid #33691e;font-size:0.78em;color:#b0bec5;line-height:1.4;margin:5px 0;">${s.notes}</div>`;
+    html += `<div style="background:#0d1b2a;padding:8px 10px;border-radius:6px;border-left:3px solid #33691e;font-size:0.78em;color:#b0bec5;line-height:1.4;margin:5px 0;"><span style="color:#8a9a80;font-size:0.72em;">${LANG === 'nl' ? '🇮🇹 Toscane — ' : ''}</span>${s.notes}</div>`;
   }
   content.innerHTML = html;
 }
