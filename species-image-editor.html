@@ -67,9 +67,19 @@ function effImage(s){
   if (overlay[s.key] && overlay[s.key].image) return overlay[s.key].image;
   return s.image || null;
 }
+function effWiki(s){
+  if (overlay[s.key] && overlay[s.key].wiki) return overlay[s.key].wiki;
+  return s.wiki || null;
+}
+// "Only missing" = a species still needing attention: it has NEITHER an image
+// NOR a Wikipedia link (base or override). Once either is set, it leaves the list.
+function isUnhandled(s){
+  return !effImage(s) && !effWiki(s);
+}
 function status(s){
   if (overlay[s.key] && overlay[s.key].image) return {t:'custom', txt:'user override'};
-  if (s.image) return {t:'has', txt:'default'};
+  if (s.image) return {t:'has', txt:'default image'};
+  if (effWiki(s)) return {t:'custom', txt:'wiki only (no image)'};
   return {t:'missing', txt:'no image'};
 }
 function toast(m){ var t=document.getElementById('toast'); t.textContent=m; t.classList.add('show'); setTimeout(function(){t.classList.remove('show');},1600); }
@@ -94,7 +104,7 @@ function useDefault(key, field){
 function render(){
   var q = (document.getElementById('q').value||'').toLowerCase().trim();
   var keys = Object.keys(SPECIES).filter(function(k){
-    if (onlyMissing && effImage(SPECIES[k])) return false;
+    if (onlyMissing && !isUnhandled(SPECIES[k])) return false;
     if (q){ var s=SPECIES[k]; var hay=[s.name,s.nameNL,s.latin,s.key].filter(Boolean).join(' ').toLowerCase(); if(hay.indexOf(q)<0) return false; }
     return true;
   });
