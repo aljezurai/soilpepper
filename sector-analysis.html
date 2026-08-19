@@ -3707,7 +3707,7 @@ function applyI18nSA() {
   </div>
   <div class="param-row">
     <label data-i18n="rainfall">Rainfall</label>
-    <input type="number" id="rainfall" value="800" step="50" min="200" max="2000" disabled title="Set in the Masterplan">
+    <input type="number" id="rainfall" value="850" step="50" min="200" max="2000" disabled title="Set in the Masterplan">
     <span class="note">mm/year</span>
   </div>
   <div class="param-row">
@@ -3917,7 +3917,7 @@ function updateSectors(noSave) {
   const wind = parseInt(document.getElementById('wind').value);
   const coldwind = parseInt(document.getElementById('coldwind').value);
   const altitude = parseInt(document.getElementById('altitude').value) || 300;
-  const rainfall = parseInt(document.getElementById('rainfall').value) || 800;
+  const rainfall = parseInt(document.getElementById('rainfall').value) || ((typeof REGION !== 'undefined' && REGION==='netherlands') ? 850 : 800);
   const slope = parseInt(document.getElementById('slope').value);
 
   const sun = calcSunAngles(lat);

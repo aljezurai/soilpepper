@@ -3238,7 +3238,7 @@ button.btn.sp-bk-download {
       </div>
       <div class="field">
         <label data-i18n="lblClimate">Climate zone</label>
-        <input type="text" id="setup-climate" placeholder="e.g. 8b–9a" value="8b-9a">
+        <input type="text" id="setup-climate" placeholder="e.g. 8b–9a">
       </div>
     </div>
     <div class="field-row">
@@ -3485,15 +3485,21 @@ function applyI18nMP() {
 /* ============ STATE ============ */
 const STORAGE_KEY = 'masterplan-v1';
 const BRIEF_KEY = 'tuscan-brief-v1';   // shared design brief — read by all tools
+// Region resolver: URL ?region= first, else the stored brief's region, else tuscany.
+function defaultRegion() {
+  try { var p=new URLSearchParams(window.location.search); if(p.get('region')==='netherlands'||p.get('region')==='tuscany') return p.get('region'); } catch(e){}
+  try { var raw=localStorage.getItem('tuscan-brief-v1'); if(raw){ var b=JSON.parse(raw); if(b.region==='netherlands'||b.region==='tuscany') return b.region; } } catch(e){}
+  return 'tuscany';
+}
 const DEFAULT_BRIEF = {
-  region: 'tuscany',
-  title: 'Tuscan hillside',
+  region: defaultRegion(),
+  title: (defaultRegion()==='netherlands' ? 'Dutch plot' : 'Tuscan hillside'),
   plotW: 100, plotH: 100, cellSize: 10,
-  defaultSoil: 'silty',
-  altitude: 300,
-  climateZone: '8b-9a',
-  aspect: 'South (180°)',
-  slope: '~10% moderate',
+  defaultSoil: (defaultRegion()==='netherlands' ? 'sandy' : 'silty'),
+  altitude: (defaultRegion()==='netherlands' ? 5 : 300),
+  climateZone: (defaultRegion()==='netherlands' ? '7b-8a' : '8b-9a'),
+  aspect: (defaultRegion()==='netherlands' ? 'West (270°)' : 'South (180°)'),
+  slope: (defaultRegion()==='netherlands' ? '~5% gentle' : '~10% moderate'),
   updatedAt: null
 };
 const FUNC_META = {
@@ -3637,7 +3643,7 @@ function briefFromPlan(p) {
 const WATER_KEY = 'tuscan-water-v1';
 const DEFAULT_WATER = {
   roofArea: 250,      // m²
-  rainfall: 800,      // mm/yr
+  rainfall: (function(){ try { var WQ=new URLSearchParams(window.location.search); if(WQ.get('region')==='netherlands') return 850; if(WQ.get('region')==='tuscany') return 800; } catch(e){} try { var raw=localStorage.getItem('tuscan-brief-v1'); if(raw){ var b=JSON.parse(raw); return b.region==='netherlands' ? 850 : 800; } } catch(e){} return 800; })(),  // mm/yr (NL ~850, Tuscany ~800)
   roofEff: 0.85,
   pondSize: 200,      // m³
   poolSize: 112,      // m³

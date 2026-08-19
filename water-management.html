@@ -3709,7 +3709,7 @@ function showInfo(id) {
 (function () {
   var KEY = 'tuscan-water-v1';
   var DEF = {
-    roofArea: 250, rainfall: 800, roofEff: 0.85,
+    roofArea: 250, rainfall: (function(){ try { var WQ=new URLSearchParams(window.location.search); return WQ.get('region')==='netherlands' ? 850 : 800; } catch(e){ return 800; } })(), roofEff: 0.85,
     pondSize: 200, poolSize: 112, demand: 958,
     tankCount: 3, tankSize: 5000, swales: 4, gravityHead: 10
   };
