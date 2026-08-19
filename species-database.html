@@ -3740,7 +3740,7 @@ function renderCards() {
     html += '</div>';
 
     // Wikipedia link (bottom-centre). Auto-generated from the latin name.
-    const wikiUrl = 'https://en.wikipedia.org/wiki/' + (s.latin || s.key).replace(/\b(var\.|subsp\.|ssp\.|f\.|sp\.|x)\b/gi, '').split(/\s+/).filter(w => /^[A-Za-z]+$/.test(w)).slice(0,2).map(w => w[0].toUpperCase()+w.slice(1)).join('_');
+    const wikiUrl = 'https://en.wikipedia.org/wiki/' + (s.latin || s.key).replace(/\b(var\.|subsp\.|ssp\.|f\.|sp\.|x)\b/gi, '').split(/\s+/).filter(w => /^[A-Za-z]+$/.test(w)).slice(0,2).map((w,i) => i === 0 ? w[0].toUpperCase()+w.slice(1).toLowerCase() : w.toLowerCase()).join('_');
     html += `<a class="card-wiki" href="${wikiUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">📖 ${tt('wiki')}</a>`;
 
     card.innerHTML = html;

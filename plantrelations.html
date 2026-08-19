@@ -3671,7 +3671,7 @@ function renderMain() {
   // Wikipedia link (just above the "gives to neighbors" section). Auto-generated
   // from the latin name. (2026-08-19)
   if (s.latin) {
-    const _wikiUrl = 'https://en.wikipedia.org/wiki/' + s.latin.replace(/\b(var\.|subsp\.|ssp\.|f\.|sp\.|x)\b/gi, '').split(/\s+/).filter(w => /^[A-Za-z]+$/.test(w)).slice(0,2).map(w => w[0].toUpperCase()+w.slice(1)).join('_');
+    const _wikiUrl = 'https://en.wikipedia.org/wiki/' + s.latin.replace(/\b(var\.|subsp\.|ssp\.|f\.|sp\.|x)\b/gi, '').split(/\s+/).filter(w => /^[A-Za-z]+$/.test(w)).slice(0,2).map((w,i) => i === 0 ? w[0].toUpperCase()+w.slice(1).toLowerCase() : w.toLowerCase()).join('_');
     html += `<div class="wiki-row"><a class="wiki-link" href="${_wikiUrl}" target="_blank" rel="noopener">📖 ${tt('wiki')}</a></div>`;
   }
 
