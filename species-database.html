@@ -3739,8 +3739,15 @@ function renderCards() {
     if (s.height) html += `<span>📏 ${s.height}cm</span>`;
     html += '</div>';
 
-    // Wikipedia link (bottom-centre). Auto-generated from the latin name.
-    const wikiUrl = 'https://en.wikipedia.org/wiki/' + (s.latin || s.key).replace(/\b(var\.|subsp\.|ssp\.|f\.|sp\.|x)\b/gi, '').split(/\s+/).filter(w => /^[A-Za-z]+$/.test(w)).slice(0,2).map((w,i) => i === 0 ? w[0].toUpperCase()+w.slice(1).toLowerCase() : w.toLowerCase()).join('_');
+    // Wikipedia link (bottom-centre). Region-aware (2026-08-19):
+    // EN → direct en.wikipedia.org article from the latin name;
+    // NL → nl.wikipedia.org search (redirects to the article if it exists, else
+    //      shows results — never a dead page, since Dutch articles use Dutch names).
+    const _latin2 = (s.latin || s.key).replace(/\b(var\.|subsp\.|ssp\.|f\.|sp\.|x)\b/gi, '').split(/\s+/).filter(w => /^[A-Za-z]+$/.test(w)).slice(0,2).map((w,i) => i === 0 ? w[0].toUpperCase()+w.slice(1).toLowerCase() : w.toLowerCase()).join('_');
+    const _nlterm = (s.nameNL || s.latin || s.key).replace(/\s+/g, ' ');
+    const wikiUrl = (LANG === 'nl')
+      ? 'https://nl.wikipedia.org/w/index.php?search=' + encodeURIComponent(_nlterm) + '&title=Speciaal:Zoeken&fulltext=0'
+      : 'https://en.wikipedia.org/wiki/' + _latin2;
     html += `<a class="card-wiki" href="${wikiUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">📖 ${tt('wiki')}</a>`;
 
     card.innerHTML = html;
