@@ -191,7 +191,10 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:3px;font-size:1.5em;}
 .card-imgprev{position:relative;margin:-2px -4px 6px;border-radius:8px;overflow:visible;border:1px solid rgba(255,255,255,0.08);cursor:zoom-in;}
 .card-imgprev img{width:100%;height:90px;object-fit:cover;display:block;background:#0a1628;border-radius:8px;}
 .card-imgprev .big{display:none;position:absolute;z-index:30;left:50%;top:50%;transform:translate(-50%,-50%) scale(1);width:260px;height:260px;object-fit:cover;border-radius:12px;border:2px solid var(--accent-emerald,#3e6a46);box-shadow:0 10px 30px rgba(0,0,0,.7);background:#0a1628;}
-.card:hover .card-imgprev .big{display:block;}
+/* Show the enlarged preview only when hovering the image itself OR the Wikipedia
+   link — NOT the whole card (which would block the card info). (2026-08-19) */
+.card:has(.card-imgprev:hover) .card-imgprev .big,
+.card:has(.card-wiki:hover) .card-imgprev .big{display:block;}
 /* on touch devices, no hover — show a "tap for image" affordance is not needed since
    the detail popup shows the same image. */
 /* Wikipedia link at the bottom-centre of each card (2026-08-19) */
