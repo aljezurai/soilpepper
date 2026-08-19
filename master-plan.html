@@ -3903,18 +3903,10 @@ function renderPaintbar() {
     bar.style.display = 'flex';
     return;
   }
-  const isZone = view === 'zone';
-  const meta = isZone ? ZONE_META : SOIL_META;
-  const kind = isZone ? 'zone' : 'soil';
-  let html = '';  // paint label removed (2026-08-19) — keep the chip buttons only
-  Object.keys(meta).forEach(function(k) {
-    const active = paintMode && paintMode.kind === kind && paintMode.value === k;
-    html += '<button class="paint-chip' + (active ? ' active' : '') + '" style="background:' + meta[k].color +
-      '" onclick="setPaint(\'' + kind + '\',\'' + k + '\')">' + (isZone ? ('Z' + k) : (meta[k].emoji + ' ' + meta[k].label)) + '</button>';
-  });
-  html += '<button class="paint-chip clear" onclick="setPaint(null,null)">✕ stop</button>';
-  bar.innerHTML = html;
-  bar.style.display = 'flex';
+  // Zones & Soil: paint chips removed (2026-08-19) — cells are edited directly via
+  // the cell editor, so the paint brush added no value. Hide the bar entirely.
+  bar.style.display = 'none';
+  bar.innerHTML = '';
 }
 function sectorLayersAll() {
   const allOn = Object.keys(SECTOR_LAYERS).some(function(k) {
