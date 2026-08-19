@@ -3886,7 +3886,9 @@
    10,
    11
   ],
-  "nameNL": "Koolrabi"
+  "nameNL": "Koolrabi",
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Koolrabi.jpg/960px-Koolrabi.jpg?utm_source=nl.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "wiki": "https://nl.wikipedia.org/wiki/Koolrabi"
  },
  "cime-rapa": {
   "key": "cime-rapa",
@@ -4081,7 +4083,9 @@
    4,
    5
   ],
-  "nameNL": "Asperge"
+  "nameNL": "Asperge",
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Aceera_Nederlandse_asperge_wit_groen_paars_363_2416.jpg/1280px-Aceera_Nederlandse_asperge_wit_groen_paars_363_2416.jpg?utm_source=nl.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "wiki": "https://nl.wikipedia.org/wiki/Asperge"
  },
  "white-clover": {
   "key": "white-clover",
@@ -4476,7 +4480,9 @@
    10,
    11
   ],
-  "nameNL": "Voederwikke"
+  "nameNL": "Voederwikke",
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/%28MHNT%29_Vicia_sativa.jpg/960px-%28MHNT%29_Vicia_sativa.jpg?utm_source=nl.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "wiki": "https://nl.wikipedia.org/wiki/Vicia_sativa"
  },
  "field-bean-cover": {
   "key": "field-bean-cover",
@@ -5456,7 +5462,9 @@
    "netherlands"
   ],
   "icon": "🍐",
-  "nameNL": "Peer"
+  "nameNL": "Peer",
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Conference_pear1.jpg/1280px-Conference_pear1.jpg?utm_source=nl.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "wiki": "https://nl.wikipedia.org/wiki/Peer_(geslacht)"
  },
  "hazelnut": {
   "key": "hazelnut",
@@ -6413,7 +6421,9 @@
    "netherlands"
   ],
   "icon": "🍓",
-  "nameNL": "Braam"
+  "nameNL": "Braam",
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Korina_2011-08-08_Rubus_armeniacus_14.jpg/1920px-Korina_2011-08-08_Rubus_armeniacus_14.jpg?utm_source=nl.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "wiki": "https://nl.wikipedia.org/wiki/Zwarte_braam"
  },
  "raspberry": {
   "key": "raspberry",
@@ -8212,7 +8222,9 @@
    "netherlands"
   ],
   "icon": "🌻",
-  "nameNL": "Bernagie"
+  "nameNL": "Bernagie",
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Borage-overv-hr.jpg/1280px-Borage-overv-hr.jpg?utm_source=nl.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "wiki": "https://nl.wikipedia.org/wiki/Bernagie"
  },
  "chicory": {
   "key": "chicory",
@@ -12442,7 +12454,9 @@
    "rootForm": "",
    "rootZone": ""
   },
-  "nameNL": "Zuurbes"
+  "nameNL": "Zuurbes",
+  "image": "https://upload.wikimedia.org/wikipedia/commons/f/f5/Berberis-vulgaris-flowers.jpg?utm_source=nl.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+  "wiki": "https://nl.wikipedia.org/wiki/Zuurbes"
  },
  "paper-mulberry": {
   "key": "paper-mulberry",
@@ -16164,7 +16178,8 @@
    "rootZone": ""
   },
   "nameNL": "Kruipbraam",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Rubus_rolfei_02.jpg/250px-Rubus_rolfei_02.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/6/65/Hjortron.png?utm_source=nl.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+  "wiki": "https://nl.wikipedia.org/wiki/Kruipbraam"
  },
  "hog-peanut": {
   "key": "hog-peanut",
@@ -18371,7 +18386,8 @@
    "rootZone": ""
   },
   "nameNL": "Wilde peer",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Rosaceae_-_Pyrus_pyraster_-_Perastro-1.JPG/250px-Rosaceae_-_Pyrus_pyraster_-_Perastro-1.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Wild_Pear_Tree_in_full_blossom.JPG/1280px-Wild_Pear_Tree_in_full_blossom.JPG?utm_source=nl.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "wiki": "https://nl.wikipedia.org/wiki/Wilde_peer"
  },
  "riet": {
   "key": "riet",
