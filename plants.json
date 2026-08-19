@@ -10450,7 +10450,8 @@
    "netherlands"
   ],
   "nameNL": "Echte kamille",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Matricaria_February_2008-1.jpg/250px-Matricaria_February_2008-1.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Matricaria_February_2008-1.jpg/250px-Matricaria_February_2008-1.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "key": "chamomile"
  },
  "dill": {
   "name": "Dill",
@@ -10527,7 +10528,8 @@
    8,
    9
   ],
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Illustration_Anethum_graveolens_clean.jpg/250px-Illustration_Anethum_graveolens_clean.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Illustration_Anethum_graveolens_clean.jpg/250px-Illustration_Anethum_graveolens_clean.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "key": "dill"
  },
  "echinacea": {
   "name": "Echinacea",
@@ -10597,7 +10599,8 @@
    "netherlands"
   ],
   "nameNL": "Zonnehoed",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Echinacea_purpurea_Grandview_Prairie.jpg/250px-Echinacea_purpurea_Grandview_Prairie.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Echinacea_purpurea_Grandview_Prairie.jpg/250px-Echinacea_purpurea_Grandview_Prairie.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "key": "echinacea"
  },
  "hyssop": {
   "name": "Hyssop",
@@ -10671,7 +10674,8 @@
    7,
    8
   ],
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Illustration_Hyssopus_officinalis0.jpg/250px-Illustration_Hyssopus_officinalis0.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Illustration_Hyssopus_officinalis0.jpg/250px-Illustration_Hyssopus_officinalis0.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "key": "hyssop"
  },
  "lovage": {
   "name": "Lovage",
@@ -10747,7 +10751,8 @@
    7,
    8,
    9
-  ]
+  ],
+  "key": "lovage"
  },
  "mint": {
   "name": "Mint",
@@ -10818,7 +10823,8 @@
    "netherlands"
   ],
   "nameNL": "Munt",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Minze.jpg/250px-Minze.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Minze.jpg/250px-Minze.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "key": "mint"
  },
  "stevia": {
   "name": "Stevia",
@@ -10879,7 +10885,8 @@
    "netherlands"
   ],
   "nameNL": "Stevia",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Stevia_rebaudiana_flowers.jpg/250px-Stevia_rebaudiana_flowers.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Stevia_rebaudiana_flowers.jpg/250px-Stevia_rebaudiana_flowers.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "key": "stevia"
  },
  "valerian": {
   "name": "Valerian",
@@ -10949,7 +10956,8 @@
    "netherlands"
   ],
   "nameNL": "Echte valeriaan",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Valeriana_officinalis_inflorescence_-_Niitv%C3%A4lja.jpg/250px-Valeriana_officinalis_inflorescence_-_Niitv%C3%A4lja.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Valeriana_officinalis_inflorescence_-_Niitv%C3%A4lja.jpg/250px-Valeriana_officinalis_inflorescence_-_Niitv%C3%A4lja.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "key": "valerian"
  },
  "cucumber": {
   "name": "Cucumber",
@@ -11042,7 +11050,8 @@
    9
   ],
   "nameNL": "Komkommer",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/ARS_cucumber.jpg/250px-ARS_cucumber.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/ARS_cucumber.jpg/250px-ARS_cucumber.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "key": "cucumber"
  },
  "watermelon": {
   "name": "Watermelon",
@@ -11131,7 +11140,8 @@
    10
   ],
   "nameNL": "Watermeloen",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Taiwan_2009_Tainan_City_Organic_Farm_Watermelon_FRD_7962.jpg/250px-Taiwan_2009_Tainan_City_Organic_Farm_Watermelon_FRD_7962.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Taiwan_2009_Tainan_City_Organic_Farm_Watermelon_FRD_7962.jpg/250px-Taiwan_2009_Tainan_City_Organic_Farm_Watermelon_FRD_7962.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "key": "watermelon"
  },
  "pumpkin": {
   "name": "Pumpkin",
@@ -11221,7 +11231,8 @@
    10
   ],
   "nameNL": "Pompoen",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cucurbita_maxima_Blanco2.320.png/250px-Cucurbita_maxima_Blanco2.320.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cucurbita_maxima_Blanco2.320.png/250px-Cucurbita_maxima_Blanco2.320.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "key": "pumpkin"
  },
  "daikon": {
   "name": "Daikon",
@@ -11325,7 +11336,8 @@
    10,
    11
   ],
-  "nameNL": "Daikon"
+  "nameNL": "Daikon",
+  "key": "daikon"
  },
  "sweet-potato": {
   "name": "Sweet potato",
@@ -11417,7 +11429,8 @@
    10
   ],
   "nameNL": "Zoete aardappel",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Ipomoea_batatas_006.JPG/250px-Ipomoea_batatas_006.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Ipomoea_batatas_006.JPG/250px-Ipomoea_batatas_006.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "key": "sweet-potato"
  },
  "rhubarb": {
   "name": "Rhubarb",
@@ -11497,7 +11510,8 @@
   "thinTo": 80,
   "nameNL": "Rabarber",
   "season": "cool",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Rheum_undulatum_in_Jardin_botanique_de_la_Charme.jpg/250px-Rheum_undulatum_in_Jardin_botanique_de_la_Charme.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Rheum_undulatum_in_Jardin_botanique_de_la_Charme.jpg/250px-Rheum_undulatum_in_Jardin_botanique_de_la_Charme.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "key": "rhubarb"
  },
  "sorrel": {
   "name": "Sorrel",
@@ -11589,7 +11603,8 @@
    9,
    10
   ],
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/%28MHNT%29_Rumex_acetosa_-_Habit.jpg/250px-%28MHNT%29_Rumex_acetosa_-_Habit.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/%28MHNT%29_Rumex_acetosa_-_Habit.jpg/250px-%28MHNT%29_Rumex_acetosa_-_Habit.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "key": "sorrel"
  },
  "buckwheat": {
   "name": "Buckwheat",
@@ -11689,7 +11704,8 @@
    8,
    9
   ],
-  "nameNL": "Boekweit"
+  "nameNL": "Boekweit",
+  "key": "buckwheat"
  },
  "mustard": {
   "name": "Mustard",
@@ -11789,7 +11805,8 @@
    11
   ],
   "nameNL": "Mosterd",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Sinapis_alba_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-265.jpg/250px-Sinapis_alba_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-265.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Sinapis_alba_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-265.jpg/250px-Sinapis_alba_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-265.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "key": "mustard"
  },
  "rye": {
   "name": "Rye",
@@ -11868,7 +11885,8 @@
    7
   ],
   "nameNL": "Rogge",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Ear_of_rye.jpg/250px-Ear_of_rye.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Ear_of_rye.jpg/250px-Ear_of_rye.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "key": "rye"
  },
  "oats": {
   "name": "Oats",
@@ -11950,7 +11968,8 @@
    8
   ],
   "nameNL": "Haver",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/AvenaSativa3.jpg/250px-AvenaSativa3.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/AvenaSativa3.jpg/250px-AvenaSativa3.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "key": "oats"
  },
  "barley": {
   "name": "Barley",
@@ -12028,7 +12047,8 @@
    8
   ],
   "nameNL": "Gerst",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Barley_%28Hordeum_vulgare%29_-_United_States_National_Arboretum_-_24_May_2009.jpg/250px-Barley_%28Hordeum_vulgare%29_-_United_States_National_Arboretum_-_24_May_2009.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Barley_%28Hordeum_vulgare%29_-_United_States_National_Arboretum_-_24_May_2009.jpg/250px-Barley_%28Hordeum_vulgare%29_-_United_States_National_Arboretum_-_24_May_2009.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "key": "barley"
  },
  "wheat": {
   "name": "Wheat",
@@ -12105,7 +12125,8 @@
    8
   ],
   "nameNL": "Tarwe",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Bl%C3%A9_tendre_%28GRAPELLI%29_AO-5-cliche_Jean_Weber_%285%29_%2823975019962%29.jpg/250px-Bl%C3%A9_tendre_%28GRAPELLI%29_AO-5-cliche_Jean_Weber_%285%29_%2823975019962%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Bl%C3%A9_tendre_%28GRAPELLI%29_AO-5-cliche_Jean_Weber_%285%29_%2823975019962%29.jpg/250px-Bl%C3%A9_tendre_%28GRAPELLI%29_AO-5-cliche_Jean_Weber_%285%29_%2823975019962%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "key": "wheat"
  },
  "flowering-maple": {
   "key": "flowering-maple",
