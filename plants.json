@@ -108,7 +108,7 @@
    9
   ],
   "nameNL": "Tomaat",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Tomato_je.jpg/250px-Tomato_je.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://www.lawncentral.com/wp-content/uploads/elementor/thumbs/growing-tomatoes2-p2otfxa5jqi106sbe5qur4g7fnw60w3vwagoatiycw.jpg"
  },
  "pole-beans": {
   "key": "pole-beans",
@@ -3887,8 +3887,8 @@
    11
   ],
   "nameNL": "Koolrabi",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Koolrabi.jpg/960px-Koolrabi.jpg?utm_source=nl.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-  "wiki": "https://nl.wikipedia.org/wiki/Koolrabi"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Brassica_oleracea_var._gongylodes_%28kohlrabi%29.jpg/1920px-Brassica_oleracea_var._gongylodes_%28kohlrabi%29.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "wiki": "https://en.wikipedia.org/wiki/Kohlrabi"
  },
  "cime-rapa": {
   "key": "cime-rapa",
@@ -4084,8 +4084,8 @@
    5
   ],
   "nameNL": "Asperge",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Aceera_Nederlandse_asperge_wit_groen_paars_363_2416.jpg/1280px-Aceera_Nederlandse_asperge_wit_groen_paars_363_2416.jpg?utm_source=nl.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-  "wiki": "https://nl.wikipedia.org/wiki/Asperge"
+  "image": "https://www.rootsplants.co.uk/cdn/shop/products/VEG0189-2.jpg?v=1683841774",
+  "wiki": "https://en.wikipedia.org/wiki/Asparagus"
  },
  "white-clover": {
   "key": "white-clover",
@@ -4481,7 +4481,7 @@
    11
   ],
   "nameNL": "Voederwikke",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/%28MHNT%29_Vicia_sativa.jpg/960px-%28MHNT%29_Vicia_sativa.jpg?utm_source=nl.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/%28MHNT%29_Vicia_sativa.jpg/960px-%28MHNT%29_Vicia_sativa.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "wiki": "https://nl.wikipedia.org/wiki/Vicia_sativa"
  },
  "field-bean-cover": {
@@ -5463,7 +5463,7 @@
   ],
   "icon": "🍐",
   "nameNL": "Peer",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Conference_pear1.jpg/1280px-Conference_pear1.jpg?utm_source=nl.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "image": "https://upload.wikimedia.org/wikipedia/commons/c/cf/Pears.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
   "wiki": "https://nl.wikipedia.org/wiki/Peer_(geslacht)"
  },
  "hazelnut": {
@@ -6422,7 +6422,7 @@
   ],
   "icon": "🍓",
   "nameNL": "Braam",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Korina_2011-08-08_Rubus_armeniacus_14.jpg/1920px-Korina_2011-08-08_Rubus_armeniacus_14.jpg?utm_source=nl.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Blackberries_Rubus_ulmifolius2.jpg/1280px-Blackberries_Rubus_ulmifolius2.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "wiki": "https://nl.wikipedia.org/wiki/Zwarte_braam"
  },
  "raspberry": {
@@ -7352,7 +7352,8 @@
    "netherlands"
   ],
   "icon": "🌿",
-  "nameNL": "Stinkende erwt"
+  "nameNL": "Stinkende erwt",
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Anagyris_foetida055.JPG/1920px-Anagyris_foetida055.JPG?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
  },
  "rosemary": {
   "key": "rosemary",
@@ -8223,7 +8224,7 @@
   ],
   "icon": "🌻",
   "nameNL": "Bernagie",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Borage-overv-hr.jpg/1280px-Borage-overv-hr.jpg?utm_source=nl.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Borago_officinalis_%282025%29.jpg/1920px-Borago_officinalis_%282025%29.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "wiki": "https://nl.wikipedia.org/wiki/Bernagie"
  },
  "chicory": {
@@ -9059,7 +9060,8 @@
    "netherlands"
   ],
   "icon": "🍑",
-  "nameNL": "Abrikoos"
+  "nameNL": "Abrikoos",
+  "image": "https://upload.wikimedia.org/wikipedia/commons/f/f9/Apricots.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
  },
  "chestnut": {
   "key": "chestnut",
@@ -9941,7 +9943,8 @@
    "netherlands"
   ],
   "icon": "🌿",
-  "nameNL": "Blazenstruik"
+  "nameNL": "Blazenstruik",
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Colutea_arborescens_15-05-2009_15-19-27.JPG/960px-Colutea_arborescens_15-05-2009_15-19-27.JPG?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
  },
  "cardoon": {
   "key": "cardoon",
@@ -10158,7 +10161,9 @@
   "thinTo": 20,
   "nameNL": "Catalaanse andijvie",
   "season": "cool",
-  "width": 35
+  "width": 35,
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Puntarelle_stehend.jpg/1920px-Puntarelle_stehend.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "wiki": "https://en.wikipedia.org/wiki/Puntarelle"
  },
  "jerusalem-artichoke": {
   "key": "jerusalem-artichoke",
@@ -10764,7 +10769,9 @@
    8,
    9
   ],
-  "key": "lovage"
+  "key": "lovage",
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Liebst%C3%B6ckel.JPG/250px-Liebst%C3%B6ckel.JPG?utm_source=en.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+  "wiki": "https://en.wikipedia.org/wiki/Lovage"
  },
  "mint": {
   "name": "Mint",
@@ -11349,7 +11356,9 @@
    11
   ],
   "nameNL": "Daikon",
-  "key": "daikon"
+  "key": "daikon",
+  "image": "https://upload.wikimedia.org/wikipedia/commons/5/57/Daikon%2C_Nara_Prefecture%2C_Japan.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+  "wiki": "https://en.wikipedia.org/wiki/Daikon"
  },
  "sweet-potato": {
   "name": "Sweet potato",
@@ -11717,7 +11726,9 @@
    9
   ],
   "nameNL": "Boekweit",
-  "key": "buckwheat"
+  "key": "buckwheat",
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Japanese_Buckwheat_Flower.JPG/1280px-Japanese_Buckwheat_Flower.JPG?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "wiki": "https://en.wikipedia.org/wiki/Buckwheat"
  },
  "mustard": {
   "name": "Mustard",
@@ -12774,7 +12785,8 @@
    "rootZone": ""
   },
   "nameNL": "Japanese pruimtaxus",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Cephalotaxus_harringtonia_BotGardBln1105WithSeeds.JPG/250px-Cephalotaxus_harringtonia_BotGardBln1105WithSeeds.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Cephalotaxus_harringtonia_BotGardBln1105WithSeeds.JPG/250px-Cephalotaxus_harringtonia_BotGardBln1105WithSeeds.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "wiki": "https://en.wikipedia.org/wiki/Cephalotaxus_harringtonii"
  },
  "judas-tree": {
   "key": "judas-tree",
@@ -13571,7 +13583,9 @@
    "rootForm": "",
    "rootZone": ""
   },
-  "nameNL": "Honingbes"
+  "nameNL": "Honingbes",
+  "image": "https://upload.wikimedia.org/wikipedia/commons/6/62/Lonicera_coerulea_a3.jpg?utm_source=nl.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+  "wiki": "https://nl.wikipedia.org/wiki/Honingbes"
  },
  "oregon-grape": {
   "key": "oregon-grape",
@@ -14150,7 +14164,9 @@
    "rootForm": "",
    "rootZone": ""
   },
-  "nameNL": "Zwarte bes"
+  "nameNL": "Zwarte bes",
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Blackcurrant_1.jpg/960px-Blackcurrant_1.jpg?utm_source=nl.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "wiki": "https://nl.wikipedia.org/wiki/Zwarte_bes"
  },
  "gooseberry": {
   "key": "gooseberry",
@@ -14734,7 +14750,9 @@
    "rootForm": "",
    "rootZone": ""
   },
-  "nameNL": "Taxus"
+  "nameNL": "Taxus",
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Taxus_baccata_MHNT.jpg/1280px-Taxus_baccata_MHNT.jpg?utm_source=nl.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "wiki": "https://nl.wikipedia.org/wiki/Venijnboom"
  },
  "small-leaved-lime": {
   "key": "small-leaved-lime",
@@ -15329,7 +15347,9 @@
    "rootForm": "",
    "rootZone": ""
   },
-  "nameNL": "Muskuskaasjeskruid"
+  "nameNL": "Muskuskaasjeskruid",
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Mauve_musqu%C3%A9e_%28Malva_moschata%29.jpg/960px-Mauve_musqu%C3%A9e_%28Malva_moschata%29.jpg?utm_source=nl.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "wiki": "https://nl.wikipedia.org/wiki/Muskuskaasjeskruid"
  },
  "mayapple": {
   "key": "mayapple",
@@ -15909,7 +15929,9 @@
   "rowSpacing": 30,
   "seedDepth": 2,
   "thinTo": 20,
-  "nameNL": "Aardnootje"
+  "nameNL": "Aardnootje",
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Arachis_hypogaea2.jpg/1280px-Arachis_hypogaea2.jpg?utm_source=nl.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "wiki": "https://nl.wikipedia.org/wiki/Pinda"
  },
  "chinese-mallow": {
   "key": "chinese-mallow",
@@ -16248,7 +16270,8 @@
   "seedDepth": 2,
   "thinTo": 20,
   "nameNL": "Aardnoot",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Apios_americana_in_flower_%28American_groundnut%3B_Indian_potato%29_1_%2820278465435%29.jpg/250px-Apios_americana_in_flower_%28American_groundnut%3B_Indian_potato%29_1_%2820278465435%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Arachis_hypogaea2.jpg/1280px-Arachis_hypogaea2.jpg?utm_source=nl.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "wiki": "https://nl.wikipedia.org/wiki/Pinda"
  },
  "burdock": {
   "key": "burdock",
@@ -16534,7 +16557,9 @@
   "rowSpacing": 40,
   "seedDepth": 1,
   "thinTo": 20,
-  "nameNL": "Suikerwortel"
+  "nameNL": "Suikerwortel",
+  "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.magicgardenseeds.nl%2Fmedia%2Fimage%2Fproduct%2F1883%2Flg%2Fzuckerwurzel-sium-sisarum-samen~3.jpg&f=1&nofb=1&ipt=fc2575293ad517f5d11304ade985556984a070c275d139c3c157bbeb8a2a4283",
+  "wiki": "https://nl.wikipedia.org/wiki/Suikerwortel"
  },
  "ulluco": {
   "key": "ulluco",
@@ -17137,7 +17162,8 @@
    "rootForm": "",
    "rootZone": ""
   },
-  "nameNL": "Chinese blauweregen"
+  "nameNL": "Chinese blauweregen",
+  "image": "https://upload.wikimedia.org/wikipedia/commons/0/01/N2_Wisteria4.jpg?utm_source=nl.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
  },
  "shagbark-hickory": {
   "key": "shagbark-hickory",
@@ -17770,7 +17796,8 @@
    "rootForm": "",
    "rootZone": ""
   },
-  "nameNL": "Kardinaalsmuts"
+  "nameNL": "Kardinaalsmuts",
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Euonymus_europaeus_2024_G2.jpg/1920px-Euonymus_europaeus_2024_G2.jpg?utm_source=nl.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
  },
  "hulst": {
   "key": "hulst",
@@ -18392,7 +18419,8 @@
    "rootForm": "",
    "rootZone": ""
   },
-  "nameNL": "Riet"
+  "nameNL": "Riet",
+  "image": "https://upload.wikimedia.org/wikipedia/commons/f/fa/Phragmites_australis1.jpg?utm_source=nl.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
  },
  "witte-waterlelie": {
   "key": "witte-waterlelie",
@@ -19167,7 +19195,9 @@
    10,
    11
   ],
-  "nameNL": "Koolraap"
+  "nameNL": "Koolraap",
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Rutabaga%2C_variety_nadmorska.JPG/1280px-Rutabaga%2C_variety_nadmorska.JPG?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "wiki": "https://en.wikipedia.org/wiki/Rutabaga"
  },
  "mesclun": {
   "key": "mesclun",
@@ -19243,7 +19273,9 @@
    9,
    10
   ],
-  "nameNL": "Mesclun"
+  "nameNL": "Mesclun",
+  "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimages.contentstack.io%2Fv3%2Fassets%2Fbltcedd8dbd5891265b%2Fblt4350c6d2995acd08%2F6670812beba562273c32217a%2Fmesclun-hero.jpg%3Fq%3D70%26width%3D1080%26auto%3Dwebp&f=1&nofb=1&ipt=ee69e6d7d277541a79b0e48003303fcb24bf478e99fe5be474d294a229e62b5a",
+  "wiki": "https://en.wikipedia.org/wiki/Mesclun"
  },
  "paksoi": {
   "key": "paksoi",
@@ -19316,7 +19348,9 @@
    9,
    10
   ],
-  "nameNL": "Paksoi"
+  "nameNL": "Paksoi",
+  "image": "https://upload.wikimedia.org/wikipedia/commons/6/61/Bokchoy.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+  "wiki": "https://en.wikipedia.org/wiki/Bok_choy"
  },
  "pronkboon": {
   "key": "pronkboon",
