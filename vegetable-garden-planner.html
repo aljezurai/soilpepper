@@ -3813,7 +3813,7 @@ function renderPalette() {
         setTimeout(() => this.style.opacity = '0.5', 0);
       };
       el.ondragend = function() { this.style.opacity = '1'; };
-      el.ondblclick = function() {
+      el.onclick = function() {
         const key = this.dataset.plantKey;
         const type = PLANTS[key].category;
         for (let r = 0; r < rows.length; r++) {
