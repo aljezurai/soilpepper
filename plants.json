@@ -12993,58 +12993,6 @@
   "nameNL": "Azarolmeidoorn",
   "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Hawthorn_in_blossom.jpg/250px-Hawthorn_in_blossom.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
  },
- "dead-mans-fingers": {
-  "key": "dead-mans-fingers",
-  "name": "Dead Man's Fingers",
-  "italian": "",
-  "latin": "Decaisnea fargesii",
-  "dutchName": "Agurkenstruik",
-  "category": "shrub",
-  "subcategory": "",
-  "soilType": [
-   "loam",
-   "clay",
-   "sandy"
-  ],
-  "soilDepth": "",
-  "sun": "partial",
-  "water": "high",
-  "height": 400,
-  "width": 400,
-  "sowMonths": "",
-  "harvestMonths": "",
-  "daysToMaturity": "",
-  "season": "",
-  "function": "",
-  "nFixer": false,
-  "perennial": true,
-  "native": false,
-  "fireResistant": false,
-  "notes": "Ornamental shrub with unusual bright blue, edible pods (jelly-like texture, sweet). Shade-tolerant, makes a striking conversation piece.",
-  "spacing": "",
-  "sowMethod": "",
-  "icon": "🌿",
-  "family": "Lardizabalaceae",
-  "familyNL": "",
-  "regions": [
-   "netherlands"
-  ],
-  "guild": {
-   "gives": [
-    "biomass"
-   ],
-   "needs": [
-    "shade",
-    "moisture-retention"
-   ],
-   "accumulates": [],
-   "companions": [],
-   "antagonists": [],
-   "rootForm": "",
-   "rootZone": ""
-  },
-  "nameNL": "Dode mans vingers"
- },
  "date-plum": {
   "key": "date-plum",
   "name": "Date-plum",
