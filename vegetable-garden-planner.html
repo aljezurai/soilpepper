@@ -3642,6 +3642,14 @@ function todayStr() {
   return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
 }
 
+// Cap a display name to a max number of characters, ending with '..' (2026-08-24).
+function truncateName(name, max) {
+  name = String(name || '');
+  max = max || 10;
+  if (name.length <= max) return name;
+  return name.slice(0, max) + '..';
+}
+
 function saveLocalStorage() {
   try {
     const data = {version:3, cfg: gardenCfg, rows: rows};
@@ -3933,9 +3941,11 @@ function makePlantEl(r, s, j, obj) {
   const days = getDaysSince(plantedDate);
   const badgeColor = getDaysColor(days, plant.daysToMaturity || 0);
   const subLabel = rowsPerBed() > 1 ? `<div style="font-size:0.6em;color:rgba(0,0,0,0.45);line-height:1">${tt('row')} ${sub + 1}</div>` : '';
+  const dispName = LANG === 'nl' ? (plant.nameNL || plant.name) : plant.name;
+  const shortName = truncateName(dispName, 10);
   // Days badge below the species name (2026-08-24) — one crop per section layout
   const badgeHtml = `<span class="days-badge" style="background:${badgeColor};color:#0d1b2a;display:inline-block;margin-top:2px;font-size:0.7em;padding:0 4px;border-radius:4px;cursor:pointer;" onclick="event.stopPropagation();openDatePicker(${r},${s},${j})" title="Click to set planted date">${days} ${tt('days')}</span>`;
-  el.innerHTML = `<div style="line-height:1.2;white-space:nowrap">${plant.icon} ${plant.name}</div>${subLabel}${badgeHtml} <span class="remove-btn" onclick="event.stopPropagation();removePlant(${r},${s},${j})">✕</span>`;
+  el.innerHTML = `<div style="line-height:1.2;white-space:nowrap" title="${dispName}">${plant.icon} ${shortName}</div>${subLabel}${badgeHtml} <span class="remove-btn" onclick="event.stopPropagation();removePlant(${r},${s},${j})">✕</span>`;
   el.ondragstart = function(e) {
     e.dataTransfer.setData('text/plain', key);
     e.dataTransfer.setData('application/row-index', String(r));
