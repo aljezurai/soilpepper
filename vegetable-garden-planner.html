@@ -156,6 +156,10 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:4px;font-size:1.4em;}
 
 /* Plant in bed */
 .plant-in-bed{display:inline-flex;align-items:center;gap:3px;padding:3px 6px;border-radius:4px;font-size:0.55em;border:1px solid rgba(255,255,255,0.15);cursor:grab;transition:all .2s;position:relative;}
+/* Inside a section box, stack the days badge BELOW the species name (2026-08-24) */
+.bed-section .plant-in-bed{flex-direction:column;text-align:center;background:rgba(120,160,120,0.18);border-color:rgba(90,138,74,0.5);}
+.bed-section .plant-in-bed .days-badge{display:block;margin-top:3px;}
+.bed-section .plant-in-bed .remove-btn{position:absolute;top:0;right:2px;}
 .plant-wrap{width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:1px;}
 .conflict-badge{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:rgba(244,67,54,0.85);font-size:0.6em;line-height:1;margin-left:4px;cursor:help;flex-shrink:0;}
 .plant-in-bed:active{cursor:grabbing;}
@@ -3280,6 +3284,7 @@ button.btn.sp-bk-download {
       </select></label>
       <label><span data-i18n="bedWidth">Bed width</span> <input type="number" id="cfg-width" value="0.75" min="0.5" max="1.2" step="0.05" style="width:64px"> m</label>
       <label><span data-i18n="slotLen">Slot length</span> <input type="number" id="cfg-slot" value="10" min="5" max="20" step="1" style="width:58px"> m</label>
+      <label><span data-i18n="sectionLen">Section length</span> <input type="number" id="cfg-section" value="2.5" min="1" max="10" step="0.5" style="width:58px"> m</label>
       <span class="g-hint" id="garden-hint"></span>
     </div>
     <!-- Drag-instructions bar — outlined with the module header (2026-08-09):
@@ -3468,7 +3473,7 @@ var T = {
     vegPlanner: 'Vegetable Garden Planner',
     beds: 'Beds', subDrag: 'Drag plants from the palette onto beds · Hover over a plant to remove · Click for details · Click days badge to set date',
     modules: 'Modules', rows6: '1 (6 rows)', rows12: '2 (12 rows)', rows18: '3 (18 rows)',
-    bedWidth: 'Bed width', slotLen: 'Slot length',
+    bedWidth: 'Bed width', slotLen: 'Slot length', sectionLen: 'Section length', sectionsPerCell: 'sections',
     palette: 'Plant Palette', dragOnto: 'Drag onto beds',
     footerNote: 'everything runs on your device \u2014 no server, works offline',
     sowChipTitle: 'Add to the first fitting bed', noBedForType: 'No free bed for this plant type',
@@ -3504,7 +3509,7 @@ var T = {
     vegPlanner: 'Moestuinplanner',
     beds: 'Bedden', subDrag: 'Sleep planten van het palet naar de bedden · Hover over een plant om te verwijderen · Klik voor details · Klik op de dagen-badge om datum te zetten',
     modules: 'Modules', rows6: '1 (6 rijen)', rows12: '2 (12 rijen)', rows18: '3 (18 rijen)',
-    bedWidth: 'Bedbreedte', slotLen: 'Perceellengte',
+    bedWidth: 'Bedbreedte', slotLen: 'Perceellengte', sectionLen: 'Perceeldeel lengte', sectionsPerCell: 'vakken',
     palette: 'Plantenpalet', dragOnto: 'Sleep naar bedden',
     footerNote: 'alles draait op jouw apparaat \u2014 geen server, werkt offline',
     sowChipTitle: 'Voeg toe aan het eerste passende bed', noBedForType: 'Geen vrij bed voor dit planttype',
@@ -3559,9 +3564,11 @@ let gardenCfg = {
   modules: 2,        // 1..3  → 6 / 12 / 18 rows
   rowsPerModule: 6,
   bedWidth: 0.75,    // m
-  slotLen: 10        // m per slot (= one cell)
+  slotLen: 10,       // m per slot (= one cell)
+  sectionLen: 2.5    // m per section — one crop per section (2026-08-24)
 };
 // rows[r] = { joined: bool, slots: [[plants...],[plants...]] }
+// Each placed plant object: {key, plantedDate, sec} — sec = which section of the slot it occupies.
 let rows = [];
 let showCalendar = false;
 let showSowHarvest = false;
@@ -3584,6 +3591,36 @@ function rowLengthM(r) { return rows[r] && rows[r].joined ? gardenCfg.slotLen * 
 function rowAreaM2(r) { return gardenCfg.bedWidth * rowLengthM(r); }
 function pathWidthM() {
   return (gardenCfg.slotLen - gardenCfg.rowsPerModule * gardenCfg.bedWidth) / gardenCfg.rowsPerModule;
+}
+// Sections per single 10m cell (one crop per section). Joined beds get 2× these.
+function sectionsPerCell() {
+  const n = Math.round(gardenCfg.slotLen / gardenCfg.sectionLen);
+  return Math.max(1, n);
+}
+function sectionsForRow(r) { return (rows[r] && rows[r].joined) ? sectionsPerCell() * 2 : sectionsPerCell(); }
+// first free section index in a slot, or -1 when full
+function firstFreeSec(r, s) {
+  const total = sectionsForRow(r);
+  const taken = (rows[r].slots[s] || []).map(p => (p && typeof p === 'object' ? p.sec : undefined));
+  for (let i = 0; i < total; i++) if (taken.indexOf(i) < 0) return i;
+  return -1;
+}
+// Place a plant into the first free section of bed (r,s). Returns true if placed.
+function placePlant(key, r, s) {
+  const sec = firstFreeSec(r, s);
+  if (sec < 0) return false;
+  rows[r].slots[s].push({key: key, plantedDate: todayStr(), sec: sec});
+  return true;
+}
+// Place into the first fitting bed by row-type, filling free sections. Returns r or -1.
+function placeInFittingBed(key) {
+  const type = PLANTS[key].category;
+  for (let r = 0; r < rows.length; r++) {
+    if (rowType(r) !== type) continue;
+    if (placePlant(key, r, 0)) return r;
+    if (!rows[r].joined && placePlant(key, r, 1)) return r;
+  }
+  return -1;
 }
 function initRows() {
   rows = [];
@@ -3609,6 +3646,21 @@ function normPlant(item) {
   if (item && typeof item === 'object' && item.key) return {key: item.key, plantedDate: item.plantedDate || todayStr()};
   return null;
 }
+// Assign sec to any plant missing it (legacy layouts), filling sections in order.
+function assignMissingSec(r) {
+  if (!rows[r]) return;
+  for (let s = 0; s < 2; s++) {
+    const arr = rows[r].slots[s] || [];
+    let secCursor = 0;
+    arr.forEach(p => {
+      if (p && p.sec === undefined) {
+        while (arr.filter(o => o !== p && o.sec === secCursor).length) secCursor++;
+        p.sec = secCursor;
+        secCursor++;
+      }
+    });
+  }
+}
 
 function loadLocalStorage() {
   try {
@@ -3622,6 +3674,7 @@ function loadLocalStorage() {
       gardenCfg.modules = Math.max(1, Math.min(3, gardenCfg.modules || 2));
       gardenCfg.bedWidth = Math.max(0.5, Math.min(1.2, gardenCfg.bedWidth || 0.75));
       gardenCfg.slotLen = Math.max(5, Math.min(20, gardenCfg.slotLen || 10));
+      gardenCfg.sectionLen = Math.max(1, Math.min(10, gardenCfg.sectionLen || 2.5));
       rows = [];
       for (let r = 0; r < rowCount(); r++) {
         const src = data.rows[r] || {joined: false, slots: [[], []]};
@@ -3632,6 +3685,8 @@ function loadLocalStorage() {
             (src.slots && src.slots[1] ? src.slots[1].map(normPlant).filter(Boolean) : [])
           ]
         });
+        // Migration: legacy plants lack `sec` → assign sequential sections per slot
+        assignMissingSec(r);
       }
       return true;
     }
@@ -3816,27 +3871,21 @@ function renderPalette() {
       el.onclick = function() {
         const key = this.dataset.plantKey;
         const type = PLANTS[key].category;
-        for (let r = 0; r < rows.length; r++) {
-          if (rowType(r) === type) {
-            rows[r].slots[0].push({key: key, plantedDate: todayStr()});
-            const conflicts = plantConflicts(key, r, 0);
-            render();
-            if (conflicts.length > 0) {
-              const names = conflicts.map(k2 => PLANTS[k2] ? (LANG === 'nl' ? (PLANTS[k2].nameNL || PLANTS[k2].name) : PLANTS[k2].name) : k2);
-              showInfo('⚠️ ' + tt('conflictLbl') + ' ' + names.join(', ') + ' (bed ' + rowBedsLabel(r) + ')');
-            } else {
-              showInfo(LANG === 'nl' ? `Toegevoegd ${PLANTS[key].name} aan bed ${rowBedsLabel(r)}` : `Added ${PLANTS[key].name} to bed ${rowBedsLabel(r)}`);
-            }
-            return;
-          }
+        const r = placeInFittingBed(key);
+        if (r < 0) {
+          showInfo(tt('noBedForType'));
+          return;
         }
-        rows[0].slots[0].push({key: key, plantedDate: todayStr()});
-        const conflicts2 = plantConflicts(key, 0, 0);
+        const s = 0; // placeInFittingBed fills slot 0 first; conflicts checked across joined bed
+        const conflicts = plantConflicts(key, r, s);
         render();
-        if (conflicts2.length > 0) {
-          const names2 = conflicts2.map(k2 => PLANTS[k2] ? (LANG === 'nl' ? (PLANTS[k2].nameNL || PLANTS[k2].name) : PLANTS[k2].name) : k2);
-          showInfo('⚠️ ' + tt('conflictLbl') + ' ' + names2.join(', '));
+        if (conflicts.length > 0) {
+          const names = conflicts.map(k2 => PLANTS[k2] ? (LANG === 'nl' ? (PLANTS[k2].nameNL || PLANTS[k2].name) : PLANTS[k2].name) : k2);
+          showInfo('⚠️ ' + tt('conflictLbl') + ' ' + names.join(', ') + ' (bed ' + rowBedsLabel(r) + ')');
+        } else {
+          showInfo(LANG === 'nl' ? `Toegevoegd ${PLANTS[key].name} aan bed ${rowBedsLabel(r)}` : `Added ${PLANTS[key].name} to bed ${rowBedsLabel(r)}`);
         }
+        return;
       };
       group.appendChild(el);
     }
@@ -3861,6 +3910,7 @@ function makeSowHarvestHeader() {
 function makePlantEl(r, s, j, obj) {
   const key = typeof obj === 'string' ? obj : obj.key;
   const plantedDate = typeof obj === 'string' ? todayStr() : (obj.plantedDate || todayStr());
+  const sec = (typeof obj === 'object' && obj.sec !== undefined) ? obj.sec : j;
   const plant = PLANTS[key];
   if (!plant) return null;
   const el = document.createElement('div');
@@ -3871,8 +3921,9 @@ function makePlantEl(r, s, j, obj) {
   el.setAttribute('data-s', String(s));
   const days = getDaysSince(plantedDate);
   const badgeColor = getDaysColor(days, plant.daysToMaturity || 0);
-  const badgeHtml = `<span class="days-badge" style="background:${badgeColor};color:#0d1b2a;" onclick="event.stopPropagation();openDatePicker(${r},${s},${j})" title="Click to set planted date">${days} days</span>`;
-  el.innerHTML = `${plant.icon} ${plant.name} ${badgeHtml} <span class="remove-btn" onclick="event.stopPropagation();removePlant(${r},${s},${j})">✕</span>`;
+  // Days badge below the species name (2026-08-24) — one crop per section layout
+  const badgeHtml = `<span class="days-badge" style="background:${badgeColor};color:#0d1b2a;display:inline-block;margin-top:3px;font-size:0.7em;padding:0 4px;border-radius:4px;cursor:pointer;" onclick="event.stopPropagation();openDatePicker(${r},${s},${j})" title="Click to set planted date">${days} ${tt('days')}</span>`;
+  el.innerHTML = `${plant.icon} ${plant.name}${badgeHtml} <span class="remove-btn" onclick="event.stopPropagation();removePlant(${r},${s},${j})">✕</span>`;
   el.ondragstart = function(e) {
     e.dataTransfer.setData('text/plain', key);
     e.dataTransfer.setData('application/row-index', String(r));
@@ -3917,7 +3968,16 @@ function makePlantEl(r, s, j, obj) {
   return el;
 }
 
-function setupDropTarget(el, r, s) {
+// Place into a specific free section; returns true if placed.
+function placeInSec(key, r, s, sec) {
+  const total = sectionsForRow(r);
+  if (sec === undefined || sec < 0 || sec >= total) return placePlant(key, r, s);
+  const taken = (rows[r].slots[s] || []).map(p => (p && typeof p === 'object' ? p.sec : undefined));
+  if (taken.indexOf(sec) >= 0) return false;
+  rows[r].slots[s].push({key: key, plantedDate: todayStr(), sec: sec});
+  return true;
+}
+function setupDropTarget(el, r, s, sec) {
   el.ondragover = function(e) { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; this.classList.add('dragover'); };
   el.ondragleave = function() { this.classList.remove('dragover'); };
   el.ondrop = function(e) {
@@ -3933,12 +3993,22 @@ function setupDropTarget(el, r, s) {
       if (srcR >= 0 && srcR < rows.length && srcS >= 0 && srcS <= 1 &&
           srcP >= 0 && srcP < rows[srcR].slots[srcS].length) {
         const obj = rows[srcR].slots[srcS].splice(srcP, 1)[0];
+        const targetSec = (sec !== undefined) ? sec : firstFreeSec(r, s);
+        if (targetSec < 0) {
+          rows[srcR].slots[srcS].splice(srcP, 0, obj); // restore
+          showInfo(tt('noBedForType'));
+          return;
+        }
+        obj.sec = targetSec;
         rows[r].slots[s].push(obj);
         render();
         showInfo(LANG === 'nl' ? `Verplaatst ${PLANTS[obj.key] ? PLANTS[obj.key].name : obj.key} naar bed ${rowBedsLabel(r)}` : `Moved ${PLANTS[obj.key] ? PLANTS[obj.key].name : obj.key} to bed ${rowBedsLabel(r)}`);
       }
     } else if (PLANTS[key]) {
-      rows[r].slots[s].push({key: key, plantedDate: todayStr()});
+      if (!placeInSec(key, r, s, sec)) {
+        showInfo(tt('noBedForType'));
+        return;
+      }
       const conflicts = plantConflicts(key, r, s);
       render();
       if (conflicts.length > 0) {
@@ -3993,58 +4063,64 @@ function renderBeds() {
       bed.className = `bed-joined bed-slot-${type}`;
       const area = document.createElement('div');
       area.className = 'bed-area';
-      const cap = slotCapacity(r, 0);
-      area.textContent = `20m · ${rowAreaM2(r).toFixed(1)} m²` + (cap ? ` · ≈${cap}/${tt('capacityBed')}` : '');
+      area.textContent = `20m · ${rowAreaM2(r).toFixed(1)} m²`;
       bed.appendChild(area);
-      const spacer = document.createElement('div');
-      spacer.style.cssText = 'width:100%;height:14px;';
-      bed.appendChild(spacer);
-      setupDropTarget(bed, r, 0);
-      const plants = (rows[r].slots[0] || []).concat(rows[r].slots[1] || []);
-      if (showSowHarvest && plants.length > 0) bed.appendChild(makeSowHarvestHeader());
-      for (let j = 0; j < plants.length; j++) {
-        const el = makePlantEl(r, j < rows[r].slots[0].length ? 0 : 1, j < rows[r].slots[0].length ? j : j - rows[r].slots[0].length, plants[j]);
-        if (el) bed.appendChild(el);
-      }
-      if (showSowHarvest && plants.length > 0) {
-        const legend = document.createElement('div');
-        legend.className = 'sow-harvest-legend';
-        legend.innerHTML = `<span><span class="legend-dot" style="background:rgba(129,199,132,0.5);"></span>${tt('sow')}</span><span><span class="legend-dot" style="background:rgba(255,213,79,0.5);"></span>${tt('harvest')}</span><span><span class="legend-dot" style="background:linear-gradient(90deg,rgba(129,199,132,0.5) 0%,rgba(255,213,79,0.5) 100%);"></span>${tt('both')}</span>`;
-        bed.appendChild(legend);
-      }
+      renderBedSections(bed, r, 0, sectionsForRow(r));
       row.appendChild(bed);
     } else {
-      // Two 10m beds (slots 0 and 1)
+      // Two 10m beds (slots 0 and 1), each its own set of sections
       for (let s = 0; s < 2; s++) {
         const bed = document.createElement('div');
         bed.className = `bed-slot bed-slot-${type}`;
         const area = document.createElement('div');
         area.className = 'bed-area';
-        const cap = slotCapacity(r, s);
-        area.textContent = `${gardenCfg.slotLen}m · ${rowAreaM2(r).toFixed(1)} m²` + (cap ? ` · ≈${cap}` : '');
+        area.textContent = `${gardenCfg.slotLen}m · ${rowAreaM2(r).toFixed(1)} m²`;
         bed.appendChild(area);
-        const spacer = document.createElement('div');
-        spacer.style.cssText = 'width:100%;height:14px;';
-        bed.appendChild(spacer);
-        setupDropTarget(bed, r, s);
-        const plants = rows[r].slots[s] || [];
-        if (showSowHarvest && plants.length > 0) bed.appendChild(makeSowHarvestHeader());
-        for (let j = 0; j < plants.length; j++) {
-          const el = makePlantEl(r, s, j, plants[j]);
-          if (el) bed.appendChild(el);
-        }
-        if (showSowHarvest && plants.length > 0) {
-          const legend = document.createElement('div');
-          legend.className = 'sow-harvest-legend';
-          legend.innerHTML = `<span><span class="legend-dot" style="background:rgba(129,199,132,0.5);"></span>${tt('sow')}</span><span><span class="legend-dot" style="background:rgba(255,213,79,0.5);"></span>${tt('harvest')}</span>`;
-          bed.appendChild(legend);
-        }
+        renderBedSections(bed, r, s, sectionsForRow(r));
         row.appendChild(bed);
       }
     }
 
     container.appendChild(row);
   }
+}
+
+// Render a bed as discrete section boxes — one crop per section (2026-08-24).
+// count = number of sections in this bed (per slot; joined beds pass sectionsForRow).
+function renderBedSections(bedEl, r, s, count) {
+  const secLen = gardenCfg.sectionLen;
+  const boxWrap = document.createElement('div');
+  boxWrap.className = 'bed-sections';
+  boxWrap.style.cssText = 'display:flex;flex-wrap:wrap;gap:3px;margin-top:6px;';
+  // plants present in this slot, indexed by sec
+  const plants = rows[r].slots[s] || [];
+  const bySec = {};
+  plants.forEach((p, j) => {
+    const sec = (p && typeof p === 'object' && p.sec !== undefined) ? p.sec : j;
+    bySec[sec] = {p, j};
+  });
+  for (let i = 0; i < count; i++) {
+    const box = document.createElement('div');
+    box.className = 'bed-section';
+    box.style.cssText = 'flex:1 1 ' + (count <= 4 ? '22%' : '11%') + ';min-width:70px;min-height:52px;border:1.5px dashed rgba(120,140,120,0.6);border-radius:6px;padding:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;';
+    setupDropTarget(box, r, s, i);
+    const secTag = document.createElement('div');
+    secTag.className = 'bed-sec-tag';
+    secTag.style.cssText = 'position:absolute;top:1px;left:3px;font-size:0.5em;color:rgba(0,0,0,0.45);';
+    secTag.textContent = secLen + 'm';
+    box.appendChild(secTag);
+    if (bySec[i]) {
+      const el = makePlantEl(r, s, bySec[i].j, bySec[i].p);
+      if (el) box.appendChild(el);
+    } else {
+      const plus = document.createElement('div');
+      plus.style.cssText = 'font-size:1.1em;color:rgba(0,0,0,0.25);cursor:pointer;';
+      plus.textContent = '+';
+      box.appendChild(plus);
+    }
+    boxWrap.appendChild(box);
+  }
+  bedEl.appendChild(boxWrap);
 }
 
 function toggleJoin(r) {
@@ -4552,10 +4628,11 @@ function exportFieldView() {
 
 function applyLoadedLayout(data) {
   if (data.version === 3 && Array.isArray(data.rows)) {
-    gardenCfg = Object.assign({modules: 2, rowsPerModule: 6, bedWidth: 0.75, slotLen: 10}, data.cfg || {});
+    gardenCfg = Object.assign({modules: 2, rowsPerModule: 6, bedWidth: 0.75, slotLen: 10, sectionLen: 2.5}, data.cfg || {});
     gardenCfg.modules = Math.max(1, Math.min(3, gardenCfg.modules || 2));
     gardenCfg.bedWidth = Math.max(0.5, Math.min(1.2, gardenCfg.bedWidth || 0.75));
     gardenCfg.slotLen = Math.max(5, Math.min(20, gardenCfg.slotLen || 10));
+    gardenCfg.sectionLen = Math.max(1, Math.min(10, gardenCfg.sectionLen || 2.5));
     rows = [];
     for (let r = 0; r < rowCount(); r++) {
       const src = data.rows[r] || {joined: false, slots: [[], []]};
@@ -4566,6 +4643,7 @@ function applyLoadedLayout(data) {
           (src.slots && src.slots[1] ? src.slots[1].map(normPlant).filter(Boolean) : [])
         ]
       });
+      assignMissingSec(r);
     }
     return true;
   }
@@ -4702,27 +4780,32 @@ function syncSetupUI() {
   const mSel = document.getElementById('cfg-modules');
   const wInp = document.getElementById('cfg-width');
   const sInp = document.getElementById('cfg-slot');
+  const secInp = document.getElementById('cfg-section');
   if (mSel) mSel.value = String(gardenCfg.modules);
   if (wInp) wInp.value = String(gardenCfg.bedWidth);
   if (sInp) sInp.value = String(gardenCfg.slotLen);
+  if (secInp) secInp.value = String(gardenCfg.sectionLen);
   const hint = document.getElementById('garden-hint');
-  if (hint) hint.textContent = `= ${rowCount()} rows · paths ~${(pathWidthM() * 100).toFixed(0)}cm`;
+  if (hint) hint.textContent = `= ${rowCount()} rows · paths ~${(pathWidthM() * 100).toFixed(0)}cm · ${sectionsPerCell()} × ${gardenCfg.sectionLen}m ${tt('sectionsPerCell')}`;
 }
 
 function onSetupChange() {
   const mSel = document.getElementById('cfg-modules');
   const wInp = document.getElementById('cfg-width');
   const sInp = document.getElementById('cfg-slot');
+  const secInp = document.getElementById('cfg-section');
   if (!mSel) return;
   const newModules = parseInt(mSel.value, 10) || 2;
   const newWidth = parseFloat(wInp.value) || 0.75;
   const newSlot = parseFloat(sInp.value) || 10;
+  const newSection = parseFloat(secInp.value) || 2.5;
 
   // preserve existing plants when growing; trim when shrinking
   const oldRows = rows;
   gardenCfg.modules = Math.max(1, Math.min(3, newModules));
   gardenCfg.bedWidth = Math.max(0.5, Math.min(1.2, newWidth));
   gardenCfg.slotLen = Math.max(5, Math.min(20, newSlot));
+  gardenCfg.sectionLen = Math.max(1, Math.min(10, newSection));
   rows = [];
   for (let r = 0; r < rowCount(); r++) {
     if (oldRows[r]) rows.push(oldRows[r]);
@@ -4748,9 +4831,11 @@ document.addEventListener('DOMContentLoaded', function() {
   var mSel = document.getElementById('cfg-modules');
   var wInp = document.getElementById('cfg-width');
   var sInp = document.getElementById('cfg-slot');
+  var secInp = document.getElementById('cfg-section');
   if (mSel) mSel.addEventListener('change', onSetupChange);
   if (wInp) wInp.addEventListener('change', onSetupChange);
   if (sInp) sInp.addEventListener('change', onSetupChange);
+  if (secInp) secInp.addEventListener('change', onSetupChange);
 });
 
 initRows();
