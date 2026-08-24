@@ -156,8 +156,8 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:4px;font-size:1.4em;}
 
 /* Plant in bed */
 .plant-in-bed{display:inline-flex;align-items:center;gap:3px;padding:3px 6px;border-radius:4px;font-size:0.55em;border:1px solid rgba(255,255,255,0.15);cursor:grab;transition:all .2s;position:relative;}
-/* Inside a section box, stack the days badge BELOW the species name (2026-08-24) */
-.bed-section .plant-in-bed{flex-direction:column;text-align:center;background:rgba(120,160,120,0.18);border-color:rgba(90,138,74,0.5);}
+/* Inside a section cell, the chip fills the box — uniform button size (2026-08-24) */
+.bed-section .plant-in-bed{flex-direction:column;text-align:center;background:rgba(120,160,120,0.18);border:1px solid rgba(90,138,74,0.5);width:100%;height:100%;justify-content:center;}
 .bed-section .plant-in-bed .days-badge{display:block;margin-top:3px;}
 .bed-section .plant-in-bed .remove-btn{position:absolute;top:0;right:2px;}
 .plant-wrap{width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:1px;}
@@ -737,19 +737,19 @@ div[style*="max-width:900px"] .bstrip-toggle, div[style*="max-width: 900px"] .bs
 }
 .bed-row > .bed-joined { grid-column: 1 / -1 !important; }  /* joined bed spans both */
 
-/* ── Bed cards — each slot its OWN solid box (user: one 20m box OR two 10m boxes) ── */
+/* ── Bed cards — transparent shell; the section cells are the visible buttons (2026-08-24) ── */
 .bed-slot, .bed-joined {
   min-height: 0 !important;
-  border: 2px solid var(--sf-border-strong) !important;  /* SOLID, own card */
-  border-radius: 14px !important;
-  padding: 10px !important;
-  background: #f2f6ec !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
   gap: 4px !important;
-  box-shadow: var(--sf-shadow) !important;
+  box-shadow: none !important;
 }
-.bed-slot-tall, .bed-joined.bed-slot-tall { background: #edf4e4 !important; }
-.bed-slot-medium, .bed-joined.bed-slot-medium { background: #eef2e8 !important; }
-.bed-slot-low, .bed-joined.bed-slot-low { background: #f2f6ec !important; }
+.bed-slot-tall, .bed-joined.bed-slot-tall { background: transparent !important; }
+.bed-slot-medium, .bed-joined.bed-slot-medium { background: transparent !important; }
+.bed-slot-low, .bed-joined.bed-slot-low { background: transparent !important; }
 .bed-slot .bed-area, .bed-joined .bed-area {
   position: static !important;       /* in-flow, plain text — no lines around */
   font-size: 0.64rem !important;
@@ -3285,6 +3285,7 @@ button.btn.sp-bk-download {
       <label><span data-i18n="bedWidth">Bed width</span> <input type="number" id="cfg-width" value="0.75" min="0.5" max="1.2" step="0.05" style="width:64px"> m</label>
       <label><span data-i18n="slotLen">Slot length</span> <input type="number" id="cfg-slot" value="10" min="5" max="20" step="1" style="width:58px"> m</label>
       <label><span data-i18n="sectionLen">Section length</span> <input type="number" id="cfg-section" value="2.5" min="1" max="10" step="0.5" style="width:58px"> m</label>
+      <label><span data-i18n="rowsPerBed">Rows per bed</span> <select id="cfg-rpbed"><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option></select></label>
       <span class="g-hint" id="garden-hint"></span>
     </div>
     <!-- Drag-instructions bar — outlined with the module header (2026-08-09):
@@ -3473,7 +3474,7 @@ var T = {
     vegPlanner: 'Vegetable Garden Planner',
     beds: 'Beds', subDrag: 'Drag plants from the palette onto beds · Hover over a plant to remove · Click for details · Click days badge to set date',
     modules: 'Modules', rows6: '1 (6 rows)', rows12: '2 (12 rows)', rows18: '3 (18 rows)',
-    bedWidth: 'Bed width', slotLen: 'Slot length', sectionLen: 'Section length', sectionsPerCell: 'sections',
+    bedWidth: 'Bed width', slotLen: 'Slot length', sectionLen: 'Section length', sectionsPerCell: 'sections', row: 'row', rowsPerBed: 'rows/bed',
     palette: 'Plant Palette', dragOnto: 'Drag onto beds',
     footerNote: 'everything runs on your device \u2014 no server, works offline',
     sowChipTitle: 'Add to the first fitting bed', noBedForType: 'No free bed for this plant type',
@@ -3509,7 +3510,7 @@ var T = {
     vegPlanner: 'Moestuinplanner',
     beds: 'Bedden', subDrag: 'Sleep planten van het palet naar de bedden · Hover over een plant om te verwijderen · Klik voor details · Klik op de dagen-badge om datum te zetten',
     modules: 'Modules', rows6: '1 (6 rijen)', rows12: '2 (12 rijen)', rows18: '3 (18 rijen)',
-    bedWidth: 'Bedbreedte', slotLen: 'Perceellengte', sectionLen: 'Perceeldeel lengte', sectionsPerCell: 'vakken',
+    bedWidth: 'Bedbreedte', slotLen: 'Perceellengte', sectionLen: 'Perceeldeel lengte', sectionsPerCell: 'vakken', row: 'rij', rowsPerBed: 'rijen/bed',
     palette: 'Plantenpalet', dragOnto: 'Sleep naar bedden',
     footerNote: 'alles draait op jouw apparaat \u2014 geen server, werkt offline',
     sowChipTitle: 'Voeg toe aan het eerste passende bed', noBedForType: 'Geen vrij bed voor dit planttype',
@@ -3565,7 +3566,8 @@ let gardenCfg = {
   rowsPerModule: 6,
   bedWidth: 0.75,    // m
   slotLen: 10,       // m per slot (= one cell)
-  sectionLen: 2.5    // m per section — one crop per section (2026-08-24)
+  sectionLen: 2.5,   // m per section — one crop per section (2026-08-24)
+  rowsPerBed: 2      // parallel planting rows within one bed (2026-08-24)
 };
 // rows[r] = { joined: bool, slots: [[plants...],[plants...]] }
 // Each placed plant object: {key, plantedDate, sec} — sec = which section of the slot it occupies.
@@ -3598,21 +3600,28 @@ function sectionsPerCell() {
   return Math.max(1, n);
 }
 function sectionsForRow(r) { return (rows[r] && rows[r].joined) ? sectionsPerCell() * 2 : sectionsPerCell(); }
-// first free section index in a slot, or -1 when full
-function firstFreeSec(r, s) {
-  const total = sectionsForRow(r);
-  const taken = (rows[r].slots[s] || []).map(p => (p && typeof p === 'object' ? p.sec : undefined));
-  for (let i = 0; i < total; i++) if (taken.indexOf(i) < 0) return i;
-  return -1;
+function rowsPerBed() { return Math.max(1, gardenCfg.rowsPerBed || 1); }
+// first free cell (sub-row, section) in a slot, or null when full.
+// sub = which parallel row within the bed (0..rowsPerBed-1), sec = section column.
+function findFreeCell(r, s) {
+  const subs = rowsPerBed();
+  const cols = sectionsForRow(r);
+  const taken = (rows[r].slots[s] || []).map(p => ({sub: p && typeof p === 'object' ? (p.sub || 0) : 0, sec: p && typeof p === 'object' ? (p.sec !== undefined ? p.sec : 0) : 0}));
+  for (let sub = 0; sub < subs; sub++) {
+    for (let sec = 0; sec < cols; sec++) {
+      if (!taken.some(t => t.sub === sub && t.sec === sec)) return {sub, sec};
+    }
+  }
+  return null;
 }
-// Place a plant into the first free section of bed (r,s). Returns true if placed.
+// Place a plant into the first free cell of bed (r,s). Returns true if placed.
 function placePlant(key, r, s) {
-  const sec = firstFreeSec(r, s);
-  if (sec < 0) return false;
-  rows[r].slots[s].push({key: key, plantedDate: todayStr(), sec: sec});
+  const cell = findFreeCell(r, s);
+  if (!cell) return false;
+  rows[r].slots[s].push({key: key, plantedDate: todayStr(), sub: cell.sub, sec: cell.sec});
   return true;
 }
-// Place into the first fitting bed by row-type, filling free sections. Returns r or -1.
+// Place into the first fitting bed by row-type, filling free cells. Returns r or -1.
 function placeInFittingBed(key) {
   const type = PLANTS[key].category;
   for (let r = 0; r < rows.length; r++) {
@@ -3646,17 +3655,17 @@ function normPlant(item) {
   if (item && typeof item === 'object' && item.key) return {key: item.key, plantedDate: item.plantedDate || todayStr()};
   return null;
 }
-// Assign sec to any plant missing it (legacy layouts), filling sections in order.
+// Assign sub + sec to any plant missing it (legacy layouts), filling cells in order.
 function assignMissingSec(r) {
   if (!rows[r]) return;
   for (let s = 0; s < 2; s++) {
     const arr = rows[r].slots[s] || [];
-    let secCursor = 0;
+    let subCursor = 0, secCursor = 0;
     arr.forEach(p => {
-      if (p && p.sec === undefined) {
-        while (arr.filter(o => o !== p && o.sec === secCursor).length) secCursor++;
-        p.sec = secCursor;
-        secCursor++;
+      if (p && (p.sub === undefined || p.sec === undefined)) {
+        if (p.sub === undefined) p.sub = subCursor;
+        if (p.sec === undefined) p.sec = secCursor++;
+        if (secCursor >= sectionsForRow(r)) { secCursor = 0; subCursor++; }
       }
     });
   }
@@ -3675,6 +3684,7 @@ function loadLocalStorage() {
       gardenCfg.bedWidth = Math.max(0.5, Math.min(1.2, gardenCfg.bedWidth || 0.75));
       gardenCfg.slotLen = Math.max(5, Math.min(20, gardenCfg.slotLen || 10));
       gardenCfg.sectionLen = Math.max(1, Math.min(10, gardenCfg.sectionLen || 2.5));
+      gardenCfg.rowsPerBed = Math.max(1, Math.min(3, gardenCfg.rowsPerBed || 2));
       rows = [];
       for (let r = 0; r < rowCount(); r++) {
         const src = data.rows[r] || {joined: false, slots: [[], []]};
@@ -3919,11 +3929,13 @@ function makePlantEl(r, s, j, obj) {
   el.setAttribute('data-plant-key', key);
   el.setAttribute('data-r', String(r));
   el.setAttribute('data-s', String(s));
+  const sub = (typeof obj === 'object' && obj.sub !== undefined) ? obj.sub : 0;
   const days = getDaysSince(plantedDate);
   const badgeColor = getDaysColor(days, plant.daysToMaturity || 0);
+  const subLabel = rowsPerBed() > 1 ? `<div style="font-size:0.6em;color:rgba(0,0,0,0.45);line-height:1">${tt('row')} ${sub + 1}</div>` : '';
   // Days badge below the species name (2026-08-24) — one crop per section layout
-  const badgeHtml = `<span class="days-badge" style="background:${badgeColor};color:#0d1b2a;display:inline-block;margin-top:3px;font-size:0.7em;padding:0 4px;border-radius:4px;cursor:pointer;" onclick="event.stopPropagation();openDatePicker(${r},${s},${j})" title="Click to set planted date">${days} ${tt('days')}</span>`;
-  el.innerHTML = `${plant.icon} ${plant.name}${badgeHtml} <span class="remove-btn" onclick="event.stopPropagation();removePlant(${r},${s},${j})">✕</span>`;
+  const badgeHtml = `<span class="days-badge" style="background:${badgeColor};color:#0d1b2a;display:inline-block;margin-top:2px;font-size:0.7em;padding:0 4px;border-radius:4px;cursor:pointer;" onclick="event.stopPropagation();openDatePicker(${r},${s},${j})" title="Click to set planted date">${days} ${tt('days')}</span>`;
+  el.innerHTML = `<div style="line-height:1.2;white-space:nowrap">${plant.icon} ${plant.name}</div>${subLabel}${badgeHtml} <span class="remove-btn" onclick="event.stopPropagation();removePlant(${r},${s},${j})">✕</span>`;
   el.ondragstart = function(e) {
     e.dataTransfer.setData('text/plain', key);
     e.dataTransfer.setData('application/row-index', String(r));
@@ -3968,16 +3980,19 @@ function makePlantEl(r, s, j, obj) {
   return el;
 }
 
-// Place into a specific free section; returns true if placed.
-function placeInSec(key, r, s, sec) {
-  const total = sectionsForRow(r);
-  if (sec === undefined || sec < 0 || sec >= total) return placePlant(key, r, s);
-  const taken = (rows[r].slots[s] || []).map(p => (p && typeof p === 'object' ? p.sec : undefined));
-  if (taken.indexOf(sec) >= 0) return false;
-  rows[r].slots[s].push({key: key, plantedDate: todayStr(), sec: sec});
+// Place into a specific cell (sub-row, section); returns true if placed.
+function placeInCell(key, r, s, sub, sec) {
+  const subs = rowsPerBed();
+  const cols = sectionsForRow(r);
+  sub = (sub === undefined || sub < 0 || sub >= subs) ? 0 : sub;
+  sec = (sec === undefined || sec < 0 || sec >= cols) ? -1 : sec;
+  if (sec < 0) return placePlant(key, r, s);
+  const taken = (rows[r].slots[s] || []).map(p => (p && typeof p === 'object' ? (p.sub || 0) + ':' + (p.sec !== undefined ? p.sec : 0) : '0:0'));
+  if (taken.indexOf(sub + ':' + sec) >= 0) return false;
+  rows[r].slots[s].push({key: key, plantedDate: todayStr(), sub: sub, sec: sec});
   return true;
 }
-function setupDropTarget(el, r, s, sec) {
+function setupDropTarget(el, r, s, sub, sec) {
   el.ondragover = function(e) { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; this.classList.add('dragover'); };
   el.ondragleave = function() { this.classList.remove('dragover'); };
   el.ondrop = function(e) {
@@ -3993,19 +4008,20 @@ function setupDropTarget(el, r, s, sec) {
       if (srcR >= 0 && srcR < rows.length && srcS >= 0 && srcS <= 1 &&
           srcP >= 0 && srcP < rows[srcR].slots[srcS].length) {
         const obj = rows[srcR].slots[srcS].splice(srcP, 1)[0];
-        const targetSec = (sec !== undefined) ? sec : firstFreeSec(r, s);
-        if (targetSec < 0) {
+        const targetCell = (sub !== undefined) ? {sub: sub, sec: sec} : findFreeCell(r, s);
+        if (!targetCell) {
           rows[srcR].slots[srcS].splice(srcP, 0, obj); // restore
           showInfo(tt('noBedForType'));
           return;
         }
-        obj.sec = targetSec;
+        obj.sub = targetCell.sub;
+        obj.sec = targetCell.sec;
         rows[r].slots[s].push(obj);
         render();
         showInfo(LANG === 'nl' ? `Verplaatst ${PLANTS[obj.key] ? PLANTS[obj.key].name : obj.key} naar bed ${rowBedsLabel(r)}` : `Moved ${PLANTS[obj.key] ? PLANTS[obj.key].name : obj.key} to bed ${rowBedsLabel(r)}`);
       }
     } else if (PLANTS[key]) {
-      if (!placeInSec(key, r, s, sec)) {
+      if (!placeInCell(key, r, s, sub, sec)) {
         showInfo(tt('noBedForType'));
         return;
       }
@@ -4085,42 +4101,45 @@ function renderBeds() {
   }
 }
 
-// Render a bed as discrete section boxes — one crop per section (2026-08-24).
-// count = number of sections in this bed (per slot; joined beds pass sectionsForRow).
+// Render a bed as a grid of equal section cells — one crop per (row, section).
+// Two parallel rows per bed (rowsPerBed); each row has `count` section columns.
+// count = number of section columns per row (per slot; joined beds pass sectionsForRow).
 function renderBedSections(bedEl, r, s, count) {
-  const secLen = gardenCfg.sectionLen;
-  const boxWrap = document.createElement('div');
-  boxWrap.className = 'bed-sections';
-  boxWrap.style.cssText = 'display:flex;flex-wrap:wrap;gap:3px;margin-top:6px;';
-  // plants present in this slot, indexed by sec
+  const subs = rowsPerBed();
   const plants = rows[r].slots[s] || [];
-  const bySec = {};
+  const byCell = {};
   plants.forEach((p, j) => {
+    const sub = (p && typeof p === 'object' && p.sub !== undefined) ? p.sub : 0;
     const sec = (p && typeof p === 'object' && p.sec !== undefined) ? p.sec : j;
-    bySec[sec] = {p, j};
+    byCell[sub + ':' + sec] = {p, j};
   });
-  for (let i = 0; i < count; i++) {
-    const box = document.createElement('div');
-    box.className = 'bed-section';
-    box.style.cssText = 'flex:1 1 ' + (count <= 4 ? '22%' : '11%') + ';min-width:70px;min-height:52px;border:1.5px dashed rgba(120,140,120,0.6);border-radius:6px;padding:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;';
-    setupDropTarget(box, r, s, i);
-    const secTag = document.createElement('div');
-    secTag.className = 'bed-sec-tag';
-    secTag.style.cssText = 'position:absolute;top:1px;left:3px;font-size:0.5em;color:rgba(0,0,0,0.45);';
-    secTag.textContent = secLen + 'm';
-    box.appendChild(secTag);
-    if (bySec[i]) {
-      const el = makePlantEl(r, s, bySec[i].j, bySec[i].p);
-      if (el) box.appendChild(el);
-    } else {
-      const plus = document.createElement('div');
-      plus.style.cssText = 'font-size:1.1em;color:rgba(0,0,0,0.25);cursor:pointer;';
-      plus.textContent = '+';
-      box.appendChild(plus);
+  // Two stacked sub-rows, each a full-width flex row of equal section cells.
+  const gridWrap = document.createElement('div');
+  gridWrap.className = 'bed-grid';
+  gridWrap.style.cssText = 'display:flex;flex-direction:column;gap:4px;width:100%;margin-top:4px;';
+  for (let sub = 0; sub < subs; sub++) {
+    const subRow = document.createElement('div');
+    subRow.className = 'bed-subrow';
+    subRow.style.cssText = 'display:flex;gap:3px;width:100%;';
+    for (let i = 0; i < count; i++) {
+      const box = document.createElement('div');
+      box.className = 'bed-section';
+      box.style.cssText = 'flex:1 1 0;min-width:0;min-height:64px;border-radius:6px;padding:3px;display:flex;align-items:center;justify-content:center;background:#eef3e8;border:1px solid rgba(120,150,120,0.5);';
+      setupDropTarget(box, r, s, sub, i);
+      if (byCell[sub + ':' + i]) {
+        const el = makePlantEl(r, s, byCell[sub + ':' + i].j, byCell[sub + ':' + i].p);
+        if (el) box.appendChild(el);
+      } else {
+        const plus = document.createElement('div');
+        plus.style.cssText = 'font-size:1em;color:rgba(0,0,0,0.22);cursor:pointer;';
+        plus.textContent = '+';
+        box.appendChild(plus);
+      }
+      subRow.appendChild(box);
     }
-    boxWrap.appendChild(box);
+    gridWrap.appendChild(subRow);
   }
-  bedEl.appendChild(boxWrap);
+  bedEl.appendChild(gridWrap);
 }
 
 function toggleJoin(r) {
@@ -4628,11 +4647,12 @@ function exportFieldView() {
 
 function applyLoadedLayout(data) {
   if (data.version === 3 && Array.isArray(data.rows)) {
-    gardenCfg = Object.assign({modules: 2, rowsPerModule: 6, bedWidth: 0.75, slotLen: 10, sectionLen: 2.5}, data.cfg || {});
+    gardenCfg = Object.assign({modules: 2, rowsPerModule: 6, bedWidth: 0.75, slotLen: 10, sectionLen: 2.5, rowsPerBed: 2}, data.cfg || {});
     gardenCfg.modules = Math.max(1, Math.min(3, gardenCfg.modules || 2));
     gardenCfg.bedWidth = Math.max(0.5, Math.min(1.2, gardenCfg.bedWidth || 0.75));
     gardenCfg.slotLen = Math.max(5, Math.min(20, gardenCfg.slotLen || 10));
     gardenCfg.sectionLen = Math.max(1, Math.min(10, gardenCfg.sectionLen || 2.5));
+    gardenCfg.rowsPerBed = Math.max(1, Math.min(3, gardenCfg.rowsPerBed || 2));
     rows = [];
     for (let r = 0; r < rowCount(); r++) {
       const src = data.rows[r] || {joined: false, slots: [[], []]};
@@ -4781,12 +4801,14 @@ function syncSetupUI() {
   const wInp = document.getElementById('cfg-width');
   const sInp = document.getElementById('cfg-slot');
   const secInp = document.getElementById('cfg-section');
+  const rpInp = document.getElementById('cfg-rpbed');
   if (mSel) mSel.value = String(gardenCfg.modules);
   if (wInp) wInp.value = String(gardenCfg.bedWidth);
   if (sInp) sInp.value = String(gardenCfg.slotLen);
   if (secInp) secInp.value = String(gardenCfg.sectionLen);
+  if (rpInp) rpInp.value = String(gardenCfg.rowsPerBed || 2);
   const hint = document.getElementById('garden-hint');
-  if (hint) hint.textContent = `= ${rowCount()} rows · paths ~${(pathWidthM() * 100).toFixed(0)}cm · ${sectionsPerCell()} × ${gardenCfg.sectionLen}m ${tt('sectionsPerCell')}`;
+  if (hint) hint.textContent = `= ${rowCount()} rows · paths ~${(pathWidthM() * 100).toFixed(0)}cm · ${sectionsPerCell()} × ${gardenCfg.sectionLen}m ${tt('sectionsPerCell')} · ${rowsPerBed()} ${tt('rowsPerBed')}`;
 }
 
 function onSetupChange() {
@@ -4794,11 +4816,13 @@ function onSetupChange() {
   const wInp = document.getElementById('cfg-width');
   const sInp = document.getElementById('cfg-slot');
   const secInp = document.getElementById('cfg-section');
+  const rpInp = document.getElementById('cfg-rpbed');
   if (!mSel) return;
   const newModules = parseInt(mSel.value, 10) || 2;
   const newWidth = parseFloat(wInp.value) || 0.75;
   const newSlot = parseFloat(sInp.value) || 10;
   const newSection = parseFloat(secInp.value) || 2.5;
+  const newRowsPerBed = parseInt(rpInp ? rpInp.value : '2', 10) || 2;
 
   // preserve existing plants when growing; trim when shrinking
   const oldRows = rows;
@@ -4806,6 +4830,7 @@ function onSetupChange() {
   gardenCfg.bedWidth = Math.max(0.5, Math.min(1.2, newWidth));
   gardenCfg.slotLen = Math.max(5, Math.min(20, newSlot));
   gardenCfg.sectionLen = Math.max(1, Math.min(10, newSection));
+  gardenCfg.rowsPerBed = Math.max(1, Math.min(3, newRowsPerBed));
   rows = [];
   for (let r = 0; r < rowCount(); r++) {
     if (oldRows[r]) rows.push(oldRows[r]);
@@ -4832,10 +4857,12 @@ document.addEventListener('DOMContentLoaded', function() {
   var wInp = document.getElementById('cfg-width');
   var sInp = document.getElementById('cfg-slot');
   var secInp = document.getElementById('cfg-section');
+  var rpInp = document.getElementById('cfg-rpbed');
   if (mSel) mSel.addEventListener('change', onSetupChange);
   if (wInp) wInp.addEventListener('change', onSetupChange);
   if (sInp) sInp.addEventListener('change', onSetupChange);
   if (secInp) secInp.addEventListener('change', onSetupChange);
+  if (rpInp) rpInp.addEventListener('change', onSetupChange);
 });
 
 initRows();
