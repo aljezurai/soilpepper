@@ -2413,8 +2413,8 @@
   "spacing": 20,
   "sowMethod": "Direct",
   "icon": "🧅",
-  "family": "Asparagaceae",
-  "familyNL": "Aspergefamilie",
+  "family": "Amaryllidaceae",
+  "familyNL": "Narcisfamilie",
   "guild": {
    "gives": [
     "pest-repellent",
@@ -2730,8 +2730,8 @@
   "spacing": 10,
   "sowMethod": "Direct/sets",
   "icon": "🧅",
-  "family": "Asparagaceae",
-  "familyNL": "Aspergefamilie",
+  "family": "Amaryllidaceae",
+  "familyNL": "Narcisfamilie",
   "guild": {
    "gives": [
     "pest-repellent",
@@ -2824,8 +2824,8 @@
   "spacing": 10,
   "sowMethod": "Cloves",
   "icon": "🧄",
-  "family": "Asparagaceae",
-  "familyNL": "Aspergefamilie",
+  "family": "Amaryllidaceae",
+  "familyNL": "Narcisfamilie",
   "guild": {
    "gives": [
     "pest-repellent",
@@ -3233,8 +3233,8 @@
   "spacing": 15,
   "sowMethod": "Transplant",
   "icon": "🧅",
-  "family": "Asparagaceae",
-  "familyNL": "Aspergefamilie",
+  "family": "Amaryllidaceae",
+  "familyNL": "Narcisfamilie",
   "guild": {
    "gives": [
     "pest-repellent",
@@ -8407,8 +8407,8 @@
   "native": false,
   "fireResistant": false,
   "notes": "Perennial. Repels aphids, carrot fly. Good for inner zone under trees. Garlic chives more drought-tolerant",
-  "family": "Asparagaceae",
-  "familyNL": "Aspergefamilie",
+  "family": "Amaryllidaceae",
+  "familyNL": "Narcisfamilie",
   "guild": {
    "gives": [
     "pest-repellent",
@@ -8599,8 +8599,8 @@
   "native": true,
   "fireResistant": false,
   "notes": "Mediterranean-native bulb. Naturalizes under trees. Mild garlic taste. Dies back in summer",
-  "family": "Asparagaceae",
-  "familyNL": "Aspergefamilie",
+  "family": "Amaryllidaceae",
+  "familyNL": "Narcisfamilie",
   "guild": {
    "gives": [
     "pest-repellent",
