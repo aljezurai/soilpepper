@@ -16306,6 +16306,7 @@
   "family": "Asteraceae",
   "familyNL": "Composietenfamilie",
   "regions": [
+   "tuscany",
    "netherlands"
   ],
   "guild": {
@@ -19810,5 +19811,280 @@
    8
   ],
   "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Avena_nuda0.jpg/250px-Avena_nuda0.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+ },
+ "teasel": {
+  "key": "teasel",
+  "name": "Teasel",
+  "italian": "",
+  "latin": "Dipsacus fullonum",
+  "dutchName": "Kaardenbol",
+  "category": "flower",
+  "subcategory": "",
+  "soilType": [
+   "loam",
+   "clay"
+  ],
+  "soilDepth": "",
+  "sun": "full",
+  "water": "moderate",
+  "height": 200,
+  "width": 60,
+  "sowMonths": "",
+  "harvestMonths": "",
+  "daysToMaturity": "",
+  "season": "cool",
+  "function": "",
+  "nFixer": false,
+  "perennial": true,
+  "native": true,
+  "fireResistant": false,
+  "notes": "Biennial; spiny flower heads hold rainwater in leaf cups. Excellent late-season pollinator/beneficial insect attractor (bees, hoverflies). Seedheads feed goldfinches in winter. Historically used for carding wool.",
+  "spacing": 60,
+  "sowMethod": "",
+  "icon": "🌾",
+  "family": "Caprifoliaceae",
+  "familyNL": "Kamperfoeliefamilie",
+  "regions": [
+   "tuscany",
+   "netherlands"
+  ],
+  "guild": {
+   "gives": [
+    "pollinator-attractor",
+    "beneficial-habitat"
+   ],
+   "needs": [
+    "sun"
+   ],
+   "accumulates": [
+    "potassium",
+    "calcium"
+   ],
+   "companions": [],
+   "antagonists": [],
+   "rootForm": "taproot",
+   "rootZone": "deep"
+  },
+  "nameNL": "Kaardenbol"
+ },
+ "milk-thistle": {
+  "key": "milk-thistle",
+  "name": "Milk Thistle",
+  "italian": "",
+  "latin": "Silybum marianum",
+  "dutchName": "Mariadistel",
+  "category": "flower",
+  "subcategory": "",
+  "soilType": [
+   "loam",
+   "clay",
+   "sandy"
+  ],
+  "soilDepth": "",
+  "sun": "full",
+  "water": "low",
+  "height": 120,
+  "width": 60,
+  "sowMonths": "",
+  "harvestMonths": "",
+  "daysToMaturity": "",
+  "season": "warm",
+  "function": "",
+  "nFixer": false,
+  "perennial": false,
+  "native": true,
+  "fireResistant": false,
+  "notes": "Annual/biennial with distinctive white-veined leaves. Medicinal (silymarin for liver). Pollinator magnet. Edible young leaves/stems. Self-seeds readily; good for dry, sunny spots.",
+  "spacing": 60,
+  "sowMethod": "",
+  "icon": "🌼",
+  "family": "Asteraceae",
+  "familyNL": "Composietenfamilie",
+  "regions": [
+   "tuscany",
+   "netherlands"
+  ],
+  "guild": {
+   "gives": [
+    "pollinator-attractor"
+   ],
+   "needs": [
+    "sun"
+   ],
+   "accumulates": [
+    "calcium",
+    "potassium",
+    "iron"
+   ],
+   "companions": [],
+   "antagonists": [],
+   "rootForm": "taproot",
+   "rootZone": "deep"
+  },
+  "nameNL": "Mariadistel"
+ },
+ "orpine": {
+  "key": "orpine",
+  "name": "Orpine / Stonecrop",
+  "italian": "",
+  "latin": "Hylotelephium telephium",
+  "dutchName": "Hemelsleutel",
+  "category": "flower",
+  "subcategory": "",
+  "soilType": [
+   "sandy",
+   "loam"
+  ],
+  "soilDepth": "",
+  "sun": "full",
+  "water": "low",
+  "height": 55,
+  "width": 40,
+  "sowMonths": "",
+  "harvestMonths": "",
+  "daysToMaturity": "",
+  "season": "cool",
+  "function": "",
+  "nFixer": false,
+  "perennial": true,
+  "native": true,
+  "fireResistant": false,
+  "notes": "Succulent perennial; extremely drought-tolerant. Late-summer pollinator (bees, butterflies) at a time when little else flowers. Thick fleshy leaves store water. Ideal for dry, sunny beds and green roofs.",
+  "spacing": 30,
+  "sowMethod": "",
+  "icon": "🌸",
+  "family": "Crassulaceae",
+  "familyNL": "Vetplantenfamilie",
+  "regions": [
+   "tuscany",
+   "netherlands"
+  ],
+  "guild": {
+   "gives": [
+    "pollinator-attractor",
+    "ground-cover"
+   ],
+   "needs": [
+    "sun"
+   ],
+   "accumulates": [],
+   "companions": [],
+   "antagonists": [],
+   "rootForm": "fibrous",
+   "rootZone": "shallow"
+  },
+  "nameNL": "Hemelsleutel"
+ },
+ "cow-parsnip": {
+  "key": "cow-parsnip",
+  "name": "Cow Parsnip / Hogweed",
+  "italian": "",
+  "latin": "Heracleum sphondylium",
+  "dutchName": "Gewone berenklauw",
+  "category": "flower",
+  "subcategory": "",
+  "soilType": [
+   "loam",
+   "clay"
+  ],
+  "soilDepth": "",
+  "sun": "partial",
+  "water": "moderate",
+  "height": 150,
+  "width": 90,
+  "sowMonths": "",
+  "harvestMonths": "",
+  "daysToMaturity": "",
+  "season": "cool",
+  "function": "",
+  "nFixer": false,
+  "perennial": true,
+  "native": true,
+  "fireResistant": false,
+  "notes": "Native perennial with large umbels — excellent for many pollinators and predatory wasps. Deep taproot aerates soil, dynamic accumulator. Young stems edible (wear gloves; distinguishes from toxic giant hogweed). Prefers moist, nitrogen-rich soil, sun to part shade.",
+  "spacing": 90,
+  "sowMethod": "",
+  "icon": "🌿",
+  "family": "Apiaceae",
+  "familyNL": "Schermbloemenfamilie",
+  "regions": [
+   "tuscany",
+   "netherlands"
+  ],
+  "guild": {
+   "gives": [
+    "pollinator-attractor",
+    "root-aeration",
+    "minerals-accumulator"
+   ],
+   "needs": [
+    "moisture-retention",
+    "nitrogen"
+   ],
+   "accumulates": [
+    "potassium",
+    "calcium",
+    "phosphorus",
+    "iron"
+   ],
+   "companions": [],
+   "antagonists": [],
+   "rootForm": "taproot",
+   "rootZone": "deep"
+  },
+  "nameNL": "Gewone berenklauw"
+ },
+ "dogwood": {
+  "key": "dogwood",
+  "name": "Dogwood (genus)",
+  "italian": "",
+  "latin": "Cornus",
+  "dutchName": "Kornoelje",
+  "category": "shrub",
+  "subcategory": "",
+  "soilType": [
+   "loam",
+   "clay",
+   "sandy"
+  ],
+  "soilDepth": "",
+  "sun": "partial",
+  "water": "moderate",
+  "height": 400,
+  "width": 300,
+  "sowMonths": "",
+  "harvestMonths": "",
+  "daysToMaturity": "",
+  "season": "",
+  "function": "",
+  "nFixer": false,
+  "perennial": true,
+  "native": true,
+  "fireResistant": false,
+  "notes": "Genus of ~30-60 species of dogwoods/cornels (deciduous trees, shrubs, a few herbaceous). Valued for early spring flowers/bracts, autumn colour, edible berries (e.g. Cornus mas). Good for wildlife; some tolerate wet sites.",
+  "spacing": "",
+  "sowMethod": "",
+  "icon": "🌳",
+  "family": "Cornaceae",
+  "familyNL": "Kornoeljefamilie",
+  "regions": [
+   "tuscany"
+  ],
+  "guild": {
+   "gives": [
+    "pollinator-attractor",
+    "light-shade",
+    "beneficial-habitat"
+   ],
+   "needs": [
+    "sun"
+   ],
+   "accumulates": [],
+   "companions": [],
+   "antagonists": [],
+   "rootForm": "fibrous",
+   "rootZone": "moderate"
+  },
+  "nameNL": "Kornoelje"
  }
 }
