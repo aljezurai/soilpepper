@@ -4396,7 +4396,11 @@ function openGuildDiagram() {
   const treeKey = document.getElementById('tree-select').value;
   if (!treeKey) { showToast(tt('selectTreeFirst')); return; }
   const region = getRegionParam();
-  window.open('trees-and-around.html?region=' + region + '&tree=' + encodeURIComponent(treeKey), '_blank');
+  // Per-cell guilds (2026-08-26): pass ?cell= so each grid cell gets its own
+  // independent guild (keyed gd-<cell>-<tree>).
+  const parts = selectedCell ? selectedCell.split('_') : null;
+  const cellParams = parts ? '&cell=' + parts[0] + '_' + parts[1] : '';
+  window.open('trees-and-around.html?region=' + region + '&tree=' + encodeURIComponent(treeKey) + cellParams, '_blank');
 }
 function openVegPlanner() {
   const region = getRegionParam();
