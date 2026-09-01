@@ -4542,7 +4542,8 @@ function exportFieldView() {
     const type = rowType(r);
     const name = rowBedsLabel(r);
     if (mod !== lastModule) {
-      rowsHtml += '<div class="mod-label">▍' + tt('module') + ' ' + (mod + 1) + ' — ' + gardenCfg.rowsPerModule + ' ' + tt('rows') + ' · ' + gardenCfg.slotLen + 'm ' + tt('cell') + ' · ' + tt('paths') + ' ~' + (pathM * 100).toFixed(0) + 'cm</div>';
+      const firstMod = mod === 0 ? ' first' : '';
+      rowsHtml += '<div class="mod-label' + firstMod + '">▍' + tt('module') + ' ' + (mod + 1) + ' — ' + gardenCfg.rowsPerModule + ' ' + tt('rows') + ' · ' + gardenCfg.slotLen + 'm ' + tt('cell') + ' · ' + tt('paths') + ' ~' + (pathM * 100).toFixed(0) + 'cm</div>';
       lastModule = mod;
     }
     const typeCap = tt(type);
@@ -4655,7 +4656,43 @@ function exportFieldView() {
   '.cd-key{color:#6a8068;flex-shrink:0;margin-right:10px}\n' +
   '.cd-val{color:#e8f0e0;text-align:right}\n' +
   '.legend{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-top:12px;font-size:0.62rem;color:#6a8068}\n' +
-  '</style>\n</head>\n<body>\n<a id="top"></a>\n' +
+  '.print-bar{position:sticky;top:0;background:#142114;border:1px solid #1a301a;border-radius:6px;padding:6px 10px;margin-bottom:12px;text-align:center;font-size:0.72rem;color:#8a9a8a;z-index:10;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}\n' +
+  '.print-bar label{display:inline-flex;align-items:center;gap:6px;cursor:pointer;color:#8a9a8a}\n' +
+  '.print-bar .print-hint{opacity:0.65}\n' +
+  '@media print{\n' +
+  '  @page{size:A4 portrait;margin:10mm}\n' +
+  '  html,body{background:#fff !important;color:#111 !important;padding:0;margin:0;max-width:none}\n' +
+  '  *{-webkit-print-color-adjust:economy !important;print-color-adjust:economy !important}\n' +
+  '  body.print-color *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important}\n' +
+  '  h1{color:#111 !important;font-size:15pt;margin:0 0 2mm}\n' +
+  '  .subtitle,.brief-line{color:#333 !important}\n' +
+  '  .spec{background:#eee !important;border:1px solid #999 !important;color:#111 !important}\n' +
+  '  .spec b{color:#111 !important}\n' +
+  '  .mod-label{color:#111 !important;font-weight:bold;border-top:1px solid #999;padding-top:2mm;margin-top:4mm}\n' +
+  '  .mod-label:not(.first){break-before:page;page-break-before:always}\n' +
+  '  .mod-label.first{border-top:none;padding-top:0;margin-top:0}\n' +
+  '  .grow{break-inside:avoid;page-break-inside:avoid}\n' +
+  '  .bed{background:#fff !important;border:1px solid #555 !important}\n' +
+  '  .bed.joined{border:2px solid #333 !important}\n' +
+  '  .bed.split{border:1.5px dashed #666 !important}\n' +
+  '  .f-tall,.f-medium,.f-low{background:#fff !important}\n' +
+  '  .bed-section{background:#f4f4f4 !important;border:1px solid #aaa !important;min-height:5mm}\n' +
+  '  .bed-section .cell-plant,.bed-section .cell-plant .cs{color:#111 !important}\n' +
+  '  .cell-empty{color:#999 !important}\n' +
+  '  .rlabel{color:#111 !important;font-weight:bold}\n' +
+  '  .bmeta{color:#333 !important}\n' +
+  '  .legend{color:#333 !important}\n' +
+  '  .print-bar{display:none !important}\n' +
+  '  .p-detail{display:none !important}\n' +
+  '}\n' +
+  '</style>\n</head>\n<body>\n' +
+  '<div class="print-bar">\n' +
+  '  <label title="Print in colour (backgrounds, joins). Unchecked = B&W default, printer-friendly.">\n' +
+  '    <input type="checkbox" id="printColor" onchange="document.body.classList.toggle(\'print-color\',this.checked)"> <span>' + (LANG === 'nl' ? 'Print in kleur' : 'Print in colour') + '</span>\n' +
+  '  </label>\n' +
+  '  <span class="print-hint">' + (LANG === 'nl' ? 'Cmd+P / Ctrl+P om af te drukken · standaard zwart-wit' : 'Cmd+P / Ctrl+P to print · B&W by default') + '</span>\n' +
+  '</div>\n' +
+  '<a id="top"></a>\n' +
   '<h1>🥕 ' + (LANG === 'nl' ? 'Moestuin — Veldweergave' : 'Vegetable Garden — Field View') + '</h1>\n' +
   '<p class="subtitle">' + rows.length + ' ' + tt('rows') + ' · ' + gardenCfg.modules + ' ' + tt('module') + (gardenCfg.modules > 1 ? 's' : '') + ' · ' + gardenCfg.bedWidth + 'm ' + tt('beds') + ' × ' + gardenCfg.slotLen + 'm ' + tt('slots') + ' · ' + rowsPerBed() + ' ' + tt('rowsPerBed') + ' · ' + gardenCfg.sectionLen + 'm ' + tt('sectionsPerCell') + ' · ' + tt('paths') + ' ~' + (pathM * 100).toFixed(0) + 'cm</p>\n' +
   briefLine +
