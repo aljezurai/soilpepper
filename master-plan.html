@@ -4547,13 +4547,14 @@ function exportPlan() {
   });
   // Build the grid as static HTML + detail panels (no JS needed to view)
   var gridHtml = buildGridHtml();
+  var printTilesHtml = buildPrintTilesHtml(plan.cols, plan.rows);
   var detailHtml = buildDetailHtml();
   var vegLayerHtml = buildVegLayerHtml(region);   // vegetable-layer summary (2026-08-09)
   var planJson = JSON.stringify(plan);
   var speciesJson = JSON.stringify(minSpecies);
   var guildsJson = JSON.stringify(guilds);
   var briefJson = JSON.stringify(loadBrief());
-  var html = buildStandaloneHtml(planJson, speciesJson, guildsJson, briefJson, gridHtml, detailHtml, vegLayerHtml, plan.cols, plan.rows, region);
+  var html = buildStandaloneHtml(planJson, speciesJson, guildsJson, briefJson, gridHtml, printTilesHtml, detailHtml, vegLayerHtml, plan.cols, plan.rows, region);
   var blob = new Blob([html], { type: 'text/html' });
   var a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
@@ -4578,6 +4579,69 @@ function cellTitle(r, c, cell) {
   if (cell.soil && SOIL_META[cell.soil]) extra.push(SOIL_META[cell.soil].label);
   return '#' + num + ' ' + nm + (cell.label ? ' — ' + cell.label : '') + (extra.length ? ' · ' + extra.join(' · ') : '');
 }
+function cellHtml(r, c, isNL, vegData, vegCellKey) {
+  var k = r + '_' + c;
+  var cell = plan.cells[k];
+  var fn = cell ? cell.function : 'empty';
+  var num = r * plan.cols + c + 1;
+  var h = '<a href="#cell-' + num + '" class="cell f-' + fn + '" title="' + escHtml(cellTitle(r, c, cell)) + '">';
+  if (cell) {
+    var meta = EXPORT_FUNC[fn];
+    if (meta) h += '<div class="ci">' + meta[0] + '</div>';
+    var label = cell.label || (meta ? meta[1] : '');
+    if (fn === 'guild' && cell.treeKey && SPECIES[cell.treeKey]) label = SPECIES[cell.treeKey].name;
+    if (label) h += '<div class="cl">' + escHtml(label) + '</div>';
+    if (cell.zone !== undefined && cell.zone !== null && ZONE_META[cell.zone]) h += '<span class="cz">Z' + cell.zone + '</span>';
+    if (cell.soil && SOIL_META[cell.soil]) h += '<span class="cs">' + SOIL_META[cell.soil].label + '</span>';
+    // Full grid version: vegetable cells with a linked layout show bed count
+    if (fn === 'vegetable' && vegCellKey === k && vegData && Array.isArray(vegData.rows)) {
+      var bedCount = vegData.rows.length;
+      var plantCount = 0;
+      vegData.rows.forEach(function (row) {
+        (row.slots || []).forEach(function (slot) { plantCount += (slot || []).length; });
+      });
+      h += '<span class="cveg">' + bedCount + (isNL ? ' bedden' : ' beds') + ' · ' + plantCount + ' 🌱</span>';
+    }
+  } else {
+    h += '<div class="ci" style="opacity:0.25">+</div>';
+  }
+  h += '<div class="cn">' + num + '</div></a>';
+  return h;
+}
+
+// Build a print-only tiled layer: each tile is a TILE×TILE block of cells
+// (last row/col trimmed), one A4 page each via break-after. Hidden on screen,
+// shown only in @media print. Matches the veg field-view B&W print treatment.
+function buildPrintTilesHtml(planCols, planRows) {
+  var isNL = (getRegionParam() === 'netherlands');
+  var vegData = null;
+  try { vegData = JSON.parse(localStorage.getItem('tuscanVegGarden') || 'null'); } catch (e) {}
+  var vegCellKey = (vegData && vegData.cell) || null;
+  var TILE = 5;
+  var tiles = [];
+  var sheet = 0;
+  for (var tr = 0; tr < planRows; tr += TILE) {
+    for (var tc = 0; tc < planCols; tc += TILE) {
+      sheet++;
+      var r1 = tr, r2 = Math.min(tr + TILE, planRows);
+      var c1 = tc, c2 = Math.min(tc + TILE, planCols);
+      var cells = [];
+      for (var r = r1; r < r2; r++) {
+        for (var c = c1; c < c2; c++) cells.push(cellHtml(r, c, isNL, vegData, vegCellKey));
+      }
+      var gridStyle = 'grid-template-columns:repeat(' + (c2 - c1) + ',1fr);grid-template-rows:repeat(' + (r2 - r1) + ',1fr)';
+      tiles.push(
+        '<div class="print-tile" data-sheet="' + sheet + '">' +
+        '<div class="print-tile-label">' + (isNL ? 'Blad ' : 'Sheet ') + sheet +
+        ' &middot; ' + (isNL ? 'rijen ' : 'rows ') + (r1 + 1) + '&ndash;' + r2 +
+        ' &middot; ' + (isNL ? 'kolommen ' : 'cols ') + (c1 + 1) + '&ndash;' + c2 + '</div>' +
+        '<div class="pt-grid" style="' + gridStyle + '">' + cells.join('') + '</div>' +
+        '</div>');
+    }
+  }
+  return '<div class="print-tiles">' + tiles.join('') + '</div>';
+}
+
 function buildGridHtml() {
   var isNL = (getRegionParam() === 'netherlands');   // for veg-cell labels
   // Veg layout linked to a grid cell (for the full grid version, 2026-08-09)
@@ -4587,33 +4651,7 @@ function buildGridHtml() {
   var parts = [];
   for (var r = 0; r < plan.rows; r++) {
     for (var c = 0; c < plan.cols; c++) {
-      var k = r + '_' + c;
-      var cell = plan.cells[k];
-      var fn = cell ? cell.function : 'empty';
-      var num = r * plan.cols + c + 1;
-      var h = '<a href="#cell-' + num + '" class="cell f-' + fn + '" title="' + escHtml(cellTitle(r, c, cell)) + '">';
-      if (cell) {
-        var meta = EXPORT_FUNC[fn];
-        if (meta) h += '<div class="ci">' + meta[0] + '</div>';
-        var label = cell.label || (meta ? meta[1] : '');
-        if (fn === 'guild' && cell.treeKey && SPECIES[cell.treeKey]) label = SPECIES[cell.treeKey].name;
-        if (label) h += '<div class="cl">' + escHtml(label) + '</div>';
-        if (cell.zone !== undefined && cell.zone !== null && ZONE_META[cell.zone]) h += '<span class="cz">Z' + cell.zone + '</span>';
-        if (cell.soil && SOIL_META[cell.soil]) h += '<span class="cs">' + SOIL_META[cell.soil].label + '</span>';
-        // Full grid version: vegetable cells with a linked layout show bed count
-        if (fn === 'vegetable' && vegCellKey === k && vegData && Array.isArray(vegData.rows)) {
-          var bedCount = vegData.rows.length;
-          var plantCount = 0;
-          vegData.rows.forEach(function (row) {
-            (row.slots || []).forEach(function (slot) { plantCount += (slot || []).length; });
-          });
-          h += '<span class="cveg">' + bedCount + (isNL ? ' bedden' : ' beds') + ' · ' + plantCount + ' 🌱</span>';
-        }
-      } else {
-        h += '<div class="ci" style="opacity:0.25">+</div>';
-      }
-      h += '<div class="cn">' + num + '</div></a>';
-      parts.push(h);
+      parts.push(cellHtml(r, c, isNL, vegData, vegCellKey));
     }
   }
   return parts.join('\n');
@@ -4738,7 +4776,7 @@ function buildVegLayerHtml(region) {
     '</div>';
 }
 
-function buildStandaloneHtml(planJson, speciesJson, guildsJson, briefJson, gridHtml, detailHtml, vegLayerHtml, planCols, planRows, region) {
+function buildStandaloneHtml(planJson, speciesJson, guildsJson, briefJson, gridHtml, printTilesHtml, detailHtml, vegLayerHtml, planCols, planRows, region) {
   // Escape closing script tag sequences to avoid breaking the embedded script tag
   var safePlan = planJson.replace(/<\//g, '<\\/');
   var safeSpecies = speciesJson.replace(/<\//g, '<\\/');
@@ -4835,11 +4873,56 @@ h1{font-family:Georgia,'Palatino',serif;color:#5a8a4a;text-align:center;font-siz
   grid-template-columns:repeat(var(--vc,10),1fr);grid-template-rows:repeat(var(--vr,10),1fr)}
 .veg-map .vm-cell{aspect-ratio:1;border-radius:2px;background:#0a1a0a;border:1px solid rgba(255,255,255,0.05)}
 .veg-map .vm-cell.on{background:#4a7025;box-shadow:0 0 0 1px #c4a040 inset}
+/* Print: A4 portrait, tiled 5×5, B&W default */
+.print-bar{position:sticky;top:0;background:#142114;border:1px solid #1a301a;border-radius:6px;padding:6px 10px;margin-bottom:12px;text-align:center;font-size:0.72rem;color:#8a9a8a;z-index:10;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+.print-bar label{display:inline-flex;align-items:center;gap:6px;cursor:pointer;color:#8a9a8a}
+.print-bar .print-hint{opacity:0.65}
+.print-tiles{display:none}
+@media print{
+  @page{size:A4 portrait;margin:8mm}
+  html,body{background:#fff !important;color:#111 !important;padding:0;margin:0;max-width:none}
+  *{-webkit-print-color-adjust:economy !important;print-color-adjust:economy !important}
+  body.print-color *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important}
+  h1{color:#111 !important;font-size:14pt;margin:0 0 2mm}
+  .subtitle,.brief-line,.footer{color:#333 !important}
+  .brief-line{background:#fff !important;border:1px solid #999 !important;color:#111 !important}
+  .legend{background:#fff !important;border:1px solid #999 !important}
+  .legend-item{background:#fff !important;border:1px solid #999 !important;color:#111 !important}
+  .sw{border:1px solid #555}
+  .grid-wrap,.detail-section,.veg-layer{display:none !important}
+  .print-tiles{display:block !important}
+  .print-tile{break-after:page;page-break-after:always}
+  .print-tile:last-child{break-after:auto;page-break-after:auto}
+  .print-tile-label{color:#111 !important;font-weight:bold;font-size:9pt;margin-bottom:2mm;font-family:'Courier New',monospace}
+  .pt-grid{display:grid;gap:1mm;background:#ccc;padding:1mm;border-radius:1mm;width:100%;aspect-ratio:1}
+  .pt-grid .cell{background:#fff !important;border:1px solid #999 !important;border-radius:0;cursor:default;box-shadow:none !important;color:#111 !important}
+  .pt-grid .cell:hover{box-shadow:none !important}
+  .pt-grid .ci{font-size:16pt}
+  .pt-grid .cl{color:#111 !important;font-size:6.5pt;white-space:normal;overflow:visible;text-overflow:clip}
+  .pt-grid .cn{color:#333 !important;text-shadow:none}
+  .pt-grid .cz{color:#fff !important;background:#555 !important}
+  .pt-grid .cs{color:#fff !important;background:#777 !important}
+  .pt-grid .cveg{color:#111 !important;background:#ddd !important}
+  body.print-color .pt-grid .cell{background:#0a1a0a !important}
+  body.print-color .pt-grid .cell.f-guild{background:linear-gradient(135deg,#1f4a1f,#2a5a2a) !important}
+  body.print-color .pt-grid .cell.f-vegetable{background:linear-gradient(135deg,#3a5a1a,#4a7025) !important}
+  body.print-color .pt-grid .cell.f-water{background:linear-gradient(135deg,#12406e,#1a5a9a) !important}
+  body.print-color .pt-grid .cell.f-road{background:linear-gradient(135deg,#5a4030,#6a4a38) !important}
+  body.print-color .pt-grid .cell.f-construction{background:linear-gradient(135deg,#5a2525,#7a3030) !important}
+  body.print-color .pt-grid .cell.f-open{background:linear-gradient(135deg,#122412,#1a301a) !important}
+  .print-bar{display:none !important}
+}
 @media(max-width:600px){.grid{gap:1px}.cell .cl{display:none}}
 </style>
 </head>
 <body>
 <a id="top"></a>
+<div class="print-bar">
+  <label title="Print in colour (function backgrounds). Unchecked = B&W default, printer-friendly.">
+    <input type="checkbox" id="printColor" onchange="document.body.classList.toggle('print-color',this.checked)"> <span>${region==='netherlands'?'Print in kleur':'Print in colour'}</span>
+  </label>
+  <span class="print-hint">${region==='netherlands'?'Cmd+P / Ctrl+P om af te drukken · standaard zwart-wit':'Cmd+P / Ctrl+P to print · B&W by default'}</span>
+</div>
 <h1>\u{1f5fa}\ufe0f Master Plan \u2014 Field Viewer</h1>
 <p class="subtitle">Tap a numbered cell to see details \u2014 no internet needed</p>
 ${briefLine}
@@ -4857,6 +4940,7 @@ ${briefLine}
 ${gridHtml}
   </div>
 </div>
+${printTilesHtml}
 <div class="detail-section">
 ${detailHtml}
 </div>
