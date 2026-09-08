@@ -3,137 +3,193 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Jaarrond-planner — Mockup</title>
+<title>Jaarrond-planner — Mockup v2 (met suggesties)</title>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;background:#0a1a0a;color:#c8d8c0;padding:16px;max-width:1000px;margin:0 auto;line-height:1.4}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;background:#0a1a0a;color:#c8d8c0;padding:16px;max-width:1050px;margin:0 auto;line-height:1.4}
   h1{font-family:Georgia,serif;color:#5a8a4a;text-align:center;font-size:1.3rem;margin-bottom:2px}
-  .subtitle{text-align:center;color:#6a8068;font-size:.72rem;margin-bottom:4px}
-  .tag{text-align:center;font-size:.65rem;color:#8a9a8a;background:#142114;border:1px solid #1a301a;border-radius:6px;padding:6px 10px;max-width:720px;margin:0 auto 14px}
+  .subtitle{text-align:center;color:#6a8068;font-size:.72rem;margin-bottom:8px}
+  .tag{text-align:center;font-size:.65rem;color:#8a9a8a;background:#142114;border:1px solid #1a301a;border-radius:6px;padding:6px 10px;margin:0 auto 10px}
   .tag b{color:#e8f0e0}
-  .legend{display:flex;gap:16px;justify-content:center;font-size:.68rem;margin-bottom:14px;color:#8a9a8a}
+  .legend{display:flex;gap:14px;justify-content:center;font-size:.68rem;margin-bottom:12px;color:#8a9a8a;flex-wrap:wrap}
   .legend span{display:inline-flex;align-items:center;gap:5px}
   .sw{width:16px;height:9px;border-radius:2px;display:inline-block}
-  .sw-sow{background:#c9a227}.sw-hrv{background:#3e6a46}.sw-both{background:repeating-linear-gradient(90deg,#c9a227 0 4px,#3e6a46 4px 8px)}
-  .sw-gap{background:#2a1a1a;border:1px dashed #5a3a3a}
-  .month-labels{display:grid;grid-template-columns:190px repeat(12,1fr);font-size:.6rem;color:#6a8068;text-align:center;margin-bottom:2px}
-  .month-labels .row-hd{text-align:left;color:#8a9a8a}
-  .row-group{margin-bottom:16px}
-  .row-head{font-size:.72rem;font-weight:bold;color:#e8f0e0;background:#142114;border:1px solid #1a301a;border-radius:5px;padding:4px 10px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
-  .row-head .meta{font-weight:normal;color:#8a9a8a;font-size:.66rem}
-  .lane{display:grid;grid-template-columns:190px repeat(12,1fr);gap:1px;align-items:center;margin-bottom:2px}
-  .lane .sp{font-size:.66rem;color:#c8d8c0;padding-right:8px;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .lane .sp .fam{display:block;color:#6a8068;font-size:.56rem}
-  .cell{height:20px;border-radius:2px}
-  .empty{background:rgba(255,255,255,.03)}
-  .sow{background:#c9a227}
-  .hrv{background:#3e6a46}
-  .both{background:repeating-linear-gradient(90deg,#c9a227 0 5px,#3e6a46 5px 10px)}
-  .gap{background:#241515;border:1px dashed #4a2f2f}
-  .note{color:#7a8a7a;font-size:.6rem;font-style:italic}
-  .months-row{display:grid;grid-template-columns:190px repeat(12,1fr);gap:1px;margin-bottom:8px}
+  .sw-sow{background:#c9a227}.sw-hrv{background:#3e6a46}.sw-both{background:repeating-linear-gradient(90deg,#c9a227 0 4px,#3e6a46 4px 8px)}.sw-gap{background:#2a1a1a;border:1px dashed #5a3a3a}
+  .row-group{margin-bottom:14px;background:#0e1c0e;border:1px solid #1e341e;border-radius:8px;padding:10px;display:grid;grid-template-columns:1fr;gap:8px}
+  .row-top{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center}
+  .row-head{font-size:.78rem;font-weight:bold;color:#e8f0e0;padding:4px 2px;white-space:nowrap}
+  .row-head .meta{font-weight:normal;color:#8a9a8a;font-size:.64rem}
+  .fn-tag{font-size:.6rem;color:#8a9a8a;text-align:right}
+  .timeline-wrap{grid-column:1/-1;overflow-x:auto}
+  .months-row{display:grid;grid-template-columns:185px repeat(12,1fr);gap:1px;margin-bottom:2px}
   .mh{text-align:center;font-size:.56rem;color:#8a9a8a;background:rgba(255,255,255,.03);border-radius:2px;padding:1px 0}
-  .mh.hl{color:#c9a227;font-weight:bold}
-  .insight{margin-top:14px;background:#142114;border:1px solid #1a301a;border-radius:8px;padding:10px 12px;font-size:.7rem}
-  .insight h3{color:#5a8a4a;font-size:.78rem;margin-bottom:6px}
-  .insight ul{margin-left:16px;color:#a8b8a0}
-  .insight li{margin-bottom:3px}
-  .gap-badge{background:#4a2f2f;color:#d8b0a0;border-radius:3px;padding:0 4px;font-size:.6rem}
-  .dup{color:#8a9a8a;font-style:italic}
-  .toggle{text-align:center;margin:12px 0}
-  .toggle button{background:#1e3a1e;color:#c8d8c0;border:1px solid #2a502a;border-radius:5px;padding:6px 14px;font-size:.72rem;cursor:pointer}
-  .toggle button:hover{background:#2a502a}
+  .mh.row-hd{text-align:left}
+  .lane{display:grid;grid-template-columns:185px repeat(12,1fr);gap:1px;margin-bottom:1px;align-items:center}
+  .lane .sp{font-size:.66rem;color:#c8d8c0;padding-right:6px;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .lane .sp .fam{display:block;color:#5a6a5a;font-size:.52rem}
+  .cell{height:18px;border-radius:2px}
+  .sow{background:#c9a227}.hrv{background:#3e6a46}.both{background:repeating-linear-gradient(90deg,#c9a227 0 5px,#3e6a46 5px 10px)}
+  .note{grid-column:2/14;font-size:.56rem;color:#5a6a5a;font-style:italic}
+  .suggest{grid-column:1/-1;background:#101f10;border:1px solid #2a442a;border-left:3px solid #5a8a4a;border-radius:6px;padding:8px 10px}
+  .suggest h4{color:#7aa86a;font-size:.68rem;margin-bottom:6px;letter-spacing:.5px}
+  .sug-row{display:flex;flex-wrap:wrap;gap:6px 10px;font-size:.66rem;margin-bottom:4px}
+  .sug-row b{color:#a8c898;font-weight:600}
+  .sug-row .cat{color:#c9a227}
+  .chip{background:#1a2a1a;border:1px solid #2e4a2e;border-radius:10px;padding:1px 7px;font-size:.62rem;color:#c8d8c0;white-space:nowrap}
+  .chip.good{border-color:#3e6a46}.chip.warn{border-color:#a2722f}
+  .chip.new{background:#2a3a1a;border-color:#5a7a2f}
+  .tip{font-size:.62rem;color:#9aac9a;line-height:1.5}
+  .tip b{color:#c8d8c0}
+  .gapsep{color:#8a5a4a}
 </style>
 </head>
 <body>
-<h1>🌱 Jaarrond-planner — voorbeeld (mockup)</h1>
-<p class="subtitle">Per rij: wanneer zaaien ▮ en oogsten ▮ · jouw huidige ontwerp · 6 rijen · 1 module</p>
-<div class="tag">Op basis van jouw <b>huidige ontwerp</b> (31 soorten, 6 rijen). Bands tonen zaaivensters (goud) & oogstvensters (groen). <b>Kloof-detectie</b> markeert maanden waarin een bed leeg staat tussen oogst en volgende zaai.</div>
+<h1>🌱 Jaarrond-planner + rij-suggesties — voorbeeld v2</h1>
+<p class="subtitle">Per rij: zaaien ▮ / oogsten ▮ + suggesties (extra gewassen, vangteelt, mulch) uit de plantendatabase</p>
 <div class="legend">
   <span><span class="sw sw-sow"></span> Zaaien</span>
   <span><span class="sw sw-hrv"></span> Oogsten</span>
-  <span><span class="sw sw-both"></span> Zaaien+oogst</span>
-  <span><span class="sw sw-gap"></span> Leeg bed (kloof)</span>
+  <span><span class="sw sw-both"></span> Beide</span>
+  <span><span class="chip good">✓ al aanwezig</span></span>
+  <span><span class="chip new">+ nieuw voorstel</span></span>
 </div>
 
-<!-- mockup: real data from current design -->
-
+<!-- RIJ 1 -->
 <div class="row-group">
-  <div class="row-head">Rij 1 · Hoog <span class="meta">🔗 20m gekoppeld · warme klimplanten</span></div>
-  <div class="months-row"><div class="mh row-hd"></div><div class="mh">J</div><div class="mh">F</div><div class="mh">M</div><div class="mh hl">A</div><div class="mh">M</div><div class="mh">J</div><div class="mh">J</div><div class="mh">A</div><div class="mh hl">S</div><div class="mh">O</div><div class="mh">N</div><div class="mh">D</div></div>
-  <div class="lane"><div class="sp">Tomaat<span class="fam">Nachtschadefamilie</span></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div></div>
-  <div class="lane"><div class="sp">Klimkomkommer<span class="fam">Komkommerfamilie</span></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell empty"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div></div>
-  <div class="lane"><div class="sp">Stokbonen<span class="fam">Vlinderbloemenfamilie</span></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell sow"></div><div class="cell empty"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div></div>
-  <div class="lane"><div class="sp">Druif (tafel) <span class="dup">· meerjarig</span><span class="fam">Wijnstokfamilie</span></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell empty"></div><div class="cell empty"></div></div>
+  <div class="row-top">
+    <div class="row-head">Rij 1 · Hoog <span class="meta">· 20m gekoppeld</span></div>
+    <div class="fn-tag">🔗 warme klimplanten</div>
+  </div>
+  <div class="timeline-wrap">
+    <div class="months-row"><div class="mh row-hd"></div><div class="mh">J</div><div class="mh">F</div><div class="mh">M</div><div class="mh">A</div><div class="mh">M</div><div class="mh">J</div><div class="mh">J</div><div class="mh">A</div><div class="mh">S</div><div class="mh">O</div><div class="mh">N</div><div class="mh">D</div></div>
+    <div class="lane"><div class="sp">Tomaat</div><div class="cell"></div><div class="cell"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell"></div><div class="cell"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+    <div class="lane"><div class="sp">Klimkomkommer</div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+    <div class="lane"><div class="sp">Stokbonen</div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell sow"></div><div class="cell"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+    <div class="lane"><div class="sp">Druif (tafel) <span class="fam">meerj.</span></div><div class="cell"></div><div class="cell"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell"></div><div class="cell"></div></div>
+  </div>
+  <div class="suggest">
+    <h4>💡 SUGGESTIES RIJ 1</h4>
+    <div class="sug-row"><b>Extra gezelschap:</b> <span class="chip good">✓ Stokbonen</span> <span class="chip good">✓ Basilicum*</span> <span class="chip new">+ Radijs</span> <span class="chip new">+ Marjolein</span> <span class="chip new">+ Wortel</span> <span class="chip new">+ Selderij</span> <span class="chip new">+ Sla</span></div>
+    <div class="sug-row"><b>Vangteelt / kloof (nov–mrt):</b> <span class="chip warn">winterrust → veldboon of wikke als groenbemester</span></div>
+    <div class="sug-row"><b>Mulch / bodem:</b> <span class="tip"><b>Nitrogen + kalium zwaar.</b> Mulch met <b>compost + grasknipsels</b> rond tomaten; stikstofbinders (bonen) al ✓. <b>Mycorrhiza</b> bevorderen (niet diepwoelen).</span></div>
+  </div>
 </div>
 
+<!-- RIJ 2 -->
 <div class="row-group">
-  <div class="row-head">Rij 2 · Laag <span class="meta">🔗 20m gekoppeld · wortel & bladgroenten</span></div>
-  <div class="months-row"><div class="mh row-hd"></div><div class="mh">J</div><div class="mh">F</div><div class="mh">M</div><div class="mh hl">A</div><div class="mh">M</div><div class="mh">J</div><div class="mh">J</div><div class="mh hl">A</div><div class="mh hl">S</div><div class="mh">O</div><div class="mh">N</div><div class="mh">D</div></div>
-  <div class="lane"><div class="sp">Spinazie<span class="fam">Amarantenfamilie</span></div><div class="cell empty"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell empty"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell empty"></div></div>
-  <div class="lane"><div class="sp">Wortel<span class="fam">Schermbloemenfamilie</span></div><div class="cell empty"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell empty"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell hrv"></div></div>
-  <div class="lane"><div class="sp">Biet<span class="fam">Amarantenfamilie</span></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell hrv"></div></div>
-  <div class="lane"><div class="sp">Koolrabi<span class="fam">Kruisbloemenfamilie</span></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell empty"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell empty"></div></div>
-  <div class="lane"><div class="sp">Raap<span class="fam">Kruisbloemenfamilie</span></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell empty"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell empty"></div><div class="cell sow"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell hrv"></div></div>
-  <div class="gap-row"></div>
+  <div class="row-top">
+    <div class="row-head">Rij 2 · Laag <span class="meta">· 20m gekoppeld</span></div>
+    <div class="fn-tag">🥕 wortel & blad</div>
+  </div>
+  <div class="timeline-wrap">
+    <div class="months-row"><div class="mh row-hd"></div><div class="mh">J</div><div class="mh">F</div><div class="mh">M</div><div class="mh">A</div><div class="mh">M</div><div class="mh">J</div><div class="mh">J</div><div class="mh">A</div><div class="mh">S</div><div class="mh">O</div><div class="mh">N</div><div class="mh">D</div></div>
+    <div class="lane"><div class="sp">Spinazie</div><div class="cell"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell"></div></div>
+    <div class="lane"><div class="sp">Wortel</div><div class="cell"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell hrv"></div></div>
+    <div class="lane"><div class="sp">Biet</div><div class="cell"></div><div class="cell"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell hrv"></div></div>
+    <div class="lane"><div class="sp">Koolrabi</div><div class="cell"></div><div class="cell"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell"></div></div>
+    <div class="lane"><div class="sp">Raap</div><div class="cell"></div><div class="cell"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell"></div><div class="cell sow"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell hrv"></div></div>
+  </div>
+  <div class="suggest">
+    <h4>💡 SUGGESTIES RIJ 2</h4>
+    <div class="sug-row"><b>Sterke opvolging:</b> <span class="tip">wortel/spinazie/biet bedekken het bed bijna jaarrond — <b>geen grote gaten</b> ✓. Rij is al goed samengesteld.</span></div>
+    <div class="sug-row"><b>Extra gezelschap:</b> <span class="chip good">✓ Spinazie+Wortel</span> <span class="chip good">✓ Biet+Koolrabi</span> <span class="chip new">+ Sla</span> <span class="chip new">+ Marjolein</span> <span class="chip new">+ Radijs</span> <span class="chip new">+ Erwt</span></div>
+    <div class="sug-row"><b>Mulch / bodem:</b> <span class="tip"><b>Diep losmaken</b> voor wortel (diepe penwortel). Zwavel/calcium accumulatoren aanwezig (ui-achtigen/bieten). <b>Mulch licht</b> — wortel houdt niet van vers mest.</span></div>
+  </div>
 </div>
 
+<!-- RIJ 3 -->
 <div class="row-group">
-  <div class="row-head">Rij 3 · Middel <span class="meta">🔗 20m gekoppeld · vrucht- & koolgewassen</span></div>
-  <div class="months-row"><div class="mh row-hd"></div><div class="mh">J</div><div class="mh">F</div><div class="mh">M</div><div class="mh hl">A</div><div class="mh">M</div><div class="mh hl">J</div><div class="mh hl">J</div><div class="mh hl">A</div><div class="mh">S</div><div class="mh hl">O</div><div class="mh">N</div><div class="mh">D</div></div>
-  <div class="lane"><div class="sp">Pompoen<span class="fam">Kalebasfamilie</span></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell empty"></div><div class="cell empty"></div></div>
-  <div class="lane"><div class="sp">Zoete aardappel<span class="fam">Windefamilie</span></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell empty"></div><div class="cell empty"></div></div>
-  <div class="lane"><div class="sp">Venkel<span class="fam">Schermbloemenfamilie</span></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell empty"></div></div>
-  <div class="lane"><div class="sp">Paksoi<span class="fam">Kruisbloemenfamilie</span></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell empty"></div><div class="cell empty"></div></div>
-  <div class="lane"><div class="sp">Bloemkool<span class="fam">Kruisbloemenfamilie</span></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell empty"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell hrv"></div></div>
-  <div class="lane"><div class="sp">Artisjok <span class="dup">· meerjarig</span><span class="fam">Composietenfamilie</span></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell empty"></div><div class="cell hrv"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div></div>
+  <div class="row-top">
+    <div class="row-head">Rij 3 · Middel <span class="meta">· 20m gekoppeld</span></div>
+    <div class="fn-tag">🌿 vrucht & kool</div>
+  </div>
+  <div class="timeline-wrap">
+    <div class="months-row"><div class="mh row-hd"></div><div class="mh">J</div><div class="mh">F</div><div class="mh">M</div><div class="mh">A</div><div class="mh">M</div><div class="mh">J</div><div class="mh">J</div><div class="mh">A</div><div class="mh">S</div><div class="mh">O</div><div class="mh">N</div><div class="mh">D</div></div>
+    <div class="lane"><div class="sp">Pompoen</div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell"></div><div class="cell"></div></div>
+    <div class="lane"><div class="sp">Zoete aardappel</div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell"></div><div class="cell"></div></div>
+    <div class="lane"><div class="sp">Venkel</div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell"></div></div>
+    <div class="lane"><div class="sp">Paksoi</div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell"></div><div class="cell"></div></div>
+    <div class="lane"><div class="sp">Bloemkool</div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell hrv"></div></div>
+    <div class="lane"><div class="sp">Artisjok <span class="fam">meerj.</span></div><div class="cell"></div><div class="cell"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell"></div><div class="cell hrv"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+  </div>
+  <div class="suggest">
+    <h4>💡 SUGGESTIES RIJ 3</h4>
+    <div class="sug-row"><b>Kloof:</b> <span class="chip warn">pompoen/zoete-aardappel ruimen laat op (okt) → koolherfstzaai heeft het druk in nov</span></div>
+    <div class="sug-row"><b>Extra gezelschap:</b> <span class="chip good">✓ Artisjok+Venkel</span> <span class="chip new">+ Marjolein</span> <span class="chip new">+ Sla</span> <span class="chip new">+ Radijs</span> <span class="chip new">+ Kardoen</span></div>
+    <div class="sug-row"><b>Mulch / bodem:</b> <span class="tip"><b>Vraatzuchtig</b> (pompoen/zoete-aardappel) — rijk compost vooraf. Mycorrhiza belangrijk. <b>Kool (Bloemkool):</b> houdt van kalk & stikstof; zet na peulvruchten.</span></div>
+  </div>
 </div>
 
+<!-- RIJ 4 -->
 <div class="row-group">
-  <div class="row-head">Rij 4 · Laag <span class="meta">🔗 20m gekoppeld · ui-achtigen & bladgroenten</span></div>
-  <div class="months-row"><div class="mh row-hd"></div><div class="mh">J</div><div class="mh">F</div><div class="mh hl">M</div><div class="mh hl">A</div><div class="mh">M</div><div class="mh hl">J</div><div class="mh">J</div><div class="mh">A</div><div class="mh">S</div><div class="mh hl">O</div><div class="mh hl">N</div><div class="mh">D</div></div>
-  <div class="lane"><div class="sp">Sla<span class="fam">Composietenfamilie</span></div><div class="cell empty"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell empty"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell empty"></div></div>
-  <div class="lane"><div class="sp">Asperge <span class="dup">· meerjarig</span><span class="fam">Aspergefamilie</span></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell empty"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div></div>
-  <div class="lane"><div class="sp">Ui<span class="fam">Narcisfamilie</span></div><div class="cell empty"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div></div>
-  <div class="lane"><div class="sp">Knoflook<span class="fam">Narcisfamilie</span></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell empty"></div></div>
+  <div class="row-top">
+    <div class="row-head">Rij 4 · Laag <span class="meta">· 20m gekoppeld</span></div>
+    <div class="fn-tag">🧄 ui-achtigen & blad</div>
+  </div>
+  <div class="timeline-wrap">
+    <div class="months-row"><div class="mh row-hd"></div><div class="mh">J</div><div class="mh">F</div><div class="mh">M</div><div class="mh">A</div><div class="mh">M</div><div class="mh">J</div><div class="mh">J</div><div class="mh">A</div><div class="mh">S</div><div class="mh">O</div><div class="mh">N</div><div class="mh">D</div></div>
+    <div class="lane"><div class="sp">Sla</div><div class="cell"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell"></div></div>
+    <div class="lane"><div class="sp">Asperge <span class="fam">meerj.</span></div><div class="cell"></div><div class="cell"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+    <div class="lane"><div class="sp">Ui</div><div class="cell"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell"></div><div class="cell"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+    <div class="lane"><div class="sp">Knoflook</div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell"></div><div class="cell"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell"></div></div>
+  </div>
+  <div class="suggest">
+    <h4>💡 SUGGESTIES RIJ 4</h4>
+    <div class="sug-row"><b>Kloof (aug–sep):</b> <span class="chip warn">knoflook oogst jun–jul, plant okt–nov → bed 2–3 mnd leeg. <b>Ideaal voor snel vanggewas:</b> radijs / sla.</span></div>
+    <div class="sug-row"><b>Extra gezelschap:</b> <span class="chip good">✓ Ui+Knoflook</span> <span class="chip good">✓ Asperge+Sla</span> <span class="chip new">+ Goudsbloem</span> <span class="chip new">+ Bieslook</span> <span class="chip new">+ Salie</span> <span class="chip new">+ Tijm</span> <span class="chip new">+ Aardbei</span></div>
+    <div class="sug-row"><b>Mulch / bodem:</b> <span class="tip"><b>Ui-achtigen houden van losse, goed gedraineerde grond</b>, geen verse mest. Goudsbloem/Bieslook langs de rand werken plaagwerend. Koper-accumulatoren aanwezig ✓.</span></div>
+  </div>
 </div>
 
+<!-- RIJ 5 -->
 <div class="row-group">
-  <div class="row-head">Rij 5 · Hoog <span class="meta">🔗 20m gekoppeld · hoog & warm</span></div>
-  <div class="months-row"><div class="mh row-hd"></div><div class="mh">J</div><div class="mh">F</div><div class="mh">M</div><div class="mh hl">A</div><div class="mh">M</div><div class="mh">J</div><div class="mh">J</div><div class="mh hl">A</div><div class="mh hl">S</div><div class="mh">O</div><div class="mh">N</div><div class="mh">D</div></div>
-  <div class="lane"><div class="sp">Suikermaïs<span class="fam">Grassenfamilie</span></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell sow"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div></div>
-  <div class="lane"><div class="sp">Zonnebloem<span class="fam">Composietenfamilie</span></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell empty"></div><div class="cell empty"></div></div>
-  <div class="lane"><div class="sp">Radijs<span class="fam">Kruisbloemenfamilie</span></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell empty"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell hrv"></div><div class="cell hrv"></div></div>
-  <div class="lane"><div class="sp">Stokbonen<span class="fam">Vlinderbloemenfamilie</span></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell sow"></div><div class="cell empty"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div></div>
-  <div class="lane"><div class="sp">Radicchio<span class="fam">Composietenfamilie</span></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell empty"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell hrv"></div></div>
-  <div class="lane"><div class="sp">Raap<span class="fam">Kruisbloemenfamilie</span></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell empty"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell empty"></div><div class="cell sow"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell hrv"></div></div>
-  <div class="lane"><div class="sp">Aardpeer <span class="dup">· meerjarig</span><span class="fam">Composietenfamilie</span></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell note" style="grid-column:2/14">permanent bed · geen jaarlijkse cyclus</div></div>
+  <div class="row-top">
+    <div class="row-head">Rij 5 · Hoog <span class="meta">· 20m gekoppeld</span></div>
+    <div class="fn-tag">🌽 hoog & warm</div>
+  </div>
+  <div class="timeline-wrap">
+    <div class="months-row"><div class="mh row-hd"></div><div class="mh">J</div><div class="mh">F</div><div class="mh">M</div><div class="mh">A</div><div class="mh">M</div><div class="mh">J</div><div class="mh">J</div><div class="mh">A</div><div class="mh">S</div><div class="mh">O</div><div class="mh">N</div><div class="mh">D</div></div>
+    <div class="lane"><div class="sp">Suikermaïs</div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell sow"></div><div class="cell"></div><div class="cell"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+    <div class="lane"><div class="sp">Zonnebloem</div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell"></div><div class="cell"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell"></div><div class="cell"></div></div>
+    <div class="lane"><div class="sp">Stokbonen</div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell sow"></div><div class="cell"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+    <div class="lane"><div class="sp">Radijs</div><div class="cell"></div><div class="cell"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell hrv"></div><div class="cell hrv"></div></div>
+    <div class="lane"><div class="sp">Radicchio</div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell hrv"></div></div>
+    <div class="lane"><div class="sp">Raap</div><div class="cell"></div><div class="cell"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell"></div><div class="cell sow"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell hrv"></div></div>
+    <div class="lane"><div class="sp">Aardpeer <span class="fam">meerj.</span></div><div class="note">permanent bed · geen jaarlijkse cyclus</div></div>
+  </div>
+  <div class="suggest">
+    <h4>💡 SUGGESTIES RIJ 5</h4>
+    <div class="sug-row"><b>Sterke combinatie:</b> <span class="chip good">✓ De 'Drie Zussen' werkt hier al (maïs + stokbonen + pompoen-achtig)</span> — maïs+bonen+zonnebloem zijn onderling goede buren.</div>
+    <div class="sug-row"><b>Extra gezelschap:</b> <span class="chip new">+ Marjolein</span> <span class="chip new">+ Courgette</span> <span class="chip new">+ Sla</span> <span class="chip new">+ Erwt</span> <span class="chip new">+ Meloen</span></div>
+    <div class="sug-row"><b>Mulch / bodem:</b> <span class="tip"><b>Silica-accumulatoren</b> (maïs/zonnebloem) bouwen bodemstructuur. Stikstof via bonen ✓. <b>Zwaar etend</b> — compost + mulch om vocht vast te houden.</span></div>
+  </div>
 </div>
 
+<!-- RIJ 6 -->
 <div class="row-group">
-  <div class="row-head">Rij 6 · Laag <span class="meta">🔗 20m gekoppeld · kruiden & bladgroenten</span></div>
-  <div class="months-row"><div class="mh row-hd"></div><div class="mh">J</div><div class="mh">F</div><div class="mh">M</div><div class="mh hl">A</div><div class="mh">M</div><div class="mh">J</div><div class="mh hl">J</div><div class="mh hl">A</div><div class="mh hl">S</div><div class="mh">O</div><div class="mh">N</div><div class="mh">D</div></div>
-  <div class="lane"><div class="sp">Prei<span class="fam">Narcisfamilie</span></div><div class="cell empty"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell empty"></div><div class="cell hrv"></div><div class="cell hrv"></div></div>
-  <div class="lane"><div class="sp">Courgette<span class="fam">Komkommerfamilie</span></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell empty"></div><div class="cell empty"></div></div>
-  <div class="lane"><div class="sp">Sla<span class="fam">Composietenfamilie</span></div><div class="cell empty"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell empty"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell empty"></div></div>
-  <div class="lane"><div class="sp">Peterselie<span class="fam">Schermbloemenfamilie</span></div><div class="cell empty"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell empty"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell hrv"></div></div>
-  <div class="lane"><div class="sp">Koolrabi<span class="fam">Kruisbloemenfamilie</span></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell empty"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell empty"></div></div>
-  <div class="lane"><div class="sp">Koriander<span class="fam">Schermbloemenfamilie</span></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell empty"></div><div class="cell sow"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell empty"></div></div>
-  <div class="lane"><div class="sp">Dille <span class="dup">· veelzadig</span><span class="fam">Schermbloemenfamilie</span></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div></div>
-  <div class="lane"><div class="sp">Oregano <span class="dup">· meerjarig</span><span class="fam">Lipbloemenfamilie</span></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell note" style="grid-column:2/14">vaste plant · geen jaarlijkse cyclus</div></div>
+  <div class="row-top">
+    <div class="row-head">Rij 6 · Laag <span class="meta">· 20m gekoppeld</span></div>
+    <div class="fn-tag">🌿 kruiden & blad</div>
+  </div>
+  <div class="timeline-wrap">
+    <div class="months-row"><div class="mh row-hd"></div><div class="mh">J</div><div class="mh">F</div><div class="mh">M</div><div class="mh">A</div><div class="mh">M</div><div class="mh">J</div><div class="mh">J</div><div class="mh">A</div><div class="mh">S</div><div class="mh">O</div><div class="mh">N</div><div class="mh">D</div></div>
+    <div class="lane"><div class="sp">Prei</div><div class="cell"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell"></div><div class="cell"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell"></div><div class="cell hrv"></div><div class="cell hrv"></div></div>
+    <div class="lane"><div class="sp">Courgette</div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell"></div><div class="cell"></div></div>
+    <div class="lane"><div class="sp">Sla</div><div class="cell"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell"></div></div>
+    <div class="lane"><div class="sp">Peterselie</div><div class="cell"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell hrv"></div></div>
+    <div class="lane"><div class="sp">Koolrabi</div><div class="cell"></div><div class="cell"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell"></div></div>
+    <div class="lane"><div class="sp">Koriander</div><div class="cell"></div><div class="cell"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell"></div><div class="cell sow"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell"></div></div>
+    <div class="lane"><div class="sp">Dille <span class="fam">veelz.</span></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell sow"></div><div class="cell sow"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell hrv"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+    <div class="lane"><div class="sp">Oregano <span class="fam">meerj.</span></div><div class="note">vaste plant · geen jaarlijkse cyclus</div></div>
+  </div>
+  <div class="suggest">
+    <h4>💡 SUGGESTIES RIJ 6</h4>
+    <div class="sug-row"><b>Extra gezelschap:</b> <span class="chip good">✓ Sla+Prei</span> <span class="chip good">✓ Sla+Dille</span> <span class="chip new">+ Duizendblad</span> <span class="chip new">+ Marjolein</span> <span class="chip new">+ Goudsbloem</span> <span class="chip new">+ Bieslook</span> <span class="chip new">+ Knoflook</span></div>
+    <div class="sug-row"><b>Bestuiving / kruiden:</b> <span class="chip new">+ Tomaat</span> <span class="tip">(goede buur voor basilicum-achtigen & prei)</span></div>
+    <div class="sug-row"><b>Mulch / bodem:</b> <span class="tip"><b>Kruidenrijk bed</b> — vocht vasthouden (schaduw-als-zaailing nodig bij warme kruiden). Duizendblad als dynamische accumulator toevoegen verbetert mineralenopname. Windbescherming nodig ✓.</span></div>
+  </div>
 </div>
 
-<div class="insight">
-  <h3>💡 Kloof-detectie (voorbeeld-inzichten op jouw data)</h3>
-  <ul>
-    <li><b>Rij 2 (laag):</b> wortel & spinazie & bieten houden het bed bijna het hele jaar bedekt — <b>geen grote gaten</b>. Sterke opvolging. ✓</li>
-    <li><b>Rij 1 (hoog):</b> na de tomaten/oogst (sept–okt) staat dit warme klimbed <b>nov–mrt leeg</b>. <span class="gap-badge">KLOOF · winterrust</span> — geschikt voor wintergroen of groenbemester.</li>
-    <li><b>Rij 3 (middel):</b> pompoen/zoete aardappel ruimen laat op (okt); <span class="gap-badge">KLOOF</span> voor koolzaai in nov. Overweeg vroege winterharde teelt.</li>
-    <li><b>Knoflook (rij 4):</b> oogst jun–jul, <b>geplant okt–nov</b> — het bed staat aug–sep leeg. Ideaal voor een <b>snel vanggewas</b> (radijs/sla). <span class="gap-badge">KLOOF 2-3 mnd</span></li>
-  </ul>
-</div>
-
-<div class="toggle"><button onclick="document.querySelectorAll('.dup').forEach(e=>e.style.display=e.style.display==='none'?'':'none')">Toon/verberg meerjarige (geen jaarlijkse cyclus)</button></div>
-<p style="text-align:center;color:#5a6a5a;font-size:.6rem;margin-top:10px">MOCKUP — ter beoordeling · data = jouw huidige 6-rijen ontwerp · zaaien=goud, oogst=groen</p>
+<div style="text-align:center;color:#5a6a5a;font-size:.6rem;margin-top:12px">MOCKUP v2 — suggesties komen uit de plantengemeenschap-database (companions/antagonisten/accumulatoren) · zaaien=goud, oogst=groen · *Basilicum is in het TUIN-ontwerp de kruidenbuur van tomaat</div>
 </body>
 </html>
