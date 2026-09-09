@@ -158,6 +158,9 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:4px;font-size:1.4em;}
 .plant-in-bed{display:inline-flex;align-items:center;gap:3px;padding:3px 6px;border-radius:4px;font-size:0.55em;border:1px solid rgba(255,255,255,0.15);cursor:grab;transition:all .2s;position:relative;}
 /* Inside a section cell, the chip fills the box — uniform button size (2026-08-24) */
 .bed-section .plant-in-bed{flex-direction:column;text-align:center;background:rgba(120,160,120,0.18);border:1px solid rgba(90,138,74,0.5);width:100%;height:100%;justify-content:center;}
+/* When a shadow follow-up chip is present below the plant, plant takes natural height so both fit */
+.bed-section:has(.shadow-chip){justify-content:flex-start !important;}
+.bed-section:has(.shadow-chip) .plant-in-bed{height:auto;flex:0 1 auto;}
 .bed-section .plant-in-bed .days-badge{display:block;margin-top:3px;}
 .bed-section .plant-in-bed .remove-btn{position:absolute;top:0;right:2px;}
 .plant-wrap{width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:1px;}
@@ -259,17 +262,15 @@ body .btn-primary:hover{background:#e9ba22 !important;color:#000 !important;}
 .shadow-band-title{font-size:.5em;color:#81c784;margin-bottom:4px;text-align:center;}
 .shadow-band-title b{color:#a5d6a7;}
 .shadow-band-note{font-size:.46em;color:rgba(255,255,255,.35);text-align:center;margin-top:3px;}
-.shadow-grid{display:flex;flex-direction:column;gap:3px;}
-.shadow-subrow{display:flex;gap:3px;width:100%;}
-.shadow-cell{flex:1 1 0;min-width:0;min-height:38px;border-radius:6px;border:1px dashed rgba(129,199,132,.4);background:rgba(129,199,132,.05);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:.56em;cursor:pointer;color:#c8e6c9;transition:background .15s;line-height:1.2;}
-.shadow-cell:hover{background:rgba(129,199,132,.14);}
-.shadow-cell.filled{border-style:solid;border-color:rgba(129,199,132,.5);}
-.shadow-cell.filled .ic{font-size:1em;}
-.shadow-cell.filled .nm{font-size:.6em;font-weight:600;color:#e8f5e9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:95%;}
-.shadow-cell.filled.user{background:rgba(129,199,132,.3);border-color:#81c784;border-width:2px;}
-.shadow-cell.filled.user .nm{color:#fff;}
-.shadow-cell.noop{border-style:dotted;border-color:rgba(129,199,132,.3);color:rgba(255,255,255,.35);font-style:italic;}
-.shadow-cell.empty-sh{opacity:0;}
+.shadow-chip{width:100%;border-radius:5px;margin-top:3px;padding:1px 3px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:.62em;line-height:1.15;cursor:pointer;border:1px dashed rgba(129,199,132,.45);background:rgba(129,199,132,.07);color:#c8e6c9;transition:background .15s;}
+.shadow-chip:hover{background:rgba(129,199,132,.18);}
+.shadow-chip.filled{border-style:solid;border-color:rgba(129,199,132,.55);}
+.shadow-chip.filled .sh-ic{font-size:1.05em;line-height:1;}
+.shadow-chip.filled .sh-nm{font-size:.66em;font-weight:600;color:#14532d;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}
+.shadow-chip.filled.user{background:rgba(129,199,132,.55);border-color:#4c9a5a;border-width:2px;}
+.shadow-chip.filled.user .sh-nm{color:#0b3d1e;}
+.shadow-chip.noop{border-style:dotted;border-color:rgba(129,199,132,.3);color:rgba(50,80,50,.5);font-style:italic;background:transparent;}
+.shadow-chip .sh-ic{font-size:1em;line-height:1;}
 .shadow-popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#16213e;border:1px solid rgba(129,199,132,.4);border-radius:10px;padding:16px;z-index:300;display:none;min-width:240px;max-width:90vw;box-shadow:0 8px 30px rgba(0,0,0,.5);}
 .shadow-popup h4{color:#81c784;margin:0 0 10px;font-size:.85em;}
 .shadow-popup .opt{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:6px;cursor:pointer;font-size:.8em;color:#e0e0d0;line-height:1.2;}
@@ -4158,8 +4159,6 @@ function renderBeds() {
     }
 
     container.appendChild(row);
-    // SHADOW-ROW: if enabled, append follow-up band under this row
-    renderShadowBand(row, r);
   }
 }
 
@@ -4186,11 +4185,13 @@ function renderBedSections(bedEl, r, s, count) {
     for (let i = 0; i < count; i++) {
       const box = document.createElement('div');
       box.className = 'bed-section';
-      box.style.cssText = 'flex:1 1 0;min-width:0;min-height:64px;border-radius:6px;padding:3px;display:flex;align-items:center;justify-content:center;background:#eef3e8;border:1px solid rgba(120,150,120,0.5);';
+      box.style.cssText = 'flex:1 1 0;min-width:0;min-height:64px;border-radius:6px;padding:3px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#eef3e8;border:1px solid rgba(120,150,120,0.5);';
       setupDropTarget(box, r, s, sub, i);
       if (byCell[sub + ':' + i]) {
         const el = makePlantEl(r, s, byCell[sub + ':' + i].j, byCell[sub + ':' + i].p);
         if (el) box.appendChild(el);
+        // SHADOW-ROW: follow-up chip below the plant in the same cell (perfect alignment)
+        if (showShadow) appendShadowChip(box, r, s, sub, i, byCell[sub + ':' + i].p);
       } else {
         const plus = document.createElement('div');
         plus.style.cssText = 'font-size:1em;color:rgba(0,0,0,0.22);cursor:pointer;';
@@ -4263,59 +4264,25 @@ function shadowFor(key, r, s, sub, sec){
 function shadowPlantName(k){ const p=PLANTS[k]; return p ? (LANG==='nl'?(p.nameNL||p.name):p.name) : k; }
 function shadowPlantIcon(k){ return PLANTS[k] ? (PLANTS[k].icon||'🌱') : '🌱'; }
 
-// append the shadow band under a bed row card
-function renderShadowBand(rowEl, r){
+// SHADOW-ROW: append a follow-up chip inside a planted bed-section cell (perfect alignment).
+function appendShadowChip(cellEl, r, s, sub, sec, plantObj){
   if(!showShadow) return;
-  // a plant in a cell -> find each planted (sub,sec); mirror bed cell columns
-  const band=document.createElement('div');
-  band.className='shadow-band';
-  const title=document.createElement('div'); title.className='shadow-band-title';
-  title.innerHTML='↻ <b>'+tt('shadowBandTitle')+'</b> &nbsp;·&nbsp; <span style="opacity:.7">'+tt('shadowChanged')+'</span>';
-  band.appendChild(title);
-  // build per-slot sub-grid aligned like the beds
-  const joined = rows[r].joined;
-  const subs = rowsPerBed();
-  const cols = sectionsForRow(r);
-  function slotGrid(slotIdx){
-    const grid=document.createElement('div'); grid.className='shadow-grid';
-    for(let sub=0; sub<subs; sub++){
-      const subRow=document.createElement('div'); subRow.className='shadow-subrow';
-      for(let sec=0; sec<cols; sec++){
-        const cell=document.createElement('div'); cell.className='shadow-cell';
-        // find planted crop in this cell (slot,sub,sec)
-        let planted=null;
-        (rows[r].slots[slotIdx]||[]).forEach(function(o){
-          const osub=(o&&typeof o==='object'&&o.sub!==undefined)?o.sub:0;
-          const osec=(o&&typeof o==='object'&&o.sec!==undefined)?o.sec:-1;
-          if(osec===sec && osub===sub) planted = (typeof o==='string'?o:o.key);
-        });
-        if(planted){
-          const follow=shadowFor(planted, r, slotIdx, sub, sec);
-          const userPicked = shadowFollowups[shadowKey(r,slotIdx,sub,sec)] ? true:false;
-          if(follow){
-            cell.classList.add('filled'); if(userPicked) cell.classList.add('user');
-            cell.innerHTML = '<span class="ic">'+shadowPlantIcon(follow)+'</span><span class="nm">'+truncateName(shadowPlantName(follow),10)+'</span>';
-            cell.title = shadowPlantName(follow);
-            cell.onclick=function(){ openShadowPicker(r, slotIdx, sub, sec, planted, follow); };
-          } else {
-            cell.classList.add('noop');
-            cell.textContent = tt('shadowNoSuccessor');
-            cell.onclick=function(){ openShadowPicker(r, slotIdx, sub, sec, planted, null); };
-          }
-        } else {
-          cell.classList.add('empty-sh');
-        }
-        subRow.appendChild(cell);
-      }
-      grid.appendChild(subRow);
-    }
-    return grid;
+  const key = (typeof plantObj === 'string') ? plantObj : plantObj.key;
+  const follow = shadowFor(key, r, s, sub, sec);
+  const userPicked = shadowFollowups[shadowKey(r,s,sub,sec)] ? true : false;
+  const chip = document.createElement('div');
+  chip.className = 'shadow-chip' + (follow ? ' filled' : ' noop') + (userPicked ? ' user' : '');
+  chip.title = tt('shadowChanged');
+  if(follow){
+    const p = PLANTS[follow];
+    const nm = LANG === 'nl' ? (p.nameNL || p.name) : p.name;
+    chip.innerHTML = '<span class="sh-ic">'+shadowPlantIcon(follow)+'</span><span class="sh-nm">'+truncateName(nm,10)+'</span>';
+    chip.onclick = function(e){ e.stopPropagation(); openShadowPicker(r,s,sub,sec,key,follow); };
+  } else {
+    chip.textContent = tt('shadowNoSuccessor');
+    chip.onclick = function(e){ e.stopPropagation(); openShadowPicker(r,s,sub,sec,key,null); };
   }
-  if(joined){ band.appendChild(slotGrid(0)); }
-  else { band.appendChild(slotGrid(0)); band.appendChild(slotGrid(1)); }
-  rowEl.appendChild(band);
-  // SHADOWROW: open by default when view is on; false = user collapsed this row
-  if(openShadowRows[r] !== false) band.classList.add('open');
+  cellEl.appendChild(chip);
 }
 
 // toggle the global shadow view
@@ -4325,16 +4292,6 @@ function toggleShadowView(){
   b.innerHTML = showShadow ? ('↻ <span>'+tt('hideShadow')+'</span>') : ('↻ <span>'+tt('showShadow')+'</span>');
   if(showShadow) b.classList.add('active-toggle'); else b.classList.remove('active-toggle');
   render();
-}
-
-// expand/collapse a single row's band
-function toggleShadowRow(r){
-  openShadowRows[r] = !openShadowRows[r];
-  // find the row card & band
-  const rowsWrap = document.querySelectorAll('#beds-container .bed-row');
-  if(rowsWrap[r]){ const band = rowsWrap[r].querySelector('.shadow-band'); if(band) band.classList.toggle('open', openShadowRows[r]); }
-  // save state
-  saveLocalStorage();
 }
 
 // --- shadow picker ---
