@@ -3512,6 +3512,7 @@ var T = {
     defaultLoaded: 'Default layout loaded', gardenCleared: 'Garden cleared', layoutImported: 'Layout imported',
     split: 'split', joined: 'joined', join: 'Join 2×10m', splitBtn: '✂️ 2×10m split',
     showShadow: '↻ Follow-ups', hideShadow: '↻ Hide follow-ups',
+    shadowSelect: 'Select',
     shadowBandTitle: 'After harvest — the follow-up in this cell',
     shadowChanged: 'bright = your choice · tap to switch · tap cell for details',
     shadowPickTitle: 'Follow-up after', shadowPickHarvest: 'harvest',
@@ -3555,6 +3556,7 @@ var T = {
     defaultLoaded: 'Standaardindeling geladen', gardenCleared: 'Tuin gewist', layoutImported: 'Indeling geïmporteerd',
     split: 'gesplitst', joined: 'gekoppeld', join: 'Koppel 2×10m', splitBtn: '✂️ 2×10m splitsen',
     showShadow: '↻ Opvolgers', hideShadow: '↻ Verberg opvolgers',
+    shadowSelect: 'Selecteer',
     shadowBandTitle: 'Na de oogst — de opvolger in deze cel',
     shadowChanged: 'helder = door jou gekozen · tik om te wisselen · tik voor details',
     shadowPickTitle: 'Opvolger na', shadowPickHarvest: 'oogst',
@@ -4299,11 +4301,11 @@ function appendShadowGrid(bedEl, r, s, count){
           const nm = LANG === 'nl' ? (p.nameNL || p.name) : p.name;
           cell.innerHTML = '<span class="sh-ic">'+shadowPlantIcon(follow)+'</span><span class="sh-nm">'+truncateName(nm,10)+'</span>';
           cell.title = nm;
-          cell.onclick = function(){ openShadowPicker(r,s,sub,i,key,follow); };
+          cell.onclick = function(e){ if(e) e.stopPropagation(); showShadowCellInfo(r,s,sub,i,key,follow); };
         } else {
           cell.classList.add('noop');
           cell.textContent = tt('shadowNoSuccessor');
-          cell.onclick = function(){ openShadowPicker(r,s,sub,i,key,null); };
+          cell.onclick = function(e){ if(e) e.stopPropagation(); openShadowPicker(r,s,sub,i,key,null); };
         }
       } else {
         cell.classList.add('empty-sh');
@@ -4532,6 +4534,26 @@ function showPlantInfo(key, plantedDate) {
   if (!sowHarvestHtml) {
     setTimeout(() => panel.classList.remove('active'), 5000);
   }
+}
+
+// SHADOW-ROW: tapping a shadow cell shows the follow-up crop's info card (like a regular crop),
+// plus a yellow "Select" button that opens the picker to choose a different follow-up.
+function showShadowCellInfo(r, s, sub, sec, sourceKey, followKey) {
+  // show the info card for the follow-up (shadow) crop
+  showPlantInfo(followKey);
+  // remove any stale auto-hide timeout & keep panel open; add a Select action
+  const panel = document.getElementById('info-panel');
+  const content = document.getElementById('info-content');
+  panel.classList.add('active');
+  // append a Select control at the bottom
+  const nav = document.createElement('div');
+  nav.style.cssText = 'display:flex;gap:8px;margin-top:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;';
+  nav.innerHTML =
+    '<button style="background:#c9a227;color:#000;border:none;border-radius:6px;padding:8px 16px;font-size:.85em;font-weight:bold;cursor:pointer;">' + tt('shadowSelect') + ' ↔</button>' +
+    '<span style="color:rgba(0,0,0,.55);font-size:.7em;">' + tt('shadowChanged') + '</span>';
+  content.appendChild(nav);
+  const btn = nav.querySelector('button');
+  btn.onclick = function(){ panel.classList.remove('active'); openShadowPicker(r, s, sub, sec, sourceKey, followKey); };
 }
 
 function showInfo(msg) {
