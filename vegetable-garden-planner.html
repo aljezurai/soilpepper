@@ -253,7 +253,34 @@ body .btn-primary:hover{background:#e9ba22 !important;color:#000 !important;}
 .bed-slot-medium{background:rgba(76,175,80,0.2);border-color:rgba(76,175,80,0.35);}
 .bed-slot-low{background:rgba(139,195,74,0.15);border-color:rgba(139,195,74,0.3);}
 .bed-row-module-label{font-size:0.45em;color:rgba(255,255,255,0.25);text-align:center;margin:8px 0 2px;letter-spacing:2px;}
-.spec-card{max-width:820px;margin:14px auto;background:rgba(13,27,42,0.8);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:10px 14px;font-size:0.68em;}
+.spec-card{max-width:820px;
+.shadow-band{display:none;margin:4px 2px 12px;padding-top:6px;border-top:1px dashed rgba(129,199,132,.35);}
+.shadow-band.open{display:block;}
+.shadow-band-title{font-size:.5em;color:#81c784;margin-bottom:4px;text-align:center;}
+.shadow-band-title b{color:#a5d6a7;}
+.shadow-band-note{font-size:.46em;color:rgba(255,255,255,.35);text-align:center;margin-top:3px;}
+.shadow-grid{display:flex;flex-direction:column;gap:3px;}
+.shadow-subrow{display:flex;gap:3px;width:100%;}
+.shadow-cell{flex:1 1 0;min-width:0;min-height:38px;border-radius:6px;border:1px dashed rgba(129,199,132,.4);background:rgba(129,199,132,.05);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:.56em;cursor:pointer;color:#c8e6c9;transition:background .15s;line-height:1.2;}
+.shadow-cell:hover{background:rgba(129,199,132,.14);}
+.shadow-cell.filled{border-style:solid;border-color:rgba(129,199,132,.5);}
+.shadow-cell.filled .ic{font-size:1em;}
+.shadow-cell.filled .nm{font-size:.6em;font-weight:600;color:#e8f5e9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:95%;}
+.shadow-cell.filled.user{background:rgba(129,199,132,.3);border-color:#81c784;border-width:2px;}
+.shadow-cell.filled.user .nm{color:#fff;}
+.shadow-cell.noop{border-style:dotted;border-color:rgba(129,199,132,.3);color:rgba(255,255,255,.35);font-style:italic;}
+.shadow-cell.empty-sh{opacity:0;}
+.shadow-popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#16213e;border:1px solid rgba(129,199,132,.4);border-radius:10px;padding:16px;z-index:300;display:none;min-width:240px;max-width:90vw;box-shadow:0 8px 30px rgba(0,0,0,.5);}
+.shadow-popup h4{color:#81c784;margin:0 0 10px;font-size:.85em;}
+.shadow-popup .opt{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:6px;cursor:pointer;font-size:.8em;color:#e0e0d0;line-height:1.2;}
+.shadow-popup .opt:hover{background:rgba(129,199,132,.12);}
+.shadow-popup .opt.cur{background:rgba(129,199,132,.24);color:#c8f5cd;font-weight:bold;}
+.shadow-popup .browse{margin-top:8px;padding:7px;text-align:center;color:#81c784;font-size:.74em;cursor:pointer;border:1px dashed rgba(129,199,132,.5);border-radius:6px;}
+.shadow-popup .browse:hover{background:rgba(129,199,132,.1);}
+.shadow-popup .close{position:absolute;top:6px;right:12px;cursor:pointer;color:rgba(255,255,255,.5);font-size:1em;}
+.shadow-popup .opts{max-height:60vh;overflow-y:auto;padding-right:2px;}
+.shadow-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:290;display:none;}
+margin:14px auto;background:rgba(13,27,42,0.8);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:10px 14px;font-size:0.68em;}
 .spec-card h4{color:#81c784;margin:0 0 6px;font-size:1.05em;}
 .spec-card .spec-grid{display:flex;flex-wrap:wrap;gap:6px 16px;}
 .spec-card .spec-item b{color:#e0e0d0;}
@@ -3311,6 +3338,7 @@ button.btn.sp-bk-download {
   <input type="file" id="import-input" accept=".json" style="display:none" onchange="importLayout(event)">
   <button class="btn" onclick="exportFieldView()" title="Download a standalone HTML viewer of this garden — works offline on your phone">📤 <span data-i18n="exportFV">Download design</span></button>
   <button class="btn" id="sowharvest-toggle-btn" onclick="toggleSowHarvest()">🌱 <span data-i18n="showSH">Show Sow/Harvest</span></button>
+  <button class="btn" id="shadow-toggle-btn" onclick="toggleShadowView()">↻ <span data-i18n="showShadow">Follow-ups</span></button>
   <button class="btn" onclick="resetDefault()">🔄 <span data-i18n="resetDefault">Reset Default</span></button>
   <button class="btn" onclick="clearAll()">🗑️ <span data-i18n="clearAll">Clear All</span></button>
   <!-- Calendar buttons ARCHIVED 2026-08-09 (user: remove for now). Code stays for re-enable.
@@ -3488,6 +3516,13 @@ var T = {
     showSH: 'Show Sow/Harvest', noSowMonth: 'Nothing to sow this month', conflictLbl: '⚠️ Conflicts with:', sowMonthTitle: '🌱 Sow this month', hideSH: 'Hide Sow/Harvest',
     defaultLoaded: 'Default layout loaded', gardenCleared: 'Garden cleared', layoutImported: 'Layout imported',
     split: 'split', joined: 'joined', join: 'Join 2×10m', splitBtn: '✂️ 2×10m split',
+    showShadow: '↻ Follow-ups', hideShadow: '↻ Hide follow-ups',
+    shadowBandTitle: 'After harvest — the follow-up in this cell',
+    shadowChanged: 'bright = your choice · tap to switch · tap cell for details',
+    shadowPickTitle: 'Follow-up after', shadowPickHarvest: 'harvest',
+    shadowNoSuccessor: 'no follow-up', shadowMore: 'More options', shadowAvailable: 'available',
+    shadowAutoPick: 'suggested',
+
     module: 'MODULE', cell: 'cell', paths: 'paths',
     tall: 'Tall', medium: 'Medium', low: 'Low',
     sow: 'Sow', harvest: 'Harvest', daysToMaturity: 'days to maturity',
@@ -3524,6 +3559,13 @@ var T = {
     showSH: 'Toon Zaaien/Oogsten', noSowMonth: 'Niets te zaaien deze maand', conflictLbl: '⚠️ Botst met:', sowMonthTitle: '🌱 Deze maand zaaien', hideSH: 'Verberg Zaaien/Oogsten',
     defaultLoaded: 'Standaardindeling geladen', gardenCleared: 'Tuin gewist', layoutImported: 'Indeling geïmporteerd',
     split: 'gesplitst', joined: 'gekoppeld', join: 'Koppel 2×10m', splitBtn: '✂️ 2×10m splitsen',
+    showShadow: '↻ Opvolgers', hideShadow: '↻ Verberg opvolgers',
+    shadowBandTitle: 'Na de oogst — de opvolger in deze cel',
+    shadowChanged: 'helder = door jou gekozen · tik om te wisselen · tik voor details',
+    shadowPickTitle: 'Opvolger na', shadowPickHarvest: 'oogst',
+    shadowNoSuccessor: 'geen opvolger', shadowMore: 'Meer opties', shadowAvailable: 'beschikbaar',
+    shadowAutoPick: 'gesuggereerd',
+
     module: 'MODULE', cell: 'cel', paths: 'paden',
     tall: 'Hoog', medium: 'Middel', low: 'Laag',
     sow: 'Zaaien', harvest: 'Oogsten', daysToMaturity: 'dagen tot volwassen',
@@ -3573,6 +3615,11 @@ let gardenCfg = {
 // Each placed plant object: {key, plantedDate, sec} — sec = which section of the slot it occupies.
 let rows = [];
 let showCalendar = false;
+let showShadow = false;
+// chosen follow-up per cell: key "r:s:sub:sec" -> species key
+let shadowFollowups = {};
+let openShadowRows = {};
+
 let showSowHarvest = false;
 let datePickerTarget = null; // {rowIndex, slotIndex, plantIndex}
 
@@ -3653,6 +3700,7 @@ function truncateName(name, max) {
 function saveLocalStorage() {
   try {
     const data = {version:3, cfg: gardenCfg, rows: rows};
+    if (Object.keys(shadowFollowups).length) data.shadowFollowups = shadowFollowups;   // SHADOWROW
     if (vegCell) data.cell = vegCell;   // link to Master Plan grid cell (2026-08-09)
     localStorage.setItem('tuscanVegGarden', JSON.stringify(data));
   } catch(e) {}
@@ -3706,6 +3754,9 @@ function loadLocalStorage() {
         // Migration: legacy plants lack `sec` → assign sequential sections per slot
         assignMissingSec(r);
       }
+      // restore user-chosen shadow follow-ups (SHADOWROW)
+      if (data.shadowFollowups && typeof data.shadowFollowups === 'object') shadowFollowups = data.shadowFollowups;
+      else shadowFollowups = {};
       return true;
     }
     if (data.beds && data.beds.length >= 6) {
@@ -4108,6 +4159,8 @@ function renderBeds() {
     }
 
     container.appendChild(row);
+    // SHADOW-ROW: if enabled, append follow-up band under this row
+    renderShadowBand(row, r);
   }
 }
 
@@ -4166,6 +4219,161 @@ function toggleJoin(r) {
   renderGardenSpec();
   showInfo(row.joined ? `${rowBedsLabel(r)} joined → one 20m bed` : `${rowBedsLabel(r)} split → two 10m beds`);
 }
+
+// ============ SHADOW ROW (follow-up after harvest) ============
+function shadowKey(r,s,sub,sec){ return r+':'+s+':'+sub+':'+sec; }
+
+// successor candidates for the crop `key` planted in row r (only timing-based, conflicts ignored)
+function successorsFor(key, r){
+  const p = PLANTS[key];
+  if(!p || !p.harvestMonths || p.harvestMonths.length===0) return [];
+  const hMin = Math.min.apply(null, p.harvestMonths);
+  // used species in this row (so we don't suggest a duplicate of what's there)
+  const used = {};
+  for(let s=0;s<2;s++){ (rows[r].slots[s]||[]).forEach(o=>{ const k=typeof o==='string'?o:o.key; if(k) used[k]=1; }); }
+  const out = [];
+  Object.keys(PLANTS).forEach(function(c){
+    if(c===key || used[c]) return;
+    const q = PLANTS[c];
+    if(!q.sowMonths || q.sowMonths.length===0) return;
+    // crop can be sown from this crop's harvest-start month onward
+    const sowFrom = q.sowMonths.some(function(m){ return m>=hMin; });
+    if(!sowFrom) return;
+    out.push(c);
+  });
+  // same height category first, then name
+  const pk = p.category;
+  out.sort(function(a,b){
+    const ca=(PLANTS[a].category===pk)?0:1, cb=(PLANTS[b].category===pk)?0:1;
+    if(ca!==cb) return ca-cb;
+    const na=LANG==='nl'?(PLANTS[a].nameNL||PLANTS[a].name):PLANTS[a].name;
+    const nb=LANG==='nl'?(PLANTS[b].nameNL||PLANTS[b].name):PLANTS[b].name;
+    return na.localeCompare(nb);
+  });
+  return out;
+}
+
+// effective follow-up for a cell: user override, else best suggestion
+function shadowFor(key, r, s, sub, sec){
+  const k = shadowKey(r,s,sub,sec);
+  if(shadowFollowups[k]) return shadowFollowups[k];
+  const list = successorsFor(key, r);
+  return list.length ? list[0] : null;
+}
+
+function shadowPlantName(k){ const p=PLANTS[k]; return p ? (LANG==='nl'?(p.nameNL||p.name):p.name) : k; }
+function shadowPlantIcon(k){ return PLANTS[k] ? (PLANTS[k].icon||'🌱') : '🌱'; }
+
+// append the shadow band under a bed row card
+function renderShadowBand(rowEl, r){
+  if(!showShadow) return;
+  // a plant in a cell -> find each planted (sub,sec); mirror bed cell columns
+  const band=document.createElement('div');
+  band.className='shadow-band';
+  const title=document.createElement('div'); title.className='shadow-band-title';
+  title.innerHTML='↻ <b>'+tt('shadowBandTitle')+'</b> &nbsp;·&nbsp; <span style="opacity:.7">'+tt('shadowChanged')+'</span>';
+  band.appendChild(title);
+  // build per-slot sub-grid aligned like the beds
+  const joined = rows[r].joined;
+  const subs = rowsPerBed();
+  const cols = sectionsForRow(r);
+  function slotGrid(slotIdx){
+    const grid=document.createElement('div'); grid.className='shadow-grid';
+    for(let sub=0; sub<subs; sub++){
+      const subRow=document.createElement('div'); subRow.className='shadow-subrow';
+      for(let sec=0; sec<cols; sec++){
+        const cell=document.createElement('div'); cell.className='shadow-cell';
+        // find planted crop in this cell (slot,sub,sec)
+        let planted=null;
+        (rows[r].slots[slotIdx]||[]).forEach(function(o){
+          const osub=(o&&typeof o==='object'&&o.sub!==undefined)?o.sub:0;
+          const osec=(o&&typeof o==='object'&&o.sec!==undefined)?o.sec:-1;
+          if(osec===sec && osub===sub) planted = (typeof o==='string'?o:o.key);
+        });
+        if(planted){
+          const follow=shadowFor(planted, r, slotIdx, sub, sec);
+          const userPicked = shadowFollowups[shadowKey(r,slotIdx,sub,sec)] ? true:false;
+          if(follow){
+            cell.classList.add('filled'); if(userPicked) cell.classList.add('user');
+            cell.innerHTML = '<span class="ic">'+shadowPlantIcon(follow)+'</span><span class="nm">'+truncateName(shadowPlantName(follow),10)+'</span>';
+            cell.title = shadowPlantName(follow);
+            cell.onclick=function(){ openShadowPicker(r, slotIdx, sub, sec, planted, follow); };
+          } else {
+            cell.classList.add('noop');
+            cell.textContent = tt('shadowNoSuccessor');
+            cell.onclick=function(){ openShadowPicker(r, slotIdx, sub, sec, planted, null); };
+          }
+        } else {
+          cell.classList.add('empty-sh');
+        }
+        subRow.appendChild(cell);
+      }
+      grid.appendChild(subRow);
+    }
+    return grid;
+  }
+  if(joined){ band.appendChild(slotGrid(0)); }
+  else { band.appendChild(slotGrid(0)); band.appendChild(slotGrid(1)); }
+  rowEl.appendChild(band);
+  // SHADOWROW: open by default when view is on; false = user collapsed this row
+  if(openShadowRows[r] !== false) band.classList.add('open');
+}
+
+// toggle the global shadow view
+function toggleShadowView(){
+  showShadow = !showShadow;
+  const b=document.getElementById('shadow-toggle-btn');
+  b.innerHTML = showShadow ? ('↻ <span>'+tt('hideShadow')+'</span>') : ('↻ <span>'+tt('showShadow')+'</span>');
+  if(showShadow) b.classList.add('active-toggle'); else b.classList.remove('active-toggle');
+  render();
+}
+
+// expand/collapse a single row's band
+function toggleShadowRow(r){
+  openShadowRows[r] = !openShadowRows[r];
+  // find the row card & band
+  const rowsWrap = document.querySelectorAll('#beds-container .bed-row');
+  if(rowsWrap[r]){ const band = rowsWrap[r].querySelector('.shadow-band'); if(band) band.classList.toggle('open', openShadowRows[r]); }
+  // save state
+  saveLocalStorage();
+}
+
+// --- shadow picker ---
+let pk = {r:-1,s:-1,sub:0,sec:0,cur:null};
+let pkAll=false;
+function openShadowPicker(r,s,sub,sec,curKey,follow){
+  pk={r:r,s:s,sub:sub,sec:sec,cur:curKey};
+  pkAll=false;
+  const box=document.getElementById('shadow-popup');
+  const title=box.querySelector('h4');
+  title.textContent = tt('shadowPickTitle')+' '+truncateName(shadowPlantName(curKey),12)+' '+tt('shadowPickHarvest')+':';
+  box.style.display='block';
+  document.getElementById('shadow-overlay').style.display='block';
+  drawShadowPicker();
+}
+function shadowCellKey(){ return shadowKey(pk.r,pk.s,pk.sub,pk.sec); }
+function drawShadowPicker(){
+  const box=document.getElementById('shadow-popup');
+  const optsEl=box.querySelector('.opts'); optsEl.innerHTML='';
+  const all=successorsFor(pk.cur, pk.r);
+  const shown = pkAll ? all : all.slice(0,3);
+  const currentChoice = shadowFollowups[shadowCellKey()] || null;
+  shown.forEach(function(k){
+    const d=document.createElement('div'); d.className='opt'+(currentChoice===k?' cur':'');
+    const p=PLANTS[k]; const nm=LANG==='nl'?(p.nameNL||p.name):p.name;
+    const mth= (LANG==='nl'? (p.sowMonths||[]): (p.sowMonths||[]));
+    d.innerHTML='<span>'+shadowPlantIcon(k)+'</span> '+nm;
+    d.onclick=function(){ shadowFollowups[shadowCellKey()]=k; closeShadowPicker(); saveLocalStorage(); render(); };
+    optsEl.appendChild(d);
+  });
+  if(!pkAll && all.length>3){
+    const more=document.createElement('div'); more.className='browse';
+    more.textContent='⬇ '+tt('shadowMore')+' ('+all.length+' '+tt('shadowAvailable')+')';
+    more.onclick=function(){ pkAll=true; drawShadowPicker(); };
+    optsEl.appendChild(more);
+  }
+}
+function closeShadowPicker(){ document.getElementById('shadow-overlay').style.display='none'; document.getElementById('shadow-popup').style.display='none'; pkAll=false; }
 
 // ============ CALENDAR VIEW ============
 function renderCalendar() {
@@ -4707,7 +4915,7 @@ function exportFieldView() {
   '<div class="garden">' + rowsHtml + '</div>\n' +
   detailHtml +
   '<div class="legend">' + (LANG === 'nl' ? ('Tik op een plant voor afstand, zaaien & oogsten · ' + usedKeys.size + ' soorten in deze tuin') : ('Tap a plant for spacing, sow & harvest · ' + usedKeys.size + ' species in this garden')) + '</div>\n' +
-  '</body>\n</html>';
+  '</html>';
 
   const blob = new Blob([html], {type:'text/html'});
   const url = URL.createObjectURL(blob);
@@ -5003,5 +5211,13 @@ fetch('plants.json').then(function (r) { return r.json(); }).then(function (db) 
   }catch(e){}
 })();
 </script>
+
+<!-- Shadow-row picker -->
+<div class="shadow-overlay" id="shadow-overlay" onclick="closeShadowPicker()"></div>
+<div class="shadow-popup" id="shadow-popup">
+  <div class="close" onclick="closeShadowPicker()">✕</div>
+  <h4></h4>
+  <div class="opts"></div>
+</div>
 </body>
 </html>
