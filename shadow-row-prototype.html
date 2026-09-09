@@ -36,11 +36,14 @@ h1{font-family:Georgia,serif;color:#5a8a4a;text-align:center;font-size:1.2rem}
 .sh-cell{min-height:46px;border-radius:6px;border:1px dashed #4a7a6a;background:#10201a;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:.62rem;cursor:pointer;transition:border-color .15s}
 .sh-cell:hover{border-color:#7a9a8a;background:#16261e}
 .sh-cell.filled{border-style:solid;border-color:#3e6a5a}
-.sh-cell .icon{font-size:.95rem}
-.sh-cell .nm{color:#9ac8a0}
-.sh-cell .lbl{color:#5a8a6a;font-size:.5rem;text-transform:uppercase;letter-spacing:.5px}
-.sh-cell .arrow{color:#4a7a6a;font-size:.6rem}
-.sh-cell.empty-sh{color:#3a5a4a}
+.sh-cell.filled .icon{font-size:1.15rem}
+.sh-cell.filled .nm{color:#c8e8d0;font-size:.68rem;font-weight:600}
+/* user changed this shadow cell — clearly distinct (lighter/brighter) */
+.sh-cell.filled.user{background:#1e3a28;border-color:#8ac88a;border-width:2px}
+.sh-cell.filled.user .nm{color:#e8ffe8}
+.sh-cell.noop{border-style:dotted;border-color:#3a5a4a;cursor:pointer}
+.sh-cell .nm.dim{color:#6a8a7a;font-style:italic}
+.sh-cell.empty-sh{border:none;cursor:default;background:transparent}
 /* picker */
 .picker{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#12201a;border:1px solid #3a5a4a;border-radius:10px;padding:14px;z-index:200;display:none;min-width:240px;max-width:90vw}
 .picker h4{color:#9ac8a0;font-size:.8rem;margin:0 0 8px}
@@ -151,7 +154,7 @@ function render(){
     row.cells.forEach((key,ci)=>{
       const c=document.createElement('div');
       c.className= key? 'cell planted':'cell empty';
-      if(key){ const p=PLANTS[key]; c.innerHTML=`<span class="icon">${p.icon}</span><span class="nm">${p.nm}</span><span class="hw">${monthBadge(key)}</span>`; }
+      if(key){ const p=PLANTS[key]; c.innerHTML=`<span class="icon">${p.icon}</span><span class="nm">${p.nm}</span>`; }
       else { c.innerHTML='+'; c.title='Klik om een gewas te kiezen'; }
       grid.appendChild(c);
     });
@@ -159,21 +162,28 @@ function render(){
     // shadow band
     const band=document.createElement('div'); band.className='shadow-band'; band.id='band-'+ri;
     const bt=document.createElement('div'); bt.className='sh-band-title';
-    bt.innerHTML='↻ Na de oogst — de opvolger in deze cel (tik op een cel om te wisselen)';
+    bt.innerHTML='↻ Na de oogst — de opvolger in deze cel <span style="color:#5a8a6a;font-weight:normal">(helder = door jou gekozen · tik op een cel om te wisselen · tik voor details)</span>';
     band.appendChild(bt);
     const sg=document.createElement('div'); sg.className='sh-grid';
     row.cells.forEach((key,ci)=>{
-      const sc=document.createElement('div'); sc.className='sh-cell';
+      const sc=document.createElement('div');
       if(key){
         const suc=effShadow(key,row,ci);
+        const changed = shadows[ri+'_'+ci] !== undefined; // user changed this cell
         if(suc){ const p=PLANTS[suc];
-          sc.innerHTML=`<span class="arrow">⤵ na ${PLANTS[key].nm}</span><span class="icon">${p.icon}</span><span class="nm">${p.nm}</span><span class="lbl">${monthBadge(suc)}</span>`;
-          sc.classList.add('filled');
+          sc.className = 'sh-cell filled' + (changed?' user':'');
+          sc.innerHTML=`<span class="icon">${p.icon}</span><span class="nm">${p.nm}</span>`;
+          sc.title='Tik om te wisselen';
           sc.onclick=()=>openPicker(ri,ci,suc);
         } else {
-          sc.innerHTML=`<span class="arrow">⤵ na ${PLANTS[key].nm}</span><span class="empty-sh">geen opvolger</span>`;
+          sc.className='sh-cell noop';
+          sc.innerHTML='<span class="nm dim">geen opvolger</span>';
+          sc.onclick=()=>openPicker(ri,ci,null);
         }
-      } else { sc.innerHTML='<span class="empty-sh">—</span>'; sc.classList.add('empty-sh'); }
+      } else {
+        sc.className='sh-cell empty-sh';
+        sc.innerHTML='';
+      }
       sg.appendChild(sc);
     });
     band.appendChild(sg); card.appendChild(band);
