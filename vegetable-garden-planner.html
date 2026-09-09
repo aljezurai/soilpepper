@@ -158,9 +158,6 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:4px;font-size:1.4em;}
 .plant-in-bed{display:inline-flex;align-items:center;gap:3px;padding:3px 6px;border-radius:4px;font-size:0.55em;border:1px solid rgba(255,255,255,0.15);cursor:grab;transition:all .2s;position:relative;}
 /* Inside a section cell, the chip fills the box — uniform button size (2026-08-24) */
 .bed-section .plant-in-bed{flex-direction:column;text-align:center;background:rgba(120,160,120,0.18);border:1px solid rgba(90,138,74,0.5);width:100%;height:100%;justify-content:center;}
-/* When a shadow follow-up chip is present below the plant, plant takes natural height so both fit */
-.bed-section:has(.shadow-chip){justify-content:flex-start !important;}
-.bed-section:has(.shadow-chip) .plant-in-bed{height:auto;flex:0 1 auto;}
 .bed-section .plant-in-bed .days-badge{display:block;margin-top:3px;}
 .bed-section .plant-in-bed .remove-btn{position:absolute;top:0;right:2px;}
 .plant-wrap{width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:1px;}
@@ -257,20 +254,18 @@ body .btn-primary:hover{background:#e9ba22 !important;color:#000 !important;}
 .bed-slot-low{background:rgba(139,195,74,0.15);border-color:rgba(139,195,74,0.3);}
 .bed-row-module-label{font-size:0.45em;color:rgba(255,255,255,0.25);text-align:center;margin:8px 0 2px;letter-spacing:2px;}
 .spec-card{max-width:820px;margin:14px auto;background:rgba(13,27,42,0.8);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:10px 14px;font-size:0.68em;}
-.shadow-band{display:none;margin:4px 2px 12px;padding-top:6px;border-top:1px dashed rgba(129,199,132,.35);grid-column:1 / -1;}
-.shadow-band.open{display:block;}
-.shadow-band-title{font-size:.5em;color:#81c784;margin-bottom:4px;text-align:center;}
-.shadow-band-title b{color:#a5d6a7;}
-.shadow-band-note{font-size:.46em;color:rgba(255,255,255,.35);text-align:center;margin-top:3px;}
-.shadow-chip{width:100%;border-radius:5px;margin-top:3px;padding:1px 3px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:.62em;line-height:1.15;cursor:pointer;border:1px dashed rgba(129,199,132,.45);background:rgba(129,199,132,.07);color:#c8e6c9;transition:background .15s;}
-.shadow-chip:hover{background:rgba(129,199,132,.18);}
-.shadow-chip.filled{border-style:solid;border-color:rgba(129,199,132,.55);}
-.shadow-chip.filled .sh-ic{font-size:1.05em;line-height:1;}
-.shadow-chip.filled .sh-nm{font-size:.66em;font-weight:600;color:#14532d;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}
-.shadow-chip.filled.user{background:rgba(129,199,132,.55);border-color:#4c9a5a;border-width:2px;}
-.shadow-chip.filled.user .sh-nm{color:#0b3d1e;}
-.shadow-chip.noop{border-style:dotted;border-color:rgba(129,199,132,.3);color:rgba(50,80,50,.5);font-style:italic;background:transparent;}
-.shadow-chip .sh-ic{font-size:1em;line-height:1;}
+.shadow-row-label{font-size:.5em;color:var(--sf-header-2,#3e6a46);font-weight:bold;margin:6px 0 2px;text-align:left;display:flex;align-items:center;gap:4px;}
+.shadow-grid{display:flex;flex-direction:column;gap:3px;width:100%;margin-top:2px;}
+.shadow-subrow{display:flex;gap:3px;width:100%;}
+.shadow-cell{flex:1 1 0;min-width:0;min-height:36px;border-radius:6px;padding:2px 3px;display:flex;align-items:center;justify-content:center;gap:3px;font-size:.62em;line-height:1.15;cursor:pointer;border:1px dashed rgba(62,106,70,.5);background:rgba(62,106,70,.05);color:var(--sf-header-2,#3e6a46);transition:background .15s;}
+.shadow-cell:hover{background:rgba(62,106,70,.14);}
+.shadow-cell.filled{border-style:solid;border-color:rgba(62,106,70,.55);}
+.shadow-cell.filled .sh-ic{font-size:1em;line-height:1;}
+.shadow-cell.filled .sh-nm{font-size:.68em;font-weight:600;color:var(--sf-header-2,#2c4a32);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.shadow-cell.filled.user{background:rgba(62,106,70,.22);border-color:#2c4a32;border-width:2px;}
+.shadow-cell.filled.user .sh-nm{color:#1a3a24;font-weight:800;}
+.shadow-cell.noop{border-style:dotted;border-color:rgba(62,106,70,.35);color:rgba(62,106,70,.5);font-style:italic;background:transparent;}
+.shadow-cell.empty-sh{opacity:0;cursor:default;}
 .shadow-popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#16213e;border:1px solid rgba(129,199,132,.4);border-radius:10px;padding:16px;z-index:300;display:none;min-width:240px;max-width:90vw;box-shadow:0 8px 30px rgba(0,0,0,.5);}
 .shadow-popup h4{color:#81c784;margin:0 0 10px;font-size:.85em;}
 .shadow-popup .opt{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:6px;cursor:pointer;font-size:.8em;color:#e0e0d0;line-height:1.2;}
@@ -4185,13 +4180,11 @@ function renderBedSections(bedEl, r, s, count) {
     for (let i = 0; i < count; i++) {
       const box = document.createElement('div');
       box.className = 'bed-section';
-      box.style.cssText = 'flex:1 1 0;min-width:0;min-height:64px;border-radius:6px;padding:3px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#eef3e8;border:1px solid rgba(120,150,120,0.5);';
+      box.style.cssText = 'flex:1 1 0;min-width:0;min-height:64px;border-radius:6px;padding:3px;display:flex;align-items:center;justify-content:center;background:#eef3e8;border:1px solid rgba(120,150,120,0.5);';
       setupDropTarget(box, r, s, sub, i);
       if (byCell[sub + ':' + i]) {
         const el = makePlantEl(r, s, byCell[sub + ':' + i].j, byCell[sub + ':' + i].p);
         if (el) box.appendChild(el);
-        // SHADOW-ROW: follow-up chip below the plant in the same cell (perfect alignment)
-        if (showShadow) appendShadowChip(box, r, s, sub, i, byCell[sub + ':' + i].p);
       } else {
         const plus = document.createElement('div');
         plus.style.cssText = 'font-size:1em;color:rgba(0,0,0,0.22);cursor:pointer;';
@@ -4203,6 +4196,8 @@ function renderBedSections(bedEl, r, s, count) {
     gridWrap.appendChild(subRow);
   }
   bedEl.appendChild(gridWrap);
+  // SHADOW-ROW: if enabled, render a full twin row of follow-up cells below this bed
+  if (showShadow) appendShadowGrid(bedEl, r, s, count);
 }
 
 function toggleJoin(r) {
@@ -4264,25 +4259,60 @@ function shadowFor(key, r, s, sub, sec){
 function shadowPlantName(k){ const p=PLANTS[k]; return p ? (LANG==='nl'?(p.nameNL||p.name):p.name) : k; }
 function shadowPlantIcon(k){ return PLANTS[k] ? (PLANTS[k].icon||'🌱') : '🌱'; }
 
-// SHADOW-ROW: append a follow-up chip inside a planted bed-section cell (perfect alignment).
-function appendShadowChip(cellEl, r, s, sub, sec, plantObj){
+// SHADOW-ROW: render a full twin grid below the bed, one cell per bed cell, showing the follow-up crop
+// (instead of the regular crop). Cells mirror the bed's sub-row/section structure for perfect alignment.
+function appendShadowGrid(bedEl, r, s, count){
   if(!showShadow) return;
-  const key = (typeof plantObj === 'string') ? plantObj : plantObj.key;
-  const follow = shadowFor(key, r, s, sub, sec);
-  const userPicked = shadowFollowups[shadowKey(r,s,sub,sec)] ? true : false;
-  const chip = document.createElement('div');
-  chip.className = 'shadow-chip' + (follow ? ' filled' : ' noop') + (userPicked ? ' user' : '');
-  chip.title = tt('shadowChanged');
-  if(follow){
-    const p = PLANTS[follow];
-    const nm = LANG === 'nl' ? (p.nameNL || p.name) : p.name;
-    chip.innerHTML = '<span class="sh-ic">'+shadowPlantIcon(follow)+'</span><span class="sh-nm">'+truncateName(nm,10)+'</span>';
-    chip.onclick = function(e){ e.stopPropagation(); openShadowPicker(r,s,sub,sec,key,follow); };
-  } else {
-    chip.textContent = tt('shadowNoSuccessor');
-    chip.onclick = function(e){ e.stopPropagation(); openShadowPicker(r,s,sub,sec,key,null); };
+  const subs = rowsPerBed();
+  const plants = rows[r].slots[s] || [];
+  const byCell = {};
+  plants.forEach(function(p, j){
+    const sub = (p && typeof p === 'object' && p.sub !== undefined) ? p.sub : 0;
+    const sec = (p && typeof p === 'object' && p.sec !== undefined) ? p.sec : j;
+    byCell[sub + ':' + sec] = p;
+  });
+  // label line
+  const lab = document.createElement('div');
+  lab.className = 'shadow-row-label';
+  lab.innerHTML = '↻ <span>'+tt('shadowBandTitle')+'</span>';
+  bedEl.appendChild(lab);
+  // twin grid: same sub-rows / sections count as the bed above
+  const gridWrap = document.createElement('div');
+  gridWrap.className = 'shadow-grid';
+  gridWrap.style.cssText = 'display:flex;flex-direction:column;gap:3px;width:100%;margin-top:2px;';
+  for (let sub = 0; sub < subs; sub++) {
+    const subRow = document.createElement('div');
+    subRow.className = 'shadow-subrow';
+    subRow.style.cssText = 'display:flex;gap:3px;width:100%;';
+    for (let i = 0; i < count; i++) {
+      const cell = document.createElement('div');
+      cell.className = 'shadow-cell';
+      cell.style.cssText = 'flex:1 1 0;min-width:0;min-height:34px;border-radius:6px;padding:2px;display:flex;align-items:center;justify-content:center;';
+      const planted = byCell[sub + ':' + i];
+      if (planted) {
+        const key = (typeof planted === 'string') ? planted : planted.key;
+        const follow = shadowFor(key, r, s, sub, i);
+        const userPicked = shadowFollowups[shadowKey(r,s,sub,i)] ? true : false;
+        if (follow) {
+          cell.classList.add('filled'); if(userPicked) cell.classList.add('user');
+          const p = PLANTS[follow];
+          const nm = LANG === 'nl' ? (p.nameNL || p.name) : p.name;
+          cell.innerHTML = '<span class="sh-ic">'+shadowPlantIcon(follow)+'</span><span class="sh-nm">'+truncateName(nm,10)+'</span>';
+          cell.title = nm;
+          cell.onclick = function(){ openShadowPicker(r,s,sub,i,key,follow); };
+        } else {
+          cell.classList.add('noop');
+          cell.textContent = tt('shadowNoSuccessor');
+          cell.onclick = function(){ openShadowPicker(r,s,sub,i,key,null); };
+        }
+      } else {
+        cell.classList.add('empty-sh');
+      }
+      subRow.appendChild(cell);
+    }
+    gridWrap.appendChild(subRow);
   }
-  cellEl.appendChild(chip);
+  bedEl.appendChild(gridWrap);
 }
 
 // toggle the global shadow view
