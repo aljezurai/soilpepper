@@ -47,6 +47,8 @@ h1{font-family:Georgia,serif;color:#5a8a4a;text-align:center;font-size:1.2rem}
 .picker .opt{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;cursor:pointer;font-size:.75rem}
 .picker .opt:hover{background:#1a2c22}
 .picker .opt.cur{background:#1e3a2a;color:#c8f0c8;font-weight:bold}
+.picker .browse{margin-top:8px;padding:7px 8px;text-align:center;color:#8ac8a0;font-size:.7rem;cursor:pointer;border:1px dashed #3a6a4a;border-radius:6px}
+.picker .browse:hover{background:#1a2c22}
 .picker .close{position:absolute;top:6px;right:10px;cursor:pointer;color:#7a9a7a}
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:150;display:none}
 .note{font-size:.6rem;color:#5a6a5a;text-align:center;margin-top:6px}
@@ -180,29 +182,45 @@ function toggleShadow(ri){
   t.innerHTML=open? '↻ Verberg opvolgers' : '↻ Toon opvolgers <span class="hint">na oogst</span>';
 }
 
-// picker
+// picker — shows top 3, with a "browse all" scroll mode
 let pkCell=null;
+let pkAll=false;   // false = show top 3; true = show full scrollable list
 function openPicker(ri,ci,cur){
   const row=rows[ri];
-  const opts=successorsAfter(row.cells[ci],row.cells);
   pkCell={ri,ci,cur};
-  document.getElementById('pk-title').textContent='Opvolger na '+PLANTS[row.cells[ci]].nm+' oogst:';
+  pkAll=false;
+  drawPicker();
+  document.getElementById('overlay').style.display='block';
+  document.getElementById('picker').style.display='block';
+}
+function drawPicker(){
+  const {ri,ci}=pkCell;
+  const row=rows[ri];
+  const allOpts=successorsAfter(row.cells[ci],row.cells);
+  const title=document.getElementById('pk-title');
+  title.textContent='Opvolger na '+PLANTS[row.cells[ci]].nm+' oogst:';
   const box=document.getElementById('pk-opts'); box.innerHTML='';
-  // 'auto' option first
-  const auto=document.createElement('div'); auto.className='opt'+(shadows[ri+'_'+ci]===undefined?' cur':'');
-  auto.innerHTML='<span>✨</span> Automatisch (beste keuze)'; auto.onclick=()=>{shadows[ri+'_'+ci]=null;applyPicked();};
-  box.appendChild(auto);
-  opts.forEach(k=>{ const p=PLANTS[k];
+  const showAll = pkAll ? allOpts : allOpts.slice(0,3);
+  showAll.forEach(k=>{ const p=PLANTS[k];
     const d=document.createElement('div'); d.className='opt'+(shadows[ri+'_'+ci]===k?' cur':'');
     d.innerHTML=`<span>${p.icon}</span> ${p.nm} <span style="margin-left:auto;color:#5a8a6a;font-size:.6rem">${monthBadge(k)}</span>`;
     d.onclick=()=>{shadows[ri+'_'+ci]=k;applyPicked();};
     box.appendChild(d);
   });
-  document.getElementById('overlay').style.display='block';
-  document.getElementById('picker').style.display='block';
+  // browse-all link
+  if(!pkAll && allOpts.length>3){
+    const more=document.createElement('div'); more.className='browse';
+    more.innerHTML='⬇ Meer opties ('+allOpts.length+' beschikbaar)';
+    more.onclick=()=>{pkAll=true;drawPicker();};
+    box.appendChild(more);
+  }
+  // when showing all, make the list scrollable within the popup
+  box.style.maxHeight = pkAll ? '50vh' : '';
+  box.style.overflowY = pkAll ? 'auto' : '';
+  box.style.paddingRight = pkAll ? '4px' : '';
 }
 function applyPicked(){ closePicker(); render(); }
-function closePicker(){ document.getElementById('overlay').style.display='none'; document.getElementById('picker').style.display='none'; }
+function closePicker(){ document.getElementById('overlay').style.display='none'; document.getElementById('picker').style.display='none'; pkAll=false; }
 
 render();
 </script>
