@@ -3343,6 +3343,7 @@ button.btn.sp-bk-download {
   <button class="btn" onclick="exportFieldView()" title="Download a standalone HTML viewer of this garden — works offline on your phone">📤 <span data-i18n="exportFV">Download design</span></button>
   <button class="btn" id="sowharvest-toggle-btn" onclick="toggleSowHarvest()">🌱 <span data-i18n="showSH">Show Sow/Harvest</span></button>
   <button class="btn" id="shadow-toggle-btn" onclick="toggleShadowView()">↻ <span data-i18n="showShadow">Follow-ups</span></button>
+  <button class="btn" onclick="openFavouritesPopup()">⭐ <span data-i18n="favsBtn">Favourites</span></button>
   <button class="btn" onclick="resetDefault()">🔄 <span data-i18n="resetDefault">Reset Default</span></button>
   <button class="btn" onclick="clearAll()">🗑️ <span data-i18n="clearAll">Clear All</span></button>
   <!-- Calendar buttons ARCHIVED 2026-08-09 (user: remove for now). Code stays for re-enable.
@@ -3523,6 +3524,9 @@ var T = {
     showShadow: '↻ Follow-ups', hideShadow: '↻ Hide follow-ups',
     shadowSelect: 'Select',
     shadowNone: 'No follow-up',
+    favsBtn: 'Favourites',
+    favsTitle: '⭐ Crop preferences — order follow-up suggestions',
+    favsSearch: 'Search crops…',
     shadowBandTitle: 'After harvest — the follow-up in this cell',
     shadowChanged: 'bright = your choice · tap to switch · tap cell for details',
     shadowPickTitle: 'Follow-up after', shadowPickHarvest: 'harvest',
@@ -3568,6 +3572,9 @@ var T = {
     showShadow: '↻ Opvolgers', hideShadow: '↻ Verberg opvolgers',
     shadowSelect: 'Selecteer andere optie',
     shadowNone: 'Geen opvolger',
+    favsBtn: 'Favorieten',
+    favsTitle: '⭐ Gewasvoorkeuren — ordening opvolgsuggesties',
+    favsSearch: 'Zoek gewassen…',
     shadowBandTitle: 'Na de oogst — de opvolger in deze cel',
     shadowChanged: 'helder = door jou gekozen · tik om te wisselen · tik voor details',
     shadowPickTitle: 'Opvolger na', shadowPickHarvest: 'oogst',
@@ -4262,9 +4269,11 @@ function successorsFor(key, r){
     if(!sowFrom) return;
     out.push(c);
   });
-  // same height category first, then name
+  // user favourites order: favourite(1) > neutral(0) > dislike(-1); within same, height-cat then name
   const pk = p.category;
   out.sort(function(a,b){
+    const fa = shadowPref(a)||0, fb = shadowPref(b)||0;
+    if(fa!==fb) return fb - fa;               // higher preference first
     const ca=(PLANTS[a].category===pk)?0:1, cb=(PLANTS[b].category===pk)?0:1;
     if(ca!==cb) return ca-cb;
     const na=LANG==='nl'?(PLANTS[a].nameNL||PLANTS[a].name):PLANTS[a].name;
@@ -4272,6 +4281,18 @@ function successorsFor(key, r){
     return na.localeCompare(nb);
   });
   return out;
+}
+
+// ---- user favourites / dislikes (persisted) ----
+// pref: 1 = favourite, 0 = neutral (default), -1 = dislike. Keyed by species key.
+let shadowPrefs = loadShadowPrefs();
+function shadowPref(k){ return shadowPrefs[k] !== undefined ? shadowPrefs[k] : 0; }
+function setShadowPref(k, val){ shadowPrefs[k] = val; saveShadowPrefs(); }
+function loadShadowPrefs(){
+  try { const d = JSON.parse(localStorage.getItem('tuscanVegPrefs') || '{}'); return (d && typeof d==='object') ? d : {}; } catch(e){ return {}; }
+}
+function saveShadowPrefs(){
+  try { localStorage.setItem('tuscanVegPrefs', JSON.stringify(shadowPrefs)); } catch(e){}
 }
 
 // effective follow-up for a cell: user override, else best suggestion
@@ -4397,6 +4418,50 @@ function drawShadowPicker(){
   }
 }
 function closeShadowPicker(){ document.getElementById('shadow-overlay').style.display='none'; document.getElementById('shadow-popup').style.display='none'; pkAll=false; }
+
+// ---- FAVOURITES preferences popup ----
+function openFavouritesPopup(){
+  document.getElementById('favs-title').textContent = tt('favsTitle');
+  const search = document.getElementById('favs-search');
+  search.placeholder = tt('favsSearch');
+  search.value = '';
+  document.getElementById('favs-overlay').style.display='block';
+  document.getElementById('favs-popup').style.display='block';
+  renderFavouritesList('');
+}
+function closeFavouritesPopup(){ document.getElementById('favs-overlay').style.display='none'; document.getElementById('favs-popup').style.display='none'; }
+function renderFavouritesList(q){
+  const list = document.getElementById('favs-list'); list.innerHTML='';
+  const keys = Object.keys(PLANTS).filter(function(k){
+    if(!q) return true;
+    const p=PLANTS[k]; const nm=LANG==='nl'?(p.nameNL||p.name):p.name;
+    return nm.toLowerCase().indexOf(q.toLowerCase())>=0 || k.toLowerCase().indexOf(q.toLowerCase())>=0;
+  }).sort(function(a,b){
+    const na=LANG==='nl'?(PLANTS[a].nameNL||PLANTS[a].name):PLANTS[a].name;
+    const nb=LANG==='nl'?(PLANTS[b].nameNL||PLANTS[b].name):PLANTS[b].name;
+    return na.localeCompare(nb);
+  });
+  keys.forEach(function(k){
+    const p=PLANTS[k]; const nm=LANG==='nl'?(p.nameNL||p.name):p.name;
+    const pref=shadowPref(k);
+    const row=document.createElement('div');
+    row.style.cssText='display:flex;align-items:center;gap:6px;padding:4px 6px;border-radius:6px;cursor:pointer;font-size:.85em;';
+    row.innerHTML='<span>'+(p.icon||'🌱')+'</span> <span style="flex:1;color:#000;">'+nm+'</span>';
+    // three-state cycle button
+    const btn=document.createElement('button');
+    btn.type='button';
+    btn.style.cssText='padding:3px 10px;border-radius:999px;font-size:.72em;font-weight:700;cursor:pointer;border:2px solid;';
+    btn.textContent = pref===1 ? '👍 Favoriet' : (pref===-1 ? '👎 Niet' : '• Neutraal');
+    btn.style.background = pref===1 ? '#c9e6c9' : (pref===-1 ? '#f5d0c9' : '#eef2e6');
+    btn.style.borderColor = pref===1 ? '#4c9a5a' : (pref===-1 ? '#c86a5a' : '#a8c0a8');
+    btn.style.color = '#000';
+    btn.onclick=function(){ const next = (shadowPref(k)+2)%3 - 1; // 1->0->-1->1
+      setShadowPref(k, next); renderFavouritesList(q); if (typeof render !== 'undefined') render(); };
+    row.appendChild(btn);
+    list.appendChild(row);
+  });
+}
+(function(){ var s=document.getElementById('favs-search'); if(s){ s.addEventListener('input', function(){ renderFavouritesList(s.value); }); } })();
 
 // ============ CALENDAR VIEW ============
 function renderCalendar() {
@@ -5261,6 +5326,14 @@ fetch('plants.json').then(function (r) { return r.json(); }).then(function (db) 
   <div class="close" onclick="closeShadowPicker()">✕</div>
   <h4></h4>
   <div class="opts"></div>
+</div>
+<!-- Favourites preferences -->
+<div class="shadow-overlay" id="favs-overlay" onclick="closeFavouritesPopup()"></div>
+<div class="shadow-popup" id="favs-popup">
+  <div class="close" onclick="closeFavouritesPopup()">✕</div>
+  <h4 id="favs-title"></h4>
+  <input id="favs-search" type="text" placeholder="" style="width:100%;box-sizing:border-box;margin-bottom:8px;padding:6px 8px;border-radius:6px;border:1px solid rgba(44,74,50,.4);font-size:.85em;">
+  <div class="opts" id="favs-list" style="max-height:50vh;overflow-y:auto;padding-right:2px;"></div>
 </div>
 </body>
 </html>
