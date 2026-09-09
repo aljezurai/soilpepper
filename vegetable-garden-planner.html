@@ -3522,6 +3522,7 @@ var T = {
     split: 'split', joined: 'joined', join: 'Join 2×10m', splitBtn: '✂️ 2×10m split',
     showShadow: '↻ Follow-ups', hideShadow: '↻ Hide follow-ups',
     shadowSelect: 'Select',
+    shadowNone: 'No follow-up',
     shadowBandTitle: 'After harvest — the follow-up in this cell',
     shadowChanged: 'bright = your choice · tap to switch · tap cell for details',
     shadowPickTitle: 'Follow-up after', shadowPickHarvest: 'harvest',
@@ -3566,6 +3567,7 @@ var T = {
     split: 'gesplitst', joined: 'gekoppeld', join: 'Koppel 2×10m', splitBtn: '✂️ 2×10m splitsen',
     showShadow: '↻ Opvolgers', hideShadow: '↻ Verberg opvolgers',
     shadowSelect: 'Selecteer andere optie',
+    shadowNone: 'Geen opvolger',
     shadowBandTitle: 'Na de oogst — de opvolger in deze cel',
     shadowChanged: 'helder = door jou gekozen · tik om te wisselen · tik voor details',
     shadowPickTitle: 'Opvolger na', shadowPickHarvest: 'oogst',
@@ -4213,11 +4215,24 @@ function renderBedSections(bedEl, r, s, count) {
 
 function toggleJoin(r) {
   const row = rows[r];
+  const N = sectionsPerCell();
   if (row.joined) {
+    // joined (20m) -> split (2×10m): redistribute slot0 plants into slot0 (sec<N) and slot1 (sec>=N, sec-=N)
     row.joined = false;
+    const a = [], b = [];
+    (row.slots[0] || []).forEach(function(p){
+      const sec = (p && typeof p === 'object' && p.sec !== undefined) ? p.sec : 0;
+      if (sec < N) { a.push(p); }
+      else { if (p && typeof p === 'object') p.sec = sec - N; b.push(p); }
+    });
+    row.slots[0] = a;
+    row.slots[1] = b;
   } else {
-    // merge slot B into A, then clear B
-    row.slots[0] = (row.slots[0] || []).concat(row.slots[1] || []);
+    // split (2×10m) -> joined (20m): merge B into A with sec offset by N
+    row.slots[0] = (row.slots[0] || []).concat((row.slots[1] || []).map(function(p){
+      if (p && typeof p === 'object' && p.sec !== undefined) p.sec = p.sec + N;
+      return p;
+    }));
     row.slots[1] = [];
     row.joined = true;
   }
@@ -4260,12 +4275,15 @@ function successorsFor(key, r){
 }
 
 // effective follow-up for a cell: user override, else best suggestion
+// "__none__" = user explicitly chose NO follow-up (clears auto-suggestion)
 function shadowFor(key, r, s, sub, sec){
   const k = shadowKey(r,s,sub,sec);
+  if(shadowFollowups[k] === '__none__') return null;
   if(shadowFollowups[k]) return shadowFollowups[k];
   const list = successorsFor(key, r);
   return list.length ? list[0] : null;
 }
+function shadowIsUserNone(key, r, s, sub, sec){ return shadowFollowups[shadowKey(r,s,sub,sec)] === '__none__'; }
 
 function shadowPlantName(k){ const p=PLANTS[k]; return p ? (LANG==='nl'?(p.nameNL||p.name):p.name) : k; }
 function shadowPlantIcon(k){ return PLANTS[k] ? (PLANTS[k].icon||'🌱') : '🌱'; }
@@ -4354,11 +4372,19 @@ function drawShadowPicker(){
   const optsEl=box.querySelector('.opts'); optsEl.innerHTML='';
   const all=successorsFor(pk.cur, pk.r);
   const shown = pkAll ? all : all.slice(0,3);
-  const currentChoice = shadowFollowups[shadowCellKey()] || null;
+  const curRaw = shadowFollowups[shadowCellKey()];
+  const currentChoice = (curRaw && curRaw !== '__none__') ? curRaw : null;
+  const isNone = curRaw === '__none__';
+  // "geen opvolger" — always first
+  const noneOpt=document.createElement('div'); noneOpt.className='opt'+(isNone?' cur':'');
+  noneOpt.innerHTML='<span>🚫</span> '+tt('shadowNone');
+  noneOpt.onclick=function(){ delete shadowFollowups[shadowCellKey()]; shadowFollowups[shadowCellKey()]='__none__'; closeShadowPicker(); saveLocalStorage(); render(); };
+  optsEl.appendChild(noneOpt);
+  // separator hint
+  const sep=document.createElement('div'); sep.style.cssText='height:1px;background:rgba(44,74,50,.15);margin:4px 0;'; optsEl.appendChild(sep);
   shown.forEach(function(k){
     const d=document.createElement('div'); d.className='opt'+(currentChoice===k?' cur':'');
     const p=PLANTS[k]; const nm=LANG==='nl'?(p.nameNL||p.name):p.name;
-    const mth= (LANG==='nl'? (p.sowMonths||[]): (p.sowMonths||[]));
     d.innerHTML='<span>'+shadowPlantIcon(k)+'</span> '+nm;
     d.onclick=function(){ shadowFollowups[shadowCellKey()]=k; closeShadowPicker(); saveLocalStorage(); render(); };
     optsEl.appendChild(d);
