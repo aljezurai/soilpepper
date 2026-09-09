@@ -3851,6 +3851,7 @@ function renderSowMonthPanel() {
   const now = new Date();
   const m = now.getMonth() + 1;
   const sowKeys = Object.keys(PLANTS).filter(k => {
+    if (shadowPref(k) === -1) return false;         // disliked — hide from 'sow this month'
     const p = PLANTS[k];
     const months = LANG === 'nl' ? (p.sowMonthsNL || p.sowMonths) : (p.sowMonths || []);
     return months.includes(m);
@@ -3947,6 +3948,7 @@ function renderPalette() {
     group.appendChild(h4);
     for (const [key, plant] of Object.entries(PLANTS)) {
       if (plant.category !== catKey) continue;
+      if (shadowPref(key) === -1) continue;   // disliked — hide from general species palette
       const el = document.createElement('div');
       el.className = 'palette-item';
       el.draggable = true;
@@ -4268,6 +4270,7 @@ function successorsFor(key, r){
   const out = [];
   Object.keys(PLANTS).forEach(function(c){
     if(c===key || used[c]) return;
+    if(shadowPref(c) === -1) return;              // disliked — hide from follow-up suggestions
     const q = PLANTS[c];
     if(!q.sowMonths || q.sowMonths.length===0) return;
     // crop can be sown from this crop's harvest-start month onward
