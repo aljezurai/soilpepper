@@ -3527,6 +3527,9 @@ var T = {
     favsBtn: 'Favourites',
     favsTitle: '⭐ Crop preferences — order follow-up suggestions',
     favsSearch: 'Search crops…',
+    prefFav: '👍 Favourite',
+    prefNeutral: '• Neutral',
+    prefDislike: '👎 Dislike',
     shadowBandTitle: 'After harvest — the follow-up in this cell',
     shadowChanged: 'bright = your choice · tap to switch · tap cell for details',
     shadowPickTitle: 'Follow-up after', shadowPickHarvest: 'harvest',
@@ -3575,6 +3578,9 @@ var T = {
     favsBtn: 'Favorieten',
     favsTitle: '⭐ Gewasvoorkeuren — ordening opvolgsuggesties',
     favsSearch: 'Zoek gewassen…',
+    prefFav: '👍 Favoriet',
+    prefNeutral: '• Neutraal',
+    prefDislike: '👎 Niet',
     shadowBandTitle: 'Na de oogst — de opvolger in deze cel',
     shadowChanged: 'helder = door jou gekozen · tik om te wisselen · tik voor details',
     shadowPickTitle: 'Opvolger na', shadowPickHarvest: 'oogst',
@@ -4451,7 +4457,7 @@ function renderFavouritesList(q){
     const btn=document.createElement('button');
     btn.type='button';
     btn.style.cssText='padding:3px 10px;border-radius:999px;font-size:.72em;font-weight:700;cursor:pointer;border:2px solid;';
-    btn.textContent = pref===1 ? '👍 Favoriet' : (pref===-1 ? '👎 Niet' : '• Neutraal');
+    btn.textContent = pref===1 ? tt('prefFav') : (pref===-1 ? tt('prefDislike') : tt('prefNeutral'));
     btn.style.background = pref===1 ? '#c9e6c9' : (pref===-1 ? '#f5d0c9' : '#eef2e6');
     btn.style.borderColor = pref===1 ? '#4c9a5a' : (pref===-1 ? '#c86a5a' : '#a8c0a8');
     btn.style.color = '#000';
