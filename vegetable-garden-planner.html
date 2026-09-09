@@ -257,21 +257,21 @@ body .btn-primary:hover{background:#e9ba22 !important;color:#000 !important;}
 .shadow-row-label{font-size:.5em;color:var(--sf-header-2,#3e6a46);font-weight:bold;margin:6px 0 2px;text-align:left;display:flex;align-items:center;gap:4px;}
 .shadow-grid{display:flex;flex-direction:column;gap:3px;width:100%;margin-top:2px;}
 .shadow-subrow{display:flex;gap:3px;width:100%;}
-.shadow-cell{flex:1 1 0;min-width:0;min-height:36px;border-radius:6px;padding:2px 3px;display:flex;align-items:center;justify-content:center;gap:3px;font-size:.62em;line-height:1.15;cursor:pointer;border:1px dashed rgba(62,106,70,.5);background:rgba(62,106,70,.05);color:var(--sf-header-2,#3e6a46);transition:background .15s;}
-.shadow-cell:hover{background:rgba(62,106,70,.14);}
-.shadow-cell.filled{border-style:solid;border-color:rgba(62,106,70,.55);}
-.shadow-cell.filled .sh-ic{font-size:1em;line-height:1;}
-.shadow-cell.filled .sh-nm{font-size:.68em;font-weight:600;color:var(--sf-header-2,#2c4a32);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.shadow-cell.filled.user{background:rgba(62,106,70,.22);border-color:#2c4a32;border-width:2px;}
-.shadow-cell.filled.user .sh-nm{color:#1a3a24;font-weight:800;}
-.shadow-cell.noop{border-style:dotted;border-color:rgba(62,106,70,.35);color:rgba(62,106,70,.5);font-style:italic;background:transparent;}
+.shadow-cell{flex:1 1 0;min-width:0;min-height:48px;border-radius:6px;padding:2px 3px;display:flex;align-items:center;justify-content:center;gap:3px;font-size:.7em;line-height:1.15;cursor:pointer;border:1px dashed rgba(44,74,50,.6);background:rgba(44,74,50,.07);color:#1a3a24;transition:background .15s;}
+.shadow-cell:hover{background:rgba(44,74,50,.15);}
+.shadow-cell.filled{border-style:solid;border-color:rgba(44,74,50,.65);}
+.shadow-cell.filled .sh-ic{font-size:1.1em;line-height:1;}
+.shadow-cell.filled .sh-nm{font-size:.72em;font-weight:700;color:#123420;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.shadow-cell.filled.user{background:rgba(44,74,50,.28);border-color:#1a3a24;border-width:2px;}
+.shadow-cell.filled.user .sh-nm{color:#08281a;font-weight:800;}
+.shadow-cell.noop{border-style:dotted;border-color:rgba(44,74,50,.4);color:rgba(44,74,50,.65);font-style:italic;background:transparent;}
 .shadow-cell.empty-sh{opacity:0;cursor:default;}
 .shadow-popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#16213e;border:1px solid rgba(129,199,132,.4);border-radius:10px;padding:16px;z-index:300;display:none;min-width:240px;max-width:90vw;box-shadow:0 8px 30px rgba(0,0,0,.5);}
-.shadow-popup h4{color:#81c784;margin:0 0 10px;font-size:.85em;}
-.shadow-popup .opt{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:6px;cursor:pointer;font-size:.8em;color:#e0e0d0;line-height:1.2;}
-.shadow-popup .opt:hover{background:rgba(129,199,132,.12);}
-.shadow-popup .opt.cur{background:rgba(129,199,132,.24);color:#c8f5cd;font-weight:bold;}
-.shadow-popup .browse{margin-top:8px;padding:7px;text-align:center;color:#81c784;font-size:.74em;cursor:pointer;border:1px dashed rgba(129,199,132,.5);border-radius:6px;}
+.shadow-popup h4{color:#b8f0c0;margin:0 0 10px;font-size:.95em;}
+.shadow-popup .opt{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:6px;cursor:pointer;font-size:.9em;color:#ffffff;line-height:1.25;}
+.shadow-popup .opt:hover{background:rgba(129,199,132,.18);}
+.shadow-popup .opt.cur{background:rgba(129,199,132,.3);color:#eaffea;font-weight:bold;}
+.shadow-popup .browse{margin-top:8px;padding:7px;text-align:center;color:#b8f0c0;font-size:.8em;cursor:pointer;border:1px dashed rgba(129,199,132,.6);border-radius:6px;}
 .shadow-popup .browse:hover{background:rgba(129,199,132,.1);}
 .shadow-popup .close{position:absolute;top:6px;right:12px;cursor:pointer;color:rgba(255,255,255,.5);font-size:1em;}
 .shadow-popup .opts{max-height:60vh;overflow-y:auto;padding-right:2px;}
@@ -4287,7 +4287,7 @@ function appendShadowGrid(bedEl, r, s, count){
     for (let i = 0; i < count; i++) {
       const cell = document.createElement('div');
       cell.className = 'shadow-cell';
-      cell.style.cssText = 'flex:1 1 0;min-width:0;min-height:34px;border-radius:6px;padding:2px;display:flex;align-items:center;justify-content:center;';
+      cell.style.cssText = 'flex:1 1 0;min-width:0;min-height:48px;border-radius:6px;padding:2px;display:flex;align-items:center;justify-content:center;';
       const planted = byCell[sub + ':' + i];
       if (planted) {
         const key = (typeof planted === 'string') ? planted : planted.key;
