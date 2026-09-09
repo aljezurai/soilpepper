@@ -189,14 +189,15 @@ function render(){
     band.appendChild(sg); card.appendChild(band);
     wrap.appendChild(card);
   });
-}
-
-function toggleShadow(ri){
-  const b=document.getElementById('band-'+ri);
-  const t=document.getElementById('tog-'+ri);
-  const open=b.classList.toggle('open');
-  t.classList.toggle('on',open);
-  t.innerHTML=open? '↻ Verberg opvolgers' : '↻ Toon opvolgers <span class="hint">na oogst</span>';
+  // restore expanded shadow bands after rebuild
+  Object.keys(openRows).forEach(ri=>{
+    if(openRows[ri]){
+      const b=document.getElementById('band-'+ri);
+      const t=document.getElementById('tog-'+ri);
+      if(b) b.classList.add('open');
+      if(t){ t.classList.add('on'); t.innerHTML='↻ Verberg opvolgers'; }
+    }
+  });
 }
 
 // picker — shows top 3, with a "browse all" scroll mode
@@ -238,6 +239,17 @@ function drawPicker(){
 }
 function applyPicked(){ closePicker(); render(); }
 function closePicker(){ document.getElementById('overlay').style.display='none'; document.getElementById('picker').style.display='none'; pkAll=false; }
+
+// which shadow bands are currently expanded (persist across re-renders)
+let openRows = {};
+function toggleShadow(ri){
+  const b=document.getElementById('band-'+ri);
+  const t=document.getElementById('tog-'+ri);
+  const open=b.classList.toggle('open');
+  openRows[ri]=open;
+  t.classList.toggle('on',open);
+  t.innerHTML=open? '↻ Verberg opvolgers' : '↻ Toon opvolgers <span class="hint">na oogst</span>';
+}
 
 render();
 </script>
