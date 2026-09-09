@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Schaduwrij prototype — opvolg na oogst</title>
+<style>
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:#0e1c0e;color:#c8d8c0;padding:16px;max-width:760px;margin:0 auto;line-height:1.4}
+h1{font-family:Georgia,serif;color:#5a8a4a;text-align:center;font-size:1.2rem}
+.sub{text-align:center;color:#6a8068;font-size:.7rem;margin-bottom:14px}
+.legend{display:flex;gap:14px;justify-content:center;font-size:.62rem;color:#8a9a8a;margin-bottom:12px;flex-wrap:wrap}
+.li{display:inline-block;width:11px;height:11px;border-radius:2px;vertical-align:middle;margin-right:3px}
+.rowcard{background:#0e1c0e;border:1px solid #1e341e;border-radius:10px;margin-bottom:16px;overflow:hidden}
+.rowhead{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:#142114;border-bottom:1px solid #1e341e}
+.rowhead .name{font-weight:bold;color:#e8f0e0;font-size:.85rem}
+.rowhead .name .meta{font-weight:normal;color:#6a8068;font-size:.62rem}
+.toggle{background:#1a2a1a;border:1px solid #3a5a3a;color:#9ac8a0;border-radius:6px;padding:4px 10px;font-size:.7rem;cursor:pointer}
+.toggle.on{background:#2a4a2a;border-color:#5a8a4a;color:#d8f0d8}
+.toggle .hint{opacity:.6;font-size:.58rem;display:block}
+/* bed grid */
+.bed{padding:10px}
+.grid{display:grid;grid-template-columns:repeat(8,1fr);gap:4px;margin-bottom:4px}
+.cell{min-height:58px;border-radius:6px;background:#162616;border:1px solid #2a442a;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:.66rem;position:relative}
+.cell.planted{border-color:#5a8a4a;background:#1c301c}
+.cell .icon{font-size:1.1rem}
+.cell .nm{color:#e8f0e0;font-weight:600}
+.cell .hw{color:#7a9a7a;font-size:.55rem}
+.cell.empty{color:#3a5a3a;font-size:1.2rem;cursor:pointer;border-style:dashed}
+.cell.empty:hover{border-color:#5a8a4a;color:#5a8a4a}
+/* shadow band */
+.shadow-band{display:none;padding:0 10px 10px;border-top:1px dashed #2a4a3a}
+.shadow-band.open{display:block}
+.sh-band-title{font-size:.62rem;color:#8ac8a0;margin:8px 0 6px;font-weight:bold}
+.sh-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:4px}
+.sh-cell{min-height:46px;border-radius:6px;border:1px dashed #4a7a6a;background:#10201a;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:.62rem;cursor:pointer;transition:border-color .15s}
+.sh-cell:hover{border-color:#7a9a8a;background:#16261e}
+.sh-cell.filled{border-style:solid;border-color:#3e6a5a}
+.sh-cell .icon{font-size:.95rem}
+.sh-cell .nm{color:#9ac8a0}
+.sh-cell .lbl{color:#5a8a6a;font-size:.5rem;text-transform:uppercase;letter-spacing:.5px}
+.sh-cell .arrow{color:#4a7a6a;font-size:.6rem}
+.sh-cell.empty-sh{color:#3a5a4a}
+/* picker */
+.picker{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#12201a;border:1px solid #3a5a4a;border-radius:10px;padding:14px;z-index:200;display:none;min-width:240px;max-width:90vw}
+.picker h4{color:#9ac8a0;font-size:.8rem;margin:0 0 8px}
+.picker .opt{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;cursor:pointer;font-size:.75rem}
+.picker .opt:hover{background:#1a2c22}
+.picker .opt.cur{background:#1e3a2a;color:#c8f0c8;font-weight:bold}
+.picker .close{position:absolute;top:6px;right:10px;cursor:pointer;color:#7a9a7a}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:150;display:none}
+.note{font-size:.6rem;color:#5a6a5a;text-align:center;margin-top:6px}
+</style>
+</head>
+<body>
+<h1>↻ Schaduwrij — opvolg na oogst (prototype)</h1>
+<div class="sub">Per rij een knop die een 'schaduwrij' openvouwt onder de gewone rij: elke gevulde cel toont de opvolger na de oogst. Tik op een schaduwcel om te wisselen.</div>
+<div class="legend">
+ <span><span class="li" style="background:#1c301c;border:1px solid #5a8a4a"></span>gepland gewas</span>
+ <span><span class="li" style="background:#16261e;border:1px dashed #4a7a6a"></span>opvolger (schaduw)</span>
+</div>
+
+<div id="rows"></div>
+<div class="overlay" id="overlay" onclick="closePicker()"></div>
+<div class="picker" id="picker"><div class="close" onclick="closePicker()">✕</div><h4 id="pk-title"></h4><div id="pk-opts"></div></div>
+
+<script>
+// ---- sample plants (icon, name, sow/harvest months) ----
+const PLANTS = {
+  tomato:{icon:'🍅',nm:'Tomaat',sow:[3,4],hrv:[7,8,9],sc:'tall'},
+  polebea:{icon:'🫘',nm:'Stokbonen',sow:[5],hrv:[7,8,9],sc:'tall'},
+  knoflook:{icon:'🧄',nm:'Knoflook',sow:[10,11],hrv:[6,7],sc:'low'},
+  prei:{icon:'🧅',nm:'Prei',sow:[2,3,8,9],hrv:[6,7,11,12],sc:'low'},
+  sla:{icon:'🥗',nm:'Sla',sow:[2,3,4,8,9],hrv:[4,5,6,10,11],sc:'low'},
+  spinazie:{icon:'🌿',nm:'Spinazie',sow:[2,3,4,8,9],hrv:[4,5,6,10,11],sc:'low'},
+  wortel:{icon:'🥕',nm:'Wortel',sow:[2,3,4,7,8,9],hrv:[5,6,7,10,11,12],sc:'low'},
+  biet:{icon:'🫘',nm:'Biet',sow:[3,4,5,8,9],hrv:[5,6,7,10,11,12],sc:'low'},
+  koolrabi:{icon:'🥬',nm:'Koolrabi',sow:[3,4,7,8],hrv:[5,6,10,11],sc:'low'},
+  boerenkool:{icon:'🥬',nm:'Boerenkool',sow:[6,7,8],hrv:[11,12,1,2,3],sc:'medium'},
+  bloemkool:{icon:'🥦',nm:'Bloemkool',sow:[6,7,8],hrv:[10,11,12],sc:'medium'},
+  pompoen:{icon:'🎃',nm:'Pompoen',sow:[4,5],hrv:[9,10],sc:'medium'},
+  courgette:{icon:'🥒',nm:'Courgette',sow:[4,5],hrv:[6,7,8,9,10],sc:'low'},
+  raap:{icon:'🫘',nm:'Raap',sow:[3,4,8,9],hrv:[5,6,10,11,12],sc:'low'},
+  radijs:{icon:'🫘',nm:'Radijs',sow:[3,4,5,9,10],hrv:[4,5,6,10,11,12],sc:'low'},
+  ui:{icon:'🧅',nm:'Ui',sow:[2,3],hrv:[6,7,8],sc:'low'},
+  erwt:{icon:'🫘',nm:'Erwt',sow:[2,3],hrv:[5,6],sc:'tall'},
+  maïs:{icon:'🌽',nm:'Suikermaïs',sow:[5],hrv:[8,9],sc:'tall'},
+};
+// ---- a sample row layout (like the real tool): each row = array of cells with plant key or null ----
+const rows = [
+  {name:'Rij 1 · Hoog', type:'tall', cells:['tomato','tomato',null,'polebea',null,'tomato',null,'polebea']},
+  {name:'Rij 2 · Laag', type:'low', cells:['spinazie','wortel','koolrabi',null,'raap',null,'biet','spinazie']},
+  {name:'Rij 3 · Middel',type:'medium',cells:[null,'boerenkool',null,'pompoen',null,'bloemkool',null,null]},
+];
+
+// shadows: override per (row,cellIdx) -> chosen successor key; null = auto
+let shadows = {};
+
+function harvestEnd(k){ return Math.max(...PLANTS[k].hrv); }
+// successor candidates: any plant sowable strictly after this crop's harvest-end month (season-appropriate)
+function successorsAfter(k, rowCells){
+  const he = harvestEnd(k);
+  const used = new Set(rowCells.filter(Boolean));
+  const cands = Object.keys(PLANTS).filter(c => {
+    if (c===k) return false;
+    // sowable in a month > he (next growing window), not already in this row
+    const sowable = PLANTS[c].sow.some(m => m > he);
+    return sowable && !used.has(c);
+  });
+  // prefer same height category, then name
+  cands.sort((a,b)=>{
+    const sa=(PLANTS[a].sc===PLANTS[k].sc)?0:1, sb=(PLANTS[b].sc===PLANTS[k].sc)?0:1;
+    if(sa!==sb) return sa-sb;
+    return PLANTS[a].nm.localeCompare(PLANTS[b].nm);
+  });
+  return cands;
+}
+function bestAfter(k,rowCells){ const s=successorsAfter(k,rowCells); return s[0]||null; }
+function effShadow(k,row,ci){ return shadows[row+'_'+ci] || bestAfter(k,row.cells); }
+
+function monthBadge(k){
+  const p=PLANTS[k];
+  return 'zaai '+p.sow.map(m=>MON[m-1]).join(',')+' · oogst '+p.hrv.map(m=>MON[m-1]).join(',');
+}
+const MON=['jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec'];
+
+function render(){
+  const wrap=document.getElementById('rows');
+  wrap.innerHTML='';
+  rows.forEach((row,ri)=>{
+    const card=document.createElement('div'); card.className='rowcard';
+    // head
+    const head=document.createElement('div'); head.className='rowhead';
+    head.innerHTML=`<div class="name">${row.name} <span class="meta">· ${row.type}</span></div>`;
+    const tog=document.createElement('button'); tog.className='toggle'; tog.id='tog-'+ri;
+    tog.innerHTML='↻ Opvolgers <span class="hint">na oogst → toon</span>';
+    tog.onclick=()=>{ toggleShadow(ri); };
+    head.appendChild(tog); card.appendChild(head);
+    // bed
+    const bed=document.createElement('div'); bed.className='bed';
+    const grid=document.createElement('div'); grid.className='grid';
+    row.cells.forEach((key,ci)=>{
+      const c=document.createElement('div');
+      c.className= key? 'cell planted':'cell empty';
+      if(key){ const p=PLANTS[key]; c.innerHTML=`<span class="icon">${p.icon}</span><span class="nm">${p.nm}</span><span class="hw">${monthBadge(key)}</span>`; }
+      else { c.innerHTML='+'; c.title='Klik om een gewas te kiezen'; }
+      grid.appendChild(c);
+    });
+    bed.appendChild(grid); card.appendChild(bed);
+    // shadow band
+    const band=document.createElement('div'); band.className='shadow-band'; band.id='band-'+ri;
+    const bt=document.createElement('div'); bt.className='sh-band-title';
+    bt.innerHTML='↻ Na de oogst — de opvolger in deze cel (tik op een cel om te wisselen)';
+    band.appendChild(bt);
+    const sg=document.createElement('div'); sg.className='sh-grid';
+    row.cells.forEach((key,ci)=>{
+      const sc=document.createElement('div'); sc.className='sh-cell';
+      if(key){
+        const suc=effShadow(key,row,ci);
+        if(suc){ const p=PLANTS[suc];
+          sc.innerHTML=`<span class="arrow">⤵ na ${PLANTS[key].nm}</span><span class="icon">${p.icon}</span><span class="nm">${p.nm}</span><span class="lbl">${monthBadge(suc)}</span>`;
+          sc.classList.add('filled');
+          sc.onclick=()=>openPicker(ri,ci,suc);
+        } else {
+          sc.innerHTML=`<span class="arrow">⤵ na ${PLANTS[key].nm}</span><span class="empty-sh">geen opvolger</span>`;
+        }
+      } else { sc.innerHTML='<span class="empty-sh">—</span>'; sc.classList.add('empty-sh'); }
+      sg.appendChild(sc);
+    });
+    band.appendChild(sg); card.appendChild(band);
+    wrap.appendChild(card);
+  });
+}
+
+function toggleShadow(ri){
+  const b=document.getElementById('band-'+ri);
+  const t=document.getElementById('tog-'+ri);
+  const open=b.classList.toggle('open');
+  t.classList.toggle('on',open);
+  t.innerHTML=open? '↻ Verberg opvolgers' : '↻ Toon opvolgers <span class="hint">na oogst</span>';
+}
+
+// picker
+let pkCell=null;
+function openPicker(ri,ci,cur){
+  const row=rows[ri];
+  const opts=successorsAfter(row.cells[ci],row.cells);
+  pkCell={ri,ci,cur};
+  document.getElementById('pk-title').textContent='Opvolger na '+PLANTS[row.cells[ci]].nm+' oogst:';
+  const box=document.getElementById('pk-opts'); box.innerHTML='';
+  // 'auto' option first
+  const auto=document.createElement('div'); auto.className='opt'+(shadows[ri+'_'+ci]===undefined?' cur':'');
+  auto.innerHTML='<span>✨</span> Automatisch (beste keuze)'; auto.onclick=()=>{shadows[ri+'_'+ci]=null;applyPicked();};
+  box.appendChild(auto);
+  opts.forEach(k=>{ const p=PLANTS[k];
+    const d=document.createElement('div'); d.className='opt'+(shadows[ri+'_'+ci]===k?' cur':'');
+    d.innerHTML=`<span>${p.icon}</span> ${p.nm} <span style="margin-left:auto;color:#5a8a6a;font-size:.6rem">${monthBadge(k)}</span>`;
+    d.onclick=()=>{shadows[ri+'_'+ci]=k;applyPicked();};
+    box.appendChild(d);
+  });
+  document.getElementById('overlay').style.display='block';
+  document.getElementById('picker').style.display='block';
+}
+function applyPicked(){ closePicker(); render(); }
+function closePicker(){ document.getElementById('overlay').style.display='none'; document.getElementById('picker').style.display='none'; }
+
+render();
+</script>
+<div class="note">Prototype — schaduwrij-concept. Opvolger = best passend na oogstmaand; tik om te wisselen. Combinaties die 'niet werken' worden genegeerd.</div>
+</body></html>
