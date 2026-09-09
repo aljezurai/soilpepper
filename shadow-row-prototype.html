@@ -99,17 +99,24 @@ const rows = [
 let shadows = {};
 
 function harvestEnd(k){ return Math.max(...PLANTS[k].hrv); }
-// successor candidates: any plant sowable strictly after this crop's harvest-end month (season-appropriate)
+function harvestStart(k){ return Math.min(...PLANTS[k].hrv); }
+// successor candidates (practical rule): any vegetable with at least one sow month from the
+// current crop's harvest-start month onward — i.e. it CAN go into the ground as this crop finishes/clears.
+// All heights included; same-height sorts first. Overlap/conflict rules ignored (user preference).
 function successorsAfter(k, rowCells){
-  const he = harvestEnd(k);
-  const used = new Set(rowCells.filter(Boolean));
-  const cands = Object.keys(PLANTS).filter(c => {
-    if (c===k) return false;
-    // sowable in a month > he (next growing window), not already in this row
-    const sowable = PLANTS[c].sow.some(m => m > he);
-    return sowable && !used.has(c);
+  const hStart=harvestStart(k);
+  const used=new Set(rowCells.filter(Boolean));
+  const cands=Object.keys(PLANTS).filter(c=>{
+    if(c===k||used.has(c)) return false;
+    const sow=PLANTS[c].sow;
+    // has a sow month in the window [harvestStart .. 12] (crop can start as current is finishing/after)
+    const sowLate = sow.some(m=>m>=hStart);
+    if(!sowLate) return false;
+    // avoid a successor whose ENTIRE sow+harvest sits well before this crop finishes (would be too early)
+    const hrvEnd=Math.max(...PLANTS[c].hrv);
+    // keep: crop sowable from hStart onward, OR a crop that's harvested at/after hStart
+    return true;
   });
-  // prefer same height category, then name
   cands.sort((a,b)=>{
     const sa=(PLANTS[a].sc===PLANTS[k].sc)?0:1, sb=(PLANTS[b].sc===PLANTS[k].sc)?0:1;
     if(sa!==sb) return sa-sb;
