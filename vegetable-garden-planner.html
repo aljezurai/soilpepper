@@ -3556,7 +3556,7 @@ var T = {
     defaultLoaded: 'Standaardindeling geladen', gardenCleared: 'Tuin gewist', layoutImported: 'Indeling geïmporteerd',
     split: 'gesplitst', joined: 'gekoppeld', join: 'Koppel 2×10m', splitBtn: '✂️ 2×10m splitsen',
     showShadow: '↻ Opvolgers', hideShadow: '↻ Verberg opvolgers',
-    shadowSelect: 'Selecteer',
+    shadowSelect: 'Selecteer andere optie',
     shadowBandTitle: 'Na de oogst — de opvolger in deze cel',
     shadowChanged: 'helder = door jou gekozen · tik om te wisselen · tik voor details',
     shadowPickTitle: 'Opvolger na', shadowPickHarvest: 'oogst',
@@ -4549,7 +4549,7 @@ function showShadowCellInfo(r, s, sub, sec, sourceKey, followKey) {
   const nav = document.createElement('div');
   nav.style.cssText = 'display:flex;gap:8px;margin-top:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;';
   nav.innerHTML =
-    '<button style="background:#c9a227;color:#000;border:none;border-radius:6px;padding:8px 16px;font-size:.85em;font-weight:bold;cursor:pointer;">' + tt('shadowSelect') + ' ↔</button>' +
+    '<button style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;border:2px solid #d9a800;background:#f4c92f;color:#000;line-height:1.2;">&#8626; ' + tt('shadowSelect') + '</button>' +
     '<span style="color:rgba(0,0,0,.55);font-size:.7em;">' + tt('shadowChanged') + '</span>';
   content.appendChild(nav);
   const btn = nav.querySelector('button');
