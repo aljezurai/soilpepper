@@ -4980,7 +4980,8 @@
   "icon": "🍇",
   "nameNL": "Vijg",
   "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fagriworld.nl%2Fwp-content%2Fuploads%2F2022%2F10%2FVijgenboom-Experttips-voor-de-mediterrane-boom.jpg&f=1&nofb=1&ipt=f1bd66da57373d0fb9c2ec84520101d870e756160c840b7ea507b69fdd767d4a",
-  "form": "broadleaf-tree"
+  "form": "broadleaf-tree",
+  "avatar": "img/avatars/fig.png"
  },
  "persimmon": {
   "key": "persimmon",
@@ -5075,7 +5076,8 @@
   "icon": "🍊",
   "nameNL": "Kaki",
   "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fminnetonkaorchards.com%2Fwp-content%2Fuploads%2F2023%2F04%2Fasian-persimmon-1024x680.jpg&f=1&nofb=1&ipt=cf53570114ea8cec4dd803d2fc23045484cc4ff66af8e667a7e8bdb949c66c4a",
-  "form": "round-fruit"
+  "form": "round-fruit",
+  "avatar": "img/avatars/persimmon.png"
  },
  "grape": {
   "key": "grape",
@@ -5153,7 +5155,8 @@
   "icon": "🍇",
   "nameNL": "Druif (wijngaard)",
   "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2F0%2F0e%2FGrape_Plant_and_grapes8.jpg&f=1&nofb=1&ipt=8ffcd5ed265920b91e828592d1aeed93743053d72cb457285ea7fd7a67e31911",
-  "form": "vine-climber"
+  "form": "vine-climber",
+  "avatar": "img/avatars/grape.png"
  },
  "peach": {
   "key": "peach",
@@ -6266,7 +6269,8 @@
   "icon": "🍓",
   "nameNL": "Gojibes",
   "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Lycium_barbarum_-_Wolfberries_China_7-05.jpg/250px-Lycium_barbarum_-_Wolfberries_China_7-05.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-  "form": "berry-shrub"
+  "form": "berry-shrub",
+  "avatar": "img/avatars/goji.png"
  },
  "elderberry": {
   "key": "elderberry",
@@ -6357,7 +6361,8 @@
   "icon": "🍓",
   "nameNL": "Vlier",
   "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Sambucus_nigra_004.jpg/250px-Sambucus_nigra_004.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-  "form": "berry-shrub"
+  "form": "berry-shrub",
+  "avatar": "img/avatars/elderberry.png"
  },
  "blackberry": {
   "key": "blackberry",
@@ -8940,7 +8945,8 @@
   "icon": "🍂",
   "nameNL": "Olijfboom",
   "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.italieuitgelicht.nl%2Fwp-content%2Fuploads%2F2022%2F11%2Folijfbomen-italie-178486207.jpg&f=1&nofb=1&ipt=3b7a154082b189e10846c1475f2994836cdd11d31f3048fe7103b6b1153cdbda",
-  "form": "evergreen-broadleaf"
+  "form": "evergreen-broadleaf",
+  "avatar": "img/avatars/olive.png"
  },
  "cherry": {
   "key": "cherry",
@@ -9018,7 +9024,8 @@
   "icon": "🍒",
   "nameNL": "Zoete kers",
   "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Prunus_avium_fruit.jpg/250px-Prunus_avium_fruit.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-  "form": "stone-fruit"
+  "form": "stone-fruit",
+  "avatar": "img/avatars/cherry.png"
  },
  "apricot": {
   "key": "apricot",
@@ -16764,7 +16771,8 @@
   },
   "nameNL": "Kiwi",
   "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Weiki01.jpg/250px-Weiki01.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-  "form": "vine-climber"
+  "form": "vine-climber",
+  "avatar": "img/avatars/hardy-kiwi.png"
  },
  "chocolate-vine": {
   "key": "chocolate-vine",
