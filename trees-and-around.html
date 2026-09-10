@@ -138,25 +138,30 @@ h1{text-align:center;color:#c5e1a5;margin-bottom:3px;font-size:1.5em;}
 .controls select:focus{outline:none;border-color:#4a8a2e;}
 
 /* Custom tree dropdown — a native <select> cannot render <img> inside <option>
-   (browsers strip them), so tree avatars need this listbox-based control. */
+   (browsers strip them), so tree avatars need this listbox-based control.
+   COLOURS: this tool runs the light Sage Forte theme, whose later !important
+   rules hit these elements via [class*="btn"] (gold) and [class*="panel"]
+   (--sf-card). The old hard-coded dark-theme colours (#0d1b2a bg / #e0e0d0
+   text) therefore left light-grey text on a light panel — unreadable. Style
+   against the theme variables and force black text with !important. */
 .tree-dd{position:relative;flex:1;min-width:200px;}
 .tree-dd-btn{display:flex;align-items:center;gap:8px;width:100%;text-align:left;
-  background:#0d1b2a !important;color:#e0e0d0 !important;
-  border:1px solid #33691e !important;border-radius:5px;padding:6px 12px;
-  font-size:0.9em;cursor:pointer;font-family:inherit;}
-.tree-dd-btn:focus{outline:none;border-color:#4a8a2e !important;}
+  border:1px solid var(--sf-border-strong) !important;border-radius:var(--sf-radius) !important;
+  padding:6px 12px;font-size:0.9em;cursor:pointer;font-family:inherit;}
+.tree-dd-btn:focus{outline:none;border-color:var(--sf-header-2) !important;}
 .tree-dd-face{display:flex;align-items:center;gap:7px;flex:1;min-width:0;}
-.tree-dd-face .dd-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#e0e0d0 !important;}
-.tree-dd-arrow{font-size:0.8em;opacity:0.7;color:#e0e0d0 !important;}
+.tree-dd-face .dd-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#000 !important;}
+.tree-dd-arrow{font-size:0.8em;opacity:0.9;color:#000 !important;}
 .tree-dd-panel{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;z-index:60;
-  max-height:320px;overflow-y:auto;background:#0d1b2a;border:1px solid #33691e;
-  border-radius:6px;box-shadow:0 8px 24px rgba(0,0,0,0.5);padding:4px;}
+  max-height:320px;overflow-y:auto;background:var(--sf-card) !important;
+  border:1px solid var(--sf-border-strong) !important;
+  border-radius:6px;box-shadow:0 8px 24px rgba(0,0,0,0.25) !important;padding:4px;}
 .tree-dd-panel.open{display:block;}
 .tree-dd-opt{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:5px;
-  cursor:pointer;font-size:0.85em;color:#e0e0d0;}
-.tree-dd-opt:hover{background:rgba(76,175,80,0.18);}
-.tree-dd-opt.sel{background:rgba(76,175,80,0.28);}
-.tree-dd-opt .dd-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  cursor:pointer;font-size:0.85em;color:#000 !important;background:transparent;}
+.tree-dd-opt:hover{background:rgba(44,74,50,0.10) !important;}
+.tree-dd-opt.sel{background:rgba(62,106,70,0.22) !important;color:#000 !important;font-weight:600;}
+.tree-dd-opt .dd-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#000 !important;}
 .tree-dd-opt .dd-emoji{font-size:1.15em;line-height:1;width:22px;text-align:center;flex-shrink:0;}
 .tree-dd-opt img.dd-av,.tree-dd-face img.dd-av{width:22px;height:22px;object-fit:contain;flex-shrink:0;}
 /* Inline icon slots (guild title, info line). These reuse the resolver output,
