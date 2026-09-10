@@ -5651,7 +5651,8 @@
   ],
   "icon": "🌰",
   "nameNL": "Walnoot",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Noyer_centenaire_en_automne.JPG/250px-Noyer_centenaire_en_automne.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Noyer_centenaire_en_automne.JPG/250px-Noyer_centenaire_en_automne.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "avatar": "img/avatars/walnut.png"
  },
  "lemon": {
   "key": "lemon",
@@ -5920,7 +5921,8 @@
   ],
   "icon": "🌾",
   "nameNL": "Amandel",
-  "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Feverythingbackyard.net%2Fwp-content%2Fuploads%2F2023%2F12%2Falmond-tree-cultivation-1024x585.jpg&f=1&nofb=1&ipt=619571a5c91d249b8f5fd9cb69e28738af554cb82a4041b78dbe19c6a66ec6ce"
+  "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Feverythingbackyard.net%2Fwp-content%2Fuploads%2F2023%2F12%2Falmond-tree-cultivation-1024x585.jpg&f=1&nofb=1&ipt=619571a5c91d249b8f5fd9cb69e28738af554cb82a4041b78dbe19c6a66ec6ce",
+  "avatar": "img/avatars/almond.png"
  },
  "pistachio": {
   "key": "pistachio",
@@ -6423,7 +6425,8 @@
   "icon": "🍓",
   "nameNL": "Braam",
   "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Blackberries_Rubus_ulmifolius2.jpg/1280px-Blackberries_Rubus_ulmifolius2.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-  "wiki": "https://nl.wikipedia.org/wiki/Zwarte_braam"
+  "wiki": "https://nl.wikipedia.org/wiki/Zwarte_braam",
+  "avatar": "img/avatars/blackberry.png"
  },
  "raspberry": {
   "key": "raspberry",
