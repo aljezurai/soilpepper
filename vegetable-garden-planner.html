@@ -3873,16 +3873,21 @@ function renderSowMonthPanel() {
   Array.prototype.forEach.call(panel.querySelectorAll('.sow-chip[data-key]'), function (btn) {
     btn.onclick = function () {
       var key = btn.getAttribute('data-key');
-      var type = PLANTS[key] ? PLANTS[key].category : '';
-      for (var r = 0; r < rows.length; r++) {
-        if (rowType(r) === type) {
-          rows[r].slots[0].push({ key: key, plantedDate: todayStr() });
-          render();
-          showInfo('✅ ' + PLANTS[key].icon + ' ' + (LANG === 'nl' ? (PLANTS[key].nameNL || PLANTS[key].name) : PLANTS[key].name) + ' → bed ' + rowBedsLabel(r));
-          return;
-        }
+      if (!PLANTS[key]) { showInfo(tt('noBedForType')); return; }
+      // Fill the first FREE cell across all fitting beds — same as the palette
+      // drop handler. The old code always pushed to the first matching row's
+      // slot 0 without assigning sub/sec, so beyond the first cell the extra
+      // plants overflowed the grid and silently vanished (2026-09-10).
+      var r = placeInFittingBed(key);
+      if (r < 0) { showInfo(tt('noBedForType')); return; }
+      var conflicts = plantConflicts(key, r, 0);
+      render();
+      if (conflicts.length > 0) {
+        var cnames = conflicts.map(function (k2) { return PLANTS[k2] ? (LANG === 'nl' ? (PLANTS[k2].nameNL || PLANTS[k2].name) : PLANTS[k2].name) : k2; });
+        showInfo('⚠️ ' + tt('conflictLbl') + ' ' + cnames.join(', ') + ' (bed ' + rowBedsLabel(r) + ')');
+      } else {
+        showInfo('✅ ' + PLANTS[key].icon + ' ' + (LANG === 'nl' ? (PLANTS[key].nameNL || PLANTS[key].name) : PLANTS[key].name) + ' → bed ' + rowBedsLabel(r));
       }
-      showInfo(tt('noBedForType'));
     };
   });
 }
