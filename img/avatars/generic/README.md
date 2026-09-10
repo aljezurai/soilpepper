@@ -1,22 +1,19 @@
-# Generic avatar icons — what to supply
+# Generic avatar icons
 
-Drop one PNG per file below into THIS folder. No code change needed — the
-tools pick them up automatically.
+Icon resolution order: a species' OWN avatar > its generic `form` icon > emoji.
 
-**Spec:** square, transparent background, ~256-512 px, under ~40 KB.
+**Spec:** square, transparent PNG, 128-512 px, under ~60 KB.
 Flat illustrated style (not photos) — these render at 22-52 px.
 
-A species with its OWN avatar (`img/avatars/<key>.png`) overrides its group,
-so a specific icon you add later automatically replaces the generic one.
+## Still to supply
 
-| file to supply | covers | trees/shrubs |
+These groups keep the EMOJI until an icon is supplied. They are defined by the
+SHAPE of the tree/shrub (not its fruit), so they want a plant-shape icon:
+
+| file to supply | group | trees/shrubs waiting |
 |---|---|---|
-| `berry-shrub.png` | berry shrub | 22 |
 | `broadleaf-tree.png` | broadleaf tree | 15 |
 | `pod-nfixer.png` | pod nfixer | 13 |
-| `round-fruit.png` | round fruit | 12 |
-| `stone-fruit.png` | stone fruit | 12 |
-| `nut.png` | nut | 11 |
 | `evergreen-broadleaf.png` | evergreen broadleaf | 8 |
 | `flowering-shrub.png` | flowering shrub | 7 |
 | `vine-climber.png` | vine climber | 5 |
@@ -24,143 +21,150 @@ so a specific icon you add later automatically replaces the generic one.
 | `conifer.png` | conifer | 4 |
 | `citrus.png` | citrus | 1 |
 
-## Species per group
+## Already covered
 
-### berry-shrub.png  (22)
-- Blauwe bes
-- Braam
-- Chileense guave
-- Elsbes
-- Elzenbes
-- Framboos
-- Gewone lijsterbes
-- Gojibes
-- Goumi
-- Honingbes
-- Japanse wijnbes
-- Kornoelje
-- Kornoelje
-- Kruisbes
-- Noordelijke wasbes
-- Rode bes
-- Rozijnenboom
-- Salal
-- Vlier
-- Wilde gagel
-- Wilde lijsterbes
-- Zwarte bes
+- **berry-shrub** — `berry-shrub.png` supplied; 22 species (3 still use their own icon instead)
+- **round-fruit** — `round-fruit.png` supplied; 12 species (1 still use their own icon instead)
+- **stone-fruit** — `stone-fruit.png` supplied; 12 species (1 still use their own icon instead)
+- **nut** — `nut.png` supplied; 11 species (2 still use their own icon instead)
 
-### broadleaf-tree.png  (15)
-- Beuk
-- Chinese toonboom
-- Es
-- Esdoorn
-- Fluweelboom
-- Judasboom
-- Papier moerbei
-- Pawpaw
-- Ruwe berk
-- Sassafras
-- Vijg
-- Waterwilg
-- Winterlinde
-- Witte wilg
-- Zwarte populier
+## Members per group
 
-### pod-nfixer.png  (13)
-- Blazenstruik
-- Boomluzerne
-- Brem
-- Etna-brem
-- Italiaanse els
-- Johannesbroodboom
-- Robinia
-- Rode els
-- Siberische erwtenboom
-- Spaanse brem
-- Stinkende erwt
-- Witte els
-- Zwarte els
+### berry-shrub
+- Blauwe bes (`blueberry`)
+- Braam (`blackberry`) — own icon: `img/avatars/blackberry.png`
+- Chileense guave (`chilean-guava`)
+- Elsbes (`wild-service-tree`)
+- Elzenbes (`saskatoon`)
+- Framboos (`raspberry`)
+- Gewone lijsterbes (`whitebeam`)
+- Gojibes (`goji`) — own icon: `img/avatars/goji.png`
+- Goumi (`goumi`)
+- Honingbes (`honeyberry`)
+- Japanse wijnbes (`wineberry`)
+- Kornoelje (`cornelian-cherry`)
+- Kornoelje (`dogwood`)
+- Kruisbes (`gooseberry`)
+- Noordelijke wasbes (`northern-bayberry`)
+- Rode bes (`red-currant`)
+- Rozijnenboom (`japanese-raisin-tree`)
+- Salal (`salal`)
+- Vlier (`elderberry`) — own icon: `img/avatars/elderberry.png`
+- Wilde gagel (`gagel`)
+- Wilde lijsterbes (`rowan`)
+- Zwarte bes (`blackcurrant`)
 
-### round-fruit.png  (12)
-- Amerikaanse dadelpruim
-- Appel
-- Granaatappel
-- Kaki
-- Kweepeer
-- Lotusboom
-- Mispel
-- Peer
-- Peervormige lijsterbes
-- Sierkwee
-- Wilde appel
-- Wilde peer
+### round-fruit
+- Amerikaanse dadelpruim (`american-persimmon`)
+- Appel (`apple`)
+- Granaatappel (`pomegranate`)
+- Kaki (`persimmon`) — own icon: `img/avatars/persimmon.png`
+- Kweepeer (`quince`)
+- Lotusboom (`date-plum`)
+- Mispel (`medlar`)
+- Peer (`pear`)
+- Peervormige lijsterbes (`service-tree`)
+- Sierkwee (`japanese-quince`)
+- Wilde appel (`wilde-appel`)
+- Wilde peer (`wilde-peer`)
 
-### stone-fruit.png  (12)
-- Abrikoos
-- Amerikaanse vogelkers
-- Briançon-abrikoos
-- Dwergamandel
-- Jujube
-- Nankingkers
-- Perzik
-- Pruim
-- Strandpruim
-- Vogelkers
-- Zoete kers
-- Zure kers
+### stone-fruit
+- Abrikoos (`apricot`)
+- Amerikaanse vogelkers (`american-bird-cherry`)
+- Briançon-abrikoos (`briancon-apricot`)
+- Dwergamandel (`dwarf-russian-almond`)
+- Jujube (`jujube`)
+- Nankingkers (`nanking-cherry`)
+- Perzik (`peach`)
+- Pruim (`plum`)
+- Strandpruim (`beach-plum`)
+- Vogelkers (`vogelkers`)
+- Zoete kers (`cherry`) — own icon: `img/avatars/cherry.png`
+- Zure kers (`sour-cherry`)
 
-### nut.png  (11)
-- Amandel
-- Chileense hazelnoot
-- Dwergkastanje
-- Hazelnoot
-- Japanse notenboom
-- Pistache
-- Schorshickory
-- Tamme kastanje
-- Turkse hazelaar
-- Walnoot
-- Zwarte walnoot
+### nut
+- Amandel (`almond`) — own icon: `img/avatars/almond.png`
+- Chileense hazelnoot (`chilean-hazel`)
+- Dwergkastanje (`allegheny-chinkapin`)
+- Hazelnoot (`hazelnut`)
+- Japanse notenboom (`ginkgo`)
+- Pistache (`pistachio`)
+- Schorshickory (`shagbark-hickory`)
+- Tamme kastanje (`chestnut`)
+- Turkse hazelaar (`turkish-hazel`)
+- Walnoot (`walnut`) — own icon: `img/avatars/walnut.png`
+- Zwarte walnoot (`black-walnut`)
 
-### evergreen-broadleaf.png  (8)
-- Aardbeiboom
-- Hulst
-- Laurier
-- Mahoniestruik
-- Olijfboom
-- Steeneik
-- Wilde liguster
-- Wintergroene olijfwilg
+### broadleaf-tree  _(needs icon)_
+- Beuk (`beech`)
+- Chinese toonboom (`chinese-toon`)
+- Es (`es`)
+- Esdoorn (`esdoorn`)
+- Fluweelboom (`stags-horn-sumach`)
+- Judasboom (`judas-tree`)
+- Papier moerbei (`paper-mulberry`)
+- Pawpaw (`pawpaw`)
+- Ruwe berk (`silver-birch`)
+- Sassafras (`sassafras`)
+- Vijg (`fig`) — own icon: `img/avatars/fig.png`
+- Waterwilg (`goat-willow`)
+- Winterlinde (`small-leaved-lime`)
+- Witte wilg (`wilg`)
+- Zwarte populier (`black-poplar`)
 
-### flowering-shrub.png  (7)
-- Bloeiende esdoorn
-- Carolinische specerijstruik
-- Hondsroos
-- Kardinaalsmuts
-- Monnikspeper
-- Nederlandse theeplant
-- Rimpelroos
+### pod-nfixer  _(needs icon)_
+- Blazenstruik (`bladder-senna`)
+- Boomluzerne (`tree-medic`)
+- Brem (`scotch-broom`)
+- Etna-brem (`etna-broom`)
+- Italiaanse els (`italian-alder`)
+- Johannesbroodboom (`carob`) — own icon: `img/avatars/carob.png`
+- Robinia (`black-locust`)
+- Rode els (`red-alder`)
+- Siberische erwtenboom (`siberian-pea-tree`)
+- Spaanse brem (`spanish-broom`)
+- Stinkende erwt (`stinking-bean-trefoil`)
+- Witte els (`grey-alder`)
+- Zwarte els (`common-alder`)
 
-### vine-climber.png  (5)
-- Chinese blauweregen
-- Chocoladeplant
-- Druif (wijngaard)
-- Kiwi
-- Schisandra
+### evergreen-broadleaf  _(needs icon)_
+- Aardbeiboom (`strawberry-tree`)
+- Hulst (`hulst`)
+- Laurier (`bay-laurel`)
+- Mahoniestruik (`oregon-grape`)
+- Olijfboom (`olive`) — own icon: `img/avatars/olive.png`
+- Steeneik (`holm-oak`)
+- Wilde liguster (`liguster`)
+- Wintergroene olijfwilg (`evergreen-olive`)
 
-### thorny-shrub.png  (5)
-- Azarolmeidoorn
-- Duindoorn
-- Meidoorn
-- Sleedoorn
-- Zuurbes
+### flowering-shrub  _(needs icon)_
+- Bloeiende esdoorn (`flowering-maple`)
+- Carolinische specerijstruik (`carolina-allspice`)
+- Hondsroos (`rose`)
+- Kardinaalsmuts (`kardinaalsmuts`)
+- Monnikspeper (`chaste-tree`)
+- Nederlandse theeplant (`new-jersey-tea`)
+- Rimpelroos (`rugosa-rose`)
 
-### conifer.png  (4)
-- Chileense apenboom
-- Japanese pruimtaxus
-- Jeneverbes
-- Taxus
+### vine-climber  _(needs icon)_
+- Chinese blauweregen (`chinese-wisteria`)
+- Chocoladeplant (`chocolate-vine`)
+- Druif (wijngaard) (`grape`) — own icon: `img/avatars/grape.png`
+- Kiwi (`hardy-kiwi`) — own icon: `img/avatars/hardy-kiwi.png`
+- Schisandra (`schisandra`)
 
-### citrus.png  (1)
-- Citroenboom
+### thorny-shrub  _(needs icon)_
+- Azarolmeidoorn (`azerole`)
+- Duindoorn (`sea-buckthorn`)
+- Meidoorn (`meidoorn`)
+- Sleedoorn (`blackthorn`)
+- Zuurbes (`common-barberry`)
+
+### conifer  _(needs icon)_
+- Chileense apenboom (`monkey-puzzle`)
+- Japanese pruimtaxus (`japanese-plum-yew`)
+- Jeneverbes (`juniper`)
+- Taxus (`yew`)
+
+### citrus  _(needs icon)_
+- Citroenboom (`lemon`)

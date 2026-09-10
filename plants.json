@@ -5845,7 +5845,8 @@
   "icon": "🌾",
   "nameNL": "Johannesbroodboom",
   "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Ceratonia_siliqua_Keciboynuzu_1370984_Nevit.jpg/250px-Ceratonia_siliqua_Keciboynuzu_1370984_Nevit.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-  "form": "pod-nfixer"
+  "form": "pod-nfixer",
+  "avatar": "img/avatars/carob.png"
  },
  "almond": {
   "key": "almond",
