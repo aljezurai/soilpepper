@@ -4979,7 +4979,8 @@
   ],
   "icon": "🍇",
   "nameNL": "Vijg",
-  "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fagriworld.nl%2Fwp-content%2Fuploads%2F2022%2F10%2FVijgenboom-Experttips-voor-de-mediterrane-boom.jpg&f=1&nofb=1&ipt=f1bd66da57373d0fb9c2ec84520101d870e756160c840b7ea507b69fdd767d4a"
+  "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fagriworld.nl%2Fwp-content%2Fuploads%2F2022%2F10%2FVijgenboom-Experttips-voor-de-mediterrane-boom.jpg&f=1&nofb=1&ipt=f1bd66da57373d0fb9c2ec84520101d870e756160c840b7ea507b69fdd767d4a",
+  "form": "broadleaf-tree"
  },
  "persimmon": {
   "key": "persimmon",
@@ -5073,7 +5074,8 @@
   ],
   "icon": "🍊",
   "nameNL": "Kaki",
-  "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fminnetonkaorchards.com%2Fwp-content%2Fuploads%2F2023%2F04%2Fasian-persimmon-1024x680.jpg&f=1&nofb=1&ipt=cf53570114ea8cec4dd803d2fc23045484cc4ff66af8e667a7e8bdb949c66c4a"
+  "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fminnetonkaorchards.com%2Fwp-content%2Fuploads%2F2023%2F04%2Fasian-persimmon-1024x680.jpg&f=1&nofb=1&ipt=cf53570114ea8cec4dd803d2fc23045484cc4ff66af8e667a7e8bdb949c66c4a",
+  "form": "round-fruit"
  },
  "grape": {
   "key": "grape",
@@ -5150,7 +5152,8 @@
   ],
   "icon": "🍇",
   "nameNL": "Druif (wijngaard)",
-  "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2F0%2F0e%2FGrape_Plant_and_grapes8.jpg&f=1&nofb=1&ipt=8ffcd5ed265920b91e828592d1aeed93743053d72cb457285ea7fd7a67e31911"
+  "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2F0%2F0e%2FGrape_Plant_and_grapes8.jpg&f=1&nofb=1&ipt=8ffcd5ed265920b91e828592d1aeed93743053d72cb457285ea7fd7a67e31911",
+  "form": "vine-climber"
  },
  "peach": {
   "key": "peach",
@@ -5226,7 +5229,8 @@
   ],
   "icon": "🍑",
   "nameNL": "Perzik",
-  "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimages.squarespace-cdn.com%2Fcontent%2Fv1%2F6409204f30954d745ca0aba2%2F1701123257368-9PU5AA3L1C645TAXMHUP%2FPeach%2BReliance%2Bbranch.jpg&f=1&nofb=1&ipt=fc7acd584f49c207abe58b788c6be71fa7f1c51004210c4107bef8c68723384a"
+  "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimages.squarespace-cdn.com%2Fcontent%2Fv1%2F6409204f30954d745ca0aba2%2F1701123257368-9PU5AA3L1C645TAXMHUP%2FPeach%2BReliance%2Bbranch.jpg&f=1&nofb=1&ipt=fc7acd584f49c207abe58b788c6be71fa7f1c51004210c4107bef8c68723384a",
+  "form": "stone-fruit"
  },
  "plum": {
   "key": "plum",
@@ -5305,7 +5309,8 @@
   ],
   "icon": "🍓",
   "nameNL": "Pruim",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Fruits_Prunus_domestica.jpg/250px-Fruits_Prunus_domestica.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Fruits_Prunus_domestica.jpg/250px-Fruits_Prunus_domestica.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "stone-fruit"
  },
  "apple": {
   "key": "apple",
@@ -5385,7 +5390,8 @@
   ],
   "icon": "🍏",
   "nameNL": "Appel",
-  "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ffruitbomen.net%2Fweb%2Fimages%2F2418-appelboom-met-appels-full.jpg&f=1&nofb=1&ipt=567f45163e1f3772bab4183487f4c6316d3096b6f881884415c8c70664f2bc9f"
+  "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ffruitbomen.net%2Fweb%2Fimages%2F2418-appelboom-met-appels-full.jpg&f=1&nofb=1&ipt=567f45163e1f3772bab4183487f4c6316d3096b6f881884415c8c70664f2bc9f",
+  "form": "round-fruit"
  },
  "pear": {
   "key": "pear",
@@ -5464,7 +5470,8 @@
   "icon": "🍐",
   "nameNL": "Peer",
   "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ffruitbomen.net%2Fweb%2Fimages%2F1749-hoogstam-perenboom-full.jpg&f=1&nofb=1&ipt=0776fdcf4979e76cfc0ded0a2a6a90ebab09d28d633034d7f31c045d665576b5",
-  "wiki": "https://nl.wikipedia.org/wiki/Peer_(geslacht)"
+  "wiki": "https://nl.wikipedia.org/wiki/Peer_(geslacht)",
+  "form": "round-fruit"
  },
  "hazelnut": {
   "key": "hazelnut",
@@ -5542,7 +5549,8 @@
   ],
   "icon": "🌰",
   "nameNL": "Hazelnoot",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Corylus_avellana.jpg/250px-Corylus_avellana.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Corylus_avellana.jpg/250px-Corylus_avellana.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "nut"
  },
  "walnut": {
   "key": "walnut",
@@ -5652,7 +5660,8 @@
   "icon": "🌰",
   "nameNL": "Walnoot",
   "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Noyer_centenaire_en_automne.JPG/250px-Noyer_centenaire_en_automne.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-  "avatar": "img/avatars/walnut.png"
+  "avatar": "img/avatars/walnut.png",
+  "form": "nut"
  },
  "lemon": {
   "key": "lemon",
@@ -5739,7 +5748,8 @@
   ],
   "icon": "🍋",
   "nameNL": "Citroenboom",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/P1030323.JPG/250px-P1030323.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/P1030323.JPG/250px-P1030323.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "citrus"
  },
  "carob": {
   "key": "carob",
@@ -5831,7 +5841,8 @@
   ],
   "icon": "🌾",
   "nameNL": "Johannesbroodboom",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Ceratonia_siliqua_Keciboynuzu_1370984_Nevit.jpg/250px-Ceratonia_siliqua_Keciboynuzu_1370984_Nevit.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Ceratonia_siliqua_Keciboynuzu_1370984_Nevit.jpg/250px-Ceratonia_siliqua_Keciboynuzu_1370984_Nevit.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "pod-nfixer"
  },
  "almond": {
   "key": "almond",
@@ -5922,7 +5933,8 @@
   "icon": "🌾",
   "nameNL": "Amandel",
   "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Feverythingbackyard.net%2Fwp-content%2Fuploads%2F2023%2F12%2Falmond-tree-cultivation-1024x585.jpg&f=1&nofb=1&ipt=619571a5c91d249b8f5fd9cb69e28738af554cb82a4041b78dbe19c6a66ec6ce",
-  "avatar": "img/avatars/almond.png"
+  "avatar": "img/avatars/almond.png",
+  "form": "nut"
  },
  "pistachio": {
   "key": "pistachio",
@@ -6011,7 +6023,8 @@
   ],
   "icon": "🥜",
   "nameNL": "Pistache",
-  "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.planetnatural.com%2Fwp-content%2Fuploads%2F2023%2F10%2FPistachio-tree-in-a-barren-field.jpg&f=1&nofb=1&ipt=214feaaf3de7baf83a95514c40898feb2a3ed2ebf6d254bc183fcbe499da67d7"
+  "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.planetnatural.com%2Fwp-content%2Fuploads%2F2023%2F10%2FPistachio-tree-in-a-barren-field.jpg&f=1&nofb=1&ipt=214feaaf3de7baf83a95514c40898feb2a3ed2ebf6d254bc183fcbe499da67d7",
+  "form": "nut"
  },
  "pomegranate": {
   "key": "pomegranate",
@@ -6091,7 +6104,8 @@
   ],
   "icon": "🍓",
   "nameNL": "Granaatappel",
-  "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.jardineriaon.com%2Fwp-content%2Fuploads%2F2025%2F06%2Fcomo-cuidar-un-granado-en-maceta-1.webp&f=1&nofb=1&ipt=d197f0826d2a2a693e92d2e57a79387efaad2e6082100cef3172bc3f446730fb"
+  "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.jardineriaon.com%2Fwp-content%2Fuploads%2F2025%2F06%2Fcomo-cuidar-un-granado-en-maceta-1.webp&f=1&nofb=1&ipt=d197f0826d2a2a693e92d2e57a79387efaad2e6082100cef3172bc3f446730fb",
+  "form": "round-fruit"
  },
  "jujube": {
   "key": "jujube",
@@ -6168,7 +6182,8 @@
   ],
   "icon": "🍒",
   "nameNL": "Jujube",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Ziziphus_jujuba.jpg/250px-Ziziphus_jujuba.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Ziziphus_jujuba.jpg/250px-Ziziphus_jujuba.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "stone-fruit"
  },
  "goji": {
   "key": "goji",
@@ -6250,7 +6265,8 @@
   ],
   "icon": "🍓",
   "nameNL": "Gojibes",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Lycium_barbarum_-_Wolfberries_China_7-05.jpg/250px-Lycium_barbarum_-_Wolfberries_China_7-05.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Lycium_barbarum_-_Wolfberries_China_7-05.jpg/250px-Lycium_barbarum_-_Wolfberries_China_7-05.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "berry-shrub"
  },
  "elderberry": {
   "key": "elderberry",
@@ -6340,7 +6356,8 @@
   ],
   "icon": "🍓",
   "nameNL": "Vlier",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Sambucus_nigra_004.jpg/250px-Sambucus_nigra_004.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Sambucus_nigra_004.jpg/250px-Sambucus_nigra_004.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "berry-shrub"
  },
  "blackberry": {
   "key": "blackberry",
@@ -6426,7 +6443,8 @@
   "nameNL": "Braam",
   "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Blackberries_Rubus_ulmifolius2.jpg/1280px-Blackberries_Rubus_ulmifolius2.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "wiki": "https://nl.wikipedia.org/wiki/Zwarte_braam",
-  "avatar": "img/avatars/blackberry.png"
+  "avatar": "img/avatars/blackberry.png",
+  "form": "berry-shrub"
  },
  "raspberry": {
   "key": "raspberry",
@@ -6513,7 +6531,8 @@
   ],
   "icon": "🍓",
   "nameNL": "Framboos",
-  "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fjustfruitsandexotics.com%2Fwp-content%2Fuploads%2F5b949c21e8444.jpg&f=1&nofb=1&ipt=5dbe05be75e0432dc6f9d3e45f1aca86ab672e75e4e3975fca8ee9953adfdd86"
+  "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fjustfruitsandexotics.com%2Fwp-content%2Fuploads%2F5b949c21e8444.jpg&f=1&nofb=1&ipt=5dbe05be75e0432dc6f9d3e45f1aca86ab672e75e4e3975fca8ee9953adfdd86",
+  "form": "berry-shrub"
  },
  "red-currant": {
   "key": "red-currant",
@@ -6597,7 +6616,8 @@
   ],
   "icon": "🍓",
   "nameNL": "Rode bes",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Ribes_rubrum_1.jpg/250px-Ribes_rubrum_1.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Ribes_rubrum_1.jpg/250px-Ribes_rubrum_1.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "berry-shrub"
  },
  "sea-buckthorn": {
   "key": "sea-buckthorn",
@@ -6685,7 +6705,8 @@
   ],
   "icon": "🍂",
   "nameNL": "Duindoorn",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Hippophae_rhamnoides-01_%28xndr%29.JPG/250px-Hippophae_rhamnoides-01_%28xndr%29.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Hippophae_rhamnoides-01_%28xndr%29.JPG/250px-Hippophae_rhamnoides-01_%28xndr%29.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "thorny-shrub"
  },
  "goumi": {
   "key": "goumi",
@@ -6780,7 +6801,8 @@
   ],
   "icon": "🌿",
   "nameNL": "Goumi",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Elaeagnus_multiflora2.jpg/250px-Elaeagnus_multiflora2.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Elaeagnus_multiflora2.jpg/250px-Elaeagnus_multiflora2.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "berry-shrub"
  },
  "italian-alder": {
   "key": "italian-alder",
@@ -6853,7 +6875,8 @@
   ],
   "icon": "🌲",
   "nameNL": "Italiaanse els",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Alnus_cordata.jpg/250px-Alnus_cordata.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Alnus_cordata.jpg/250px-Alnus_cordata.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "pod-nfixer"
  },
  "common-alder": {
   "key": "common-alder",
@@ -6929,7 +6952,8 @@
   ],
   "icon": "🌲",
   "nameNL": "Zwarte els",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/20120904Alnus_glutinosa01.jpg/250px-20120904Alnus_glutinosa01.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/20120904Alnus_glutinosa01.jpg/250px-20120904Alnus_glutinosa01.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "pod-nfixer"
  },
  "grey-alder": {
   "key": "grey-alder",
@@ -7001,7 +7025,8 @@
   ],
   "icon": "🌲",
   "nameNL": "Witte els",
-  "image": "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.tree-guide.com%2Fimages%2Fstyles%2F600x450-copy_%2Fpublic%2Fgray-alder-leaves.jpg%3Fitok%3DlzOzehDU&f=1&nofb=1&ipt=78811d4694abcd1ceb1e33cb9abe1a4b0e32703608ed10a937666db0cd2caa2a"
+  "image": "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.tree-guide.com%2Fimages%2Fstyles%2F600x450-copy_%2Fpublic%2Fgray-alder-leaves.jpg%3Fitok%3DlzOzehDU&f=1&nofb=1&ipt=78811d4694abcd1ceb1e33cb9abe1a4b0e32703608ed10a937666db0cd2caa2a",
+  "form": "pod-nfixer"
  },
  "scotch-broom": {
   "key": "scotch-broom",
@@ -7090,7 +7115,8 @@
   ],
   "icon": "🌿",
   "nameNL": "Brem",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Cytisus_scoparius_by_Danny_S._-_001.JPG/250px-Cytisus_scoparius_by_Danny_S._-_001.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Cytisus_scoparius_by_Danny_S._-_001.JPG/250px-Cytisus_scoparius_by_Danny_S._-_001.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "pod-nfixer"
  },
  "etna-broom": {
   "key": "etna-broom",
@@ -7176,7 +7202,8 @@
   ],
   "icon": "🌿",
   "nameNL": "Etna-brem",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/EtnaBroom8142.jpg/250px-EtnaBroom8142.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/EtnaBroom8142.jpg/250px-EtnaBroom8142.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "pod-nfixer"
  },
  "spanish-broom": {
   "key": "spanish-broom",
@@ -7266,7 +7293,8 @@
   ],
   "icon": "🌿",
   "nameNL": "Spaanse brem",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Spartium_junceum_%28habitus%29.jpg/250px-Spartium_junceum_%28habitus%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Spartium_junceum_%28habitus%29.jpg/250px-Spartium_junceum_%28habitus%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "pod-nfixer"
  },
  "stinking-bean-trefoil": {
   "key": "stinking-bean-trefoil",
@@ -7356,7 +7384,8 @@
   ],
   "icon": "🌿",
   "nameNL": "Stinkende erwt",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Anagyris_foetida055.JPG/1920px-Anagyris_foetida055.JPG?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Anagyris_foetida055.JPG/1920px-Anagyris_foetida055.JPG?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "form": "pod-nfixer"
  },
  "rosemary": {
   "key": "rosemary",
@@ -8910,7 +8939,8 @@
   ],
   "icon": "🍂",
   "nameNL": "Olijfboom",
-  "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.italieuitgelicht.nl%2Fwp-content%2Fuploads%2F2022%2F11%2Folijfbomen-italie-178486207.jpg&f=1&nofb=1&ipt=3b7a154082b189e10846c1475f2994836cdd11d31f3048fe7103b6b1153cdbda"
+  "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.italieuitgelicht.nl%2Fwp-content%2Fuploads%2F2022%2F11%2Folijfbomen-italie-178486207.jpg&f=1&nofb=1&ipt=3b7a154082b189e10846c1475f2994836cdd11d31f3048fe7103b6b1153cdbda",
+  "form": "evergreen-broadleaf"
  },
  "cherry": {
   "key": "cherry",
@@ -8987,7 +9017,8 @@
   ],
   "icon": "🍒",
   "nameNL": "Zoete kers",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Prunus_avium_fruit.jpg/250px-Prunus_avium_fruit.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Prunus_avium_fruit.jpg/250px-Prunus_avium_fruit.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "stone-fruit"
  },
  "apricot": {
   "key": "apricot",
@@ -9064,7 +9095,8 @@
   ],
   "icon": "🍑",
   "nameNL": "Abrikoos",
-  "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Flawn.com.au%2Fwp-content%2Fuploads%2F2021%2F04%2Fwhy-you-should-have-an-apricot-tree-in-your-garden.jpg&f=1&nofb=1&ipt=7fcccaed4e4feb8980dac850de16c304eec615a7a153f15f8beac5755673dfcb"
+  "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Flawn.com.au%2Fwp-content%2Fuploads%2F2021%2F04%2Fwhy-you-should-have-an-apricot-tree-in-your-garden.jpg&f=1&nofb=1&ipt=7fcccaed4e4feb8980dac850de16c304eec615a7a153f15f8beac5755673dfcb",
+  "form": "stone-fruit"
  },
  "chestnut": {
   "key": "chestnut",
@@ -9161,7 +9193,8 @@
   ],
   "icon": "🌰",
   "nameNL": "Tamme kastanje",
-  "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fbio4climate.org%2Fwp-content%2Fuploads%2F5646047295_4ec898155e_c.jpg&f=1&nofb=1&ipt=62b93320e95c6622db638464f23984674637f69f9ab979cbacf1402681e6fa49"
+  "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fbio4climate.org%2Fwp-content%2Fuploads%2F5646047295_4ec898155e_c.jpg&f=1&nofb=1&ipt=62b93320e95c6622db638464f23984674637f69f9ab979cbacf1402681e6fa49",
+  "form": "nut"
  },
  "quince": {
   "key": "quince",
@@ -9234,7 +9267,8 @@
   ],
   "icon": "🍐",
   "nameNL": "Kweepeer",
-  "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fplantura.garden%2Fuk%2Fwp-content%2Fuploads%2Fsites%2F2%2F2022%2F11%2Fquince-tree-fruit-1024x683.jpg&f=1&nofb=1&ipt=766eadbe658d8d9c710c0c10e106a33e26f87ebe3ee7d940945bd312b969a5c1"
+  "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fplantura.garden%2Fuk%2Fwp-content%2Fuploads%2Fsites%2F2%2F2022%2F11%2Fquince-tree-fruit-1024x683.jpg&f=1&nofb=1&ipt=766eadbe658d8d9c710c0c10e106a33e26f87ebe3ee7d940945bd312b969a5c1",
+  "form": "round-fruit"
  },
  "medlar": {
   "key": "medlar",
@@ -9317,7 +9351,8 @@
   ],
   "icon": "🍐",
   "nameNL": "Mispel",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Medlar_pomes_and_leaves.jpg/250px-Medlar_pomes_and_leaves.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Medlar_pomes_and_leaves.jpg/250px-Medlar_pomes_and_leaves.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "round-fruit"
  },
  "rose": {
   "key": "rose",
@@ -9410,7 +9445,8 @@
   ],
   "icon": "🌹",
   "nameNL": "Hondsroos",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Divlja_ruza_cvijet_270508.jpg/250px-Divlja_ruza_cvijet_270508.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Divlja_ruza_cvijet_270508.jpg/250px-Divlja_ruza_cvijet_270508.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "flowering-shrub"
  },
  "iris": {
   "key": "iris",
@@ -9854,7 +9890,8 @@
   ],
   "icon": "🌿",
   "nameNL": "Boomluzerne",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Medicago_arborea1.jpg/250px-Medicago_arborea1.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Medicago_arborea1.jpg/250px-Medicago_arborea1.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "pod-nfixer"
  },
  "bladder-senna": {
   "key": "bladder-senna",
@@ -9947,7 +9984,8 @@
   ],
   "icon": "🌿",
   "nameNL": "Blazenstruik",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Colutea_arborescens_15-05-2009_15-19-27.JPG/960px-Colutea_arborescens_15-05-2009_15-19-27.JPG?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Colutea_arborescens_15-05-2009_15-19-27.JPG/960px-Colutea_arborescens_15-05-2009_15-19-27.JPG?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "form": "pod-nfixer"
  },
  "cardoon": {
   "key": "cardoon",
@@ -12203,7 +12241,8 @@
    "rootZone": ""
   },
   "nameNL": "Bloeiende esdoorn",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Corynabutilon_vitifolium.jpg/250px-Corynabutilon_vitifolium.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Corynabutilon_vitifolium.jpg/250px-Corynabutilon_vitifolium.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "flowering-shrub"
  },
  "saskatoon": {
   "key": "saskatoon",
@@ -12255,7 +12294,8 @@
    "rootZone": ""
   },
   "nameNL": "Elzenbes",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Amelanchier_alnifolia_var._semiintegrifolia_4.jpg/250px-Amelanchier_alnifolia_var._semiintegrifolia_4.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Amelanchier_alnifolia_var._semiintegrifolia_4.jpg/250px-Amelanchier_alnifolia_var._semiintegrifolia_4.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "berry-shrub"
  },
  "monkey-puzzle": {
   "key": "monkey-puzzle",
@@ -12307,7 +12347,8 @@
    "rootZone": ""
   },
   "nameNL": "Chileense apenboom",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Araucaria_en_Parque_Nacional_Conguillio.jpg/250px-Araucaria_en_Parque_Nacional_Conguillio.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Araucaria_en_Parque_Nacional_Conguillio.jpg/250px-Araucaria_en_Parque_Nacional_Conguillio.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "conifer"
  },
  "strawberry-tree": {
   "key": "strawberry-tree",
@@ -12360,7 +12401,8 @@
    "rootZone": ""
   },
   "nameNL": "Aardbeiboom",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Arbutus_unedo_off_Bayshore_Drive_at_Coal_Harbour.jpg/250px-Arbutus_unedo_off_Bayshore_Drive_at_Coal_Harbour.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Arbutus_unedo_off_Bayshore_Drive_at_Coal_Harbour.jpg/250px-Arbutus_unedo_off_Bayshore_Drive_at_Coal_Harbour.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "evergreen-broadleaf"
  },
  "pawpaw": {
   "key": "pawpaw",
@@ -12414,7 +12456,8 @@
    "rootZone": ""
   },
   "nameNL": "Pawpaw",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Asimina_triloba3.jpg/250px-Asimina_triloba3.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Asimina_triloba3.jpg/250px-Asimina_triloba3.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "broadleaf-tree"
  },
  "common-barberry": {
   "key": "common-barberry",
@@ -12470,7 +12513,8 @@
   },
   "nameNL": "Zuurbes",
   "image": "https://upload.wikimedia.org/wikipedia/commons/f/f5/Berberis-vulgaris-flowers.jpg?utm_source=nl.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
-  "wiki": "https://nl.wikipedia.org/wiki/Zuurbes"
+  "wiki": "https://nl.wikipedia.org/wiki/Zuurbes",
+  "form": "thorny-shrub"
  },
  "paper-mulberry": {
   "key": "paper-mulberry",
@@ -12521,7 +12565,8 @@
    "rootZone": ""
   },
   "nameNL": "Papier moerbei",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Murier.jpg/250px-Murier.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Murier.jpg/250px-Murier.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "broadleaf-tree"
  },
  "carolina-allspice": {
   "key": "carolina-allspice",
@@ -12574,7 +12619,8 @@
    "rootZone": ""
   },
   "nameNL": "Carolinische specerijstruik",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/%28MHNT%29_Calycanthus_floridus_-_Les_Martels%2C_Giroussens_Tarn.jpg/250px-%28MHNT%29_Calycanthus_floridus_-_Les_Martels%2C_Giroussens_Tarn.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/%28MHNT%29_Calycanthus_floridus_-_Les_Martels%2C_Giroussens_Tarn.jpg/250px-%28MHNT%29_Calycanthus_floridus_-_Les_Martels%2C_Giroussens_Tarn.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "flowering-shrub"
  },
  "siberian-pea-tree": {
   "key": "siberian-pea-tree",
@@ -12629,7 +12675,8 @@
    "rootZone": ""
   },
   "nameNL": "Siberische erwtenboom",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Caragana_arborescens.jpg/250px-Caragana_arborescens.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Caragana_arborescens.jpg/250px-Caragana_arborescens.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "pod-nfixer"
  },
  "allegheny-chinkapin": {
   "key": "allegheny-chinkapin",
@@ -12681,7 +12728,8 @@
    "rootZone": ""
   },
   "nameNL": "Dwergkastanje",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Castanea_pumila_leaves_and_flowers.jpg/250px-Castanea_pumila_leaves_and_flowers.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Castanea_pumila_leaves_and_flowers.jpg/250px-Castanea_pumila_leaves_and_flowers.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "nut"
  },
  "new-jersey-tea": {
   "key": "new-jersey-tea",
@@ -12736,7 +12784,8 @@
    "rootZone": ""
   },
   "nameNL": "Nederlandse theeplant",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Ceanothus_americanus1.jpg/250px-Ceanothus_americanus1.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Ceanothus_americanus1.jpg/250px-Ceanothus_americanus1.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "flowering-shrub"
  },
  "japanese-plum-yew": {
   "key": "japanese-plum-yew",
@@ -12789,7 +12838,8 @@
   },
   "nameNL": "Japanese pruimtaxus",
   "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Cephalotaxus_harringtonia_BotGardBln1105WithSeeds.JPG/250px-Cephalotaxus_harringtonia_BotGardBln1105WithSeeds.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-  "wiki": "https://en.wikipedia.org/wiki/Cephalotaxus_harringtonii"
+  "wiki": "https://en.wikipedia.org/wiki/Cephalotaxus_harringtonii",
+  "form": "conifer"
  },
  "judas-tree": {
   "key": "judas-tree",
@@ -12846,7 +12896,8 @@
    "rootZone": ""
   },
   "nameNL": "Judasboom",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/PikiWiki_Israel_3421_Geography_of_Israel.jpg/250px-PikiWiki_Israel_3421_Geography_of_Israel.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/PikiWiki_Israel_3421_Geography_of_Israel.jpg/250px-PikiWiki_Israel_3421_Geography_of_Israel.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "broadleaf-tree"
  },
  "japanese-quince": {
   "key": "japanese-quince",
@@ -12899,7 +12950,8 @@
    "rootZone": ""
   },
   "nameNL": "Sierkwee",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/20200423124620_ed1.jpg/250px-20200423124620_ed1.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/20200423124620_ed1.jpg/250px-20200423124620_ed1.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "round-fruit"
  },
  "cornelian-cherry": {
   "key": "cornelian-cherry",
@@ -12953,7 +13005,8 @@
    "rootZone": ""
   },
   "nameNL": "Kornoelje",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/CornusMas_Fruits_01.jpg/250px-CornusMas_Fruits_01.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/CornusMas_Fruits_01.jpg/250px-CornusMas_Fruits_01.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "berry-shrub"
  },
  "azerole": {
   "key": "azerole",
@@ -13006,7 +13059,8 @@
    "rootZone": ""
   },
   "nameNL": "Azarolmeidoorn",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Hawthorn_in_blossom.jpg/250px-Hawthorn_in_blossom.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Hawthorn_in_blossom.jpg/250px-Hawthorn_in_blossom.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "thorny-shrub"
  },
  "date-plum": {
   "key": "date-plum",
@@ -13060,7 +13114,8 @@
    "rootZone": ""
   },
   "nameNL": "Lotusboom",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Diospyros_lotus_01.jpg/250px-Diospyros_lotus_01.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Diospyros_lotus_01.jpg/250px-Diospyros_lotus_01.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "round-fruit"
  },
  "american-persimmon": {
   "key": "american-persimmon",
@@ -13112,7 +13167,8 @@
    "rootZone": ""
   },
   "nameNL": "Amerikaanse dadelpruim",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Diospyros_virginiana_BB-1913.png/250px-Diospyros_virginiana_BB-1913.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Diospyros_virginiana_BB-1913.png/250px-Diospyros_virginiana_BB-1913.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "round-fruit"
  },
  "beech": {
   "key": "beech",
@@ -13166,7 +13222,8 @@
    "rootZone": ""
   },
   "nameNL": "Beuk",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Fagus-sylvatica-cansiglio-forest-italy.jpg/250px-Fagus-sylvatica-cansiglio-forest-italy.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Fagus-sylvatica-cansiglio-forest-italy.jpg/250px-Fagus-sylvatica-cansiglio-forest-italy.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "broadleaf-tree"
  },
  "salal": {
   "key": "salal",
@@ -13219,7 +13276,8 @@
    "rootZone": ""
   },
   "nameNL": "Salal",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Gaultheria_shallon_RF.jpg/250px-Gaultheria_shallon_RF.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Gaultheria_shallon_RF.jpg/250px-Gaultheria_shallon_RF.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "berry-shrub"
  },
  "chilean-hazel": {
   "key": "chilean-hazel",
@@ -13271,7 +13329,8 @@
    "rootZone": ""
   },
   "nameNL": "Chileense hazelnoot",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Gevuina_avellana_2.jpg/250px-Gevuina_avellana_2.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Gevuina_avellana_2.jpg/250px-Gevuina_avellana_2.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "nut"
  },
  "ginkgo": {
   "key": "ginkgo",
@@ -13323,7 +13382,8 @@
    "rootZone": ""
   },
   "nameNL": "Japanse notenboom",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/GINKGOBAUM-2.jpg/250px-GINKGOBAUM-2.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/GINKGOBAUM-2.jpg/250px-GINKGOBAUM-2.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "nut"
  },
  "japanese-raisin-tree": {
   "key": "japanese-raisin-tree",
@@ -13375,7 +13435,8 @@
    "rootZone": ""
   },
   "nameNL": "Rozijnenboom",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Hovenia_dulcis.jpg/250px-Hovenia_dulcis.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Hovenia_dulcis.jpg/250px-Hovenia_dulcis.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "berry-shrub"
  },
  "black-walnut": {
   "key": "black-walnut",
@@ -13427,7 +13488,8 @@
    "rootZone": ""
   },
   "nameNL": "Zwarte walnoot",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Black_Walnut_nut_and_leave_detail.JPG/250px-Black_Walnut_nut_and_leave_detail.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Black_Walnut_nut_and_leave_detail.JPG/250px-Black_Walnut_nut_and_leave_detail.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "nut"
  },
  "juniper": {
   "key": "juniper",
@@ -13481,7 +13543,8 @@
    "rootZone": ""
   },
   "nameNL": "Jeneverbes",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Jeneverbes.jpg/250px-Jeneverbes.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Jeneverbes.jpg/250px-Jeneverbes.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "conifer"
  },
  "bay-laurel": {
   "key": "bay-laurel",
@@ -13534,7 +13597,8 @@
    "rootZone": ""
   },
   "nameNL": "Laurier",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Starr-071024-0195-Laurus_nobilis-leaves-Enchanting_Floral_Gardens_of_Kula-Maui_%2824867859296%29.jpg/250px-Starr-071024-0195-Laurus_nobilis-leaves-Enchanting_Floral_Gardens_of_Kula-Maui_%2824867859296%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Starr-071024-0195-Laurus_nobilis-leaves-Enchanting_Floral_Gardens_of_Kula-Maui_%2824867859296%29.jpg/250px-Starr-071024-0195-Laurus_nobilis-leaves-Enchanting_Floral_Gardens_of_Kula-Maui_%2824867859296%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "evergreen-broadleaf"
  },
  "honeyberry": {
   "key": "honeyberry",
@@ -13588,7 +13652,8 @@
   },
   "nameNL": "Honingbes",
   "image": "https://upload.wikimedia.org/wikipedia/commons/6/62/Lonicera_coerulea_a3.jpg?utm_source=nl.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
-  "wiki": "https://nl.wikipedia.org/wiki/Honingbes"
+  "wiki": "https://nl.wikipedia.org/wiki/Honingbes",
+  "form": "berry-shrub"
  },
  "oregon-grape": {
   "key": "oregon-grape",
@@ -13641,7 +13706,8 @@
    "rootZone": ""
   },
   "nameNL": "Mahoniestruik",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Mahonia_aquifolium.jpg/250px-Mahonia_aquifolium.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Mahonia_aquifolium.jpg/250px-Mahonia_aquifolium.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "evergreen-broadleaf"
  },
  "chilean-guava": {
   "key": "chilean-guava",
@@ -13694,7 +13760,8 @@
    "rootZone": ""
   },
   "nameNL": "Chileense guave",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Ugni_molinae.jpg/250px-Ugni_molinae.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Ugni_molinae.jpg/250px-Ugni_molinae.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "berry-shrub"
  },
  "briancon-apricot": {
   "key": "briancon-apricot",
@@ -13746,7 +13813,8 @@
    "rootZone": ""
   },
   "nameNL": "Briançon-abrikoos",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/T5_59_Prunus_brigantina_par_Pierre-Joseph_Redout%C3%A9.jpeg/250px-T5_59_Prunus_brigantina_par_Pierre-Joseph_Redout%C3%A9.jpeg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/T5_59_Prunus_brigantina_par_Pierre-Joseph_Redout%C3%A9.jpeg/250px-T5_59_Prunus_brigantina_par_Pierre-Joseph_Redout%C3%A9.jpeg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "stone-fruit"
  },
  "sour-cherry": {
   "key": "sour-cherry",
@@ -13798,7 +13866,8 @@
    "rootZone": ""
   },
   "nameNL": "Zure kers",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Prunus_cerasus_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-113.jpg/250px-Prunus_cerasus_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-113.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Prunus_cerasus_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-113.jpg/250px-Prunus_cerasus_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-113.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "stone-fruit"
  },
  "beach-plum": {
   "key": "beach-plum",
@@ -13850,7 +13919,8 @@
    "rootZone": ""
   },
   "nameNL": "Strandpruim",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Prunus_maritima.jpg/250px-Prunus_maritima.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Prunus_maritima.jpg/250px-Prunus_maritima.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "stone-fruit"
  },
  "blackthorn": {
   "key": "blackthorn",
@@ -13905,7 +13975,8 @@
    "rootZone": ""
   },
   "nameNL": "Sleedoorn",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Closeup_of_blackthorn_aka_sloe_aka_prunus_spinosa_sweden_20050924.jpg/250px-Closeup_of_blackthorn_aka_sloe_aka_prunus_spinosa_sweden_20050924.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Closeup_of_blackthorn_aka_sloe_aka_prunus_spinosa_sweden_20050924.jpg/250px-Closeup_of_blackthorn_aka_sloe_aka_prunus_spinosa_sweden_20050924.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "thorny-shrub"
  },
  "dwarf-russian-almond": {
   "key": "dwarf-russian-almond",
@@ -13957,7 +14028,8 @@
    "rootZone": ""
   },
   "nameNL": "Dwergamandel",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Prunus_tenella1.jpg/250px-Prunus_tenella1.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Prunus_tenella1.jpg/250px-Prunus_tenella1.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "stone-fruit"
  },
  "nanking-cherry": {
   "key": "nanking-cherry",
@@ -14009,7 +14081,8 @@
    "rootZone": ""
   },
   "nameNL": "Nankingkers",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Berries_and_leaves_of_Prunus_Cerasus_tomentosa.jpg/250px-Berries_and_leaves_of_Prunus_Cerasus_tomentosa.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Berries_and_leaves_of_Prunus_Cerasus_tomentosa.jpg/250px-Berries_and_leaves_of_Prunus_Cerasus_tomentosa.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "stone-fruit"
  },
  "holm-oak": {
   "key": "holm-oak",
@@ -14063,7 +14136,8 @@
    "rootZone": ""
   },
   "nameNL": "Steeneik",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Quercus_ilex_JPG1.jpg/250px-Quercus_ilex_JPG1.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Quercus_ilex_JPG1.jpg/250px-Quercus_ilex_JPG1.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "evergreen-broadleaf"
  },
  "stags-horn-sumach": {
   "key": "stags-horn-sumach",
@@ -14115,7 +14189,8 @@
    "rootZone": ""
   },
   "nameNL": "Fluweelboom",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/%D0%A1%D1%83%D0%BC%D0%B0%D1%85_%D0%BE%D0%BB%D0%B5%D0%BD%D0%B5%D1%80%D0%BE%D0%B3%D0%B8%D0%B9_%28%D0%A1%D1%83%D0%BC%D0%B0%D1%85_%D0%BF%D1%83%D1%88%D0%B8%D1%81%D1%82%D1%8B%D0%B9%2C_%D0%A3%D0%BA%D1%81%D1%83%D1%81%D0%BD%D0%BE%D0%B5_%D0%B4%D0%B5%D1%80%D0%B5%D0%B2%D0%BE%29_-_Rhus_typhina_-_Staghorn_sumac_-_%D0%92%D0%BB%D0%B0%D0%BA%D0%BD%D0%B5%D1%81%D1%82_%D1%88%D0%BC%D0%B0%D0%BA_-_Essigbaum_%2823408707041%29.jpg/250px-thumbnail.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/%D0%A1%D1%83%D0%BC%D0%B0%D1%85_%D0%BE%D0%BB%D0%B5%D0%BD%D0%B5%D1%80%D0%BE%D0%B3%D0%B8%D0%B9_%28%D0%A1%D1%83%D0%BC%D0%B0%D1%85_%D0%BF%D1%83%D1%88%D0%B8%D1%81%D1%82%D1%8B%D0%B9%2C_%D0%A3%D0%BA%D1%81%D1%83%D1%81%D0%BD%D0%BE%D0%B5_%D0%B4%D0%B5%D1%80%D0%B5%D0%B2%D0%BE%29_-_Rhus_typhina_-_Staghorn_sumac_-_%D0%92%D0%BB%D0%B0%D0%BA%D0%BD%D0%B5%D1%81%D1%82_%D1%88%D0%BC%D0%B0%D0%BA_-_Essigbaum_%2823408707041%29.jpg/250px-thumbnail.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "broadleaf-tree"
  },
  "blackcurrant": {
   "key": "blackcurrant",
@@ -14169,7 +14244,8 @@
   },
   "nameNL": "Zwarte bes",
   "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Blackcurrant_1.jpg/960px-Blackcurrant_1.jpg?utm_source=nl.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-  "wiki": "https://nl.wikipedia.org/wiki/Zwarte_bes"
+  "wiki": "https://nl.wikipedia.org/wiki/Zwarte_bes",
+  "form": "berry-shrub"
  },
  "gooseberry": {
   "key": "gooseberry",
@@ -14222,7 +14298,8 @@
    "rootZone": ""
   },
   "nameNL": "Kruisbes",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Ribes_uva-crispa_kz04.jpg/250px-Ribes_uva-crispa_kz04.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Ribes_uva-crispa_kz04.jpg/250px-Ribes_uva-crispa_kz04.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "berry-shrub"
  },
  "black-locust": {
   "key": "black-locust",
@@ -14277,7 +14354,8 @@
    "rootZone": ""
   },
   "nameNL": "Robinia",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Robina9146.JPG/250px-Robina9146.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Robina9146.JPG/250px-Robina9146.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "pod-nfixer"
  },
  "rugosa-rose": {
   "key": "rugosa-rose",
@@ -14331,7 +14409,8 @@
    "rootZone": ""
   },
   "nameNL": "Rimpelroos",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Rosa_rugosa_Tokyo.JPG/250px-Rosa_rugosa_Tokyo.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Rosa_rugosa_Tokyo.JPG/250px-Rosa_rugosa_Tokyo.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "flowering-shrub"
  },
  "wineberry": {
   "key": "wineberry",
@@ -14383,7 +14462,8 @@
    "rootZone": ""
   },
   "nameNL": "Japanse wijnbes",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Japanse_wijnbes_rijpe_vruchten.jpg/250px-Japanse_wijnbes_rijpe_vruchten.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Japanse_wijnbes_rijpe_vruchten.jpg/250px-Japanse_wijnbes_rijpe_vruchten.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "berry-shrub"
  },
  "goat-willow": {
   "key": "goat-willow",
@@ -14438,7 +14518,8 @@
    "rootZone": ""
   },
   "nameNL": "Waterwilg",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Waterwilg_%28DSC_2539%29.jpg/250px-Waterwilg_%28DSC_2539%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Waterwilg_%28DSC_2539%29.jpg/250px-Waterwilg_%28DSC_2539%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "broadleaf-tree"
  },
  "sassafras": {
   "key": "sassafras",
@@ -14490,7 +14571,8 @@
    "rootZone": ""
   },
   "nameNL": "Sassafras",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Sassafras_Leaves_June_Nbg_%28261691941%29.jpeg/250px-Sassafras_Leaves_June_Nbg_%28261691941%29.jpeg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Sassafras_Leaves_June_Nbg_%28261691941%29.jpeg/250px-Sassafras_Leaves_June_Nbg_%28261691941%29.jpeg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "broadleaf-tree"
  },
  "whitebeam": {
   "key": "whitebeam",
@@ -14542,7 +14624,8 @@
    "rootZone": ""
   },
   "nameNL": "Gewone lijsterbes",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Sorbus_aria-3420.jpg/250px-Sorbus_aria-3420.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Sorbus_aria-3420.jpg/250px-Sorbus_aria-3420.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "berry-shrub"
  },
  "rowan": {
   "key": "rowan",
@@ -14596,7 +14679,8 @@
    "rootZone": ""
   },
   "nameNL": "Wilde lijsterbes",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Rowan_tree_20081002b.jpg/250px-Rowan_tree_20081002b.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Rowan_tree_20081002b.jpg/250px-Rowan_tree_20081002b.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "berry-shrub"
  },
  "service-tree": {
   "key": "service-tree",
@@ -14648,7 +14732,8 @@
    "rootZone": ""
   },
   "nameNL": "Peervormige lijsterbes",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Sorbus_domestica_FruitsLeaves_BotGardBln0906a.JPG/250px-Sorbus_domestica_FruitsLeaves_BotGardBln0906a.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Sorbus_domestica_FruitsLeaves_BotGardBln0906a.JPG/250px-Sorbus_domestica_FruitsLeaves_BotGardBln0906a.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "round-fruit"
  },
  "wild-service-tree": {
   "key": "wild-service-tree",
@@ -14701,7 +14786,8 @@
    "rootZone": ""
   },
   "nameNL": "Elsbes",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Sorbus_torminalis_Ripsdorf.jpg/250px-Sorbus_torminalis_Ripsdorf.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Sorbus_torminalis_Ripsdorf.jpg/250px-Sorbus_torminalis_Ripsdorf.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "berry-shrub"
  },
  "yew": {
   "key": "yew",
@@ -14756,7 +14842,8 @@
   },
   "nameNL": "Taxus",
   "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Taxus_baccata_MHNT.jpg/1280px-Taxus_baccata_MHNT.jpg?utm_source=nl.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-  "wiki": "https://nl.wikipedia.org/wiki/Venijnboom"
+  "wiki": "https://nl.wikipedia.org/wiki/Venijnboom",
+  "form": "conifer"
  },
  "small-leaved-lime": {
   "key": "small-leaved-lime",
@@ -14810,7 +14897,8 @@
    "rootZone": ""
   },
   "nameNL": "Winterlinde",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Tilia-cordata2.JPG/250px-Tilia-cordata2.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Tilia-cordata2.JPG/250px-Tilia-cordata2.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "broadleaf-tree"
  },
  "chinese-toon": {
   "key": "chinese-toon",
@@ -14862,7 +14950,8 @@
    "rootZone": ""
   },
   "nameNL": "Chinese toonboom",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/ToonaSinensis.jpg/250px-ToonaSinensis.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/ToonaSinensis.jpg/250px-ToonaSinensis.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "broadleaf-tree"
  },
  "chaste-tree": {
   "key": "chaste-tree",
@@ -14914,7 +15003,8 @@
    "rootZone": ""
   },
   "nameNL": "Monnikspeper",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Vitex_agnus-castus_1.JPG/250px-Vitex_agnus-castus_1.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Vitex_agnus-castus_1.JPG/250px-Vitex_agnus-castus_1.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "flowering-shrub"
  },
  "egyptian-onion": {
   "key": "egyptian-onion",
@@ -15611,7 +15701,8 @@
    "rootZone": ""
   },
   "nameNL": "Blauwe bes",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Vaccinium_corymbosum%2801%29.jpg/250px-Vaccinium_corymbosum%2801%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Vaccinium_corymbosum%2801%29.jpg/250px-Vaccinium_corymbosum%2801%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "berry-shrub"
  },
  "ground-elder": {
   "key": "ground-elder",
@@ -16672,7 +16763,8 @@
    "rootZone": ""
   },
   "nameNL": "Kiwi",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Weiki01.jpg/250px-Weiki01.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Weiki01.jpg/250px-Weiki01.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "vine-climber"
  },
  "chocolate-vine": {
   "key": "chocolate-vine",
@@ -16726,7 +16818,8 @@
    "rootZone": ""
   },
   "nameNL": "Chocoladeplant",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Akebia_quinata02.jpg/250px-Akebia_quinata02.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Akebia_quinata02.jpg/250px-Akebia_quinata02.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "vine-climber"
  },
  "schisandra": {
   "key": "schisandra",
@@ -16780,7 +16873,8 @@
    "rootZone": ""
   },
   "nameNL": "Schisandra",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Schisandra_sinensis.jpg/250px-Schisandra_sinensis.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Schisandra_sinensis.jpg/250px-Schisandra_sinensis.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "vine-climber"
  },
  "red-alder": {
   "key": "red-alder",
@@ -16837,7 +16931,8 @@
    "rootZone": ""
   },
   "nameNL": "Rode els",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Yurok_Loop_Coastal_Trail_at_Redwood_NP.jpg/250px-Yurok_Loop_Coastal_Trail_at_Redwood_NP.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Yurok_Loop_Coastal_Trail_at_Redwood_NP.jpg/250px-Yurok_Loop_Coastal_Trail_at_Redwood_NP.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "pod-nfixer"
  },
  "evergreen-olive": {
   "key": "evergreen-olive",
@@ -16893,7 +16988,8 @@
    "rootZone": ""
   },
   "nameNL": "Wintergroene olijfwilg",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Elaeagnus_ebbingei_Bl%C3%BCte.jpg/250px-Elaeagnus_ebbingei_Bl%C3%BCte.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Elaeagnus_ebbingei_Bl%C3%BCte.jpg/250px-Elaeagnus_ebbingei_Bl%C3%BCte.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "evergreen-broadleaf"
  },
  "northern-bayberry": {
   "key": "northern-bayberry",
@@ -16947,7 +17043,8 @@
    "rootZone": ""
   },
   "nameNL": "Noordelijke wasbes",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Northern_Bayberry_Leaf_Cluster_2420px.jpg/250px-Northern_Bayberry_Leaf_Cluster_2420px.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Northern_Bayberry_Leaf_Cluster_2420px.jpg/250px-Northern_Bayberry_Leaf_Cluster_2420px.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "berry-shrub"
  },
  "dwarf-gunnera": {
   "key": "dwarf-gunnera",
@@ -17168,7 +17265,8 @@
    "rootZone": ""
   },
   "nameNL": "Chinese blauweregen",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/0/01/N2_Wisteria4.jpg?utm_source=nl.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/0/01/N2_Wisteria4.jpg?utm_source=nl.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+  "form": "vine-climber"
  },
  "shagbark-hickory": {
   "key": "shagbark-hickory",
@@ -17220,7 +17318,8 @@
    "rootZone": ""
   },
   "nameNL": "Schorshickory",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/2021-03-03_10_34_58_Shagbark_Hickory_trunk_within_the_woodlands_along_the_West_Branch_Shabakunk_Creek_in_Ewing_Township%2C_Mercer_County%2C_New_Jersey.jpg/250px-2021-03-03_10_34_58_Shagbark_Hickory_trunk_within_the_woodlands_along_the_West_Branch_Shabakunk_Creek_in_Ewing_Township%2C_Mercer_County%2C_New_Jersey.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/2021-03-03_10_34_58_Shagbark_Hickory_trunk_within_the_woodlands_along_the_West_Branch_Shabakunk_Creek_in_Ewing_Township%2C_Mercer_County%2C_New_Jersey.jpg/250px-2021-03-03_10_34_58_Shagbark_Hickory_trunk_within_the_woodlands_along_the_West_Branch_Shabakunk_Creek_in_Ewing_Township%2C_Mercer_County%2C_New_Jersey.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "nut"
  },
  "silver-birch": {
   "key": "silver-birch",
@@ -17277,7 +17376,8 @@
    "rootZone": ""
   },
   "nameNL": "Ruwe berk",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Betula_pendula_Finland.jpg/250px-Betula_pendula_Finland.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Betula_pendula_Finland.jpg/250px-Betula_pendula_Finland.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "broadleaf-tree"
  },
  "field-horsetail": {
   "key": "field-horsetail",
@@ -17452,7 +17552,8 @@
    "rootZone": ""
   },
   "nameNL": "Zwarte populier",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Populus_nigra_kz1.jpg/250px-Populus_nigra_kz1.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Populus_nigra_kz1.jpg/250px-Populus_nigra_kz1.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "broadleaf-tree"
  },
  "american-bird-cherry": {
   "key": "american-bird-cherry",
@@ -17504,7 +17605,8 @@
    "rootZone": ""
   },
   "nameNL": "Amerikaanse vogelkers",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Amerikaanse_vogelkers_Prunus_serotina_closeup.jpg/250px-Amerikaanse_vogelkers_Prunus_serotina_closeup.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Amerikaanse_vogelkers_Prunus_serotina_closeup.jpg/250px-Amerikaanse_vogelkers_Prunus_serotina_closeup.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "stone-fruit"
  },
  "turkish-hazel": {
   "key": "turkish-hazel",
@@ -17565,7 +17667,8 @@
    "rootZone": ""
   },
   "nameNL": "Turkse hazelaar",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Corylus_colurna_subadriatic_dinaric_mountains_Orjen.JPG/250px-Corylus_colurna_subadriatic_dinaric_mountains_Orjen.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Corylus_colurna_subadriatic_dinaric_mountains_Orjen.JPG/250px-Corylus_colurna_subadriatic_dinaric_mountains_Orjen.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "nut"
  },
  "lambert-hazel": {
   "key": "lambert-hazel",
@@ -17745,7 +17848,8 @@
    "rootZone": ""
   },
   "nameNL": "Wilde gagel",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Gagelstrauch%28Myrica_gale%29female.JPG/250px-Gagelstrauch%28Myrica_gale%29female.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Gagelstrauch%28Myrica_gale%29female.JPG/250px-Gagelstrauch%28Myrica_gale%29female.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "berry-shrub"
  },
  "kardinaalsmuts": {
   "key": "kardinaalsmuts",
@@ -17802,7 +17906,8 @@
    "rootZone": ""
   },
   "nameNL": "Kardinaalsmuts",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Euonymus_europaeus_2024_G2.jpg/1920px-Euonymus_europaeus_2024_G2.jpg?utm_source=nl.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Euonymus_europaeus_2024_G2.jpg/1920px-Euonymus_europaeus_2024_G2.jpg?utm_source=nl.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "form": "flowering-shrub"
  },
  "hulst": {
   "key": "hulst",
@@ -17857,7 +17962,8 @@
    "rootZone": ""
   },
   "nameNL": "Hulst",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Ilex-aquifolium_%28Europaeische_Stechpalme-1%29.jpg/250px-Ilex-aquifolium_%28Europaeische_Stechpalme-1%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Ilex-aquifolium_%28Europaeische_Stechpalme-1%29.jpg/250px-Ilex-aquifolium_%28Europaeische_Stechpalme-1%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "evergreen-broadleaf"
  },
  "liguster": {
   "key": "liguster",
@@ -17913,7 +18019,8 @@
    "rootZone": ""
   },
   "nameNL": "Wilde liguster",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Wilde_liguster_%28Ligustrum_vulgare%29.jpg/250px-Wilde_liguster_%28Ligustrum_vulgare%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Wilde_liguster_%28Ligustrum_vulgare%29.jpg/250px-Wilde_liguster_%28Ligustrum_vulgare%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "evergreen-broadleaf"
  },
  "wilde-appel": {
   "key": "wilde-appel",
@@ -17969,7 +18076,8 @@
    "rootZone": ""
   },
   "nameNL": "Wilde appel",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Malus_sylvestris_005.JPG/250px-Malus_sylvestris_005.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Malus_sylvestris_005.JPG/250px-Malus_sylvestris_005.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "round-fruit"
  },
  "vogelkers": {
   "key": "vogelkers",
@@ -18024,7 +18132,8 @@
    "rootZone": ""
   },
   "nameNL": "Vogelkers",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Vogelkers_bloesem.jpg/250px-Vogelkers_bloesem.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Vogelkers_bloesem.jpg/250px-Vogelkers_bloesem.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "stone-fruit"
  },
  "wilg": {
   "key": "wilg",
@@ -18082,7 +18191,8 @@
    "rootZone": ""
   },
   "nameNL": "Witte wilg",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Salix_alba_leaves.jpg/250px-Salix_alba_leaves.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Salix_alba_leaves.jpg/250px-Salix_alba_leaves.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "broadleaf-tree"
  },
  "meidoorn": {
   "key": "meidoorn",
@@ -18140,7 +18250,8 @@
    "rootZone": ""
   },
   "nameNL": "Meidoorn",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Hawthorn_fruit.JPG/250px-Hawthorn_fruit.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Hawthorn_fruit.JPG/250px-Hawthorn_fruit.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "thorny-shrub"
  },
  "es": {
   "key": "es",
@@ -18197,7 +18308,8 @@
    "rootZone": ""
   },
   "nameNL": "Es",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Fraxinus_excelsior.jpg/250px-Fraxinus_excelsior.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Fraxinus_excelsior.jpg/250px-Fraxinus_excelsior.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "broadleaf-tree"
  },
  "esdoorn": {
   "key": "esdoorn",
@@ -18254,7 +18366,8 @@
    "rootZone": ""
   },
   "nameNL": "Esdoorn",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Acer_pseudoplatanus_005.jpg/250px-Acer_pseudoplatanus_005.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Acer_pseudoplatanus_005.jpg/250px-Acer_pseudoplatanus_005.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "form": "broadleaf-tree"
  },
  "wilde-kamperfoelie": {
   "key": "wilde-kamperfoelie",
@@ -18367,7 +18480,8 @@
   },
   "nameNL": "Wilde peer",
   "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Wild_Pear_Tree_in_full_blossom.JPG/1280px-Wild_Pear_Tree_in_full_blossom.JPG?utm_source=nl.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-  "wiki": "https://nl.wikipedia.org/wiki/Wilde_peer"
+  "wiki": "https://nl.wikipedia.org/wiki/Wilde_peer",
+  "form": "round-fruit"
  },
  "riet": {
   "key": "riet",
@@ -20089,6 +20203,7 @@
    "rootForm": "fibrous",
    "rootZone": "moderate"
   },
-  "nameNL": "Kornoelje"
+  "nameNL": "Kornoelje",
+  "form": "berry-shrub"
  }
 }
