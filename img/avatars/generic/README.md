@@ -23,10 +23,10 @@ SHAPE of the tree/shrub (not its fruit), so they want a plant-shape icon:
 
 ## Already covered
 
-- **berry-shrub** — `berry-shrub.png` supplied; 22 species (3 still use their own icon instead)
-- **round-fruit** — `round-fruit.png` supplied; 12 species (1 still use their own icon instead)
-- **stone-fruit** — `stone-fruit.png` supplied; 12 species (1 still use their own icon instead)
-- **nut** — `nut.png` supplied; 11 species (2 still use their own icon instead)
+- **berry-shrub** — `berry-shrub.png` supplied; 22 species (5 still use their own icon instead)
+- **round-fruit** — `round-fruit.png` supplied; 12 species (2 still use their own icon instead)
+- **stone-fruit** — `stone-fruit.png` supplied; 12 species (2 still use their own icon instead)
+- **nut** — `nut.png` supplied; 11 species (3 still use their own icon instead)
 
 ## Members per group
 
@@ -36,7 +36,7 @@ SHAPE of the tree/shrub (not its fruit), so they want a plant-shape icon:
 - Chileense guave (`chilean-guava`)
 - Elsbes (`wild-service-tree`)
 - Elzenbes (`saskatoon`)
-- Framboos (`raspberry`)
+- Framboos (`raspberry`) — own icon: `img/avatars/raspberry.png`
 - Gewone lijsterbes (`whitebeam`)
 - Gojibes (`goji`) — own icon: `img/avatars/goji.png`
 - Goumi (`goumi`)
@@ -46,7 +46,7 @@ SHAPE of the tree/shrub (not its fruit), so they want a plant-shape icon:
 - Kornoelje (`dogwood`)
 - Kruisbes (`gooseberry`)
 - Noordelijke wasbes (`northern-bayberry`)
-- Rode bes (`red-currant`)
+- Rode bes (`red-currant`) — own icon: `img/avatars/red-currant.png`
 - Rozijnenboom (`japanese-raisin-tree`)
 - Salal (`salal`)
 - Vlier (`elderberry`) — own icon: `img/avatars/elderberry.png`
@@ -57,7 +57,7 @@ SHAPE of the tree/shrub (not its fruit), so they want a plant-shape icon:
 ### round-fruit
 - Amerikaanse dadelpruim (`american-persimmon`)
 - Appel (`apple`)
-- Granaatappel (`pomegranate`)
+- Granaatappel (`pomegranate`) — own icon: `img/avatars/pomegranate.png`
 - Kaki (`persimmon`) — own icon: `img/avatars/persimmon.png`
 - Kweepeer (`quince`)
 - Lotusboom (`date-plum`)
@@ -76,7 +76,7 @@ SHAPE of the tree/shrub (not its fruit), so they want a plant-shape icon:
 - Jujube (`jujube`)
 - Nankingkers (`nanking-cherry`)
 - Perzik (`peach`)
-- Pruim (`plum`)
+- Pruim (`plum`) — own icon: `img/avatars/plum.png`
 - Strandpruim (`beach-plum`)
 - Vogelkers (`vogelkers`)
 - Zoete kers (`cherry`) — own icon: `img/avatars/cherry.png`
@@ -88,7 +88,7 @@ SHAPE of the tree/shrub (not its fruit), so they want a plant-shape icon:
 - Dwergkastanje (`allegheny-chinkapin`)
 - Hazelnoot (`hazelnut`)
 - Japanse notenboom (`ginkgo`)
-- Pistache (`pistachio`)
+- Pistache (`pistachio`) — own icon: `img/avatars/pistachio.png`
 - Schorshickory (`shagbark-hickory`)
 - Tamme kastanje (`chestnut`)
 - Turkse hazelaar (`turkish-hazel`)

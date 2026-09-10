@@ -5313,7 +5313,8 @@
   "icon": "🍓",
   "nameNL": "Pruim",
   "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Fruits_Prunus_domestica.jpg/250px-Fruits_Prunus_domestica.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-  "form": "stone-fruit"
+  "form": "stone-fruit",
+  "avatar": "img/avatars/plum.png"
  },
  "apple": {
   "key": "apple",
@@ -6028,7 +6029,8 @@
   "icon": "🥜",
   "nameNL": "Pistache",
   "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.planetnatural.com%2Fwp-content%2Fuploads%2F2023%2F10%2FPistachio-tree-in-a-barren-field.jpg&f=1&nofb=1&ipt=214feaaf3de7baf83a95514c40898feb2a3ed2ebf6d254bc183fcbe499da67d7",
-  "form": "nut"
+  "form": "nut",
+  "avatar": "img/avatars/pistachio.png"
  },
  "pomegranate": {
   "key": "pomegranate",
@@ -6109,7 +6111,8 @@
   "icon": "🍓",
   "nameNL": "Granaatappel",
   "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.jardineriaon.com%2Fwp-content%2Fuploads%2F2025%2F06%2Fcomo-cuidar-un-granado-en-maceta-1.webp&f=1&nofb=1&ipt=d197f0826d2a2a693e92d2e57a79387efaad2e6082100cef3172bc3f446730fb",
-  "form": "round-fruit"
+  "form": "round-fruit",
+  "avatar": "img/avatars/pomegranate.png"
  },
  "jujube": {
   "key": "jujube",
@@ -6538,7 +6541,8 @@
   "icon": "🍓",
   "nameNL": "Framboos",
   "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fjustfruitsandexotics.com%2Fwp-content%2Fuploads%2F5b949c21e8444.jpg&f=1&nofb=1&ipt=5dbe05be75e0432dc6f9d3e45f1aca86ab672e75e4e3975fca8ee9953adfdd86",
-  "form": "berry-shrub"
+  "form": "berry-shrub",
+  "avatar": "img/avatars/raspberry.png"
  },
  "red-currant": {
   "key": "red-currant",
@@ -6623,7 +6627,8 @@
   "icon": "🍓",
   "nameNL": "Rode bes",
   "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Ribes_rubrum_1.jpg/250px-Ribes_rubrum_1.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-  "form": "berry-shrub"
+  "form": "berry-shrub",
+  "avatar": "img/avatars/red-currant.png"
  },
  "sea-buckthorn": {
   "key": "sea-buckthorn",
