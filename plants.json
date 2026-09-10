@@ -8950,9 +8950,10 @@
   ],
   "icon": "🍂",
   "nameNL": "Olijfboom",
-  "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.italieuitgelicht.nl%2Fwp-content%2Fuploads%2F2022%2F11%2Folijfbomen-italie-178486207.jpg&f=1&nofb=1&ipt=3b7a154082b189e10846c1475f2994836cdd11d31f3048fe7103b6b1153cdbda",
+  "image": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3c/ZeitimI.jpg/960px-ZeitimI.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "form": "evergreen-broadleaf",
-  "avatar": "img/avatars/olive.png"
+  "avatar": "img/avatars/olive.png",
+  "wiki": "https://en.wikipedia.org/wiki/Olive"
  },
  "cherry": {
   "key": "cherry",
@@ -9662,7 +9663,7 @@
   "icon": "🌾",
   "nameNL": "Luzerne",
   "season": "cool",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/75_Medicago_sativa_L.jpg/250px-75_Medicago_sativa_L.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/e/e2/Lucerne_flowers.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
  },
  "crimson-clover": {
   "key": "crimson-clover",
@@ -10450,7 +10451,7 @@
    10,
    11
   ],
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Pastinaca_sativa_MHNT.BOT.2004.0.jpg/250px-Pastinaca_sativa_MHNT.BOT.2004.0.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/b/b7/PastinakePflanzegeerntet.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
  },
  "chamomile": {
   "name": "Chamomile",
@@ -10599,7 +10600,7 @@
    8,
    9
   ],
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Illustration_Anethum_graveolens_clean.jpg/250px-Illustration_Anethum_graveolens_clean.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "image": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/de/Anethum_graveolens_001.JPG/1280px-Anethum_graveolens_001.JPG?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "key": "dill"
  },
  "echinacea": {
@@ -10745,7 +10746,7 @@
    7,
    8
   ],
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Illustration_Hyssopus_officinalis0.jpg/250px-Illustration_Hyssopus_officinalis0.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "image": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/Hyssopus_officinalis_001.JPG/960px-Hyssopus_officinalis_001.JPG?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "key": "hyssop"
  },
  "lovage": {
@@ -11304,7 +11305,7 @@
    10
   ],
   "nameNL": "Pompoen",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cucurbita_maxima_Blanco2.320.png/250px-Cucurbita_maxima_Blanco2.320.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "image": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/94/Blue_hubbard_squash.jpg/1920px-Blue_hubbard_squash.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "key": "pumpkin"
  },
  "daikon": {
@@ -11882,7 +11883,7 @@
    11
   ],
   "nameNL": "Mosterd",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Sinapis_alba_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-265.jpg/250px-Sinapis_alba_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-265.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+  "image": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/29/Sinapis_alba_1.JPG/960px-Sinapis_alba_1.JPG?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "key": "mustard"
  },
  "rye": {
@@ -18816,7 +18817,7 @@
    10
   ],
   "nameNL": "Bladmosterd",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Brassica_juncea_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-168.jpg/250px-Brassica_juncea_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-168.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/5/50/Mustardgreensraw.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
  },
  "bonenkruid": {
   "key": "bonenkruid",
@@ -19111,7 +19112,7 @@
    11
   ],
   "nameNL": "Groenlof",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Illustration_Cichorium_intybus0_clean.jpg/250px-Illustration_Cichorium_intybus0_clean.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/9/97/Wegwarte_Cichorium_intybus.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
  },
  "kapucijner": {
   "key": "kapucijner",
@@ -19407,7 +19408,7 @@
    10
   ],
   "nameNL": "Mesclun",
-  "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimages.contentstack.io%2Fv3%2Fassets%2Fbltcedd8dbd5891265b%2Fblt4350c6d2995acd08%2F6670812beba562273c32217a%2Fmesclun-hero.jpg%3Fq%3D70%26width%3D1080%26auto%3Dwebp&f=1&nofb=1&ipt=ee69e6d7d277541a79b0e48003303fcb24bf478e99fe5be474d294a229e62b5a",
+  "image": "https://imgs.search.brave.com/gckYy60Nea7EUJj-q5B6hltEjagC5mAda4KjC2e1-8U/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9nYXJk/ZW5lcnNwYXRoLmNv/bS93cC1jb250ZW50/L3VwbG9hZHMvMjAy/Mi8wMy9Ib3ctdG8t/R3Jvdy1NZXNjbHVu/LUhlcm8uanBn",
   "wiki": "https://en.wikipedia.org/wiki/Mesclun"
  },
  "paksoi": {
@@ -19556,7 +19557,7 @@
    10
   ],
   "nameNL": "Pronkboon",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Illustration_Phaseolus_coccineus0.jpg/250px-Illustration_Phaseolus_coccineus0.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://imgs.search.brave.com/pLcxjdQP5d2RipI-jph_iWb0vDpOrrqylDdzvaCIJ44/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/Z2FyZGVuaWEubmV0/L3dwLWNvbnRlbnQv/dXBsb2Fkcy8yMDIz/LzA1L3BoYXNlb2x1/cy1jb2NjaW5ldXMt/NzgweDUyMC53ZWJw"
  },
  "physalis": {
   "key": "physalis",
@@ -19848,7 +19849,7 @@
    7
   ],
   "nameNL": "Veldboon",
-  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Illustration_Vicia_faba1.jpg/250px-Illustration_Vicia_faba1.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  "image": "https://upload.wikimedia.org/wikipedia/commons/7/74/Fava_beans_1.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
  },
  "naakte-haver": {
   "key": "naakte-haver",
