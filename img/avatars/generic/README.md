@@ -5,20 +5,18 @@ Icon resolution order: a species' OWN avatar > its generic `form` icon > emoji.
 **Spec:** square, transparent PNG, 128-512 px, under ~60 KB.
 Flat illustrated style (not photos) — these render at 22-52 px.
 
-> Note: a generic icon is only carried into the tools while its file exists.
-> Groups below without a file fall back to each species' emoji (no broken requests).
+> A generic icon is only carried into the tools while its file exists. Groups
+> without a file fall back to each species' emoji (no broken requests).
 
 ## Still to supply
 
-**Fruit-defined groups** — the group is defined by its fruit, so any
-clearly representative fruit illustration works:
+**Fruit-defined groups** — the group is defined by its fruit, so any clearly representative fruit illustration works:
 
 | file to supply | group | trees/shrubs waiting |
 |---|---|---|
 | `round-fruit.png` | round fruit | 12 |
 
-**Shape-defined groups** — defined by the SHAPE of the tree/shrub, not its
-fruit, so these want a plant-shape icon:
+**Shape-defined groups** — defined by the SHAPE of the tree/shrub, not its fruit, so these want a plant-shape icon:
 
 | file to supply | group | trees/shrubs waiting |
 |---|---|---|
@@ -90,7 +88,7 @@ fruit, so these want a plant-shape icon:
 - Walnoot (`walnut`) — own icon: `img/avatars/walnut.png`
 - Zwarte walnoot (`black-walnut`)
 
-### broadleaf-tree  _(needs icon)_
+### broadleaf-tree  _(needs icon — currently emoji)_
 - Beuk (`beech`)
 - Chinese toonboom (`chinese-toon`)
 - Es (`es`)
@@ -107,7 +105,7 @@ fruit, so these want a plant-shape icon:
 - Witte wilg (`wilg`)
 - Zwarte populier (`black-poplar`)
 
-### pod-nfixer  _(needs icon)_
+### pod-nfixer  _(needs icon — currently emoji)_
 - Blazenstruik (`bladder-senna`)
 - Boomluzerne (`tree-medic`)
 - Brem (`scotch-broom`)
@@ -122,7 +120,7 @@ fruit, so these want a plant-shape icon:
 - Witte els (`grey-alder`)
 - Zwarte els (`common-alder`)
 
-### round-fruit  _(needs icon)_
+### round-fruit  _(needs icon — currently emoji)_
 - Amerikaanse dadelpruim (`american-persimmon`)
 - Appel (`apple`)
 - Granaatappel (`pomegranate`) — own icon: `img/avatars/pomegranate.png`
@@ -136,7 +134,7 @@ fruit, so these want a plant-shape icon:
 - Wilde appel (`wilde-appel`)
 - Wilde peer (`wilde-peer`)
 
-### evergreen-broadleaf  _(needs icon)_
+### evergreen-broadleaf  _(needs icon — currently emoji)_
 - Aardbeiboom (`strawberry-tree`)
 - Hulst (`hulst`)
 - Laurier (`bay-laurel`)
@@ -146,7 +144,7 @@ fruit, so these want a plant-shape icon:
 - Wilde liguster (`liguster`)
 - Wintergroene olijfwilg (`evergreen-olive`)
 
-### flowering-shrub  _(needs icon)_
+### flowering-shrub  _(needs icon — currently emoji)_
 - Bloeiende esdoorn (`flowering-maple`)
 - Carolinische specerijstruik (`carolina-allspice`)
 - Hondsroos (`rose`)
@@ -155,25 +153,25 @@ fruit, so these want a plant-shape icon:
 - Nederlandse theeplant (`new-jersey-tea`)
 - Rimpelroos (`rugosa-rose`)
 
-### vine-climber  _(needs icon)_
+### vine-climber  _(needs icon — currently emoji)_
 - Chinese blauweregen (`chinese-wisteria`)
 - Chocoladeplant (`chocolate-vine`)
 - Druif (wijngaard) (`grape`) — own icon: `img/avatars/grape.png`
 - Kiwi (`hardy-kiwi`) — own icon: `img/avatars/hardy-kiwi.png`
 - Schisandra (`schisandra`)
 
-### thorny-shrub  _(needs icon)_
+### thorny-shrub  _(needs icon — currently emoji)_
 - Azarolmeidoorn (`azerole`)
 - Duindoorn (`sea-buckthorn`)
 - Meidoorn (`meidoorn`)
 - Sleedoorn (`blackthorn`)
 - Zuurbes (`common-barberry`)
 
-### conifer  _(needs icon)_
+### conifer  _(needs icon — currently emoji)_
 - Chileense apenboom (`monkey-puzzle`)
 - Japanese pruimtaxus (`japanese-plum-yew`)
 - Jeneverbes (`juniper`)
 - Taxus (`yew`)
 
-### citrus  _(needs icon)_
+### citrus  _(needs icon — currently emoji)_
 - Citroenboom (`lemon`)
