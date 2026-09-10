@@ -3689,9 +3689,17 @@ function placePlant(key, r, s) {
   rows[r].slots[s].push({key: key, plantedDate: todayStr(), sub: cell.sub, sec: cell.sec});
   return true;
 }
+// Resolve the bed-height-type a plant belongs in. PLANTS[k].category is the
+// height group ('tall'/'medium'/'low'), but cover-crops are 'cover' which no
+// bed ever matches — they belong in low beds (green manures between rows),
+// the same fallback resetDefault() applies. (2026-09-10)
+function plantBedType(key) {
+  const c = PLANTS[key] ? PLANTS[key].category : '';
+  return (c === 'tall' || c === 'medium' || c === 'low') ? c : 'low';
+}
 // Place into the first fitting bed by row-type, filling free cells. Returns r or -1.
 function placeInFittingBed(key) {
-  const type = PLANTS[key].category;
+  const type = plantBedType(key);
   for (let r = 0; r < rows.length; r++) {
     if (rowType(r) !== type) continue;
     if (placePlant(key, r, 0)) return r;
