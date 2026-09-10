@@ -4272,27 +4272,36 @@ function toggleJoin(r) {
 // ============ SHADOW ROW (follow-up after harvest) ============
 function shadowKey(r,s,sub,sec){ return r+':'+s+':'+sub+':'+sec; }
 
-// successor candidates for the crop `key` planted in row r (only timing-based, conflicts ignored)
+// successor candidates for the crop `key` planted in row r. Normally timing-based
+// (sowable from this crop's harvest start), but when that yields nothing — e.g.
+// perennials with no harvest window (jerusalem artichoke) — fall back to the
+// full list so the picker is never empty. (2026-09-10)
 function successorsFor(key, r){
   const p = PLANTS[key];
-  if(!p || !p.harvestMonths || p.harvestMonths.length===0) return [];
-  const hMin = Math.min.apply(null, p.harvestMonths);
   // used species in this row (so we don't suggest a duplicate of what's there)
   const used = {};
   for(let s=0;s<2;s++){ (rows[r].slots[s]||[]).forEach(o=>{ const k=typeof o==='string'?o:o.key; if(k) used[k]=1; }); }
-  const out = [];
+  const base = [];
   Object.keys(PLANTS).forEach(function(c){
     if(c===key || used[c]) return;
     if(shadowPref(c) === -1) return;              // disliked — hide from follow-up suggestions
-    const q = PLANTS[c];
-    if(!q.sowMonths || q.sowMonths.length===0) return;
-    // crop can be sown from this crop's harvest-start month onward
-    const sowFrom = q.sowMonths.some(function(m){ return m>=hMin; });
-    if(!sowFrom) return;
-    out.push(c);
+    if(PLANTS[c]) base.push(c);
   });
+  let out = [];
+  // timing gate: only when this crop actually has a harvest window, restrict to
+  // species sowable from its harvest-start month onward
+  if(p && p.harvestMonths && p.harvestMonths.length>0){
+    const hMin = Math.min.apply(null, p.harvestMonths);
+    base.forEach(function(c){
+      const q = PLANTS[c];
+      if(!q.sowMonths || q.sowMonths.length===0) return;
+      if(q.sowMonths.some(function(m){ return m>=hMin; })) out.push(c);
+    });
+  }
+  // full-list fallback: no harvest window on the parent, or nothing timing-matches
+  if(out.length===0) out = base.slice();
   // user favourites order: favourite(1) > neutral(0) > dislike(-1); within same, height-cat then name
-  const pk = p.category;
+  const pk = p ? p.category : '';
   out.sort(function(a,b){
     const fa = shadowPref(a)||0, fb = shadowPref(b)||0;
     if(fa!==fb) return fb - fa;               // higher preference first
