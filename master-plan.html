@@ -288,6 +288,33 @@ h1{font-family:var(--font-head);color:var(--accent-emerald);text-align:center;
   width:100%;background:var(--bg);color:var(--text);border:1px solid var(--border-accent);
   border-radius:var(--radius);padding:9px 12px;font-size:0.85rem;font-family:var(--font-body)}
 .field select:focus,.field input:focus{outline:none;border-color:var(--accent-emerald)}
+
+/* Custom tree dropdown — a native <select> cannot render <img> inside <option>
+   (browsers strip them), so tree avatars need this listbox-based control.
+   Uses the Master Plan's own theme variables (light Sage Forte palette). */
+.tree-dd{position:relative;width:100%}
+.tree-dd-btn{display:flex;align-items:center;gap:8px;width:100%;text-align:left;
+  background:var(--bg) !important;color:var(--text) !important;
+  border:1px solid var(--border-accent) !important;border-radius:var(--radius);
+  padding:9px 12px;font-size:0.85rem;font-family:var(--font-body);cursor:pointer}
+.tree-dd-btn:focus{outline:none;border-color:var(--accent-emerald) !important}
+.tree-dd-face{display:flex;align-items:center;gap:8px;flex:1;min-width:0}
+.tree-dd-face .dd-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tree-dd-arrow{font-size:0.8em;opacity:0.65;flex-shrink:0}
+.tree-dd-panel{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;z-index:80;
+  max-height:320px;overflow-y:auto;background:var(--bg-card);
+  border:1px solid var(--border-accent);border-radius:var(--radius);
+  box-shadow:0 8px 24px rgba(0,0,0,0.18);padding:4px}
+.tree-dd-panel.open{display:block}
+.tree-dd-opt{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:5px;
+  cursor:pointer;font-size:0.82rem;color:var(--text)}
+.tree-dd-opt:hover{background:rgba(44,74,50,0.10)}
+.tree-dd-opt.sel{background:rgba(44,74,50,0.18);font-weight:600}
+.tree-dd-opt .dd-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tree-dd-opt .dd-emoji{font-size:1.15em;line-height:1;width:22px;text-align:center;flex-shrink:0}
+.tree-dd-opt img.dd-av,.tree-dd-face img.dd-av{width:22px;height:22px;object-fit:contain;flex-shrink:0}
+/* guild-preview icon also shows the avatar when the tree has one */
+.guild-preview .gp-tree img{width:48px;height:48px;object-fit:contain;display:inline-block}
 .field .hint{font-size:0.68rem;color:var(--text-dim);margin-top:4px;line-height:1.4}
 .guild-preview{display:none;background:var(--bg-card-hover);border:1px solid var(--border);
   border-radius:var(--radius);padding:12px;margin-top:10px}
@@ -3181,7 +3208,13 @@ button.btn.sp-bk-download {
     </div>
     <div class="field" id="tree-field" style="display:none">
       <label data-i18n="guildTree">Guild Tree</label>
-      <select id="tree-select" onchange="onTreeChange()"></select>
+      <div class="tree-dd" id="tree-dd">
+        <button type="button" class="tree-dd-btn" id="tree-dd-btn" aria-haspopup="listbox" aria-expanded="false">
+          <span class="tree-dd-face" id="tree-dd-face"></span>
+          <span class="tree-dd-arrow">▾</span>
+        </button>
+        <div class="tree-dd-panel" id="tree-dd-panel" role="listbox"></div>
+      </div>
       <div class="hint">Select the central tree. Open the full guild diagram to design companions.</div>
       <div class="guild-preview" id="guild-preview">
         <div class="gp-title">Selected Guild</div>
@@ -4238,11 +4271,11 @@ function syncPanel() {
   const isGuild = sel.value === 'guild';
   treeField.style.display = isGuild ? 'block' : 'none';
   if (isGuild) {
-    const ts = document.getElementById('tree-select');
-    if (cell && cell.treeKey && Array.from(ts.options).some(o => o.value === cell.treeKey)) {
-      ts.value = cell.treeKey;
-    } else if (cell && cell.treeKey && !Array.from(ts.options).some(o => o.value === cell.treeKey)) {
-      ts.value = ''; // tree not in current region filter
+    if (cell && cell.treeKey) {
+      // Only select it when it's in the current region-filtered list, else clear.
+      setTreeKey(trees.indexOf(cell.treeKey) >= 0 ? cell.treeKey : '');
+    } else {
+      setTreeKey('');
     }
     updateGuildPreview();
   }
@@ -4326,7 +4359,7 @@ function commit() {
   const func = document.getElementById('func-select').value;
   const labelField = document.getElementById('label-field');
   const label = (labelField && labelField.style.display !== 'none') ? document.getElementById('label-input').value.trim() : '';
-  const treeKey = document.getElementById('tree-select').value;
+  const treeKey = getTreeKey();
   const zone = document.getElementById('zone-select').value;
   const soil = document.getElementById('soil-select').value;
   let data = null;
@@ -4374,11 +4407,22 @@ function removeAssignment() {
 
 /* ============ GUILD PREVIEW & OPEN ============ */
 function updateGuildPreview() {
-  const treeKey = document.getElementById('tree-select').value;
+  const tk = getTreeKey();
   const pv = document.getElementById('guild-preview');
-  if (!treeKey || !SPECIES[treeKey]) { pv.classList.remove('show'); return; }
-  const s = SPECIES[treeKey];
-  document.getElementById('gp-icon').textContent = s.icon || '🌳';
+  if (!tk || !SPECIES[tk]) { pv.classList.remove('show'); return; }
+  const s = SPECIES[tk];
+  // Avatar wins over the emoji when the species has one (same rule as the dropdown).
+  const iconEl = document.getElementById('gp-icon');
+  iconEl.textContent = '';
+  if (s.avatar) {
+    const im = document.createElement('img');
+    im.alt = '';
+    im.onerror = function () { this.replaceWith(document.createTextNode(s.icon || '🌳')); };
+    im.src = s.avatar;
+    iconEl.appendChild(im);
+  } else {
+    iconEl.textContent = s.icon || '🌳';
+  }
   document.getElementById('gp-name').textContent = s.name + (s.latin ? ' · ' + s.latin : '');
   const rings = document.getElementById('gp-rings');
   if (s.guild && s.guild.gives) {
@@ -4396,7 +4440,7 @@ function updateGuildPreview() {
   pv.classList.add('show');
 }
 function openGuildDiagram() {
-  const treeKey = document.getElementById('tree-select').value;
+  const treeKey = getTreeKey();
   if (!treeKey) { showToast(tt('selectTreeFirst')); return; }
   const region = getRegionParam();
   // Per-cell guilds (2026-08-26): pass ?cell= so each grid cell gets its own
@@ -4448,16 +4492,105 @@ function getRegionParam() {
 }
 
 /* ============ TREE SELECTOR ============ */
-function populateTreeSelect() {
-  const ts = document.getElementById('tree-select');
-  ts.innerHTML = '';
-  trees.forEach(function(k) {
-    const s = SPECIES[k];
-    const o = document.createElement('option');
-    o.value = k;
-    o.textContent = (s.icon || '🌳') + ' ' + s.name;
-    ts.appendChild(o);
+// A native <select> cannot render <img> inside <option> (browsers strip them),
+// so the guild-tree picker is a listbox-based custom dropdown. Species without
+// an `avatar` keep their emoji, so this degrades cleanly.
+let selTreeKey = '';                 // the currently chosen guild tree
+
+function getTreeKey() { return selTreeKey; }
+function setTreeKey(k) { selTreeKey = k || ''; updateTreeDDFace(selTreeKey); }
+
+// Icon node for a species: <img> when it has an avatar, else the emoji.
+function ddIconEl(key) {
+  const s = SPECIES[key] || {};
+  const wrap = document.createElement('span');
+  wrap.className = 'dd-emoji';
+  if (s.avatar) {
+    const img = document.createElement('img');
+    img.className = 'dd-av';
+    img.alt = '';
+    img.onerror = function () {
+      const sp = document.createElement('span');
+      sp.textContent = s.icon || '🌳';
+      this.replaceWith(sp);
+    };
+    img.src = s.avatar;
+    wrap.appendChild(img);
+  } else {
+    wrap.textContent = s.icon || '🌳';
+  }
+  return wrap;
+}
+
+function ddFaceFill(container, key) {
+  if (!container) return;
+  container.textContent = '';
+  if (!key || !SPECIES[key]) return;
+  container.appendChild(ddIconEl(key));
+  const nm = document.createElement('span');
+  nm.className = 'dd-name';
+  nm.textContent = SPECIES[key].name || key;
+  container.appendChild(nm);
+}
+
+function setTreeOptions(selectedKey) {
+  const face = document.getElementById('tree-dd-face');
+  const panel = document.getElementById('tree-dd-panel');
+  if (!face || !panel) return;
+  ddFaceFill(face, selectedKey);
+  panel.textContent = '';
+  trees.forEach(function (k) {
+    const row = document.createElement('div');
+    row.className = 'tree-dd-opt' + (k === selectedKey ? ' sel' : '');
+    row.dataset.key = k;
+    row.setAttribute('role', 'option');
+    row.setAttribute('aria-selected', k === selectedKey ? 'true' : 'false');
+    row.appendChild(ddIconEl(k));
+    const nm = document.createElement('span');
+    nm.className = 'dd-name';
+    nm.textContent = (SPECIES[k] && SPECIES[k].name) || k;
+    row.appendChild(nm);
+    row.onclick = function (e) {
+      e.stopPropagation();
+      setTreeKey(k);
+      closeTreeDD();
+      onTreeChange();
+    };
+    panel.appendChild(row);
   });
+}
+
+function updateTreeDDFace(key) {
+  const face = document.getElementById('tree-dd-face');
+  if (face) ddFaceFill(face, key);
+  const panel = document.getElementById('tree-dd-panel');
+  if (panel) {
+    Array.prototype.forEach.call(panel.children, function (r) {
+      const on = r.dataset && r.dataset.key === key;
+      r.classList.toggle('sel', !!on);
+      r.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+  }
+}
+
+function openTreeDD() {
+  const p = document.getElementById('tree-dd-panel'), b = document.getElementById('tree-dd-btn');
+  if (p) p.classList.add('open');
+  if (b) b.setAttribute('aria-expanded', 'true');
+}
+function closeTreeDD() {
+  const p = document.getElementById('tree-dd-panel'), b = document.getElementById('tree-dd-btn');
+  if (p) p.classList.remove('open');
+  if (b) b.setAttribute('aria-expanded', 'false');
+}
+function toggleTreeDD() {
+  const p = document.getElementById('tree-dd-panel');
+  if (!p) return;
+  if (p.classList.contains('open')) closeTreeDD(); else openTreeDD();
+}
+
+function populateTreeSelect() {
+  setTreeOptions(selTreeKey);
 }
 
 /* ============ EXPORT / IMPORT ============ */
@@ -5049,6 +5182,14 @@ function loadSpecies() {
   });
   trees.sort(function(a, b) { return SPECIES[a].name.localeCompare(SPECIES[b].name); });
   populateTreeSelect();
+  // Custom dropdown open/close. Clicking outside (or Escape) closes the panel.
+  const ddBtn = document.getElementById('tree-dd-btn');
+  if (ddBtn) ddBtn.onclick = function(e) { e.stopPropagation(); toggleTreeDD(); };
+  document.addEventListener('click', function(e) {
+    const dd = document.getElementById('tree-dd');
+    if (dd && !dd.contains(e.target)) closeTreeDD();
+  });
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeTreeDD(); });
 }
 
 /* ============ INIT ============ */
