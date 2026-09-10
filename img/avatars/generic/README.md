@@ -5,10 +5,20 @@ Icon resolution order: a species' OWN avatar > its generic `form` icon > emoji.
 **Spec:** square, transparent PNG, 128-512 px, under ~60 KB.
 Flat illustrated style (not photos) — these render at 22-52 px.
 
+> Note: a generic icon is only carried into the tools while its file exists.
+> Groups below without a file fall back to each species' emoji (no broken requests).
+
 ## Still to supply
 
-These groups keep the EMOJI until an icon is supplied. They are defined by the
-SHAPE of the tree/shrub (not its fruit), so they want a plant-shape icon:
+**Fruit-defined groups** — the group is defined by its fruit, so any
+clearly representative fruit illustration works:
+
+| file to supply | group | trees/shrubs waiting |
+|---|---|---|
+| `round-fruit.png` | round fruit | 12 |
+
+**Shape-defined groups** — defined by the SHAPE of the tree/shrub, not its
+fruit, so these want a plant-shape icon:
 
 | file to supply | group | trees/shrubs waiting |
 |---|---|---|
@@ -21,10 +31,9 @@ SHAPE of the tree/shrub (not its fruit), so they want a plant-shape icon:
 | `conifer.png` | conifer | 4 |
 | `citrus.png` | citrus | 1 |
 
-## Already covered
+## Covered by a reused species icon
 
 - **berry-shrub** — `berry-shrub.png` supplied; 22 species (5 still use their own icon instead)
-- **round-fruit** — `round-fruit.png` supplied; 12 species (2 still use their own icon instead)
 - **stone-fruit** — `stone-fruit.png` supplied; 12 species (2 still use their own icon instead)
 - **nut** — `nut.png` supplied; 11 species (3 still use their own icon instead)
 
@@ -53,20 +62,6 @@ SHAPE of the tree/shrub (not its fruit), so they want a plant-shape icon:
 - Wilde gagel (`gagel`)
 - Wilde lijsterbes (`rowan`)
 - Zwarte bes (`blackcurrant`)
-
-### round-fruit
-- Amerikaanse dadelpruim (`american-persimmon`)
-- Appel (`apple`)
-- Granaatappel (`pomegranate`) — own icon: `img/avatars/pomegranate.png`
-- Kaki (`persimmon`) — own icon: `img/avatars/persimmon.png`
-- Kweepeer (`quince`)
-- Lotusboom (`date-plum`)
-- Mispel (`medlar`)
-- Peer (`pear`)
-- Peervormige lijsterbes (`service-tree`)
-- Sierkwee (`japanese-quince`)
-- Wilde appel (`wilde-appel`)
-- Wilde peer (`wilde-peer`)
 
 ### stone-fruit
 - Abrikoos (`apricot`)
@@ -126,6 +121,20 @@ SHAPE of the tree/shrub (not its fruit), so they want a plant-shape icon:
 - Stinkende erwt (`stinking-bean-trefoil`)
 - Witte els (`grey-alder`)
 - Zwarte els (`common-alder`)
+
+### round-fruit  _(needs icon)_
+- Amerikaanse dadelpruim (`american-persimmon`)
+- Appel (`apple`)
+- Granaatappel (`pomegranate`) — own icon: `img/avatars/pomegranate.png`
+- Kaki (`persimmon`) — own icon: `img/avatars/persimmon.png`
+- Kweepeer (`quince`)
+- Lotusboom (`date-plum`)
+- Mispel (`medlar`)
+- Peer (`pear`)
+- Peervormige lijsterbes (`service-tree`)
+- Sierkwee (`japanese-quince`)
+- Wilde appel (`wilde-appel`)
+- Wilde peer (`wilde-peer`)
 
 ### evergreen-broadleaf  _(needs icon)_
 - Aardbeiboom (`strawberry-tree`)
